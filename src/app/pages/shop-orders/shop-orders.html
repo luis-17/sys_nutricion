@@ -1,0 +1,131 @@
+<div class="page page-orders pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a ui-sref="shop">Shop</a></li>
+    <li class="active">Orders</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-lg-12">
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Orders List</h1>
+          <div class="controls">
+            <a href="javascipt:;" class="btn btn-transparent" uib-tooltip="New Order" tooltip-placement="bottom"><i class="fa fa-plus mr-5"></i></a>
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle uib-tooltip="Tools" tooltip-placement="bottom"><i class="fa fa-ellipsis-v"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;">Export to XLS</a></li>
+                <li role="menuitem"><a href="javascript:;">Export to CSV</a></li>
+                <li role="menuitem"><a href="javascript:;">Export to XML</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="menuitem"><a href="javascript:;">Print Invoices</a></li>
+              </ul>
+            </div>
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <div class="alert alert-warning">
+            <strong>Note!</strong> This table have only demo purpose. Data are not loaded from database but from dummy json.
+          </div>
+
+          <div class="table-responsive-wide">
+            <table datatable="ng" dt-options="ctrl.dtOptions" dt-column-defs="ctrl.dtColumnDefs" class="table table-striped table-hover minotaur-table" style="min-width: 1000px;">
+              <thead>
+              <tr>
+                <th style="width:40px;">
+                  <label class="checkbox minotaur-checkbox minotaur-checkbox-sm checkbox-white m-0">
+                    <input type="checkbox" ng-model="ctrl.selectedAll" ng-click="ctrl.selectAll()">
+                    <div class="input-indicator"></div>
+                  </label>
+                </th>
+                <th style="width:80px;">Order ID</th>
+                <th style="width:120px;">Date</th>
+                <th style="width:180px;">Placed By</th>
+                <th style="width:80px;">Status</th>
+                <th>Ship To</th>
+                <th style="width:90px;">Quantity</th>
+                <th style="width:100px;">Total</th>
+                <th style="width:150px;">Actions</th>
+              </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Placed By</th>
+                <th>Status</th>
+                <th>Ship To</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+              </tfoot>
+              <tbody>
+              <tr ng-repeat="order in ctrl.orders">
+                <td>
+                  <label class="checkbox minotaur-checkbox minotaur-checkbox-sm m-0">
+                    <input type="checkbox" ng-model="order.selected">
+                    <div class="input-indicator"></div>
+                  </label>
+                </td>
+                <td>{{ order.id }}</td>
+                <td>{{ order.date | date:'mediumDate'}}</td>
+                <td>{{ order.placedby }}</td>
+                <td><span class="label" ng-class="{'bg-success' : order.status == 'sent','bg-warning' : order.status == 'closed','bg-lightred' : order.status == 'cancelled','bg-primary' : order.status == 'pending'}">{{ order.status }}</span></td>
+                <td>{{ order.shipto }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.total | currency}}</td>
+                <td>
+                  <a ui-sref="shop.single-order" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                  <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

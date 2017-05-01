@@ -1,0 +1,458 @@
+<div class="page page-ui pull-to-header">
+
+
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Navigation & Accordions</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="UiAccordionDemoController">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Accordion</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <script type="text/ng-template" id="group-template.html">
+            <div class="panel-heading">
+              <h4 class="panel-title" style="color:#fa39c3">
+                <a href tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+          <span uib-accordion-header ng-class="{'text-muted': isDisabled}">
+            {{heading}}
+          </span>
+                </a>
+              </h4>
+            </div>
+            <div class="panel-collapse collapse" uib-collapse="!isOpen">
+              <div class="panel-body" style="text-align: right" ng-transclude></div>
+            </div>
+          </script>
+
+          <p>
+            <button type="button" class="btn btn-default btn-sm minotaur-btn" ng-click="status.open = !status.open">Toggle last panel</button>
+            <button type="button" class="btn btn-theme btn-sm minotaur-btn" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+          </p>
+
+          <label class="minotaur-checkbox">
+            Open only one at a time
+            <input type="checkbox" ng-model="oneAtATime">
+            <div class="input-indicator"></div>
+          </label>
+          <uib-accordion close-others="oneAtATime">
+            <div uib-accordion-group class="panel-default" heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+              This content is straight in the template.
+            </div>
+            <div uib-accordion-group class="panel-default" heading="{{group.title}}" ng-repeat="group in groups">
+              {{group.content}}
+            </div>
+            <div uib-accordion-group class="panel-default" heading="Dynamic Body Content">
+              <p>The body of the uib-accordion group grows to fit the contents</p>
+              <button type="button" class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+              <div ng-repeat="item in items">{{item}}</div>
+            </div>
+            <div uib-accordion-group class="panel-default" heading="Custom template" template-url="group-template.html">
+              Hello
+            </div>
+            <div uib-accordion-group class="panel-default" is-open="status.isCustomHeaderOpen" template-url="group-template.html">
+              <uib-accordion-heading>
+                Custom template with custom header template <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+              </uib-accordion-heading>
+              World
+            </div>
+            <div uib-accordion-group class="panel-danger" heading="Delete account">
+              <p>Please, to delete your account, click the button below</p>
+              <button class="btn btn-danger">Delete</button>
+            </div>
+            <div uib-accordion-group class="panel-default" is-open="status.open">
+              <uib-accordion-heading>
+                I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+              </uib-accordion-heading>
+              This is just some content to illustrate fancy headings.
+            </div>
+          </uib-accordion>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="UiTabNavigationController as navigation">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Pills Navigation</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <p>Select a tab by setting active binding to true:</p>
+          <p>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.active = 1">Select second tab</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.active = 2">Select third tab</button>
+          </p>
+          <p>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.tabs[1].disabled = ! navigation.tabs[1].disabled">Enable / Disable third tab</button>
+          </p>
+          <hr />
+
+          <uib-tabset active="navigation.active" class="mb-10" type="pills">
+            <uib-tab index="0" heading="Static title">Static content</uib-tab>
+            <uib-tab index="$index + 1" ng-repeat="tab in navigation.tabs" heading="{{tab.title}}" disable="tab.disabled">
+              {{tab.content}}
+            </uib-tab>
+            <uib-tab index="3" select="navigation.alertMe()">
+              <uib-tab-heading>
+                <i class="glyphicon glyphicon-bell"></i> Alert!
+              </uib-tab-heading>
+              I've got an HTML heading, and a select callback. Pretty cool!
+            </uib-tab>
+          </uib-tabset>
+
+          <hr />
+
+          <h4>Minotaur Pills Styles</h4>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" type="pills">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-light mb-10" type="pills">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+
+          </uib-tabset>
+
+          <h4>Justified Pills</h4>
+
+          <uib-tabset class="mb-10" justified="true" type="pills">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true" type="pills">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-light mb-10" justified="true" type="pills">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <hr />
+
+          <h4>Vertical Pills</h4>
+
+          <uib-tabset active="navigation.activePill" vertical="true" type="pills">
+            <uib-tab index="0" heading="Vertical 1">Vertical content 1</uib-tab>
+            <uib-tab index="1" heading="Vertical 2">Vertical content 2</uib-tab>
+          </uib-tabset>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Breadcrumbs Navigation</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <ol class="breadcrumb">
+            <li class="active">Home</li>
+          </ol>
+
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">Library</li>
+          </ol>
+
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Library</a></li>
+            <li class="active">Data</li>
+          </ol>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="UiTabNavigationController as navigation">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Tab Navigation</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <p>Select a tab by setting active binding to true:</p>
+          <p>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.active = 1">Select second tab</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.active = 2">Select third tab</button>
+          </p>
+          <p>
+            <button type="button" class="btn btn-default btn-sm" ng-click="navigation.tabs[1].disabled = ! navigation.tabs[1].disabled">Enable / Disable third tab</button>
+          </p>
+          <hr />
+
+          <uib-tabset active="navigation.active" class="mb-10">
+            <uib-tab index="0" heading="Static title">Static content</uib-tab>
+            <uib-tab index="$index + 1" ng-repeat="tab in navigation.tabs" heading="{{tab.title}}" disable="tab.disabled">
+              {{tab.content}}
+            </uib-tab>
+            <uib-tab index="3" select="navigation.alertMe()">
+              <uib-tab-heading>
+                <i class="glyphicon glyphicon-bell"></i> Alert!
+              </uib-tab-heading>
+              I've got an HTML heading, and a select callback. Pretty cool!
+            </uib-tab>
+          </uib-tabset>
+
+          <hr />
+
+          <h4>Minotaur Tab Styles</h4>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content <code>class="minotaur-tab minotaur-tab-theme"</code></uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-light mb-10">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content <code>class="minotaur-tab minotaur-tab-light"</code></uib-tab>
+
+          </uib-tabset>
+
+          <hr />
+
+          <h4>Justified Tabs</h4>
+
+          <uib-tabset class="mb-10" justified="true">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <uib-tabset class="minotaur-tab minotaur-tab-light mb-10" justified="true">
+
+            <uib-tab heading="Tab 1 title">Tab 1 content</uib-tab>
+            <uib-tab heading="Tab 2 title">Tab 2 content</uib-tab>
+            <uib-tab heading="Tab 3 title">Tab 3 content</uib-tab>
+
+          </uib-tabset>
+
+          <hr />
+
+          <h4>Tabs using nested forms</h4>
+
+          <form name="outerForm" class="show-status">
+            <uib-tabset active="activeForm" class="padded">
+              <uib-tab index="0" heading="Form Tab">
+                <ng-form name="nestedForm">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" required ng-model="navigation.model.name"/>
+                  </div>
+                </ng-form>
+              </uib-tab>
+              <uib-tab index="1" heading="Tab One">
+                Some Tab Content
+              </uib-tab>
+              <uib-tab index="2" heading="Tab Two">
+                More Tab Content
+              </uib-tab>
+            </uib-tabset>
+          </form>
+          Model:
+          <pre>{{ navigation.model | json }}</pre>
+          Nested Form:
+          <pre>{{ outerForm.nestedForm | json }}</pre>
+
+          <hr />
+
+          <h4>Vertical Tabs</h4>
+
+          <div class="row">
+            <div class="col-md-3 col-sm-3">
+              <ul class="tabs-menu">
+                <li class="active"><a href="#tab_1" native-tabs>1. General Questions</a></li>
+                <li><a href="#tab_2" native-tabs>2. Membership</a></li>
+                <li><a href="#tab_3" native-tabs>3. Terms Of Service</a></li>
+                <li><a href="#tab_1" native-tabs>4. License Terms</a></li>
+                <li><a href="#tab_2" native-tabs>5. Payment Rules</a></li>
+                <li><a href="#tab_3" native-tabs>6. Other Questions</a></li>
+              </ul>
+            </div>
+
+            <div class="col-md-9 col-sm-9">
+              <div class="tab-content">
+
+                <!-- START TAB 1 -->
+                <div class="tab-pane fade in active" id="tab_1">
+                  Lorem Ipsum Dolor Sit Amet
+                </div>
+                <!-- END TAB 1 -->
+
+                <!-- START TAB 2 -->
+                <div class="tab-pane fade" id="tab_2">
+                  Lorem Ipsum Dolor Sit Amet
+                </div>
+                <!-- END TAB 2 -->
+
+                <!-- START TAB 3 -->
+                <div class="tab-pane fade" id="tab_3">
+                  Lorem Ipsum Dolor Sit Amet
+                </div>
+                <!-- END TAB 3 -->
+
+              </div>
+            </div>
+          </div>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

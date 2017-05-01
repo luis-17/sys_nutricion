@@ -1,0 +1,60 @@
+<div class="page page-forms full-height">
+
+  <div class="tbox tbox-sm">
+
+
+    <div class="tcol w-lg bg-white b-r">
+      <div class="p-15 b-b">
+        <h4 class="m-0">Select image</h4>
+      </div>
+
+      <div class="p-15 text-center">
+        <div class="form-group text-left">
+          <label class="control-label">Image</label>
+          <input type="file" class="filestyle" filestyle="{
+            buttonText: 'Select image',
+            iconName: 'fa fa-file-image-o'
+          }" id="fileInput">
+        </div>
+
+        <div class="btn-group mt-20">
+          <label class="btn btn-default" ng-model="forms.cropType" uib-btn-radio="'circle'">Circle</label>
+          <label class="btn btn-default" ng-model="forms.cropType" uib-btn-radio="'square'">Square</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tcol">
+      <div class="p-15 bg-white b-b">
+        <h4 class="m-0">Image cropping</h4>
+      </div>
+
+      <div class="p-15">
+
+        <div class="row">
+          <div class="col-md-8">
+
+            <div class="p-10 bg-white b-a b-solid" style="height:320px">
+              <img-crop
+                image="forms.myImage"
+                result-image="forms.myCroppedImage"
+                result-image-size="160"
+                area-type="{{forms.cropType}}"
+              ></img-crop>
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <div class="p-10 bg-white b-a b-solid inline-block">
+              <img ng-src="{{forms.myCroppedImage}}" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,322 @@
+<div class="page page-forms pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Form Stuff</a></li>
+    <li class="active">Form Wizard</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <div class="tile tile-simple">
+
+        <!-- tile body -->
+        <section class="tile-body p-0">
+
+          <form name="outerForm" role="form" novalidate class="form-validation">
+            <uib-tabset active="forms.activeStep" justified="true" class="tab-wizard padded">
+
+              <uib-tab index="0">
+
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step1.$valid"></i>
+                  Personal Information
+                  <span class="pull-right wizard-step">1</span>
+                </uib-tab-heading>
+
+                <ng-form name="step1">
+
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="username" class="control-label minotaur-label">Name <span class="text-red">*</span>: </label>
+                      <input type="text" name="name" id="name" class="form-control" ng-model="forms.forms.user.name" required>
+                      <div ng-messages="step1.name.$error" ng-if="step1.name.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="username" class="control-label minotaur-label">Username <span class="text-red">*</span>: </label>
+                      <input type="text" name="username" id="username" class="form-control" ng-model="forms.user.username" ng-minlength="3" ng-maxlength="8" required>
+                      <div ng-messages="step1.username.$error" ng-if="step1.username.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+
+                    <div class="form-group col-md-6">
+                      <label for="password" class="control-label minotaur-label">Password <span class="text-red">*</span>: </label>
+                      <input type="password" name="password" id="password" class="form-control" ng-model="forms.user.password" ng-minlength="6" required>
+                      <div ng-messages="step1.password.$error" ng-if="step1.password.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="passwordConfirm" class="control-label minotaur-label">Password confirmation <span class="text-red">*</span>: </label>
+                      <input type="password" name="passwordConfirm" id="passwordConfirm" class="form-control" ng-model="forms.user.passwordConfirm" match="forms.user.password" required>
+                      <div ng-messages="step1.passwordConfirm.$error" ng-if="step1.passwordConfirm.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="form-group">
+                    <label for="message" class="control-label minotaur-label">About you: </label>
+                    <textarea class="form-control" rows="5" name="message" id="message" placeholder="Write something about you..." ng-model="forms.user.message"></textarea>
+                  </div>
+
+                  <button ng-disabled="step1.$invalid" class="btn btn-default minotaur-btn" ng-click="forms.activeStep = 1">Next</button>
+
+                </ng-form>
+
+              </uib-tab>
+
+              <uib-tab index="1" disable="step1.$invalid">
+
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step2.$valid"></i>
+                  Address
+                  <span class="pull-right wizard-step">2</span>
+                </uib-tab-heading>
+
+                <ng-form name="step2">
+
+                  <div class="row">
+                    <div class="form-group col-md-8">
+                      <label for="street" class="control-label minotaur-label">Street <span class="text-red">*</span>: </label>
+                      <input type="text" name="street" id="street" class="form-control" ng-model="forms.user.street" placeholder="Enter street address" required>
+                      <div ng-messages="step2.street.$error" ng-if="step2.street.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="dnumber" class="control-label minotaur-label">Door no. <span class="text-red">*</span>: </label>
+                      <input type="text" name="dnumber" id="dnumber" class="form-control" ng-model="forms.user.dnumber" placeholder="Enter door number" required>
+                      <div ng-messages="step2.dnumber.$error" ng-if="step2.dnumber.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="address2" class="control-label minotaur-label">Address Line 2: </label>
+                    <input type="text" name="address2" id="address2" class="form-control" ng-model="forms.user.address2" placeholder="Enter secondary address">
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label for="city" class="control-label minotaur-label">City <span class="text-red">*</span>: </label>
+                      <input type="text" name="city" id="city" class="form-control" ng-model="forms.user.city" placeholder="Enter city" required>
+                      <div ng-messages="step2.city.$error" ng-if="step2.city.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="state" class="control-label minotaur-label">State <span class="text-red">*</span>: </label>
+                      <input type="text" name="state" id="state" class="form-control" ng-model="forms.user.state" placeholder="Enter state" required>
+                      <div ng-messages="step2.state.$error" ng-if="step2.state.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="zip" class="control-label minotaur-label">Zip <span class="text-red">*</span>: </label>
+                      <input type="text" name="zip" id="zip" class="form-control" ng-model="forms.user.zip" placeholder="Enter zip" required>
+                      <div ng-messages="step2.zip.$error" ng-if="step2.zip.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-default minotaur-btn" ng-click="forms.activeStep = 0">Previous</button>
+                  <button ng-disabled="step2.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="forms.activeStep = 2">Next</button>
+
+                </ng-form>
+
+              </uib-tab>
+
+              <uib-tab index="2" disable="step2.$invalid">
+
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step3.$valid"></i>
+                  Education
+                  <span class="pull-right wizard-step">3</span>
+                </uib-tab-heading>
+
+                <ng-form name="step3">
+
+                  <h4>Primary School</h4>
+
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label for="pr-subject" class="control-label minotaur-label">Subject: </label>
+                      <input type="text" name="pr-subject" id="pr-subject" class="form-control" ng-model="forms.user.prsubject">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="pr-name" class="control-label minotaur-label">School name <span class="text-red">*</span>: </label>
+                      <input type="text" name="pr-name" id="pr-name" class="form-control" ng-model="forms.user.prname" required>
+                      <div ng-messages="step3.name.$error" ng-if="step3.name.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="prstart" class="control-label minotaur-label">Start Date: </label>
+                      <input type="text" name="prstart" id="prstart" class="form-control" ng-model="forms.user.prstart" placeholder="YYYY-MM-DD" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/">
+                      <div ng-messages="step3.prstart.$error" ng-if="step3.prstart.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="prend" class="control-label minotaur-label">End Date: </label>
+                      <input type="text" name="prend" id="prend" class="form-control" ng-model="forms.user.prend" placeholder="YYYY-MM-DD" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/">
+                      <div ng-messages="step3.prend.$error" ng-if="step3.prend.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h4>Secondary School</h4>
+
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label for="sc-subject" class="control-label minotaur-label">Subject: </label>
+                      <input type="text" name="sc-subject" id="sc-subject" class="form-control" ng-model="forms.user.scsubject">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="sc-name" class="control-label minotaur-label">School name: </label>
+                      <input type="text" name="sc-name" id="sc-name" class="form-control" ng-model="forms.user.scname">
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="scstart" class="control-label minotaur-label">Start Date: </label>
+                      <input type="text" name="scstart" id="scstart" class="form-control" ng-model="forms.user.scstart" placeholder="YYYY-MM-DD" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/">
+                      <div ng-messages="step3.scstart.$error" ng-if="step3.scstart.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="scend" class="control-label minotaur-label">End Date: </label>
+                      <input type="text" name="scend" id="scend" class="form-control" ng-model="forms.user.scend" placeholder="YYYY-MM-DD" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/">
+                      <div ng-messages="step3.scend.$error" ng-if="step3.scend.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="qualification" class="control-label minotaur-label">Other qualification: </label>
+                    <textarea class="form-control" rows="5" name="qualification" id="qualification" ng-model="forms.user.qualification"></textarea>
+                  </div>
+
+                  <button class="btn btn-default minotaur-btn" ng-click="forms.activeStep = 1">Previous</button>
+                  <button ng-disabled="step3.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="forms.activeStep = 3">Next</button>
+
+                </ng-form>
+
+              </uib-tab>
+
+              <uib-tab index="3" disable="step3.$invalid">
+
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step4.$valid"></i>
+                  Contact
+                  <span class="pull-right wizard-step">4</span>
+                </uib-tab-heading>
+
+                <ng-form name="step4">
+
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label for="email" class="control-label minotaur-label">Email <span class="text-red">*</span>: </label>
+                      <input type="email" name="email" id="email" class="form-control" ng-model="forms.user.email" required>
+                      <div ng-messages="step4.email.$error" ng-if="step4.email.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="phone" class="control-label minotaur-label">Phone: </label>
+                      <input type="text" name="phone" id="phone" class="form-control" ng-model="forms.user.phone" placeholder="(XXX) XXXX XXX"  ng-pattern="/\([0-9]{3}\) ([0-9]{4}) ([0-9]{3})$/">
+                      <div ng-messages="step4.phone.$error" ng-if="step4.phone.$dirty" role="alert" class="help-block text-red">
+                        <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="web" class="control-label minotaur-label">Website: </label>
+                    <input type="url" name="web" id="web" class="form-control" ng-model="forms.user.web" placeholder="http://">
+                    <div ng-messages="step4.web.$error" ng-if="step4.web.$dirty" role="alert" class="help-block text-red">
+                      <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-default minotaur-btn" ng-click="forms.activeStep = 2">Previous</button>
+                  <button ng-disabled="step4.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="forms.activeStep = 4">Next</button>
+
+                </ng-form>
+
+              </uib-tab>
+
+              <uib-tab index="4" disable="step4.$invalid">
+
+                <uib-tab-heading>
+                  <i class="fa fa-check" ng-if="step5.$valid"></i>
+                  EULA
+                  <span class="pull-right wizard-step">5</span>
+                </uib-tab-heading>
+
+                <ng-form name="step5">
+
+                  <p class="well">But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
+
+                  <label class="checkbox minotaur-checkbox">I agree to the <a href class="text-info">Terms of Service</a>
+                    <input type="checkbox" name="agree" id="agree" ng-model="forms.user.agree" required>
+                    <div class="input-indicator"></div>
+                  </label>
+                  <div ng-messages="step5.agree.$error" ng-if="step5.agree.$dirty" role="alert" class="help-block text-red">
+                    <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                  </div>
+
+                  <label class="checkbox minotaur-checkbox">Receive newsletter
+                    <input type="checkbox" name="newsletter" id="newsletter" ng-model="forms.user.newsletter">
+                    <div class="input-indicator"></div>
+                  </label>
+
+                  <button class="btn btn-default minotaur-btn" ng-click="forms.activeStep = 3">Previous</button>
+                  <button ng-disabled="step5.$invalid" class="btn btn-success minotaur-btn pull-right" ng-click="forms.submit()">Finish</button>
+
+                </ng-form>
+
+              </uib-tab>
+
+            </uib-tabset>
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

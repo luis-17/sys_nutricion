@@ -1,0 +1,96 @@
+<div class="page page-tables pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Tables</a></li>
+    <li class="active">FooTable</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Footable Example</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <div class="form-group">
+            <label for="filter" style="padding-top: 5px">Search:</label>
+            <input id="filter" type="text" class="form-control input-sm w-sm mb-10 inline-block"/>
+          </div>
+
+          <table id="searchTextResults" data-filter="#filter" data-page-size="5" class="footable table minotaur-table">
+            <thead>
+            <tr>
+              <th data-sort-initial="true">Name</th>
+              <th>Lastname</th>
+              <th data-hide="phone">Username</th>
+              <th data-hide='phone, tablet'>Phone</th>
+              <th data-hide='phone, tablet'>Email</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="user in ctrl.users | filter:searchText">
+              <td>{{user.name}}</td>
+              <td>{{user.lastname}}</td>
+              <td>{{user.username}}</td>
+              <td>{{user.phone}}</td>
+              <td>{{user.email}}</td>
+            </tr>
+            </tbody>
+            <tfoot class="hide-if-no-paging">
+            <tr>
+              <td colspan="5" class="text-center">
+                <ul class="pagination"></ul>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

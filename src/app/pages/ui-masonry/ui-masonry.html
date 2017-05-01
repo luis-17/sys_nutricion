@@ -1,0 +1,37 @@
+<div class="page page-ui pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Masonry</li>
+  </ol>
+
+
+
+  <div class="row" masonry>
+    <div class="masonry-brick col-sm-6 col-md-4 col-lg-3" ng-repeat="brick in ui.bricks">
+
+      <div class="tile tile-simple">
+        <div class="tile-header p-0">
+          <img ng-src="{{ brick.src }}" alt="A masonry brick" class="img-responsive">
+        </div>
+        <div class="tile-body">
+          <h3 class="brick-title">{{brick.title}}</h3>
+          <p class="brick-meta">
+            By
+            <a href="javascript:;" ipsum-name="rfl"></a> /
+            <a href="javascript:;">October 10, 2015</a> /
+            <a href="javascript:;"><span>6</span> Comments</a>
+          </p>
+          <p class="brick-content">{{brick.content}}</p>
+          <button type="button" class="btn btn-info btn-sm minotaur-btn read-more">Read More</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

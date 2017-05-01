@@ -1,0 +1,212 @@
+<div class="page page-tables pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Tables</a></li>
+    <li class="active">Datatables</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Basic Usage
+            <div class="note inline"><strong>including:</strong> multi-column sorting, row select and colReorder</div>
+          </h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="BasicDatatableController as showcase">
+          <table datatable="" dt-options="showcase.dtOptions" dt-columns="showcase.dtColumns" class="table minotaur-table" width="100%"></table>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Change Data</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="ChangeDatatableController as showCase">
+          <form class="form-inline" ng-submit="showCase.addPerson()">
+            <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" class="table minotaur-table">
+              <thead>
+              <tr>
+                <th class="b-0">
+                  <div class="form-group">
+                    <label>
+                      <input autofocus="" class="form-control input-sm" type="number" name="id" ng-model="showCase.person2Add.id" value="">
+                    </label>
+                  </div>
+                </th>
+                <th class="b-0">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control input-sm" name="firstName" ng-model="showCase.person2Add.firstName" value="">
+                    </label>
+                  </div>
+                </th>
+                <th class="b-0">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control input-sm" name="lastName" ng-model="showCase.person2Add.lastName" value="">
+                    </label>
+                  </div>
+                </th>
+                <th class="b-0">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-default">Add to table</button>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th class="bt-0">ID</th>
+                <th class="bt-0">FirstName</th>
+                <th class="bt-0">LastName</th>
+                <th class="bt-0"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="person in showCase.persons">
+                <td>{{ person.id }}</td>
+                <td>{{ person.firstName }}</td>
+                <td>{{ person.lastName }}</td>
+                <td>
+                  <a href ng-click="showCase.modifyPerson($index)" class="text-success text-uppercase text-strong text-sm mr-10">Save</a>
+                  <a href ng-click="showCase.removePerson($index)" class="text-danger text-uppercase text-strong text-sm mr-10">Remove</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </form>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Responsive Table</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="ResponsiveDatatableController as showCase">
+
+          <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="table minotaur-table"></table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+          <!-- tile header -->
+          <section class="tile-header">
+            <h1 class="heading">Advanced Datatable</h1>
+            <div class="controls">
+              <div class="btn-group" uib-dropdown>
+                <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+                <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+                </ul>
+              </div>
+              <minotaur-tile-close></minotaur-tile-close>
+            </div>
+          </section>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <section class="tile-body" ng-controller="AdvancedDatatableController as showCase">
+            <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="table minotaur-table"></table>
+          </section>
+          <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

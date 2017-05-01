@@ -1,0 +1,658 @@
+<div class="page page-forms pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Form Stuff</a></li>
+    <li class="active">Validation Elements</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Disabled Submit</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <p class="text-muted">Submit button will be enabled after completing form.</p>
+
+          <form name="userForm" role="form" novalidate>
+
+            <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine, 'has-success' : userForm.username.$valid && !userForm.username.$pristine}">
+              <label for="username" class="control-label minotaur-label">Username: </label>
+              <input type="text" name="username" id="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="8" required>
+              <div ng-messages="userForm.username.$error" ng-if="userForm.username.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine, 'has-success' : userForm.email.$valid && !userForm.email.$pristine}">
+              <label for="email" class="control-label minotaur-label">Email: </label>
+              <input type="email" name="email" id="email" class="form-control" ng-model="user.email" required>
+              <div ng-messages="userForm.email.$error" ng-if="userForm.email.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-6" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine, 'has-success' : userForm.password.$valid && !userForm.password.$pristine}">
+                <label for="password" class="control-label minotaur-label">Password: </label>
+                <input type="password" name="password" id="password" class="form-control" ng-model="user.password" ng-minlength="6" required>
+                <div ng-messages="userForm.password.$error" ng-if="userForm.password.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6" ng-class="{ 'has-error' : userForm.passwordConfirm.$invalid && !userForm.passwordConfirm.$pristine, 'has-success' : userForm.passwordConfirm.$valid && !userForm.passwordConfirm.$pristine}">
+                <label for="passwordConfirm" class="control-label minotaur-label">Password confirmation: </label>
+                <input type="password" name="passwordConfirm" id="passwordConfirm" class="form-control" ng-model="user.passwordConfirm" match="user.password" required>
+                <div ng-messages="userForm.passwordConfirm.$error" ng-if="userForm.passwordConfirm.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine, 'has-success' : userForm.phone.$valid && !userForm.phone.$pristine}">
+              <label for="phone" class="control-label minotaur-label">Phone: </label>
+              <input type="text" name="phone" id="phone" class="form-control" ng-model="user.phone" placeholder="(XXX) XXXX XXX" ng-pattern="/\([0-9]{3}\) ([0-9]{4}) ([0-9]{3})$/">
+              <div ng-messages="userForm.phone.$error" ng-if="userForm.phone.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : userForm.agree.$invalid && !userForm.agree.$pristine, 'has-success' : userForm.agree.$valid && !userForm.agree.$pristine}">
+              <label class="checkbox minotaur-checkbox"> I agree to the <a href class="text-info">Terms of Service</a>
+                <input type="checkbox" name="agree" id="agree" ng-model="user.agree" required>
+                <div class="input-indicator"></div>
+              </label>
+              <div ng-messages="userForm.agree.$error" ng-if="userForm.agree.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="form-group form-footer text-right">
+              <button type="submit" class="btn btn-success minotaur-btn colored" ng-disabled="userForm.$invalid">Submit</button>
+            </div>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Basic Validations</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+
+          <form name="form1" class="form-horizontal form-validation" ng-submit="forms.submitForm(form1.$valid)" role="form" novalidate validate-on-submit>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Required</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc1" class="form-control mb-10" placeholder="Required field" ng-model="fc1" required>
+                <div ng-messages="form1.fc1.$error" ng-if="form1.fc1.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+                <select name="f2" class="form-control mb-10" ng-model="fc2" required>
+                  <option value="">Select option...</option>
+                  <option value="foo">Foo</option>
+                  <option value="bar">Bar</option>
+                </select>
+                <div ng-messages="form1.fc2.$error" ng-if="form1.fc2.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+                <div class="minotaur-select">
+                  <select name="f3" class="form-control mb-10" ng-model="fc3" required>
+                    <option value="">Select option...</option>
+                    <option value="foo">Foo</option>
+                    <option value="bar">Bar</option>
+                  </select>
+                  <div class="select-arrow"></div>
+                </div>
+                <div ng-messages="form1.fc3.$error" ng-if="form1.fc3.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+                <label class="checkbox minotaur-checkbox"> Agree
+                  <input name="fc4" type="checkbox" ng-model="fc4" class="form-control" required>
+                  <div class="input-indicator"></div>
+                </label>
+                <div ng-messages="form1.fc4.$error" ng-if="form1.fc4.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Min Length</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc5" class="form-control" placeholder="minlength = 5" ng-model="fc5" ng-minlength="5" required>
+                <div ng-messages="form1.fc5.$error" ng-if="form1.fc5.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Max Length</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc6" class="form-control" placeholder="maxlength = 5" ng-model="fc6" ng-maxlength="5" required>
+                <div ng-messages="form1.fc6.$error" ng-if="form1.fc6.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Length Range</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc7" class="form-control" placeholder="minlength = 5 & maxlength = 10" ng-model="fc7" ng-minlength="5" ng-maxlength="10" required>
+                <div ng-messages="form1.fc7.$error" ng-if="form1.fc7.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Min value</label>
+              <div class="col-sm-9">
+                <input type="number" name="fc8" class="form-control" placeholder="min = 8" ng-model="fc8" ng-min="8" required>
+                <div ng-messages="form1.fc8.$error" ng-if="form1.fc8.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Max value</label>
+              <div class="col-sm-9">
+                <input type="number" name="fc9" class="form-control" placeholder="max = 8" ng-model="fc9" ng-max="8" required>
+                <div ng-messages="form1.fc9.$error" ng-if="form1.fc9.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Value Range</label>
+              <div class="col-sm-9">
+                <input type="number" name="fc10" class="form-control" placeholder="min = 8 & max = 20" ng-model="fc10" ng-min="8" ng-max="20" required>
+                <div ng-messages="form1.fc10.$error" ng-if="form1.fc10.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">HEX Regex</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc11" class="form-control" placeholder="#ffffff" ng-model="fc11"  ng-pattern="/^#(?:[0-9a-fA-F]{3}){1,2}$/" required>
+                <div ng-messages="form1.fc11.$error" ng-if="form1.fc11.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group form-footer text-right">
+              <button type="submit" class="btn btn-default minotaur-btn">Submit</button>
+            </div>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Validate on Blur</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <p class="text-muted">Inputs in this form validate on blur.</p>
+
+          <form name="contactForm" role="form" ng-submit="forms.submitForm(contactForm.$valid)" novalidate validate-on-submit>
+
+            <div class="row">
+              <div class="form-group col-md-6" ng-class="{ 'has-error' : contactForm.name.$invalid && !contactForm.name.$pristine, 'has-success' : contactForm.name.$valid && !contactForm.name.$pristine}">
+                <label for="name" class="control-label minotaur-label">Name: </label>
+                <input type="text" name="name" id="name" class="form-control" ng-model="user.name" ng-model-options="{ updateOn: 'blur' }" required>
+                <div ng-messages="contactForm.name.$error" ng-if="contactForm.name.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6" ng-class="{ 'has-error' : contactForm.contactemail.$invalid && !contactForm.contactemail.$pristine, 'has-success' : contactForm.contactemail.$valid && !contactForm.contactemail.$pristine}">
+                <label for="contactemail" class="control-label minotaur-label">Email: </label>
+                <input type="email" name="contactemail" id="contactemail" class="form-control" ng-model="user.contactemail" ng-model-options="{ updateOn: 'blur' }" required>
+                <div ng-messages="contactForm.contactemail.$error" ng-if="contactForm.contactemail.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.website.$invalid && !contactForm.website.$pristine, 'has-success' : contactForm.website.$valid && !contactForm.website.$pristine}">
+              <label for="website" class="control-label minotaur-label">Website: </label>
+              <input type="text" name="website" id="website" class="form-control" ng-model="user.website" placeholder="http://" ng-pattern="/(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/" ng-model-options="{ updateOn: 'blur' }">
+              <div ng-messages="contactForm.website.$error" ng-if="contactForm.website.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error' : contactForm.message.$invalid && !contactForm.message.$pristine, 'has-success' : contactForm.message.$valid && !contactForm.message.$pristine}">
+              <label for="message" class="control-label minotaur-label">Message: </label>
+              <textarea class="form-control" rows="6" name="message" id="message" placeholder="Type your message" ng-model="user.message" ng-model-options="{ updateOn: 'blur' }" required></textarea>
+              <div ng-messages="contactForm.message.$error" ng-if="contactForm.message.$dirty" role="alert" class="help-block text-red">
+                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+              </div>
+            </div>
+
+            <div class="form-group form-footer text-right">
+              <button type="submit" class="btn btn-warning minotaur-btn colored">Submit</button>
+            </div>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Type Validations</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+
+          <form name="form2" class="form-horizontal form-validation" ng-submit="forms.submitForm(form2.$valid)" role="form" novalidate validate-on-submit>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Email</label>
+              <div class="col-sm-9">
+                <input type="email" name="fc12" class="form-control" placeholder="Email" ng-model="fc12" required>
+                <div ng-messages="form2.fc12.$error" ng-if="form2.fc12.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Url</label>
+              <div class="col-sm-9">
+                <input type="url" name="fc13" class="form-control" placeholder="http://" ng-model="fc13" required >
+                <div ng-messages="form2.fc13.$error" ng-if="form2.fc13.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Digits</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc14" class="form-control" placeholder="Digits" ng-pattern="/^[0-9]+$/" ng-model="fc14" required >
+                <div ng-messages="form2.fc14.$error" ng-if="form2.fc14.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Numbers</label>
+              <div class="col-sm-9">
+                <input type="number" name="fc15" class="form-control" placeholder="Number" ng-model="fc15" required >
+                <div ng-messages="form2.fc15.$error" ng-if="form2.fc15.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Alphanumeric</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc16" class="form-control" placeholder="Alphanumeric" ng-model="fc16" ng-pattern="/^([A-Za-z]|[0-9]|\s)+$/" required >
+                <div ng-messages="form2.fc16.$error" ng-if="form2.fc16.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Alpha</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc17" class="form-control" placeholder="Alpha" ng-model="fc17" ng-pattern="/^[a-zA-Z]+$/" required >
+                <div ng-messages="form2.fc17.$error" ng-if="form2.fc17.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Date ISO</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc18" class="form-control" placeholder="YYYY-MM-DD" ng-model="fc18" ng-pattern="/[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/" required >
+                <div ng-messages="form2.fc18.$error" ng-if="form2.fc18.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Phone</label>
+              <div class="col-sm-9">
+                <input type="text" name="fc19" class="form-control" placeholder="(XXX) XXXX XXX" ng-model="fc19" ng-pattern="/\([0-9]{3}\) ([0-9]{4}) ([0-9]{3})$/" required >
+                <div ng-messages="form2.fc19.$error" ng-if="form2.fc19.$dirty" role="alert" class="help-block text-red">
+                  <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full" />
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label minotaur-label">Equal</label>
+              <div class="col-sm-9">
+                <div class="row">
+                  <div class="col-md-6">
+                    <input type="text" name="fc20" class="form-control" ng-model="fc20" required >
+                    <div ng-messages="form2.fc20.$error" ng-if="form2.fc20.$dirty" role="alert" class="help-block text-red">
+                      <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" name="fc21" class="form-control" ng-model="fc21" match="form2.fc20" required >
+                    <div ng-messages="form2.fc21.$error" ng-if="form2.fc21.$dirty" role="alert" class="help-block text-red">
+                      <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="form-group form-footer text-right">
+              <button type="submit" class="btn btn-default minotaur-btn">Submit</button>
+            </div>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Input Mask</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <form class="form-horizontal" role="form">
+
+            <div class="form-group">
+              <label for="mask01" class="col-sm-2 control-label minotaur-label">Date:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask01" ng-model="mask01" input-mask mask-options="{alias: 'date'}">
+                <p class="help-block">dd/mm/yyyy</p>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask02" class="col-sm-2 control-label minotaur-label">Date:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask02" input-mask mask-options="{alias: 'mm/dd/yyyy'}">
+                <p class="help-block">mm/dd/yyyy</p>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask03" class="col-sm-2 control-label minotaur-label">Currency:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask03" input-mask mask-options="{'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': '$ ', 'placeholder': '0'}">
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask04" class="col-sm-2 control-label minotaur-label">License Plate:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask04" input-mask mask-options="{'mask': '[9-]AAA-999'}">
+                <p class="help-block">[9-]AAA-999</p>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask05" class="col-sm-2 control-label minotaur-label">Decimal:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask05" input-mask mask-options="{'alias': 'decimal', 'groupSeparator': ',', 'autoGroup': true}">
+                <p class="help-block">Group separator: ,<br/> RadixPoint: .</p>
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask06" class="col-sm-2 control-label minotaur-label">Phone:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask06" input-mask mask-options="{'mask': '+1(###)###-####'}">
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask07" class="col-sm-2 control-label minotaur-label">IP Address:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask07" input-mask mask-options="{'alias': 'ip'}">
+              </div>
+            </div>
+
+            <hr class="line-dashed line-full"/>
+
+            <div class="form-group">
+              <label for="mask08" class="col-sm-2 control-label minotaur-label">Email:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="mask08" input-mask mask-options="{'alias': 'email'}">
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

@@ -1,0 +1,752 @@
+<div class="page page-single-product pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a ui-sref="shop">Shop</a></li>
+    <li class="active">Single Product</li>
+  </ol>
+
+
+
+
+  <div class="add-nav">
+    <div class="nav-heading">
+      <h3>Product Details : <strong class="text-theme">#123456</strong></h3>
+      <span class="controls pull-right">
+          <a ui-sref="shop.products" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20 mr-5" uib-tooltip="Back"><i class="fa fa-times"></i></a>
+          <a href="javascript:;" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" uib-tooltip="Save"><i class="fa fa-check"></i></a>
+          <a href="javascript:;" class="btn btn-ef btn-ef-1 btn-ef-1-danger btn-ef-1a btn-rounded-20 mr-5" uib-tooltip="Reset"><i class="fa fa-trash"></i></a>
+          <a href="javascript:;" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20 mr-5" uib-tooltip="More"><i class="fa fa-ellipsis-h"></i></a>
+        </span>
+    </div>
+    <uib-tabset>
+
+
+
+
+
+
+
+
+      <uib-tab heading="Details">
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+            <!-- tile -->
+            <section class="tile time-simple">
+
+              <!-- tile body -->
+              <div class="tile-body">
+
+
+                <!-- row -->
+                <div class="row">
+
+                  <!-- col -->
+                  <div class="col-md-4" magnific-popup="{
+                                          delegate: 'a.img-link',
+                                          type: 'image',
+                                          tLoading: 'Loading image #%curr%...',
+                                          mainClass: 'mfp-img-mobile',
+                                          gallery: {
+                                            enabled: true,
+                                            navigateByImgClick: true,
+                                            preload: [0,1]
+                                          }
+                                         }">
+
+                    <a href="http://placekitten.com/g/800/600" class="img-link">
+                      <img src="http://placekitten.com/g/800/600" alt="" class="img-responsive mb-20">
+                    </a>
+
+                    <!-- row thumbnails -->
+                    <div class="row">
+
+                      <!-- col -->
+                      <div class="col-md-3">
+                        <a href="http://placekitten.com/g/800/601" class="img-link">
+                          <img src="http://placekitten.com/g/800/601" alt="" class="img-responsive mb-10">
+                        </a>
+                      </div>
+                      <!-- /col -->
+                      <!-- col -->
+                      <div class="col-md-3">
+                        <a href="http://placekitten.com/g/800/602" class="img-link">
+                          <img src="http://placekitten.com/g/800/602" alt="" class="img-responsive mb-10">
+                        </a>
+                      </div>
+                      <!-- /col -->
+                      <!-- col -->
+                      <div class="col-md-3">
+                        <a href="http://placekitten.com/g/800/603" class="img-link">
+                          <img src="http://placekitten.com/g/800/603" alt="" class="img-responsive mb-10">
+                        </a>
+                      </div>
+                      <!-- /col -->
+                      <!-- col -->
+                      <div class="col-md-3">
+                        <a href="http://placekitten.com/g/800/604" class="img-link">
+                          <img src="http://placekitten.com/g/800/604" alt="" class="img-responsive mb-10">
+                        </a>
+                      </div>
+                      <!-- /col -->
+                    </div>
+                    <!-- /row -->
+
+                  </div>
+                  <!-- /col -->
+
+                  <!-- col -->
+                  <div class="col-md-8">
+
+                    <h2 class="mb-5 inline-block mr-10">Onions</h2><span class="label label-success">Available</span>
+
+                    <p class="short-desc text-sm text-default lt mb-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p class="desc text-default lt mb-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+
+                    <p class="tags"><span class="label label-default mr-5">food</span><span class="label label-default mr-5">vegetables</span><span class="label label-default mr-5">healthly</span><span class="label label-default mr-5">discount</span></p>
+
+                    <h3 class="price mt-40 mb-0 text-success inline-block">{{ 2.80 | currency}}</h3> / <small>kg</small>
+                    <p class="discount text-sm text-default lt">Discount: 8%</p>
+                  </div>
+                  <!-- /col -->
+
+                </div>
+                <!-- /row -->
+
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+      </uib-tab>
+
+
+
+
+
+
+
+      <uib-tab heading="General">
+
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+
+            <!-- tile -->
+            <section class="tile" style="overflow: visible;">
+
+              <!-- tile header -->
+              <div class="tile-header">
+                <h3 class="tile-heading">Edit General Informations</h3>
+              </div>
+              <!-- /tile header -->
+
+
+              <!-- tile body -->
+              <div class="tile-body">
+
+
+                <form class="form-horizontal" role="form">
+
+                  <div class="form-group">
+                    <label for="id" class="col-sm-2 control-label minotaur-label">ID: </label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="id" placeholder="Item ID" value="123456" disabled>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label minotaur-label">Name: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="name" placeholder="Item Name" value="Onions">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="description" class="col-sm-2 control-labe minotaur-labell">Description: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="description" placeholder="Item Description" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                        </textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="sdescription" class="col-sm-2 control-label minotaur-label">Short Description: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="sdescription" placeholder="Short Item Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </textarea>
+                      <span class="help-block">as show in product listing</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="category" class="col-sm-2 control-label minotaur-label">Category: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <select id="category" multiple="" chosen="{width: '100%'}" style="display: none;" class="form-control">
+                        <optgroup label="Food">
+                          <option>Vegetables</option>
+                          <option>Fruits</option>
+                          <option>Meat</option>
+                          <option>Frozen</option>
+                        </optgroup>
+                        <optgroup label="Beverages">
+                          <option>Limo</option>
+                          <option>Alco</option>
+                          <option>Beer</option>
+                        </optgroup>
+                        <optgroup label="Electro">
+                          <option>TV</option>
+                          <option>Hi-FI</option>
+                          <option>Audio</option>
+                          <option>Video</option>
+                          <option>Computers</option>
+                        </optgroup>
+                        <optgroup label="Kitchen">
+                          <option>Microwaves</option>
+                          <option>Accesories</option>
+                          <option>Bowls</option>
+                          <option>Knifes</option>
+                        </optgroup>
+                        <optgroup label="Bathroom">
+                          <option>Sponges</option>
+                          <option>Showers</option>
+                          <option>Soaps</option>
+                          <option>Towels</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="price" class="col-sm-2 control-label minotaur-label">Price: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <div touch-spin id="price" ng-model="ctrl.price" options="{prefix: '$', min: 0, max: 1000000, decimals: 2, step: 0.01}"></div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="discount" class="col-sm-2 control-label minotaur-label">Discount: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <div touch-spin id="discount" ng-model="ctrl.discount" options="{postfix: '%', min: 0, max: 100}"></div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="unit" class="col-sm-2 control-label minotaur-label">Unit: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <select id="unit" chosen="{width: '100%'}" style="display: none;" class="form-control">
+                        <option>Pc</option>
+                        <option>Kg</option>
+                        <option>g</option>
+                        <option>m</option>
+                        <option>l</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="status" class="col-sm-2 control-label minotaur-label">Status: <span class="text-lightred text-md">*</span></label>
+                    <div class="col-sm-10">
+                      <select id="status" chosen="{width: '100%'}" style="display: none;" class="form-control">
+                        <option>Available</option>
+                        <option>Unavailable</option>
+                      </select>
+                    </div>
+                  </div>
+
+                </form>
+
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+
+
+      </uib-tab>
+
+
+
+
+
+
+
+
+
+      <uib-tab heading="Meta">
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+
+            <!-- tile -->
+            <section class="tile">
+
+              <!-- tile header -->
+              <div class="tile-header">
+                <h3 class="tile-heading">Edit Meta Informations</h3>
+              </div>
+              <!-- /tile header -->
+
+
+              <!-- tile body -->
+              <div class="tile-body">
+
+
+                <form class="form-horizontal" role="form">
+
+                  <div class="form-group">
+                    <label for="title" class="col-sm-2 control-label minotaur-label">Title:</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="title" placeholder="Meta Title" value="Onions">
+                      <span class="help-block">max 100 chars</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="keywords" class="col-sm-2 control-label minotaur-label">Keywords:</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="keywords" placeholder="Meta Keywords" rows="8">vegetables, onions, healthly
+                        </textarea>
+                      <span class="help-block">max 1000 chars</span>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="mdescription" class="col-sm-2 control-label minotaur-label">Description:</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="mdescription" placeholder="Meta Description" rows="8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</textarea>
+                      <span class="help-block">max 255 chars</span>
+                    </div>
+                  </div>
+
+
+                </form>
+
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+      </uib-tab>
+
+
+
+
+
+
+
+
+      <uib-tab heading="Images">
+
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+
+            <!-- tile -->
+            <section class="tile">
+
+              <!-- tile header -->
+              <div class="tile-header">
+                <a href="javascript:;" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add Image</a>
+                <h3 class="tile-heading">Edit Images</h3>
+              </div>
+              <!-- /tile header -->
+
+
+              <!-- tile body -->
+              <div class="tile-body">
+
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped m-0">
+                    <thead>
+                    <tr>
+                      <th style="width: 110px">Image</th>
+                      <th>Label</th>
+                      <th style="width: 130px">Order</th>
+                      <th>Base Image</th>
+                      <th>Small Image</th>
+                      <th>Thumbnail</th>
+                      <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody magnific-popup="{
+                        delegate: 'a.img-link',
+                        type: 'image',
+                        tLoading: 'Loading image #%curr%...',
+                        mainClass: 'mfp-img-mobile',
+                        gallery: {
+                          enabled: true,
+                          navigateByImgClick: true,
+                          preload: [0,1]
+                        }
+                       }">
+                    <tr>
+                      <td>
+                        <a href="http://placekitten.com/g/800/600" class="img-link">
+                          <img src="http://placekitten.com/g/800/600" alt="" class="thumb thumb-lg">
+                        </a>
+                      </td>
+                      <td><input type="text" class="form-control" placeholder="Image Label" value="Product thumbnail"></td>
+                      <td>
+                        <div touch-spin ng-model="ctrl.numberVar1" options="{min: 1, max: 100}"></div>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product1" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product1" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product1" type="radio" checked><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="http://placekitten.com/g/800/601" class="img-link">
+                          <img src="http://placekitten.com/g/800/601" alt="" class="thumb thumb-lg">
+                        </a>
+                      </td>
+                      <td><input type="text" class="form-control" placeholder="Image Label" value="Product Image 1"></td>
+                      <td><div touch-spin ng-model="ctrl.numberVar2" options="{min: 1, max: 100}"></div></td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product2" type="radio" checked><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product2" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product2" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="http://placekitten.com/g/800/602" class="img-link">
+                          <img src="http://placekitten.com/g/800/602" alt="" class="thumb thumb-lg">
+                        </a>
+                      </td>
+                      <td><input type="text" class="form-control" placeholder="Image Label" value="Product Image 2"></td>
+                      <td> <div touch-spin ng-model="ctrl.numberVar3" options="{min: 1, max: 100}"></div></td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product3" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product3" type="radio" checked><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <label class="checkbox minotaur-radio minotaur-radio-sm">
+                          <input name="product3" type="radio"><div class="input-indicator"></div>
+                        </label>
+                      </td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+
+      </uib-tab>
+
+
+
+
+
+
+
+
+
+      <uib-tab heading="Reviews">
+
+
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+
+
+            <!-- tile -->
+            <section class="tile">
+
+              <!-- tile header -->
+              <div class="tile-header">
+                <h3 class="tile-heading">Product Reviews</h3>
+              </div>
+              <!-- /tile header -->
+
+              <!-- tile body -->
+              <div class="tile-body p-0">
+
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped m-0">
+                    <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Rating</th>
+                      <th>Review Date</th>
+                      <th>Customer</th>
+                      <th>Content</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td><a href="javascript:;">1</a></td>
+                      <td><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star-half-o text-orange"></i><i class="fa fa-star-o"></i></td>
+                      <td>Jan 20, 2015</td>
+                      <td>Customer 1</td>
+                      <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                      <td><span class="label label-success">approved</span></td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">2</a></td>
+                      <td><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star-half-o text-orange"></i><i class="fa fa-star-o"></i></td>
+                      <td>Jan 20, 2015</td>
+                      <td>Customer 2</td>
+                      <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                      <td><span class="label label-success">approved</span></td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">3</a></td>
+                      <td><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star-half-o text-orange"></i><i class="fa fa-star-o"></i></td>
+                      <td>Jan 21, 2015</td>
+                      <td>Customer 3</td>
+                      <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                      <td><span class="label label-warning">pending</span></td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">4</a></td>
+                      <td><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star-half-o text-orange"></i><i class="fa fa-star-o"></i></td>
+                      <td>Jan 21, 2015</td>
+                      <td>Customer 4</td>
+                      <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                      <td><span class="label label-danger">rejected</span></td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">5</a></td>
+                      <td><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star text-orange"></i><i class="fa fa-star-half-o text-orange"></i><i class="fa fa-star-o"></i></td>
+                      <td>Jan 21, 2015</td>
+                      <td>Customer 5</td>
+                      <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                      <td><span class="label label-danger">rejected</span></td>
+                      <td>
+                        <a href="javascript:;" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                        <a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+
+
+      </uib-tab>
+
+
+
+
+      <uib-tab heading="History">
+
+
+
+
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-12">
+
+
+
+
+
+            <!-- tile -->
+            <section class="tile tile">
+
+              <!-- tile header -->
+              <div class="tile-header">
+                <h3 class="tile-heading">Product History</h3>
+              </div>
+              <!-- /tile header -->
+
+              <!-- tile body -->
+              <div class="tile-body p-0">
+
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped m-0">
+                    <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Desription</th>
+                      <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td><a href="javascript:;">1</a></td>
+                      <td>Product Created</td>
+                      <td>Jan 20, 2015</td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">2</a></td>
+                      <td>Product is available</td>
+                      <td>Jan 20, 2015</td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">3</a></td>
+                      <td>Product updated</td>
+                      <td>Jan 21, 2015</td>
+                    </tr>
+                    <tr>
+                      <td><a href="javascript:;">4</a></td>
+                      <td>Product is unavailable</td>
+                      <td>Jan 21, 2015</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+              <!-- /tile body -->
+
+            </section>
+            <!-- /tile -->
+
+
+          </div>
+          <!-- /col -->
+        </div>
+        <!-- /row -->
+
+
+
+
+      </uib-tab>
+
+
+
+
+
+
+
+
+
+    </uib-tabset>
+  </div>
+
+
+
+
+</div>

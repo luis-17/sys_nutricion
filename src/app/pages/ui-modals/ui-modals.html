@@ -1,0 +1,172 @@
+<div class="page page-ui pull-to-header">
+
+
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Modals</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Default Modals</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+              <h3 class="modal-title">I'm a modal!</h3>
+            </div>
+            <div class="modal-body">
+              <ul>
+                <li ng-repeat="item in modal.items">
+                  <a href="#" ng-click="$event.preventDefault(); modal.selected.item = item">{{ item }}</a>
+                </li>
+              </ul>
+              Selected: <b>{{ modal.selected.item }}</b>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-click="modal.ok()"><i class="fa fa-arrow-right"></i> Submit</button>
+              <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="modal.cancel()"><i class="fa fa-arrow-left"></i> Cancel</button>
+            </div>
+          </script>
+
+          <button type="button" class="btn btn-theme btn-sm minotaur-btn" ng-click="ui.open()">Open me!</button>
+          <button type="button" class="btn btn-primary btn-sm minotaur-btn" ng-click="ui.open('lg')">Large modal</button>
+          <button type="button" class="btn btn-danger btn-sm minotaur-btn" ng-click="ui.open('sm')">Small modal</button>
+          <button type="button" class="btn btn-warning btn-sm minotaur-btn" ng-click="ui.toggleAnimation()">Toggle Animation ({{ ui.animationsEnabled }})</button>
+          <p ng-show="ui.selected" class="mt-10">Selection from a modal: {{ ui.selected }}</p>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="SplashModalsController as splash">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Custom Modals</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <script type="text/ng-template" id="mySplashContent.html">
+            <div class="modal-header">
+              <h3 class="modal-title custom-font">I'm a modal!</h3>
+            </div>
+            <div class="modal-body">
+
+              <p>This sure is a fine modal, isn't it?</p>
+
+              <ul>
+                <li ng-repeat="item in modal.items">
+                  <a ng-click="modal.selected.item = item">{{ item }}</a>
+                </li>
+              </ul>
+
+              Selected: <b>{{ modal.selected.item }}</b>
+
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-default btn-border" ng-click="modal.ok()">Submit</button>
+              <button class="btn btn-default btn-border" ng-click="modal.cancel()">Cancel</button>
+            </div>
+          </script>
+
+          <div class="row">
+            <div class="col-md-4">
+              <h5 class="custom-font"><strong>Fade and Slide</strong> effects</h5>
+              <button class="btn btn-success mb-10" ng-click="splash.openSplash($event)" data-options="splash-1 splash-ef-1">Default Splash</button>
+              <button class="btn btn-success mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-primary splash-ef-2">Fade in &amp; Scale</button>
+              <button class="btn btn-success mb-10" ng-click="splash.openSplash($event)" data-options="splash-ef-3">Slide in (right)</button>
+              <button class="btn btn-success mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-4">Slide in (bottom)</button>
+            </div>
+
+            <div class="col-md-4">
+              <h5 class="custom-font"><strong>Flip and Rotate</strong> effects</h5>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-9">3D Flip (horizontal)</button>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-10">3D Flip (vertical)</button>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-11">3D Sign</button>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-14">3D Slit</button>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-15">3D Rotate Bottom</button>
+              <button class="btn btn-primary mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-16">3D Rotate In Left</button>
+            </div>
+
+            <div class="col-md-4">
+              <h5 class="custom-font"><strong>Other</strong> effects</h5>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-5">Newspaper</button>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-6">Fall</button>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-7">Side Fall</button>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-8">Sticky Up</button>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-ef-12">Super Scaled</button>
+              <button class="btn btn-warning mb-10" ng-click="splash.openSplash($event)" data-options="splash-2 splash-greensea splash-ef-13">Just Me</button>
+            </div>
+          </div>
+
+          <p ng-show="splash.selected" class="mt-10">Selection from a modal: {{ splash.selected }}</p>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+</div>

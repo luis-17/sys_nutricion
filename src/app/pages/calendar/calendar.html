@@ -1,0 +1,92 @@
+<div class="page page-calendar full-height">
+
+  <div class="tbox tbox-sm">
+
+
+    <!-- left side -->
+    <div class="tcol w-lg bg-white b-r">
+
+
+      <!-- left side header-->
+      <div class="p-15 b-b">
+
+        <button type="button" class="btn btn-greensea btn-xs mb-10 pull-right b-0" ng-click="ctrl.addEvent()" uib-tooltip="Double-click to calendar day to add event" tooltip-placement="bottom"><i class="fa fa-plus"></i></button>
+        <h4 class="m-0">Events</h4>
+
+      </div>
+      <!-- /left side header-->
+
+
+      <!-- left side body -->
+      <div class="p-15">
+
+        <div ng-repeat="e in ctrl.events" class="p-10 mb-10 event-control {{e.className[0]}}">
+          <input ng-model="e.title" class="form-control input-sm input-unstyled">
+          <a class="pull-right text-muted event-remove" ng-click="ctrl.remove($index)"><i class="fa fa-trash-o"></i></a>
+          <div class="text-xs text-muted">{{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}</div>
+        </div>
+
+      </div>
+      <!-- /left side body -->
+
+
+    </div>
+    <!-- /left side -->
+
+
+    <!-- right side -->
+    <div class="tcol">
+
+
+
+      <!-- right side header -->
+      <div class="p-15 bg-white b-b">
+
+        <div class="pull-right">
+
+          <button type="button" class="btn btn-sm btn-default" ng-click="ctrl.today()">today</button>
+
+          <div class="btn-group">
+            <button class="btn btn-default btn-sm" ng-click="ctrl.changeView('agendaDay', 'myCalendar1')">Day</button>
+            <button class="btn btn-default btn-sm" ng-click="ctrl.changeView('agendaWeek', 'myCalendar1')">Week</button>
+            <button class="btn btn-default btn-sm" ng-click="ctrl.changeView('month', 'myCalendar1')">Month</button>
+          </div>
+
+        </div>
+
+        <h4 class="m-0">Calendar</h4>
+
+      </div>
+      <!-- /right side header -->
+
+
+
+      <!-- right side body -->
+      <div class="p-15">
+
+        <div class="fc-overlay">
+          <div class="panel b-solid">
+            <h4 class="text-default-dark mt-0">{{ctrl.event.title}}</h4>
+            <div class="b-b b-solid mb-10"></div>
+            <div class="text-muted"><i class="fa fa-calendar mr-5"></i> {{ctrl.event.start._d | date:'medium'}}</div>
+            <div class="text-muted" ng-show='ctrl.event.end'><i class="fa fa-clock-o mr-5"></i> {{ctrl.event.end._d | date:'medium'}}</div>
+            <div class="text-muted" ng-show='ctrl.event.location'><i class="fa fa-map-marker mr-5"></i> {{ctrl.event.location}}</div>
+            <div class="mt-10">{{ctrl.event.info}}</div>
+            <div class="mt-10">{{ctrl.event.url}}</div>
+          </div>
+        </div>
+
+        <div class="calendar" ng-model="ctrl.eventSources" calendar="myCalendar1" ui-calendar="ctrl.uiConfig.calendar"></div>
+
+      </div>
+      <!-- /right side body -->
+
+
+
+    </div>
+    <!-- /right side -->
+
+
+  </div>
+
+</div>

@@ -1,0 +1,194 @@
+<div class="page page-maps pull-to-header">
+
+
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Maps</a></li>
+    <li class="active">Google Maps</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Google Map</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <ng-map center="[40.74, -74.18]" scrollwheel="false" style="height: 400px;"></ng-map>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Drawing Manager</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="DrawingManagerController as vm">
+          <ng-map zoom="13" center="37.774546, -122.433523"
+                  map-type-id="ROADMAP"
+                  street-view-control-options="{position: 'LEFT_CENTER'}"
+                  style="height: 400px;">
+            <drawing-manager
+              on-overlaycomplete="vm.onMapOverlayCompleted()"
+              drawing-control-options="{position: 'TOP_CENTER',drawingModes:['polygon','rectangle','circle']}"
+              drawingControl="true"
+              drawingMode="null"
+              markerOptions="{icon:'www.example.com/icon'}"
+              rectangleOptions="{fillColor:'red'}"
+              circleOptions="{fillColor: '#FFFF00',fillOpacity: 1,strokeWeight: 5,clickable: false,zIndex: 1,editable: true}" >
+            </drawing-manager>
+          </ng-map>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Map Markers</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <ng-map zoom="11" center="[40.74, -74.18]" style="height: 400px;">
+            <marker position="[40.71, -74.21]" title="hello"></marker>
+            <marker position="[40.72, -74.20]" title="marker" animation="Animation.DROP"></marker>
+            <marker position="[40.73, -74.19]" title="drag me" draggable="true"></marker>
+            <marker position="[40.74, -74.18]" title="how" animation="Animation.BOUNCE"></marker>
+            <marker position="[40.75, -74.17]" title="are"></marker>
+            <marker position="[40.76, -74.16]" title="you"
+                    icon="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"></marker>
+            <marker position="[40.77, -74.15]" title="from"></marker>
+            <marker position="[40.78, -74.14]" title="allen"></marker>
+          </ng-map>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Map with Circles</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="CircleSimpleMapController as vm">
+          <ng-map center="37.09024, -95.712891" zoom="4" mayTypeId="TERRAIN" style="height: 400px;">
+            <shape name="circle" ng-repeat="city in vm.cities" no-watcher="true"
+                   stroke-color="#FF0000"
+                   stroke-opacity="0.8"
+                   stroke-weight="2"
+                   fill-color="#FF0000"
+                   fill-opacity="0.35"
+                   center="{{city.position}}"
+                   radius="{{vm.getRadius(city.population)}}">
+            </shape>
+          </ng-map>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

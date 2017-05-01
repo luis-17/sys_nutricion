@@ -1,0 +1,441 @@
+<div class="page page-ui pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Alerts & Notifications</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Alert Types</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <div class="alert alert-blue alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
+            <strong class="text-uppercase">Warning!</strong> This is the dismissable alert dialog.
+          </div>
+
+          <div class="alert alert-green">
+            <strong class="text-uppercase">Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>, but it's not super important.
+          </div>
+
+          <div class="alert alert-orange">
+            <strong class="text-uppercase">Heads up!</strong> This alert have <a href="#" class="alert-link">class</a> <em>.alert-orange</em>.
+          </div>
+
+          <div class="alert alert-big alert-red alert-dismissable fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4 class="text-uppercase">Heads up! This alert have class <em>.alert-red</em></h4>
+            <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+            <p>
+              <button type="button" class="btn btn-danger">Take this action</button>
+              <button type="button" class="btn btn-default">Or do this</button>
+            </p>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Alerts API</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="AlertsApiController as api">
+
+          <script type="text/ng-template" id="alert.html">
+            <div ng-transclude></div>
+          </script>
+
+          <div id="alertsPlaceholder">
+            <uib-alert template-url="alert.html" ng-repeat="alert in api.alerts" ng-class="'alert alert-' + (alert.type || 'warning')" close="closeAlert($index)">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true" ng-if="alert.closeable">&#215;</button>
+              <i class="fa {{alert.icon}}"></i> {{alert.msg}}
+            </uib-alert>
+          </div>
+
+          <form class="form-horizontal" role="form">
+
+            <div class="form-group">
+              <label for="alertMsg" class="col-sm-4 control-label">Alert Message:</label>
+              <div class="col-sm-8">
+                <input ng-model="api.alertOptions.msg" type="text" class="form-control" id="alertMsg" placeholder="Enter alert message...">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="alertType">Alert Type:</label>
+              <div class="col-sm-8">
+                <div class="minotaur-select">
+                  <select ng-model="api.alertType" id="alertType" ng-options="color.name for color in api.alertOptions.colors">
+                    <option></option>
+                  </select>
+                  <div class="select-arrow"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="alertDuration">Duration:</label>
+              <div class="col-sm-8">
+                <div class="minotaur-select">
+                  <select ng-model="api.alertDuration" id="alertDuration" ng-options="duration.name for duration in api.alertOptions.durations">
+                    <option></option>
+                  </select>
+                  <div class="select-arrow"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="alertIcon">Icon:</label>
+              <div class="col-sm-8">
+                <div class="minotaur-select">
+                  <select ng-model="api.alertIcon" id="alertIcon" ng-options="icon.name for icon in api.alertOptions.icons">
+                    <option></option>
+                  </select>
+                  <div class="select-arrow"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="closeable"></label>
+              <div class="col-sm-8">
+                <label class="minotaur-checkbox">Closeable ?
+                  <input id="closeable" ng-model="api.alertCloseable" type="checkbox">
+                  <div class="input-indicator"></div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="closeall"></label>
+              <div class="col-sm-8">
+                <label class="minotaur-checkbox">Close all previous
+                  <input id="closeall" ng-model="api.alertCloseAll" type="checkbox">
+                  <div class="input-indicator"></div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label" for="autoscroll"></label>
+              <div class="col-sm-8">
+                <label class="minotaur-checkbox">Auto Scroll/Focus
+                  <input id="autoscroll" ng-model="api.alertFocus" type="checkbox">
+                  <div class="input-indicator"></div>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn-default minotaur-btn" ng-click="api.showAlert()">Show Alert</button>
+
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Toastr Notifications</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="ToastrApiController as api">
+
+<script type="text/ng-template" id="default.html"><div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">
+  <div ng-switch on="allowHtml">
+    <div ng-switch-default ng-if="title" class="{{titleClass}}" aria-label="{{title}}">{{title}}</div>
+    <div ng-switch-default class="{{messageClass}}" aria-label="{{message}}">{{message}}</div>
+    <div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>
+    <div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>
+  </div>
+  <progress-bar ng-if="progressBar"></progress-bar>
+</div>
+</script>
+
+          <form role="form">
+            <div class="row">
+
+              <!-- col -->
+              <div class="col-md-4">
+
+                <div class="form-group">
+                  <label for="toastTitle" class="control-label">Toast Title:</label>
+                  <input ng-model="api.toast.title" type="text" class="form-control" id="toastTitle" placeholder="Enter toaster title...">
+                </div>
+
+                <div class="form-group">
+                  <label for="toastMsg" class="control-label">Toast Message:</label>
+                  <input ng-model="api.toast.msg" type="text" class="form-control" id="toastMsg" placeholder="Enter toaster message...">
+                </div>
+
+                <div class="form-group">
+                  <label for="toastButton">Close button html:</label>
+                  <input type="text" ng-model="api.options.closeHtml" class="form-control" id="toastbutton" ng-disabled="!api.options.closeButton">
+                </div>
+
+                <div class="form-group">
+                  <label class="minotaur-checkbox"> New toasts on top?
+                    <input type="checkbox" ng-model="api.options.newestOnTop">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Tap to dismiss?
+                    <input type="checkbox" ng-model="api.options.tapToDismiss">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Progress bar
+                    <input type="checkbox" ng-model="api.options.progressBar">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Close button?
+                    <input type="checkbox" ng-model="api.options.closeButton">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Allow html?
+                    <input type="checkbox" ng-model="api.options.html">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Prevent duplicates
+                    <input type="checkbox" ng-model="api.options.preventDuplicates">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Prevent open duplicates
+                    <input type="checkbox" ng-model="api.options.preventOpenDuplicates">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-checkbox"> Custom template
+                    <input type="checkbox" ng-model="api.options.customTemplate">
+                    <div class="input-indicator"></div>
+                  </label>
+                </div>
+
+              </div>
+              <!-- /col -->
+
+
+              <!-- col -->
+              <div class="col-md-4">
+
+                <div class="form-group">
+                  <label class="control-label" for="toastType">Toast Type:</label>
+                  <div class="minotaur-select">
+                    <select ng-model="api.options.iconClass" id="toastType" ng-options="color.name for color in api.toast.colors">
+                      <option></option>
+                    </select>
+                    <div class="select-arrow"></div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    Toast position
+                  </label>
+                  <label class="minotaur-radio"> Top Right
+                    <input type="radio" ng-model="api.options.position" value="toast-top-right">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio"> Bottom Right
+                    <input type="radio" ng-model="api.options.position" value="toast-bottom-right">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio"> Bottom Left
+                    <input type="radio" ng-model="api.options.position" value="toast-bottom-left">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio">Top Left
+                    <input type="radio" ng-model="api.options.position" value="toast-top-left">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio"> Top Full Width
+                    <input type="radio" ng-model="api.options.position" value="toast-top-full-width">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio"> Bottom Full Width
+                    <input type="radio" ng-model="api.options.position" value="toast-bottom-full-width">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio">Top Center
+                    <input type="radio" ng-model="api.options.position" value="toast-top-center">
+                    <div class="input-indicator"></div>
+                  </label>
+                  <label class="minotaur-radio">Bottom Center
+                    <input type="radio" ng-model="api.options.position" value="toast-bottom-center">
+                    <div class="input-indicator"></div>
+                  </label>
+                </div>
+
+              </div>
+              <!-- /col -->
+
+
+              <!-- col -->
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="toastTimeout">Timeout:</label>
+                  <input type="text" ng-model="api.options.timeout" class="form-control" id="toastTimeout">
+                  <em>If you set it to 0, it will stick</em>
+                </div>
+                <div class="form-group">
+                  <label for="toastExtendedTimeout">Extended timeout:</label>
+                  <input type="text" ng-model="api.options.extendedTimeout" class="form-control" id="toastExtendedTimeout">
+                </div>
+                <div class="form-group">
+                  <label for="maxNumberToasts">Maximum number of toasts</label>
+                  <input type="text" ng-model="api.options.maxOpened" class="form-control" id="maxNumberToasts">
+                  <em>0 means no limit</em>
+                </div>
+                <div class="form-group">
+                  <label class="minotaur-checkbox"> Auto dismiss?
+                    <input type="checkbox" ng-model="api.options.autoDismiss">
+                    <div class="input-indicator"></div>
+                  </label>
+                </div>
+              </div>
+              <!-- /col -->
+            </div>
+
+            <div ng-if="api.options.customTemplate" class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="custom-template">Custom template</label>
+                  <textarea class="form-control" ng-model="api.toast.customTemplate" id="custom-template" placeholder="Custom template" rows="8"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- col -->
+              <div class="col-md-12">
+                <button ng-click="api.openToast()" class="btn btn-primary minotaur-btn">Open Toast</button>
+                <button ng-click="api.refreshToast()" class="btn btn-primary minotaur-btn">Refresh Toast</button>
+                <button ng-click="api.clearToasts()" class="btn btn-danger minotaur-btn colored">Clear Toasts</button>
+                <button ng-click="api.clearLastToast()" class="btn btn-danger minotaur-btn colored">Clear Last Toast</button>
+              </div>
+              <!-- /col -->
+            </div>
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+
+</div>

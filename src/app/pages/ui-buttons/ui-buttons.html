@@ -1,0 +1,835 @@
+<div class="page page-ui pull-to-header">
+
+
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Buttons & Icons</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-6">
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Button Types</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <h4>Button Sizing</h4>
+          <p>
+            <button type="button" class="btn btn-primary btn-lg mb-10">Large button</button>
+            <button type="button" class="btn btn-default btn-lg mb-10">Large button</button>
+            <button type="button" class="btn btn-primary mb-10">Default button</button>
+            <button type="button" class="btn btn-default mb-10">Default button</button>
+            <button type="button" class="btn btn-primary btn-sm mb-10">Small button</button>
+            <button type="button" class="btn btn-default btn-sm mb-10">Small button</button>
+            <button type="button" class="btn btn-primary btn-xs mb-10">Extra small button</button>
+            <button type="button" class="btn btn-default btn-xs mb-10">Extra small button</button>
+          </p>
+
+          <h4>Button Colors</h4>
+          <p>
+            <button type="button" class="btn btn-default mb-10">Default</button>
+            <button type="button" class="btn btn-primary mb-10">Primary</button>
+            <button type="button" class="btn btn-success mb-10">Success</button>
+            <button type="button" class="btn btn-info mb-10">Info</button>
+            <button type="button" class="btn btn-warning mb-10">Warning</button>
+            <button type="button" class="btn btn-danger mb-10">Danger</button>
+            <button type="button" class="btn btn-red mb-10">Red</button>
+            <button type="button" class="btn btn-cyan mb-10">Cyan</button>
+            <button type="button" class="btn btn-green mb-10">Green</button>
+            <button type="button" class="btn btn-orange mb-10">Orange</button>
+            <button type="button" class="btn btn-amethyst mb-10">Amethyst</button>
+            <button type="button" class="btn btn-greensea mb-10">Greensea</button>
+            <button type="button" class="btn btn-dutch mb-10">Dutch</button>
+            <button type="button" class="btn btn-hotpink mb-10">Hotpink</button>
+            <button type="button" class="btn btn-drank mb-10">Drank</button>
+            <button type="button" class="btn btn-blue mb-10">Blue</button>
+            <button type="button" class="btn btn-lightred mb-10">Lightred</button>
+            <button type="button" class="btn btn-slategray mb-10">Slategray</button>
+            <button type="button" class="btn btn-darkgray mb-10">Darkgray</button>
+            <button type="button" class="btn btn-link mb-10">Link</button>
+          </p>
+
+          <h4>Border Buttons</h4>
+          <p>
+            <button type="button" class="btn btn-default btn-border mb-10">Default</button>
+            <button type="button" class="btn btn-primary btn-border mb-10">Primary</button>
+            <button type="button" class="btn btn-success btn-border mb-10">Success</button>
+            <button type="button" class="btn btn-info btn-border mb-10">Info</button>
+            <button type="button" class="btn btn-warning btn-border mb-10">Warning</button>
+            <button type="button" class="btn btn-danger btn-border mb-10">Danger</button>
+            <button type="button" class="btn btn-red btn-border mb-10">Red</button>
+            <button type="button" class="btn btn-cyan btn-border mb-10">Cyan</button>
+            <button type="button" class="btn btn-green btn-border mb-10">Green</button>
+          </p>
+
+          <h4>Buttons Rounding</h4>
+          <p>
+            <button type="button" class="btn btn-orange btn-border btn-noradius mb-10">Orange</button>
+            <button type="button" class="btn btn-amethyst btn-border mb-10">Amethyst</button>
+            <button type="button" class="btn btn-greensea btn-border btn-rounded-10 mb-10">Greensea</button>
+            <button type="button" class="btn btn-dutch btn-border btn-rounded-20 mb-10">Dutch</button>
+            <button type="button" class="btn btn-hotpink btn-noradius mb-10">Hotpink</button>
+            <button type="button" class="btn btn-drank mb-10">Drank</button>
+            <button type="button" class="btn btn-blue btn-rounded-10 mb-10">Blue</button>
+            <button type="button" class="btn btn-lightred btn-rounded-20 mb-10">Lightred</button>
+          </p>
+
+          <h4>Minotaur Buttons</h4>
+          <code class="block">Add class "minotaur-btn" to your buttons.</code>
+          <p>
+            <button type="button" class="btn btn-default btn-lg minotaur-btn mb-10">Large button</button>
+            <button type="button" class="btn btn-theme btn-lg minotaur-btn mb-10">Large button</button>
+            <button type="button" class="btn btn-success minotaur-btn mb-10">Default button</button>
+            <button type="button" class="btn btn-warning minotaur-btn mb-10">Default button</button>
+            <button type="button" class="btn btn-danger btn-sm minotaur-btn mb-10">Small button</button>
+            <button type="button" class="btn btn-red btn-sm minotaur-btn mb-10">Small button</button>
+            <button type="button" class="btn btn-drank btn-xs minotaur-btn mb-10">Extra small button</button>
+            <button type="button" class="btn btn-slategray btn-xs minotaur-btn mb-10">Extra small button</button>
+          </p>
+
+          <h4>Icon Buttons</h4>
+          <code class="block">Add class "minotaur-icon" to get custom look for your icons.</code>
+          <p>
+            <a href class="icon icon-primary icon-lg minotaur-icon mb-10"><i class="fa fa-bus"></i></a>
+            <a href class="icon icon-success icon-lg mb-10"><i class="fa fa-desktop"></i></a>
+            <a href class="icon icon-warning minotaur-icon mb-10"><i class="fa fa-lock"></i></a>
+            <a href class="icon icon-danger mb-10"><i class="fa fa-support"></i></a>
+            <a href class="icon icon-info minotaur-icon icon-sm mb-10"><i class="fa fa-bus"></i></a>
+            <a href class="icon icon-default icon-sm mb-10"><i class="fa fa-desktop"></i></a>
+            <a href class="icon icon-cyan minotaur-icon icon-xs mb-10"><i class="fa fa-lock"></i></a>
+            <a href class="icon icon-amethyst icon-xs mb-10"><i class="fa fa-support"></i></a>
+          </p>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Button Effects</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <h4>Button Effect 1</h4>
+          <p>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1-primary btn-ef-1a mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1b mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1-warning btn-ef-1c mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1-danger btn-ef-1d mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1-info btn-ef-1e mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-1 btn-ef-1f mb-10">Button</button>
+          </p>
+
+          <h4>Button Effect 2</h4>
+          <p>
+            <button class="btn btn-ef btn-ef-2 btn-ef-2-primary btn-ef-2a mb-10">Button</button>
+            <button class="btn btn-ef btn-ef-2 btn-ef-2-success btn-ef-2b mb-10">Button</button>
+            <button class="btn btn-rounded btn-ef btn-ef-2 btn-ef-2-warning btn-ef-2a mb-10">Button</button>
+            <button class="btn btn-rounded btn-ef btn-ef-2 btn-ef-2-danger btn-ef-2b mb-10">Button</button>
+            <button class="btn btn-rounded btn-ef btn-ef-2 btn-ef-2-info btn-ef-2c mb-10 ml-10">Button</button>
+            <button class="btn btn-rounded btn-ef btn-ef-2 btn-ef-2d mb-10 ml-10">Button</button>
+            <button class="btn btn-rounded-40 btn-ef btn-ef-2 btn-ef-2-cyan btn-ef-2a mb-10 ml-10">Button</button>
+            <button class="btn btn-rounded-10 btn-ef btn-ef-2 btn-ef-2-amethyst btn-ef-2a mb-10">Button</button>
+            <button class="btn btn-rounded-50p btn-ef btn-ef-2 btn-ef-2-green btn-ef-2a mb-10 ml-10 wh50">Yes</button>
+            <button class="btn btn-rounded-50p btn-ef btn-ef-2 btn-ef-2-orange btn-ef-2b mb-10 wh50">No</button>
+          </p>
+
+          <h4>Button Effect 3</h4>
+          <p>
+            <button class="btn btn-default btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+            <button class="btn btn-primary btn-rounded-10 btn-ef btn-ef-3 btn-ef-3b mb-10"><i class="fa fa-star"></i> Bookmark</button>
+            <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Send data <i class="fa fa-arrow-right"></i></button>
+          </p>
+
+          <h4>Button Effect 4</h4>
+          <p>
+            <button class="btn btn-default btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4a mb-10"> Continue <i class="fa fa-arrow-right"></i></button>
+            <button class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b mb-10"> Continue <i class="fa fa-arrow-right"></i></button>
+            <button class="btn btn-success btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4c mb-10"><i class="fa fa-arrow-left"></i> Return</button>
+            <button class="btn btn-warning btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4d mb-10"><i class="fa fa-arrow-left"></i> Return</button>
+          </p>
+
+          <h4>Button Effect 5</h4>
+          <p>
+            <button class="btn btn-default btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-shopping-cart"></i> <span>Add to cart</span></button>
+            <button class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-trash"></i> <span>Delete</span></button>
+            <button class="btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Settings</span></button>
+            <button class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-shopping-cart"></i> <span>Add to cart</span></button>
+            <button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-trash"></i> <span>Delete</span></button>
+            <button class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-cog"></i> <span>Settings</span></button>
+          </p>
+
+          <h4>Button Effect 6</h4>
+          <p>
+            <button class="btn btn-default btn-ef btn-ef-6 btn-ef-6a mb-10">Button</button>
+            <button class="btn btn-primary btn-ef btn-ef-6 btn-ef-6b mb-10">Button</button>
+            <button class="btn btn-success btn-rounded btn-ef btn-ef-6 btn-ef-6c mb-10">Button</button>
+            <button class="btn btn-warning btn-rounded-20 btn-ef btn-ef-6 btn-ef-6d mb-10">Button</button>
+          </p>
+
+          <h4>Button Effect 7 <span class="note">click to see effect</span></h4>
+          <p>
+            <button class="btn btn-default btn-ef btn-ef-7 btn-ef-7a mb-10" activate-button><i class="fa fa-truck"></i> Order Item</button>
+            <button class="btn btn-primary btn-ef btn-ef-7 btn-ef-7b mb-10" activate-button><i class="fa fa-envelope"></i> Send Message</button>
+            <button class="btn btn-cyan btn-ef btn-ef-7 btn-ef-7h mb-10" activate-button="success"><i class="fa fa-envelope"></i> Submit Form</button>
+            <button class="btn btn-amethyst btn-ef btn-ef-7 btn-ef-7h mb-10" activate-button="error"><i class="fa fa-envelope"></i> Submit Form</button>
+            <button class="btn btn-success btn-rounded btn-icon-only btn-ef btn-ef-7 btn-ef-7c mb-10" activate-button><i class="fa fa-arrow-right"></i> Submit</button>
+            <button class="btn btn-greensea btn-rounded btn-icon-only btn-ef btn-ef-7 btn-ef-7d mb-10" activate-button><i class="fa fa-trash"></i> Delete</button>
+            <button class="btn btn-warning btn-rounded btn-icon-only btn-ef btn-ef-7 btn-ef-7e mb-10" activate-button><i class="fa fa-heart-o"></i> Like <i class="after fa fa-heart"></i></button>
+            <button class="btn btn-danger btn-rounded btn-icon-only btn-ef btn-ef-7 btn-ef-7f mb-10" activate-button><i class="fa fa-star-o"></i> Star <i class="after fa fa-star"></i></button>
+            <button class="btn btn-info btn-rounded btn-icon-only btn-ef btn-ef-7 btn-ef-7g mb-10" activate-button><i class="fa fa-plus"></i> Add <i class="after fa fa-plus"></i></button>
+          </p>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Button Dropdowns</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <!-- Single button -->
+          <div class="btn-group dropdown mb-20">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Single <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Single button -->
+          <div class="btn-group dropdown mb-20">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              Single <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown mb-20">
+            <button type="button" class="btn btn-default">Split</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown mb-20">
+            <button type="button" class="btn btn-success">Split</button>
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Single button -->
+          <div class="btn-group dropdown dropup mb-20">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Single Dropup <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Single button -->
+          <div class="btn-group dropdown dropup mb-20">
+            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+              Single Dropup <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown dropup mb-20">
+            <button type="button" class="btn btn-default">Split Dropup</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown dropup mb-20">
+            <button type="button" class="btn btn-danger">Split Dropup</button>
+            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown dropup mb-20">
+            <button type="button" class="btn btn-default">Right Dropup</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group dropdown mb-20">
+            <button type="button" class="btn btn-info">Right Dropdown</button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-custom" role="menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <div class="alert alert-info alert-big">
+            <h4><strong>Dropdown Button</strong> Colors and Sizing</h4>
+            <p>You can use <strong>same color and size classes</strong> as with normal buttons.</p>
+            <p>You can add <strong>"dropdown-menu-custom"</strong> class to your dropdown to get customized one.</p>
+          </div>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Button Groups</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <div class="row">
+            <div class="col-sm-6">
+
+              <div class="btn-group mb-10">
+                <button type="button" class="btn btn-default">Left</button>
+                <button type="button" class="btn btn-default">Middle</button>
+                <button type="button" class="btn btn-default">Right</button>
+              </div>
+
+              <h4><strong>Buttons</strong> Toolbar</h4>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">1</button>
+                  <button type="button" class="btn btn-default">2</button>
+                  <button type="button" class="btn btn-default">3</button>
+                  <button type="button" class="btn btn-default">4</button>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">5</button>
+                  <button type="button" class="btn btn-default">6</button>
+                  <button type="button" class="btn btn-default">7</button>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">8</button>
+                </div>
+              </div>
+
+              <h4><strong>Button Groups</strong> Sizing</h4>
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group btn-group-lg">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group btn-group-sm">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group btn-group-xs">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+              <h4><strong>Button Group</strong> Rounding</h4>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group btn-group-noradius">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+              <div class="btn-toolbar mb-10" role="toolbar">
+                <div class="btn-group btn-group-rounded-20">
+                  <button type="button" class="btn btn-default">Left</button>
+                  <button type="button" class="btn btn-default">Middle</button>
+                  <button type="button" class="btn btn-default">Right</button>
+                </div>
+              </div>
+
+
+              <h4><strong>Nesting</strong></h4>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default">1</button>
+                <button type="button" class="btn btn-default">2</button>
+
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-sm-6">
+
+              <h4><strong>Vertical</strong> Variation</h4>
+              <div class="btn-group-vertical">
+                <button type="button" class="btn btn-default">Button</button>
+                <button type="button" class="btn btn-default">Button</button>
+                <div class="btn-group">
+                  <button id="btnGroupVerticalDrop1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop1">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+                <button type="button" class="btn btn-default">Button</button>
+                <button type="button" class="btn btn-default">Button</button>
+                <div class="btn-group">
+                  <button id="btnGroupVerticalDrop2" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop2">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button id="btnGroupVerticalDrop3" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop3">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button id="btnGroupVerticalDrop4" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Dropdown
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="btnGroupVerticalDrop4">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+
+              <h4><strong>Justified</strong> link variation</h4>
+
+              <div class="btn-group btn-group-justified mb-10">
+                <a class="btn btn-default" role="button">Left</a>
+                <a class="btn btn-default" role="button">Middle</a>
+                <a class="btn btn-default" role="button">Right</a>
+              </div>
+
+              <div class="btn-group btn-group-justified mb-10">
+                <a class="btn btn-default" role="button">Left</a>
+                <a class="btn btn-default" role="button">Middle</a>
+                <div class="btn-group">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Right dropdown <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+          <!-- tile header -->
+          <section class="tile-header">
+            <h1 class="heading">Icon Effects</h1>
+            <div class="controls">
+              <div class="btn-group" uib-dropdown>
+                <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+                <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+                </ul>
+              </div>
+              <minotaur-tile-close></minotaur-tile-close>
+            </div>
+          </section>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <section class="tile-body">
+
+            <h4>Icons Effect 1</h4>
+            <p>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1a"><i class="fa fa-bus"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1a"><i class="fa fa-desktop"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1a"><i class="fa fa-lock"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1a"><i class="fa fa-support"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1b"><i class="fa fa-bus"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1b"><i class="fa fa-desktop"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1b"><i class="fa fa-lock"></i></a>
+              <a href class="icon icon-default transparent icon-ef-1 icon-ef-1b"><i class="fa fa-support"></i></a>
+            </p>
+
+            <h4>Icons Effect 2</h4>
+            <p>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2a"><i class="fa fa-cog"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2a"><i class="fa fa-clock-o"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2a"><i class="fa fa-list"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2a"><i class="fa fa-refresh"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2b hover-color"><i class="fa fa-cog"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2b hover-color"><i class="fa fa-clock-o"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2b hover-color"><i class="fa fa-list"></i></a>
+              <a href class="icon icon-primary icon-ef-2 icon-ef-2b hover-color"><i class="fa fa-refresh"></i></a>
+            </p>
+
+            <h4>Icons Effect 3</h4>
+            <p>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3a hover-color"><i class="fa fa-image"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3a hover-color"><i class="fa fa-edit"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3a hover-color"><i class="fa fa-envelope"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3a hover-color"><i class="fa fa-map-marker"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-image"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-edit"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-envelope"></i></a>
+              <a href class="icon icon-success icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-map-marker"></i></a>
+            </p>
+
+            <h4>Icons Effect 4</h4>
+            <p>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4a icon-color"><i class="fa fa-user"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4a icon-color"><i class="fa fa-comment"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4a icon-color"><i class="fa fa-bell-o"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4a icon-color"><i class="fa fa-car"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4b icon-color"><i class="fa fa-user"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4b icon-color"><i class="fa fa-comment"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4b icon-color"><i class="fa fa-bell-o"></i></a>
+              <a href class="icon icon-warning icon-ef-4 icon-ef-4b icon-color"><i class="fa fa-car"></i></a>
+            </p>
+
+            <h4>Icons Effect 5</h4>
+            <p>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5a icon-color"><i class="fa fa-leaf"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5a icon-color"><i class="fa fa-tree"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5b icon-color"><i class="fa fa-leaf"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5b icon-color"><i class="fa fa-tree"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5c icon-color"><i class="fa fa-leaf"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5c icon-color"><i class="fa fa-tree"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5d icon-color"><i class="fa fa-leaf"></i></a>
+              <a href class="icon icon-danger icon-ef-5 icon-ef-5d icon-color"><i class="fa fa-tree"></i></a>
+            </p>
+
+            <h4>Icons Effect 6</h4>
+            <p>
+              <a href class="icon icon-info icon-ef-6 icon-color"><i class="fa fa-cog"></i></a>
+              <a href class="icon icon-info icon-ef-6 icon-color"><i class="fa fa-star"></i></a>
+              <a href class="icon icon-info icon-ef-6 icon-color"><i class="fa fa-refresh"></i></a>
+              <a href class="icon icon-info icon-ef-6 icon-color"><i class="fa fa-compass"></i></a>
+            </p>
+
+            <h4>Icons Effect 7</h4>
+            <p>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7a icon-color"><i class="fa fa-umbrella"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7a icon-color"><i class="fa fa-trophy"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7a icon-color"><i class="fa fa-tags"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7a icon-color"><i class="fa fa-tasks"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7b icon-color"><i class="fa fa-umbrella"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7b icon-color"><i class="fa fa-trophy"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7b icon-color"><i class="fa fa-tags"></i></a>
+              <a href class="icon icon-greensea icon-ef-7 icon-ef-7b icon-color"><i class="fa fa-tasks"></i></a>
+            </p>
+
+            <h4>Icons Effect 8</h4>
+            <p>
+              <a href class="icon icon-drank icon-ef-8 icon-color"><i class="fa fa-shield"></i></a>
+              <a href class="icon icon-drank icon-ef-8 icon-color"><i class="fa fa-paw"></i></a>
+              <a href class="icon icon-drank icon-ef-8 icon-color"><i class="fa fa-print"></i></a>
+              <a href class="icon icon-drank icon-ef-8 icon-color"><i class="fa fa-plug"></i></a>
+            </p>
+
+            <h4>Icons Effect 9</h4>
+            <p>
+              <a href class="icon icon-hotpink icon-ef-9 icon-color"><i class="fa fa-umbrella"></i></a>
+              <a href class="icon icon-hotpink icon-ef-9 icon-color"><i class="fa fa-plane"></i></a>
+              <a href class="icon icon-hotpink icon-ef-9 icon-color"><i class="fa fa-paint-brush"></i></a>
+              <a href class="icon icon-hotpink icon-ef-9 icon-color"><i class="fa fa-magnet"></i></a>
+            </p>
+
+          </section>
+          <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+          <!-- tile header -->
+          <section class="tile-header">
+            <h1 class="heading">Icon Fonts</h1>
+            <div class="controls">
+              <div class="btn-group" uib-dropdown>
+                <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+                <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+                </ul>
+              </div>
+              <minotaur-tile-close></minotaur-tile-close>
+            </div>
+          </section>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <section class="tile-body">
+
+            <h4>FontAwesome</h4>
+            <code class="block">Example: <i class="fa fa-info-circle"></i> </code>
+            <p class="alert alert-info">Please follow <a href="http://fontawesome.io/icons/" target="_blank">official documentation</a>, you can use all icons defined there.</p>
+
+            <h4>Simple Line Icons</h4>
+            <code class="block">Example: <i class="icon-login"></i></code>
+            <p class="alert alert-info">Please follow <a href="https://thesabbir.github.io/simple-line-icons/" target="_blank">official documentation</a>, you can use all icons defined there.</p>
+
+            <h4>Weather Icons</h4>
+            <code class="block">Example: <i class="wi wi-day-cloudy"></i></code>
+            <p class="alert alert-info">Please follow <a href="https://erikflowers.github.io/weather-icons/" target="_blank">official documentation</a>, you can use all icons defined there.</p>
+
+          </section>
+          <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+</div>

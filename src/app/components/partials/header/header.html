@@ -1,0 +1,134 @@
+<div class="navbar-header">
+  <button type="button" class="header-nav-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false" aria-controls="header-navbar">
+    <span class="sr-only">Toggle header</span>
+    <i class="fa fa-cog"></i>
+  </button>
+  <a class="navbar-brand" ui-sref="dashboard">
+    <span><strong>MIN</strong>OTAUR</span>
+  </a>
+  <button type="button" class="navigation-toggle" id="navigation-toggle">
+    <span class="sr-only">Toggle navigation</span>
+    <i class="fa fa-bars"></i>
+  </button>
+</div>
+<div class="main-search hidden-xs">
+  <form>
+    <input type="text" class="form-control" placeholder="Search...">
+    <button class="btn">
+      <i class="fa fa-search"></i>
+    </button>
+  </form>
+</div>
+<div id="header-navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav navbar-right">
+    <li>
+      <!-- Single button -->
+      <div uib-dropdown>
+        <button id="notifications" type="button" class="btn" uib-dropdown-toggle>
+          <i class="fa fa-bell-o"></i>
+          <span class="nav-text">Notifications</span>
+          <span class="badge bg-red">6</span>
+        </button>
+        <div class="dropdown-menu with-arrow animated littleFadeInRight notifications" uib-dropdown-menu role="menu" aria-labelledby="notifications">
+          <section class="content" slimscroll="{height: '100%', size: '3px'}">
+            <h4 class="uppercase-bold text-sm text-center">Minotaur Notifications</h4>
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="notification in header.notifications">
+                <div class="media">
+                  <div class="media-left">
+                    <span class="media-object media-icon {{notification.color}}">
+                      <i class="{{ notification.icon }}"></i>
+                    </span>
+                  </div>
+                  <div class="media-body">
+                    <span>{{ notification.content }}</span>
+                    <small>{{ notification.time }}</small>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </li>
+    <li>
+      <!-- Single button -->
+      <div uib-dropdown>
+        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
+          <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
+          <span class="nav-text"><i class="fa fa-user"></i> Ing. Imrich Kamarel</span>
+        </button>
+        <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
+          <div class="media">
+            <div class="media-left">
+              <img class="media-object img-circle" src="assets/images/ici-avatar.jpg" alt="">
+            </div>
+            <div class="media-body">
+              <h4 class="text-sm uppercase-bold">Ing. Imrich Kamarel</h4>
+              <a href="javascript:;">ici.kamarel@minotaur.com</a>
+              <ul class="list-unstyled">
+                <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
+                <li><a href="javascript:;"><i class="fa fa-check"></i> Tasks</a></li>
+                <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer">
+            <button class="btn btn-theme minotaur-btn pull-right"><i class="fa fa-power-off"></i> Logout</button>
+            <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <!-- Single button 
+      <div uib-dropdown>
+        <button id="language" type="button" class="btn no-bg" uib-dropdown-toggle>
+          <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-States-of-America.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'sk'" src="assets/images/flags/Slovakia.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'cz'" src="assets/images/flags/Czech-Republic.png" class="img-responsive img-circle hidden-xs" alt="">
+          <img ng-show="main.currentLanguage == 'de'" src="assets/images/flags/Germany.png" class="img-responsive img-circle hidden-xs" alt="">
+          <span class="nav-text"><i class="fa fa-language"></i> Language</span>
+        </button>
+        <ul class="dropdown-menu with-arrow animated littleFadeInRight language" uib-dropdown-menu role="menu" aria-labelledby="language">
+          <li ng-class="{selected: main.currentLanguage == 'en'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('en')">
+              <img src="assets/images/flags/United-States-of-America.png" alt=""> English
+            </a>
+          </li>
+
+          <li ng-class="{selected: main.currentLanguage == 'sk'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('sk')">
+              <img src="assets/images/flags/Slovakia.png" alt=""> Slovak
+            </a>
+          </li>
+
+          <li ng-class="{selected: main.currentLanguage == 'cz'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('cz')">
+              <img src="assets/images/flags/Czech-Republic.png" alt=""> Czech
+            </a>
+          </li>
+
+          <li ng-class="{selected: main.currentLanguage == 'de'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('de')">
+              <img src="assets/images/flags/Germany.png" alt=""> German
+            </a>
+          </li>
+          <li ng-class="{selected: main.currentLanguage == 'es'}">
+            <a href="javascript:;" ng-click="main.changeLanguage('es')">
+              <img src="assets/images/flags/Germany.png" alt=""> German
+            </a>
+          </li>
+        </ul>
+      </div>--> 
+    </li>
+    <li>
+      <div>
+        <button id="rightbar" type="button" class="btn">
+          <i class="fa fa-outdent"></i>
+          <span class="nav-text">Toggle Rightbar</span>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,246 @@
+<div class="page page-tables pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Tables</a></li>
+    <li class="active">Smart Table</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Search/Filter</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="BasicSmartTableController as showcase">
+
+          <button class="btn btn-default mb-10" ng-click="showcase.addRandomItem(row)"><i class="fa fa-plus"></i> Add Item</button>
+
+          <form>
+            <label for="predicate" class="minotaur-label">Selected predicate:</label>
+            <select class="form-control mb-10" id="predicate" ng-model="showcase.selectedPredicate" ng-options="predicate for predicate in showcase.predicates"></select>
+          </form>
+
+          <table st-table="showcase.displayedCollection" st-safe-src="showcase.rowCollection" class="table st-table table-striped minotaur-table">
+            <thead>
+            <tr>
+              <th st-sort="firstName" class="sorting">first name</th>
+              <th st-sort="lastName" class="sorting">last name</th>
+              <th st-sort="birthDate" class="sorting">birth date</th>
+              <th st-sort="balance" class="sorting">balance</th>
+              <th></th>
+            </tr>
+            <tr class="st-filters">
+              <th>
+                <input st-search="firstName" placeholder="search for firstname" class="input-sm form-control" type="search"/>
+              </th>
+              <th colspan="3">
+                <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+              </th>
+              <th>
+                <input st-search="{{showcase.selectedPredicate}}" placeholder="bound predicate" class="input-sm form-control" type="search"/>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in showcase.displayedCollection">
+              <td>{{row.firstName | uppercase}}</td>
+              <td>{{row.lastName}}</td>
+              <td>{{row.birthDate | date}}</td>
+              <td>{{row.balance | currency}}</td>
+              <td>
+                <button type="button" ng-click="showcase.removeItem(row)" class="btn btn-nostyle text-sm text-uppercase text-danger text-strong p-0">Remove</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Row Select</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="RowSelectSmartTableController as showcase">
+
+          <form>
+            <label class="minotaur-label">Items per page:</label>
+            <input class="input-sm form-control mb-10" name="items" id="items" type="number" ng-model="showcase.itemsByPage">
+          </form>
+
+          <table st-table="showcase.displayedCollection" st-safe-src="showcase.rowCollection" class="table st-table table-striped minotaur-table">
+            <thead>
+            <tr>
+              <th st-sort="firstName" class="sorting">first name</th>
+              <th st-sort="lastName" class="sorting">last name</th>
+              <th st-sort="birthDate" class="sorting">birth date</th>
+              <th st-sort="balance" class="sorting">balance</th>
+              <th>email</th>
+            </tr>
+            <tr class="st-filters">
+              <th>
+                <input st-search="'firstName'" placeholder="search for firstname" class="input-sm form-control" type="search"/>
+              </th>
+              <th colspan="4">
+                <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr st-select-row="row" st-select-mode="multiple" ng-repeat="row in showcase.displayedCollection">
+              <td>{{row.firstName | uppercase}}</td>
+              <td>{{row.lastName}}</td>
+              <td>{{row.birthDate | date}}</td>
+              <td>{{row.balance | currency}}</td>
+              <td><a ng-href="mailto:{{row.email}}">email</a></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td colspan="5" class="text-center">
+                <div st-pagination="" st-items-by-page="showcase.itemsByPage" st-displayed-pages="7"></div>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Pipe/Ajax Plugin</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="AjaxSmartTableController as showcase">
+
+          <table class="table st-table minotaur-table" st-pipe="showcase.callServer" st-table="showcase.displayed">
+            <thead>
+            <tr>
+              <th st-sort="id" class="sorting">id</th>
+              <th st-sort="name" class="sorting">name</th>
+              <th st-sort="age" class="sorting">age</th>
+              <th st-sort="saved" class="sorting">saved people</th>
+            </tr>
+            <tr class="st-filters">
+              <th><input class="input-sm form-control" st-search="id"/></th>
+              <th><input class="input-sm form-control" st-search="name"/></th>
+              <th><input class="input-sm form-control" st-search="age"/></th>
+              <th><input class="input-sm form-control" st-search="saved"/></th>
+            </tr>
+            </thead>
+            <tbody ng-show="!showcase.isLoading">
+            <tr ng-repeat="row in showcase.displayed">
+              <td>{{row.id}}</td>
+              <td>{{row.name}}</td>
+              <td>{{row.age}}</td>
+              <td>{{row.saved}}</td>
+            </tr>
+            </tbody>
+            <tbody ng-show="showcase.isLoading">
+            <tr>
+              <td colspan="4" class="text-center">Loading ... </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+
+</div>

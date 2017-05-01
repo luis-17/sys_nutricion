@@ -1,0 +1,1076 @@
+<div class="page page-ui pull-to-header">
+
+
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">General Elements</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="ProgressController as progress">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Progress Bars</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <h4 class="custom-font"><strong>Static</strong> Bars</h4>
+          <uib-progressbar class="progress-xxs" value="55" type="cyan"></uib-progressbar>
+          <uib-progressbar class="progress-xs" value="36" type="greensea"></uib-progressbar>
+          <uib-progressbar class="progress-sm" value="69">69%</uib-progressbar>
+          <uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar>
+          <uib-progressbar class="progress-striped active" max="200" value="166" type="danger"><b>166 / 200</b></uib-progressbar>
+          <div class="progress-list">
+            <div class="details">
+              <div class="title">Value in container</div>
+              <div class="description">animated progress bar load</div>
+            </div>
+            <div class="status pull-right">
+              <span>50</span>%
+            </div>
+            <div class="clearfix"></div>
+            <uib-progressbar class="progress-striped active not-rounded" value="50" type="dutch"><b>50%</b></uib-progressbar>
+          </div>
+
+          <hr/>
+
+          <button type="button" class="btn btn-theme minotaur-btn pull-right mb-10" ng-click="progress.random()">Randomize</button>
+          <h4>Dynamic Bars</h4>
+          <div class="clearfix"></div>
+
+          <uib-progressbar class="progress-sm" max="progress.max" value="progress.dynamic" type="drank"><span style="color:black; white-space:nowrap;">{{progress.dynamic}} / {{progress.max}}</span></uib-progressbar>
+
+          <small><em>No animation</em></small>
+          <uib-progressbar animate="false" value="progress.dynamic" type="hotpink"><b>{{progress.dynamic}}%</b></uib-progressbar>
+
+          <small><em>Object (changes type based on value)</em></small>
+          <uib-progressbar class="progress-striped active" value="progress.dynamic" type="{{progress.type}}">{{progress.type}} <i ng-show="progress.showWarning">!!! Watch out !!!</i></uib-progressbar>
+
+          <hr />
+          <button type="button" class="btn btn-theme minotaur-btn pull-right mb-10" ng-click="progress.randomStacked()">Randomize</button>
+          <h4>Stacked</h4>
+          <div class="clearfix"></div>
+          <uib-progress><uib-bar ng-repeat="bar in progress.stacked track by $index" value="bar.value" type="{{bar.type}}"><span ng-hide="bar.value < 5">{{bar.value}}%</span></uib-bar></uib-progress>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="CarouselController as carousel">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Carousel</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body pl-0 pr-0">
+          <div style="height: 305px">
+            <div uib-carousel active="carousel.active" interval="carousel.myInterval" no-wrap="carousel.noWrapSlides">
+              <div uib-slide ng-repeat="slide in carousel.slides track by slide.id" index="slide.id">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+                  <h4 class="text-white">Slide {{slide.id}}</h4>
+                  <p>{{slide.text}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+        <!-- tile footer -->
+        <section class="tile-footer">
+          <div class="row">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-default minotaur-btn" ng-click="carousel.addSlide()">Add Slide</button>
+              <button type="button" class="btn btn-default minotaur-btn" ng-click="carousel.randomize()">Randomize slides</button>
+              <label class="minotaur-checkbox">Disable Slide Looping
+                <input type="checkbox" ng-model="carousel.noWrapSlides">
+                <div class="input-indicator"></div>
+              </label>
+            </div>
+            <div class="col-md-6">
+              Interval, in milliseconds: <input type="number" class="form-control" ng-model="carousel.myInterval">
+              <br />Enter a negative number or 0 to stop the interval.
+            </div>
+          </div>
+        </section>
+        <!-- /tile footer -->
+
+      </div>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="CollapseController as collapse">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Collapse</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <button type="button" class="btn btn-theme minotaur-btn" ng-click="collapse.isCollapsed = !collapse.isCollapsed">Toggle collapse Vertically</button>
+          <hr>
+          <div uib-collapse="collapse.isCollapsed">
+            <div class="well well-lg">Some content</div>
+          </div>
+
+          <button type="button" class="btn btn-theme minotaur-btn" ng-click="collapse.isCollapsedHorizontal = !collapse.isCollapsedHorizontal">Toggle collapse Horizontally</button>
+          <hr>
+          <div uib-collapse="collapse.isCollapsedHorizontal" horizontal>
+            <div class="well well-lg">Some content</div>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="DropdownController as dropdown">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Dropdowns</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <!-- Simple dropdown -->
+          <span uib-dropdown class="mb-5" on-toggle="dropdown.toggled(open)">
+            <a href id="simple-dropdown" uib-dropdown-toggle>
+              Click me for a dropdown, yo!
+            </a>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+              <li ng-repeat="choice in dropdown.items">
+                <a href>{{choice}}</a>
+              </li>
+            </ul>
+          </span>
+
+          <!-- Single button -->
+          <div class="btn-group mb-5" uib-dropdown is-open="dropdown.status.isopen">
+            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+              Button dropdown <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+              <li role="menuitem"><a href="#">Action</a></li>
+              <li role="menuitem"><a href="#">Another action</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Split button -->
+          <div class="btn-group mb-5" uib-dropdown>
+            <button id="split-button" type="button" class="btn btn-danger">Action</button>
+            <button type="button" class="btn btn-danger" uib-dropdown-toggle>
+              <span class="caret"></span>
+              <span class="sr-only">Split button!</span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+              <li role="menuitem"><a href="#">Action</a></li>
+              <li role="menuitem"><a href="#">Another action</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Custom dropdown style -->
+          <div class="btn-group mb-5" uib-dropdown>
+            <button id="custom-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle>
+              Custom menu style <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu" aria-labelledby="custom-dropdown">
+              <li role="menuitem"><a href="#">Action</a></li>
+              <li role="menuitem"><a href="#">Another action</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Single button using append-to-body -->
+          <div class="btn-group mb-5" uib-dropdown dropdown-append-to-body>
+            <button id="btn-append-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+              Dropdown on Body <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+              <li role="menuitem"><a href="#">Action</a></li>
+              <li role="menuitem"><a href="#">Another action</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+
+          <!-- Single button using template-url -->
+          <div class="btn-group mb-5" uib-dropdown>
+            <button id="button-template-url" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+              Dropdown using template <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu template-url="dropdown.html" aria-labelledby="button-template-url">
+            </ul>
+          </div>
+
+          <hr />
+          <p>
+            <button type="button" class="btn btn-default btn-sm minotaur-btn" ng-click="dropdown.toggleDropdown($event)">Toggle button dropdown</button>
+            <button type="button" class="btn btn-warning btn-sm minotaur-btn" ng-click="disabled = !disabled">Enable/Disable</button>
+          </p>
+          <hr />
+
+          <!-- Single button with keyboard nav -->
+          <div class="btn-group" uib-dropdown keyboard-nav>
+            <button id="simple-btn-keyboard-nav" type="button" class="btn btn-primary" uib-dropdown-toggle>
+              Dropdown with keyboard navigation <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="simple-btn-keyboard-nav">
+              <li role="menuitem"><a href="#">Action</a></li>
+              <li role="menuitem"><a href="#">Another action</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link</a></li>
+            </ul>
+          </div>
+          <hr/>
+
+          <!-- AppendTo use case -->
+          <h4>append-to vs. append-to-body vs. inline example</h4>
+          <div id="dropdown-scrollable-container" style="height: 15em; overflow: auto; position: relative;">
+            <div id="dropdown-long-content">
+              <div id="dropdown-hidden-container">
+                <div class="btn-group" uib-dropdown keyboard-nav dropdown-append-to="dropdown.appendToEl">
+                  <button id="btn-append-to" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                    Dropdown in Container <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to">
+                    <li role="menuitem"><a href="#">Action</a></li>
+                    <li role="menuitem"><a href="#">Another action</a></li>
+                    <li role="menuitem"><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group" uib-dropdown dropdown-append-to-body>
+                  <button id="btn-append-to-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                    Dropdown on Body <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-to-body">
+                    <li role="menuitem"><a href="#">Action</a></li>
+                    <li role="menuitem"><a href="#">Another action</a></li>
+                    <li role="menuitem"><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group" uib-dropdown>
+                  <button id="btn-append-to-single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
+                    Inline Dropdown <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-single-button">
+                    <li role="menuitem"><a href="#">Action</a></li>
+                    <li role="menuitem"><a href="#">Another action</a></li>
+                    <li role="menuitem"><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <script type="text/ng-template" id="dropdown.html">
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="button-template-url">
+              <li role="menuitem"><a href="#">Action in Template</a></li>
+              <li role="menuitem"><a href="#">Another action in Template</a></li>
+              <li role="menuitem"><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li role="menuitem"><a href="#">Separated link in Template</a></li>
+            </ul>
+          </script>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="DatepickerController as datepicker">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Datepicker</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <pre>Selected date is: <em>{{datepicker.dt | date:'fullDate' }}</em></pre>
+
+          <h4>Inline</h4>
+          <div style="display:inline-block; min-height:240px;">
+            <div uib-datepicker ng-model="datepicker.dt" class="well well-sm" datepicker-options="datepicker.options"></div>
+          </div>
+
+          <hr />
+          <button type="button" class="btn btn-sm btn-info minotaur-btn" ng-click="datepicker.today()">Today</button>
+          <button type="button" class="btn btn-sm btn-default minotaur-btn" ng-click="datepicker.setDate(2009, 7, 24)">2009-08-24</button>
+          <button type="button" class="btn btn-sm btn-danger minotaur-btn" ng-click="datepicker.clear()">Clear</button>
+          <button type="button" class="btn btn-sm btn-default minotaur-btn" ng-click="datepicker.toggleMin()" uib-tooltip="After today restriction">Min date</button>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="DatepickerPopupController as datepicker">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Datepicker Popup</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <pre>Selected date is: <em>{{datepicker.dt | date:'fullDate' }}</em></pre>
+
+          <h4>Popup</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{datepicker.format}}" ng-model="datepicker.dt" is-open="datepicker.popup1.opened" datepicker-options="datepicker.dateOptions" ng-required="true" close-text="Close" alt-input-formats="datepicker.altInputFormats" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datepicker.open1()"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
+            </div>
+
+            <div class="col-md-6">
+              <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="datepicker.dt" is-open="datepicker.popup2.opened" datepicker-options="datepicker.dateOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datepicker.open2()"><i class="fa fa-calendar"></i></button>
+                  </span>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>Format: <span class="muted-text">(manual alternate <em>{{datepicker.altInputFormats[0]}}</em>)</span></label>
+              <div class="minotaur-select">
+                <select ng-model="datepicker.format" ng-options="f for f in datepicker.formats">
+                  <option></option>
+                </select>
+                <div class="select-arrow"></div>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+          <button type="button" class="btn btn-sm btn-info minotaur-btn" ng-click="datepicker.today()">Today</button>
+          <button type="button" class="btn btn-sm btn-default minotaur-btn" ng-click="datepicker.setDate(2009, 7, 24)">2009-08-24</button>
+          <button type="button" class="btn btn-sm btn-danger minotaur-btn" ng-click="datepicker.clear()">Clear</button>
+          <button type="button" class="btn btn-sm btn-default minotaur-btn" ng-click="datepicker.toggleMin()" uib-tooltip="After today restriction">Min date</button>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="PopoverController as popover">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Popover</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <h4>Dynamic</h4>
+          <div class="row">
+            <div class="form-group col-lg-4 col-md-12">
+              <label>Popup Text:</label>
+              <input type="text" ng-model="popover.dynamicPopover.content" class="form-control">
+            </div>
+            <div class="form-group col-lg-4 col-md-12">
+              <label>Popup Title:</label>
+              <input type="text" ng-model="popover.dynamicPopover.title" class="form-control">
+            </div>
+            <div class="form-group col-lg-4 col-md-12">
+              <label>Popup Template:</label>
+              <input type="text" ng-model="popover.dynamicPopover.templateUrl" class="form-control">
+            </div>
+          </div>
+
+          <button uib-popover="{{popover.dynamicPopover.content}}" popover-title="{{popover.dynamicPopover.title}}" type="button" class="btn btn-theme minotaur-btn mr-5">Dynamic Popover</button>
+          <button uib-popover-template="popover.dynamicPopover.templateUrl" popover-title="{{popover.dynamicPopover.title}}" type="button" class="btn btn-theme minotaur-btn">Popover With Template</button>
+
+          <script type="text/ng-template" id="myPopoverTemplate.html">
+            <div>{{popover.dynamicPopover.content}}</div>
+            <div class="form-group">
+              <label>Popup Title:</label>
+              <input type="text" ng-model="popover.dynamicPopover.title" class="form-control">
+            </div>
+          </script>
+          <hr />
+
+          <h4>Positional</h4>
+          <div class="form-group">
+            <label>Popover placement</label>
+            <select class="form-control" ng-model="popover.placement.selected" ng-options="o as o for o in popover.placement.options"></select>
+          </div>
+          <button popover-placement="{{popover.placement.selected}}" uib-popover="On the {{popover.placement.selected}}" type="button" class="btn btn-theme minotaur-btn">Popover {{popover.placement.selected}}</button>
+
+          <hr />
+          <h4>Triggers</h4>
+          <p>
+            <button uib-popover="I appeared on mouse enter!" popover-trigger="'mouseenter'" type="button" class="btn btn-theme minotaur-btn">Mouseenter</button>
+          </p>
+          <input type="text" value="Click me!" uib-popover="I appeared on focus! Click away and I'll vanish..."  popover-trigger="'focus'" class="form-control">
+
+          <hr />
+          <h4>Other</h4>
+          <button popover-animation="true" uib-popover="I fade in and out!" type="button" class="btn btn-theme minotaur-btn mr-5">fading</button>
+          <button uib-popover="I have a title!" popover-title="The title." type="button" class="btn btn-theme minotaur-btn mr-5">title</button>
+          <button uib-popover="I am activated manually" popover-is-open="popover.popoverIsOpen" ng-click="popover.popoverIsOpen = !popover.popoverIsOpen" type="button" class="btn btn-theme minotaur-btn mr-5">Toggle popover</button>
+          <button uib-popover-html="popover.htmlPopover" class="btn btn-theme minotaur-btn">HTML Popover</button>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+          <!-- tile header -->
+          <section class="tile-header">
+            <h1 class="heading">Labels & Badges</h1>
+            <div class="controls">
+              <div class="btn-group" uib-dropdown>
+                <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+                <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+                </ul>
+              </div>
+              <minotaur-tile-close></minotaur-tile-close>
+            </div>
+          </section>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <section class="tile-body">
+            <span class="label bg-red">red</span>
+            <span class="label bg-cyan">cyan</span>
+            <span class="label bg-greensea">greensea</span>
+            <span class="label bg-primary">primary</span>
+            <span class="label bg-danger">danger</span>
+            <span class="label bg-info">info</span>
+            <span class="label bg-drank">drank</span>
+            <span class="label bg-lightred">lightred</span>
+            <span class="label bg-dutch">dutch</span>
+            <span class="label bg-hotpink">hotpink</span>
+
+            <span class="badge bg-red">1</span>
+            <span class="badge bg-cyan">2</span>
+            <span class="badge bg-greensea">3</span>
+            <span class="badge bg-primary">4</span>
+            <span class="badge bg-danger">5</span>
+            <span class="badge bg-info">6</span>
+            <span class="badge bg-drank">7</span>
+            <span class="badge bg-lightred">8</span>
+            <span class="badge bg-dutch">9</span>
+            <span class="badge bg-hotpink">10</span>
+          </section>
+          <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="RatingsController as rating">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Ratings</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <h4>Default</h4>
+          <span uib-rating ng-model="rating.rate" max="rating.max" read-only="rating.isReadonly" on-hover="rating.hoveringOver(value)" on-leave="rating.overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span>
+          <span class="label" ng-class="{'label-warning': rating.percent<30, 'label-info': rating.percent>=30 && rating.percent<70, 'label-success': rating.percent>=70}" ng-show="rating.overStar && !rating.isReadonly">{{rating.percent}}%</span>
+
+          <pre style="margin:15px 0;">Rate: <b>{{rating.rate}}</b> - Readonly is: <i>{{rating.isReadonly}}</i> - Hovering over: <b>{{rating.overStar || "none"}}</b></pre>
+
+          <button type="button" class="btn btn-sm btn-danger" ng-click="rating.rate = 0" ng-disabled="rating.isReadonly">Clear</button>
+          <button type="button" class="btn btn-sm btn-default" ng-click="rating.isReadonly = ! rating.isReadonly">Toggle Readonly</button>
+          <hr />
+
+          <h4>Custom icons</h4>
+          <div ng-init="rating.x = 5"><span uib-rating ng-model="rating.x" max="15" state-on="'glyphicon-ok-sign'" state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></span> <b>(<i>Rate:</i> {{rating.x}})</b></div>
+          <div ng-init="rating.y = 2"><span uib-rating ng-model="rating.y" rating-states="rating.ratingStates" aria-labelledby="custom-icons-2"></span> <b>(<i>Rate:</i> {{rating.y}})</b></div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="ButtonsController">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Buttons</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <h4>Single toggle</h4>
+          <pre>{{singleModel}}</pre>
+          <button type="button" class="btn btn-primary" ng-model="singleModel" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+            Single Toggle
+          </button>
+          <h4>Checkbox</h4>
+          <pre>Model: {{checkModel}}</pre>
+          <pre>Results: {{checkResults}}</pre>
+          <div class="btn-group">
+            <label class="btn btn-primary" ng-model="checkModel.left" uib-btn-checkbox>Left</label>
+            <label class="btn btn-primary" ng-model="checkModel.middle" uib-btn-checkbox>Middle</label>
+            <label class="btn btn-primary" ng-model="checkModel.right" uib-btn-checkbox>Right</label>
+          </div>
+          <h4>Radio &amp; Uncheckable Radio</h4>
+          <pre>{{radioModel || 'null'}}</pre>
+          <div class="btn-group mb-5">
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Left'">Left</label>
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Middle'">Middle</label>
+            <label class="btn btn-primary" ng-model="radioModel" uib-btn-radio="'Right'">Right</label>
+          </div>
+          <div class="btn-group mb-5">
+            <label class="btn btn-success" ng-model="radioModel" uib-btn-radio="'Left'" uncheckable>Left</label>
+            <label class="btn btn-success" ng-model="radioModel" uib-btn-radio="'Middle'" uncheckable>Middle</label>
+            <label class="btn btn-success" ng-model="radioModel" uib-btn-radio="'Right'" uib-uncheckable="uncheckable">Right</label>
+          </div>
+          <div>
+            <button class="btn btn-default" ng-click="uncheckable = !uncheckable">
+              Toggle uncheckable
+            </button>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="TooltipController as tooltip">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Tooltip</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <div class="form-group">
+            <label>Tooltip placement</label>
+            <select class="form-control" ng-model="tooltip.placement.selected" ng-options="o as o for o in tooltip.placement.options"></select>
+          </div>
+          <button tooltip-placement="{{tooltip.placement.selected}}" uib-tooltip="On the {{tooltip.placement.selected}}" type="button" class="btn btn-default">Tooltip {{tooltip.placement.selected}}</button>
+
+          <hr />
+          <div class="form-group">
+            <label>Dynamic Tooltip Text</label>
+            <input type="text" ng-model="tooltip.dynamicTooltipText" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Dynamic Tooltip Popup Text</label>
+            <input type="text" ng-model="tooltip.dynamicTooltip" class="form-control">
+          </div>
+          <p>
+            Pellentesque <a href="#" uib-tooltip="{{tooltip.dynamicTooltip}}">{{tooltip.dynamicTooltipText}}</a>,
+            sit amet venenatis urna cursus eget nunc scelerisque viverra mauris, in
+            aliquam. Tincidunt lobortis feugiat vivamus at
+            <a href="#" tooltip-animation="false" uib-tooltip="I don't fade. :-(">fading</a>
+            eget arcu dictum varius duis at consectetur lorem. Vitae elementum curabitur
+            <a href="#" tooltip-popup-delay='1000' uib-tooltip='appears with delay'>show delay</a>
+            nunc sed velit dignissim sodales ut eu sem integer vitae. Turpis egestas
+            <a href="#" tooltip-popup-close-delay='1000' uib-tooltip='hides with delay'>hide delay</a>
+            pharetra convallis posuere morbi leo urna,
+            <a href="#" uib-tooltip-template="'myTooltipTemplate.html'">Custom template</a>
+            at elementum eu, facilisis sed odio morbi quis commodo odio.
+          </p>
+
+          <p>
+            I can even contain HTML. <a href="#" uib-tooltip-html="tooltip.htmlTooltip">Check me out!</a>
+          </p>
+
+          <p>
+            <style>
+              /* Specify styling for tooltip contents */
+              .tooltip.customClass .tooltip-inner {
+                color: #880000;
+                background-color: #ffff66;
+                box-shadow: 0 6px 12px rgba(0,0,0,.175);
+              }
+              /* Hide arrow */
+              .tooltip.customClass .tooltip-arrow {
+                display: none;
+              }
+            </style>
+            I can have a custom class. <a href="#" uib-tooltip="I can have a custom class applied to me!" tooltip-class="customClass">Check me out!</a>
+          </p>
+
+
+          <div class="form-group">
+            <label>Or use custom triggers, like focus: </label>
+            <input type="text" value="Click me!" uib-tooltip="See? Now click away..." tooltip-trigger="'focus'" tooltip-placement="top" class="form-control" />
+          </div>
+
+          <div class="form-group" ng-class="{'has-error' : !tooltip.inputModel}">
+            <label>Disable tooltips conditionally:</label>
+            <input type="text" ng-model="tooltip.inputModel" class="form-control"
+                   placeholder="Hover over this for a tooltip until this is filled"
+                   uib-tooltip="Enter something in this input field to disable this tooltip"
+                   tooltip-placement="top"
+                   tooltip-trigger="'mouseenter'"
+                   tooltip-enable="!tooltip.inputModel" />
+          </div>
+          <div class="form-group">
+            <label>
+              Open tooltips <span uib-tooltip="Hello!" tooltip-is-open="tooltip.tooltipIsOpen" tooltip-placement="bottom">conditionally.</span>
+            </label>
+            <button class="btn btn-default btn-sm" ng-click="tooltip.tooltipIsOpen = !tooltip.tooltipIsOpen">Toggle tooltip</button>
+          </div>
+          <script type="text/ng-template" id="myTooltipTemplate.html">
+            <span>Special Tooltip with <strong>markup</strong> and {{ tooltip.dynamicTooltipText }}</span>
+          </script>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="TypeaheadController as typeahead">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Typeahead</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <script type="text/ng-template" id="customTemplate.html">
+            <a>
+              <img ng-src="http://upload.wikimedia.org/wikipedia/commons/thumb/{{match.model.flag}}" width="16">
+              <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+            </a>
+          </script>
+
+          <script type="text/ng-template" id="customPopupTemplate.html">
+            <div class="custom-popup-wrapper"
+                 ng-style="{top: position().top+'px', left: position().left+'px'}"
+                 style="display: block;"
+                 ng-show="isOpen() && !moveInProgress"
+                 aria-hidden="{{!isOpen()}}">
+              <p class="message">select location from drop down.</p>
+
+              <ul class="dropdown-menu" role="listbox">
+                <li class="uib-typeahead-match" ng-repeat="match in matches track by $index" ng-class="{active: isActive($index) }"
+                    ng-mouseenter="selectActive($index)" ng-click="selectMatch($index)" role="option" id="{{::match.id}}">
+                  <div uib-typeahead-match index="$index" match="match" query="query" template-url="templateUrl"></div>
+                </li>
+              </ul>
+            </div>
+          </script>
+
+          <h4>Static arrays</h4>
+          <pre>Model: {{typeahead.selected | json}}</pre>
+          <input type="text" ng-model="typeahead.selected" uib-typeahead="state for state in typeahead.states | filter:$viewValue | limitTo:8" class="form-control">
+
+          <h4>Asynchronous results</h4>
+          <pre>Model: {{typeahead.asyncSelected | json}}</pre>
+          <input type="text" ng-model="typeahead.asyncSelected" placeholder="Locations loaded via $http" uib-typeahead="address for address in typeahead.getLocation($viewValue)" typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
+          <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+          <div ng-show="noResults">
+            <i class="glyphicon glyphicon-remove"></i> No Results Found
+          </div>
+
+          <h4>ngModelOptions support</h4>
+          <pre>Model: {{typeahead.ngModelOptionsSelected | json}}</pre>
+          <input type="text" ng-model="typeahead.ngModelOptionsSelected" ng-model-options="typeahead.modelOptions" uib-typeahead="state for state in typeahead.states | filter:$viewValue | limitTo:8" class="form-control">
+
+          <h4>Custom templates for results</h4>
+          <pre>Model: {{typeahead.customSelected | json}}</pre>
+          <input type="text" ng-model="typeahead.customSelected" placeholder="Custom template" uib-typeahead="state as state.name for state in typeahead.statesWithFlags | filter:{name:$viewValue}" typeahead-template-url="customTemplate.html" class="form-control" typeahead-show-hint="true" typeahead-min-length="0">
+
+          <h4>Custom popup templates for typeahead's dropdown</h4>
+          <pre>Model: {{typeahead.customPopupSelected | json}}</pre>
+          <input type="text" ng-model="typeahead.customPopupSelected" placeholder="Custom popup template" uib-typeahead="state as state.name for state in typeahead.statesWithFlags | filter:{name:$viewValue}" typeahead-popup-template-url="customPopupTemplate.html" class="form-control">
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="TimepickerController as timepicker">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Timepicker</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <div uib-timepicker ng-model="timepicker.mytime" ng-change="timepicker.changed()" hour-step="timepicker.hstep" minute-step="timepicker.mstep" show-meridian="timepicker.ismeridian"></div>
+
+          <pre class="alert alert-info">Time is: {{timepicker.mytime | date:'shortTime' }}</pre>
+
+          <div class="row">
+            <div class="col-xs-6">
+              Hours step is:
+              <select class="form-control" ng-model="timepicker.hstep" ng-options="opt for opt in timepicker.options.hstep"></select>
+            </div>
+            <div class="col-xs-6">
+              Minutes step is:
+              <select class="form-control" ng-model="timepicker.mstep" ng-options="opt for opt in timepicker.options.mstep"></select>
+            </div>
+          </div>
+
+          <hr>
+
+          <button type="button" class="btn btn-info minotaur-btn" ng-click="timepicker.toggleMode()">12H / 24H</button>
+          <button type="button" class="btn btn-default minotaur-btn" ng-click="timepicker.update()">Set to 14:00</button>
+          <button type="button" class="btn btn-danger minotaur-btn" ng-click="timepicker.clear()">Clear</button>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="PaginationController as pagination">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Pagination</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <h4>Default</h4>
+          <ul uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" ng-change="pagination.pageChanged()"></ul>
+          <ul uib-pagination boundary-links="true" total-items="pagination.totalItems" ng-model="pagination.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+          <ul uib-pagination direction-links="false" boundary-links="true" total-items="pagination.totalItems" ng-model="pagination.currentPage"></ul>
+          <ul uib-pagination direction-links="false" total-items="pagination.totalItems" ng-model="pagination.currentPage" num-pages="pagination.smallnumPages"></ul>
+          <pre>The selected page no: {{pagination.currentPage}}</pre>
+          <button type="button" class="btn btn-info minotaur-btn" ng-click="pagination.setPage(3)">Set current page to: 3</button>
+
+          <hr />
+          <h4>Limit the maximum visible buttons</h4>
+          <h6><code>rotate</code> defaulted to <code>true</code>:</h6>
+          <ul uib-pagination total-items="pagination.bigTotalItems" ng-model="pagination.bigCurrentPage" max-size="pagination.maxSize" class="pagination-sm" boundary-links="true" num-pages="pagination.numPages"></ul>
+          <h6><code>rotate</code> defaulted to <code>true</code> and <code>force-ellipses</code> set to <code>true</code>:</h6>
+          <ul uib-pagination total-items="pagination.bigTotalItems" ng-model="pagination.bigCurrentPage" max-size="pagination.maxSize" class="pagination-sm" boundary-links="true" force-ellipses="true"></ul>
+          <h6><code>rotate</code> set to <code>false</code>:</h6>
+          <ul uib-pagination total-items="pagination.bigTotalItems" ng-model="pagination.bigCurrentPage" max-size="pagination.maxSize" class="pagination-sm" boundary-links="true" rotate="false"></ul>
+          <h6><code>boundary-link-numbers</code> set to <code>true</code> and <code>rotate</code> defaulted to <code>true</code>:</h6>
+          <ul uib-pagination total-items="pagination.bigTotalItems" ng-model="pagination.bigCurrentPage" max-size="pagination.maxSize" class="pagination-sm" boundary-link-numbers="true"></ul>
+          <h6><code>boundary-link-numbers</code> set to <code>true</code> and <code>rotate</code> set to <code>false</code>:</h6>
+          <ul uib-pagination total-items="pagination.bigTotalItems" ng-model="pagination.bigCurrentPage" max-size="pagination.maxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></ul>
+          <pre>Page: {{pagination.bigCurrentPage}} / {{pagination.numPages}}</pre>
+
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="PagerController as pager">
+
+          <!-- tile header -->
+          <section class="tile-header">
+            <h1 class="heading">Pager</h1>
+            <div class="controls">
+              <div class="btn-group" uib-dropdown>
+                <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+                <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                  <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+                </ul>
+              </div>
+              <minotaur-tile-close></minotaur-tile-close>
+            </div>
+          </section>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <section class="tile-body">
+            <pre>You are currently on page {{pager.currentPage}}</pre>
+            <ul uib-pager total-items="pager.totalItems" ng-model="pager.currentPage"></ul>
+          </section>
+          <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

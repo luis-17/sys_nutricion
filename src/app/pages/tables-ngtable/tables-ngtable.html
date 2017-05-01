@@ -1,0 +1,406 @@
+<div class="page page-tables pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">Tables</a></li>
+    <li class="active">ngTable</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-lg-6 col-md-12">
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Table Sorting</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableSortingController as showcase">
+
+          <table ng-table="showcase.tableParams" class="table minotaur-table">
+            <tr ng-repeat="row in $data">
+              <td data-title="'Name'" data-sortable="'name'">
+                {{row.name}}
+              </td>
+              <td data-title="'Age'" data-sortable="'age'">
+                {{row.age}}
+              </td>
+            </tr>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Editable Table</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableEditableController as showcase">
+
+          <button ng-click="showcase.tableParams.sorting({})" class="btn btn-default mb-10">Clear sorting</button>
+
+          <table ng-table="showcase.tableParams" class="table minotaur-table" ng-form="showcase.tableForm" disable-filter="showcase.isAdding" demo-tracked-table="showcase.tableTracker">
+            <colgroup>
+              <col width="5%" />
+              <col width="55%" />
+              <col width="10%" />
+              <col width="10%" />
+              <col width="20%" />
+            </colgroup>
+            <tr ng-repeat="row in $data" ng-form="rowForm" demo-tracked-table-row="row">
+              <td header="'headerCheckbox.html'"><label class="minotaur-checkbox"><input type="checkbox" ng-model="showcase.checkboxes.items[row.id]" /><div class="input-indicator"></div></label></td>
+              <td title="'Name'" filter="{name: 'text'}" data-sortable="'name'" ng-switch="row.isEditing" ng-class="name.$dirty ? 'bg-warning lter' : ''" ng-form="name" demo-tracked-table-cell>
+                <span ng-switch-default class="editable-text">{{row.name}}</span>
+                <div class="controls" ng-class="name.$invalid && name.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                  <input type="text" name="name" ng-model="row.name" class="editable-input form-control input-sm" required />
+                </div>
+              </td>
+              <td title="'Age'" filter="{age: 'number'}" data-sortable="'age'" ng-switch="row.isEditing" ng-class="age.$dirty ? 'bg-warning lter' : ''" ng-form="age" demo-tracked-table-cell>
+                <span ng-switch-default class="editable-text">{{row.age}}</span>
+                <div class="controls" ng-class="age.$invalid && age.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                  <input type="number" name="age" ng-model="row.age" class="editable-input form-control input-sm" required/>
+                </div>
+              </td>
+              <td title="'Money'" filter="{money: 'number'}" data-sortable="'money'" ng-switch="row.isEditing" ng-class="money.$dirty ? 'bg-warning lter' : ''" ng-form="money" demo-tracked-table-cell>
+                <span ng-switch-default class="editable-text">{{row.money}}</span>
+                <div class="controls" ng-class="money.$invalid && money.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                  <input type="number" name="money" ng-model="row.money" class="editable-input form-control input-sm" required/>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="showcase.save(row, rowForm)" ng-if="row.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid">Save</button>
+                <button class="btn btn-nostyle text-uppercase text-strong text-sm" ng-click="showcase.cancel(row, rowForm)" ng-if="row.isEditing">Cancel</button>
+                <button class="btn btn-nostyle text-success text-uppercase text-strong text-sm" ng-click="row.isEditing = true" ng-if="!row.isEditing">Edit</button>
+                <button class="btn btn-nostyle text-danger text-uppercase text-strong text-sm" ng-click="showcase.del(row)" ng-if="!row.isEditing">Remove</button>
+              </td>
+            </tr>
+          </table>
+
+          <script type="text/ng-template" id="headerCheckbox.html">
+            <label class="minotaur-checkbox checkbox-white" style="height: 15px;"><input type="checkbox" ng-model="showcase.checkboxes.checked" class="select-all" value="" /><div class="input-indicator"></div></label>
+          </script>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Dynamic Grouping</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableGroupingController as showcase">
+
+          <form class="form-inline" name="showcase.newGroupForm" novalidate>
+            <div class="form-group mr-10">
+              <label class="minotaur-label">Select group:</label>
+              <div class="minotaur-select">
+                <select ng-model="showcase.newGroup" ng-options="col.groupable() as col.title() for col in showcase.boundCols | filter:showcase.isGroupable" name="newGroup" required>
+                  <option stype="display: none" value="" />
+                </select>
+                <div class="select-arrow"></div>
+              </div>
+            </div>
+            <label class="checkbox minotaur-checkbox minotaur-label"> Desc
+              <input type="checkbox" ng-model="showcase.isGroupDesc" name="isGroupDesc">
+              <div class="input-indicator"></div>
+            </label>
+            <button class="btn"
+                    ng-class="{'btn-default': showcase.newGroupForm.$invalid, 'btn-primary': showcase.newGroupForm.$valid}"
+                    ng-click="showcase.applySelectedGroup()"
+                    ng-disabled="showcase.newGroupForm.$pristine || showcase.newGroupForm.$invalid">Apply</button>
+            <span class="pipe"></span>
+            <button class="btn btn-default" ng-click="showcase.toggleDetail()">
+              <span class="glyphicon" ng-class="{ 'glyphicon-resize-small': showcase.tableParams.settings().groupOptions.isExpanded, 'glyphicon-resize-full': !showcase.tableParams.settings().groupOptions.isExpanded }"></span> Detail
+            </button>
+          </form>
+          <br/>
+          <table ng-table="showcase.tableParams" class="table minotaur-table" ng-table-columns-binding="showcase.boundCols">
+            <colgroup>
+              <col width="60%" />
+              <col width="20%" />
+              <col width="20%" />
+            </colgroup>
+            <tr class="ng-table-group" ng-repeat-start="group in $groups">
+              <td colspan="3">
+                <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                  <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                  <strong>{{ group.value }}</strong>
+                </a>
+              </td>
+            </tr>
+            <tr ng-hide="group.$hideRows" ng-repeat="user in group.data" ng-repeat-end>
+              <td data-sortable="'country'" data-title="'Country'" data-groupable="'country'" ng-if="false">
+                {{user.country}}
+              </td>
+              <td data-sortable="'name'" data-title="'Name'" data-groupable="'name'">
+                {{user.name}}
+              </td>
+              <td data-sortable="'age'" data-title="'Age'" data-groupable="'age'">
+                {{user.age}}
+              </td>
+              <td data-sortable="'money'" data-title="'Money'">
+                {{user.money}}
+              </td>
+            </tr>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-6 col-md-12">
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Table Filtering</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableFilteringController as showcase">
+
+          <button ng-click="showcase.tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button>
+          <button ng-click="showcase.tableParams.filter({})" class="btn btn-default pull-right">Clear filter</button>
+          <p><strong>Sorting:</strong> {{showcase.tableParams.sorting()|json}}
+          <p><strong>Filter:</strong> {{showcase.tableParams.filter()|json}}
+
+          <table ng-table="showcase.tableParams" class="table minotaur-table">
+            <tr ng-repeat="row in $data">
+              <td data-title="'Name'" filter="{name: 'text'}" data-sortable="'name'">{{row.name}}</td>
+              <td data-title="'Age'" filter="{age: 'number'}" data-sortable="'age'">{{row.age}}</td>
+              <td data-title="'Money'" data-sortable="'money'">{{row.money}}</td>
+              <td data-title="'Country'" filter="{ country: 'select'}" filter-data="showcase.countries" data-sortable="'country'">{{row.country}}</td>
+            </tr>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Dynamic Columns</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableDynamicController as showcase">
+
+          <div style="margin-bottom: 20px">
+            <label class="checkbox-inline minotaur-checkbox minotaur-label" ng-repeat="col in showcase.cols"> {{col.title}}
+              <input type="checkbox" ng-model-options="{ getterSetter: true }" ng-model="col.show"/>
+              <div class="input-indicator"></div>
+            </label>
+            <ul class="list-inline pull-right" ng-cloak>
+              <li ng-repeat="col in showcase.cols track by col.title" style="min-width: 100px">
+                <a href="" ng-click="showcase.move(col,$index,-1)">
+                  <span ng-show="!$first" class="glyphicon glyphicon-arrow-left"></span>
+                </a>
+                {{col.title}}
+                <a href="" ng-click="showcase.move(col,$index, 1)">
+                  <span ng-show="!$last" class="glyphicon glyphicon-arrow-right"></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <table ng-table-dynamic="showcase.tableParams with showcase.cols" class="table minotaur-table">
+            <tr ng-repeat="row in $data">
+              <td ng-repeat="col in $columns">{{row[col.field]}}</td>
+            </tr>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Row Selection</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="NgTableRowSelectController as showcase">
+
+          <button class="btn btn-default btn-sm pull-right mb-10" ng-click="showcase.tableParams.data[1].$selected = true">Select second row</button>
+          <div>
+            <strong>Selected users:</strong> {{ showcase.data | filter:{"$selected": true} | json}}
+          </div>
+
+          <table ng-table="showcase.tableParams" class="table minotaur-table ng-table-rowselected">
+            <tr ng-repeat="user in $data"
+                ng-click="user.$selected = !user.$selected;"
+                ng-class="{'active': user.$selected}">
+              <td data-title="'Name'" data-sortable="'name'" filter="{ 'name': 'text' }">
+                {{user.name}}
+              </td>
+              <td data-title="'Age'" data-sortable="'age'" filter="{ 'age': 'number' }">
+                {{user.age}}
+              </td>
+            </tr>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

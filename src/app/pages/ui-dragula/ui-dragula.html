@@ -1,0 +1,135 @@
+<div class="page page-ui pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li><a href="javascript:;">UI Kit</a></li>
+    <li class="active">Dragula</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-4">
+
+
+      <!-- tile -->
+      <div class="tile tile-simple">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h2 class="heading">Tasks List</h2>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" dragular="ui.dragularOptions1">
+          <div ng-repeat="task in ui.tasks.new" class="task-container" ng-class="task.priority.key">
+            <h3 class="task-name">{{task.name}}</h3>
+            <p class="task-meta">
+              <strong>Due Date:</strong> {{task.due_date}},
+              <strong>Date Added:</strong> {{task.created}}
+            </p>
+            <span class="task-priority">{{task.priority.value}}</span>
+            <p class="task-desc">{{task.dsc}}</p>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-4">
+
+
+      <!-- tile -->
+      <div class="tile tile-simple">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h2 class="heading">Tasks In Progress</h2>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" dragular="ui.dragularOptions2">
+          <div ng-repeat="task in ui.tasks.progress" class="task-container" ng-class="task.priority.key">
+            <h3 class="task-name">{{task.name}}</h3>
+            <p class="task-meta">
+              <strong>Due Date:</strong> {{task.due_date}},
+              <strong>Date Added:</strong> {{task.created}}
+            </p>
+            <span class="task-priority">{{task.priority.value}}</span>
+            <p class="task-desc">{{task.dsc}}</p>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-4">
+
+
+
+      <!-- tile -->
+      <div class="tile tile-simple">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h2 class="heading">Finished Tasks</h2>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" dragular="ui.dragularOptions3">
+          <div ng-repeat="task in ui.tasks.finished" class="task-container" ng-class="task.priority.key">
+            <h3 class="task-name">{{task.name}}</h3>
+            <p class="task-meta">
+              <strong>Due Date:</strong> {{task.due_date}},
+              <strong>Date Added:</strong> {{task.created}}
+            </p>
+            <span class="task-priority">{{task.priority.value}}</span>
+            <p class="task-desc">{{task.dsc}}</p>
+          </div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

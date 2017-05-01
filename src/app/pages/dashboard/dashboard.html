@@ -1,0 +1,1681 @@
+<div class="page page-dashboard pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li class="active">Dashboard</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-8">
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="StatisticsController as statistics">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Statistics Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" date-range-picker ng-model="dashboard.datePicker.date" options="dashboard.datePicker.opts"><i class="fa fa-clock-o"></i></button>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile widget -->
+        <section class="tile-widget">
+          <canvas id="base"
+                  class="chart-bar"
+                  height="300"
+                  chart-options="statistics.options"
+                  chart-data="statistics.data"
+                  chart-labels="statistics.labels"
+                  chart-colors="statistics.colors"
+                  chart-dataset-override="statistics.datasetOverride">
+          </canvas>
+        </section>
+        <!-- /tile widget -->
+
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <!-- row -->
+          <div class="row">
+
+
+            <!-- col -->
+            <div class="col-md-8">
+              <h4 class="text-uppercase underline mb-20">Actual Statistics</h4>
+
+              <!-- row -->
+              <div class="row">
+
+
+                <!-- col -->
+                <div class="col-lg-4 text-center">
+                  <div class="progress-wrapper">
+                    <i class="fa fa-usd fa-4x text-blue" style="line-height: 140px;"></i>
+                    <round-progress
+                      max="100"
+                      current="100"
+                      color="#00a7f6"
+                      radius="70"
+                      stroke="5"
+                      rounded="true"></round-progress>
+                  </div>
+                  <p class="text-uppercase text-xl mt-20 mb-0"><span class="text-blue">6,175</span> <small class="text-lg text-thin text-default lt">Sales</small></p>
+                  <p class="text-thin text-default lt"><i class="fa fa-caret-up text-success"></i> 18% this month</p>
+                </div>
+                <!-- /col -->
+
+                <!-- col -->
+                <div class="col-lg-4 text-center">
+                  <div class="progress-wrapper">
+                    <i class="fa fa-eye fa-4x text-lightred" style="line-height: 140px;"></i>
+                    <round-progress
+                      max="100"
+                      current="75"
+                      color="#e05d6f"
+                      radius="70"
+                      stroke="5"
+                      rounded="true"></round-progress>
+                  </div>
+                  <p class="text-uppercase text-xl mt-20 mb-0"><span class="text-lightred">8,213</span> <small class="text-lg text-thin text-default lt">Sales</small></p>
+                  <p class="text-thin text-default lt"><i class="fa fa-caret-down text-warning"></i> 25% this month</p>
+                </div>
+                <!-- /col -->
+
+                <!-- col -->
+                <div class="col-lg-4 text-center">
+                  <div class="progress-wrapper">
+                    <i class="fa fa-user fa-4x text-greensea" style="line-height: 140px;"></i>
+                    <round-progress
+                      max="100"
+                      current="42"
+                      color="#16a085"
+                      radius="70"
+                      stroke="5"
+                      rounded="true"></round-progress>
+                  </div>
+                  <p class="text-uppercase text-xl mt-20 mb-0"><span class="text-greensea">632</span> <small class="text-lg text-thin text-default lt">Sales</small></p>
+                  <p class="text-thin text-default lt"><i class="fa fa-caret-down text-danger"></i> 61% this month</p>
+                </div>
+                <!-- /col -->
+
+
+              </div>
+              <!-- /row -->
+            </div>
+            <!-- /col -->
+
+
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="text-uppercase underline">Visitors Statistics</h4>
+
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title">America</div>
+                  <div class="description text-uppercase">visitors from america</div>
+                </div>
+                <div class="status pull-right">
+                  <span>40</span>%
+                </div>
+                <div class="clearfix"></div>
+                <uib-progressbar class="progress-xs not-rounded" value="40" type="dutch"></uib-progressbar>
+              </div>
+
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title">Europe</div>
+                  <div class="description text-uppercase">visitors from europe</div>
+                </div>
+                <div class="status pull-right">
+                  <span>38</span>%
+                </div>
+                <div class="clearfix"></div>
+                <uib-progressbar class="progress-xs not-rounded" value="38" type="greensea"></uib-progressbar>
+              </div>
+
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title">Asia</div>
+                  <div class="description text-uppercase">visitors from asia</div>
+                </div>
+                <div class="status pull-right">
+                  <span>12</span>%
+                </div>
+                <div class="clearfix"></div>
+                <uib-progressbar class="progress-xs not-rounded" value="12" type="lightred"></uib-progressbar>
+              </div>
+
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title">Africa</div>
+                  <div class="description text-uppercase">visitors from africa</div>
+                </div>
+                <div class="status pull-right">
+                  <span>7</span>%
+                </div>
+                <div class="clearfix"></div>
+                <uib-progressbar class="progress-xs not-rounded" value="7" type="blue"></uib-progressbar>
+              </div>
+
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title">Other</div>
+                  <div class="description text-uppercase">visitors from other</div>
+                </div>
+                <div class="status pull-right">
+                  <span>6</span>%
+                </div>
+                <div class="clearfix"></div>
+                <uib-progressbar class="progress-xs not-rounded" value="6" type="hotpink"></uib-progressbar>
+              </div>
+            </div>
+            <!-- /col -->
+
+
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+    <!-- col -->
+    <div class="col-md-4">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Browser Usage</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile widget -->
+        <section class="tile-widget">
+          <div
+            donut-chart
+            donut-resize="true"
+            donut-data=' [
+              {label: "Chrome", value: 25, color: "#00a3d8"},
+              {label: "Safari", value: 20, color: "#2fbbe8"},
+              {label: "Firefox", value: 15, color: "#72cae7"},
+              {label: "Opera", value: 5, color: "#d9544f"},
+              {label: "Internet Explorer", value: 10, color: "#ffc100"},
+              {label: "Other", value: 25, color: "#1693A5"}
+            ]'
+            donut-label-color='"#333"'
+            donut-background-color='"#ffffff"'>
+          </div>
+        </section>
+        <!-- /tile widget -->
+
+        <!-- tile body -->
+        <section class="tile-body p-0 full-accordion">
+          <uib-accordion close-others="true" ng-init="tab1.open = true">
+            <div uib-accordion-group class="panel-default" is-open="tab1.open">
+              <uib-accordion-heading>
+                <i class="fa mr-5" ng-class="{'fa-minus': tab1.open, 'fa-plus': !tab1.open}"></i> This Month <span class="badge pull-right bg-lightred">3</span>
+              </uib-accordion-heading>
+              <table class="table table-no-border m-0">
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Chrome</td>
+                  <td>6985</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Other</td>
+                  <td>2697</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Safari</td>
+                  <td>3597</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Firefox</td>
+                  <td>2145</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Internet Explorer</td>
+                  <td>1854</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Opera</td>
+                  <td>654</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div uib-accordion-group class="panel-default" is-open="tab2.open">
+              <uib-accordion-heading>
+                <i class="fa mr-5" ng-class="{'fa-minus': tab2.open, 'fa-plus': !tab2.open}"></i> Last Month
+              </uib-accordion-heading>
+              <table class="table table-no-border m-0">
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Chrome</td>
+                  <td>6985</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Other</td>
+                  <td>2697</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Safari</td>
+                  <td>3597</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Firefox</td>
+                  <td>2145</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Internet Explorer</td>
+                  <td>1854</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Opera</td>
+                  <td>654</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div uib-accordion-group class="panel-default" is-open="tab3.open">
+              <uib-accordion-heading>
+                <i class="fa mr-5" ng-class="{'fa-minus': tab3.open, 'fa-plus': !tab3.open}"></i> This Year
+              </uib-accordion-heading>
+              <table class="table table-no-border m-0">
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Chrome</td>
+                  <td>6985</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Other</td>
+                  <td>2697</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Safari</td>
+                  <td>3597</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Firefox</td>
+                  <td>2145</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Internet Explorer</td>
+                  <td>1854</td>
+                  <td><i class="fa fa-caret-down text-danger"></i></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Opera</td>
+                  <td>654</td>
+                  <td><i class="fa fa-caret-up text-success"></i></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </uib-accordion>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+
+      <div class="card">
+        <div class="front bg-greensea">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <i class="fa fa-users fa-4x"></i>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-8">
+              <p class="text-xl line-xl text-strong mb-0">3 659</p>
+              <span>New Users</span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+        <div class="back bg-greensea">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-cog fa-2x"></i> Settings</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-chain-broken fa-2x"></i> Content</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+
+    </div>
+    <!-- /col -->
+
+
+    <!-- col -->
+    <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+      <div class="card">
+        <div class="front bg-lightred">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <i class="fa fa-shopping-cart fa-4x"></i>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-8">
+              <p class="text-xl line-xl text-strong mb-0">19 364</p>
+              <span>New Orders</span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+        <div class="back bg-lightred">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-cog fa-2x"></i> Settings</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-chain-broken fa-2x"></i> Content</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+      <div class="card">
+        <div class="front bg-warning">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <i class="fa fa-usd fa-4x"></i>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-8">
+              <p class="text-xl line-xl text-strong mb-0">165 984</p>
+              <span>Sales</span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+        <div class="back bg-warning">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-cog fa-2x"></i> Settings</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-chain-broken fa-2x"></i> Content</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+      <div class="card">
+        <div class="front bg-slategray">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <i class="fa fa-eye fa-4x"></i>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-8">
+              <p class="text-xl line-xl text-strong mb-0">29 651</p>
+              <span>Visits</span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+        <div class="back bg-slategray">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-cog fa-2x"></i> Settings</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-chain-broken fa-2x"></i> Content</a>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-xs-4">
+              <a href=javascript:;><i class="fa fa-ellipsis-h fa-2x"></i> More</a>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </div>
+      </div>
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="RealtimeLoadController">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Realtime Load</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile widget -->
+        <section class="tile-widget mb-40">
+
+          <div class="progress-list mt-20">
+            <div class="details">
+              <div class="title text-xl" style="line-height: 30px"><strong>125</strong> Users Online</div>
+            </div>
+            <div class="status pull-right">
+              <span>41</span>%
+            </div>
+            <div class="clearfix"></div>
+            <uib-progressbar class="not-rounded" value="41" type="greensea"></uib-progressbar>
+          </div>
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="text-thin">HDD 1 <i class="fa fa-caret-up text-success"></i></h4>
+              <uib-progressbar class="progress-sm not-rounded mb-0" value="75" type="primary"></uib-progressbar>
+              <small>Health: <span class="text-success">Good</span></small>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="text-thin">HDD 2 <i class="fa fa-caret-up text-success"></i></h4>
+              <uib-progressbar class="progress-sm not-rounded mb-0" value="20" type="primary"></uib-progressbar>
+              <small>Health: <span class="text-success">Good</span></small>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="text-thin">HDD 3 <i class="fa fa-caret-down text-danger"></i></h4>
+              <uib-progressbar class="progress-sm not-rounded mb-0" value="90" type="primary"></uib-progressbar>
+              <small>Health: <span class="text-danger">Bad</span></small>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile widget -->
+
+        <!-- tile body -->
+        <section class="tile-body p-0">
+
+          <rickshaw
+            rickshaw-options="options"
+            rickshaw-features="features"
+            rickshaw-series="series">
+          </rickshaw>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile tile-simple bg-lightred carousel-widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Todo's</h1>
+          <div class="controls">
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <slick arrows="false" autoplay="true" dots="true" autoplay-speed="8000" infinite="true">
+            <div>
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title"><i class="fa fa-caret-right mr-5"></i> <span class="text-md">Release update</span></div>
+                  <div class="description text-transparent-white text-lowercase">high priority, started at: 12.08.2014</div>
+                </div>
+                <div class="clearfix" style="height: 45px"></div>
+                <uib-progressbar class="transparent-black not-rounded mb-10" value="50">50%</uib-progressbar>
+              </div>
+              <div class="pull-right">
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px; font-size: 10px; line-height: 18px;"><i class="fa fa-pause"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px;"><i class="fa fa-caret-down"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs" style="width:22px;"><i class="fa fa-ellipsis-h"></i></button>
+              </div>
+              <p class="text-thin">Deadline: 12h 15m</p>
+            </div>
+            <div>
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title"><i class="fa fa-caret-right mr-5"></i> <span class="text-md">Fix navigation</span></div>
+                  <div class="description text-transparent-white text-lowercase">normal priority, started at: 20.09.2014</div>
+                </div>
+                <div class="clearfix" style="height: 45px"></div>
+                <uib-progressbar class="transparent-black not-rounded mb-10" value="26">26%</uib-progressbar>
+              </div>
+              <div class="pull-right">
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px; font-size: 10px; line-height: 18px;"><i class="fa fa-pause"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px;"><i class="fa fa-caret-down"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs" style="width:22px;"><i class="fa fa-ellipsis-h"></i></button>
+              </div>
+              <p class="text-thin">Deadline: 2d 9h 45m</p>
+            </div>
+            <div>
+              <div class="progress-list">
+                <div class="details">
+                  <div class="title"><i class="fa fa-caret-right mr-5"></i> <span class="text-md">Remove dependencies</span></div>
+                  <div class="description text-transparent-white text-lowercase">high priority, started at: 26.10.2014</div>
+                </div>
+                <div class="clearfix" style="height: 45px"></div>
+                <uib-progressbar class="transparent-black not-rounded mb-10" value="78">78%</uib-progressbar>
+              </div>
+              <div class="pull-right">
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px; font-size: 10px; line-height: 18px;"><i class="fa fa-pause"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs mr-5" style="width:22px;"><i class="fa fa-caret-down"></i></button>
+                <button type="button" class="btn btn-border btn-rounded-20 btn-white btn-xs" style="width:22px;"><i class="fa fa-ellipsis-h"></i></button>
+              </div>
+              <p class="text-thin">Deadline: 1h 5m</p>
+            </div>
+          </slick>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+
+      <!-- tile -->
+      <!-- controller is located in ui-widgets/ui-widgets.controller.js -->
+      <div class="tile todo-widget" ng-controller="TodoWidgetController as widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Todo List</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <form role="form" ng-submit="widget.addTodo()" class="add-todo">
+            <input type="text" class="form-control" id="todo" ng-model="widget.todo" placeholder="Type a new todo..." required>
+            <button type="submit" class="btn btn-link"><i class="fa fa-chevron-right text-lg"></i></button>
+          </form>
+
+          <ul class="todo-list list-unstyled">
+            <li ng-repeat="todo in widget.todos" ng-class="{completed: todo.completed, editing: todo === widget.editedTodo}">
+
+              <div class="view">
+                <label class="minotaur-checkbox">
+                  <span ng-dblclick="widget.editTodo(todo)">{{todo.text}}</span>
+                  <input type="checkbox" ng-checked="todo.completed" ng-model="todo.completed">
+                  <div class="input-indicator"></div>
+                  <a href="javascript:;" class="text-danger remove-todo pull-right" ng-click="widget.removeTodo(todo)" aria-label="Remove">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </label>
+              </div>
+
+              <form ng-submit="widget.doneEditing(todo)">
+                <input class="form-control edit input-unstyled mb-0" ng-trim="false" ng-model="todo.text" ng-blur="widget.doneEditing(todo)" keypress-escape="widget.revertEditing(todo)">
+              </form>
+
+            </li>
+          </ul>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile tile-simple bg-primary carousel-widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Social Feed</h1>
+          <div class="controls">
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <slick arrows="false" autoplay="true" dots="true" autoplay-speed="8000" infinite="true">
+            <div class="media social-feed">
+              <span class="pull-left">
+                <i class="fa fa-facebook fa-2x icon-border wh45 text-center" style="line-height: 45px"></i>
+              </span>
+
+              <div class="media-body">
+                <p class="media-heading"><strong>Imrich Kamarel</strong> <small class="text-light text-transparent-white">18 minutes ago</small></p>
+                <p class="text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim enim...</p>
+              </div>
+            </div>
+
+            <div class="media social-feed">
+              <span class="pull-left">
+                <i class="fa fa-twitter fa-2x icon-border wh45 text-center" style="line-height: 45px"></i>
+              </span>
+
+              <div class="media-body">
+                <p class="media-heading"><strong>George Schwarz</strong> <small class="text-light text-transparent-white">1 hour ago</small></p>
+                <p class="text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim enim...</p>
+              </div>
+            </div>
+
+            <div class="media social-feed">
+              <span class="pull-left">
+                <i class="fa fa-google-plus fa-2x icon-border wh45 text-center" style="line-height: 45px"></i>
+              </span>
+
+              <div class="media-body">
+                <p class="media-heading"><strong>Milan Klement</strong> <small class="text-light text-transparent-white">56 minutes ago</small></p>
+                <p class="text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim enim...</p>
+              </div>
+            </div>
+          </slick>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+
+      <!-- tile -->
+      <!-- controller is located in ui-widgets/ui-widgets.controller.js -->
+      <div class="tile bg-slategray calendar-widget" ng-controller="CalendarWidgetController as widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Mini Calendar</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body p-0">
+          <div uib-datepicker ng-model="widget.dt" class="datepicker" datepicker-options="{showWeeks: false}"></div>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile tile-simple carousel-widget">
+
+        <!-- tile header -->
+        <section class="tile-header lined-paper p-0">
+          <div class="controls">
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body lined-paper">
+
+          <slick arrows="false" autoplay="true" dots="true" autoplay-speed="8000" infinite="true">
+            <div>
+              <h4 class="mt-5 mb-5">This is my note #1</h4>
+              <p class="text-muted mb-10">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad.</p>
+            </div>
+
+            <div>
+              <h4 class="mt-5 mb-5">This is my note #2</h4>
+              <p class="text-muted mb-10">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad.</p>
+            </div>
+
+            <div>
+              <h4 class="mt-5 mb-5">This is my note #3</h4>
+              <p class="text-muted mb-10">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad.</p>
+            </div>
+          </slick>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-8">
+
+
+      <!-- tile -->
+      <div class="tile" ng-controller="ProjectsController as table">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Projects Progress</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+
+          <table datatable="ng" dt-options="table.dtOptions" dt-column-defs="table.dtColumnDefs" class="table minotaur-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Project</th>
+              <th>Priority</th>
+              <th style="width: 210px;">Status</th>
+              <th style="width: 60px;" class="text-right">Chart</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="project in table.projects">
+              <td>{{ $index+1 }}</td>
+              <td>{{ project.title }}</td>
+              <td><span class="text-sm" ng-class="{'text-danger': project.priority.value == 1, 'text-warning': project.priority.value == 2, 'text-success': project.priority.value == 3}">{{ project.priority.title }}</span></td>
+              <td><uib-progressbar class="progress-xxs not-rounded inline-block" value="project.status" type="greensea" style="width: 150px; margin-right: 8px; margin-bottom: 3px;"></uib-progressbar><span class="text-sm">{{project.status}}%</span></td>
+              <td class="text-right"><span sparkline data="project.chart.data" options="{
+                  type: 'bar',
+                  barColor: project.chart.color,
+                  barWidth: '4px',
+                  height: '18px'
+                }"></span></td>
+            </tr>
+            </tbody>
+          </table>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-md-4">
+
+
+
+      <!-- tile -->
+      <div class="tile profile-widget">
+
+        <!-- tile widget -->
+        <section class="tile-widget bg-info">
+          <img class="img-circle profile-avatar" src="assets/images/random-avatar8.jpg" alt="">
+          <div class="row">
+            <div class="col-md-5">
+              <h4 class="text-uppercase m-0">Ing. Anna Opichia</h4>
+              <small class="uppercase-bold text-strong text-transparent-black">UI/UX Designer</small>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+              <div class="row">
+                <div class="col-md-4 text-center">
+                  <i class="fa fa-heart-o text-transparent-black"></i>
+                  <span class="text-thin block">125</span>
+                </div>
+                <div class="col-md-4 text-center">
+                  <i class="fa fa-star-o text-transparent-black"></i>
+                  <span class="text-thin block">67</span>
+                </div>
+                <div class="col-md-4 text-center">
+                  <i class="fa fa-comment-o text-transparent-black"></i>
+                  <span class="text-thin block">26</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="divider"></div>
+        </section>
+        <!-- /tile widget -->
+
+        <!-- tile body -->
+        <section class="tile-body bg-info">
+          <dl class="dl-horizontal">
+            <dt style="width: 60px; padding: 3px 0;">About: </dt>
+            <dd style="margin-left: 70px; padding: 3px 0;">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</dd>
+            <dt style="width: 60px; padding: 3px 0;">Hobbies: </dt>
+            <dd style="margin-left: 70px; padding: 3px 0;">Sleep,  games,  animals, nature</dd>
+            <dt style="width: 60px; padding: 3px 0;">Skills: </dt>
+            <dd style="margin-left: 70px; padding: 3px 0;">jquery, html, css, angularjs</dd>
+            <dt style="width: 60px; padding: 3px 0;">Rating: </dt>
+            <dd  style="margin-left: 70px; padding: 3px 0;" class="text-transparent-black"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></dd>
+          </dl>
+        </section>
+        <!-- /tile body -->
+
+        <!-- tile footer -->
+        <section class="tile-footer p-0">
+          <uib-tabset class="minotaur-tab minotaur-tab-info">
+            <uib-tab index="0" heading="All">
+              <div class="p-15" style="max-height: 180px;overflow:auto;" slimscroll="{
+                  height: '100%',
+                  size: '6px',
+                  borderRadius: '0px',
+                  opacity: .2
+                }">
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar5.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Roger Flopple</p>
+                    <small class="text-theme">Manager</small>
+                  </div>
+                </div>
+                <div class="media">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar4.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Deel McApple</p>
+                    <small class="text-theme">Print master</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar8.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Anna Opichia</p>
+                    <small class="text-theme">lead designer</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar7.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Bobby Socks</p>
+                    <small class="text-theme">CEO</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar6.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Nico Vulture</p>
+                    <small class="text-theme">Referent</small>
+                  </div>
+                </div>
+              </div>
+            </uib-tab>
+            <uib-tab index="1" heading="Superheroes">
+              <div class="p-15" style="max-height: 180px;overflow:auto;" slimscroll="{
+                  height: '100%',
+                  size: '6px',
+                  borderRadius: '0px',
+                  opacity: .2
+                }">
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar7.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Bobby Socks</p>
+                    <small class="text-theme">CEO</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar6.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Nico Vulture</p>
+                    <small class="text-theme">Referent</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar8.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Anna Opichia</p>
+                    <small class="text-theme">lead designer</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar5.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Roger Flopple</p>
+                    <small class="text-theme">Manager</small>
+                  </div>
+                </div>
+                <div class="media">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar4.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Deel McApple</p>
+                    <small class="text-theme">Print master</small>
+                  </div>
+                </div>
+              </div>
+            </uib-tab>
+            <uib-tab index="2" heading="Friends">
+              <div class="p-15" style="max-height: 180px;overflow:auto;" slimscroll="{
+                  height: '100%',
+                  size: '6px',
+                  borderRadius: '0px',
+                  opacity: .2
+                }">
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar5.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Roger Flopple</p>
+                    <small class="text-theme">Manager</small>
+                  </div>
+                </div>
+                <div class="media">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar4.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Deel McApple</p>
+                    <small class="text-theme">Print master</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar8.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Anna Opichia</p>
+                    <small class="text-theme">lead designer</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar7.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Bobby Socks</p>
+                    <small class="text-theme">CEO</small>
+                  </div>
+                </div>
+                <div class="media ">
+                  <div class="pull-left thumb">
+                    <img class="media-object img-circle" src="assets/images/random-avatar6.jpg" alt="">
+                  </div>
+                  <div class="pull-right mt-10">
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                    <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading mb-0 mt-10">Nico Vulture</p>
+                    <small class="text-theme">Referent</small>
+                  </div>
+                </div>
+              </div>
+            </uib-tab>
+          </uib-tabset>
+        </section>
+        <!-- /tile footer -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+      <!-- tile -->
+      <!-- controller is located in ui-widgets/ui-widgets.controller.js -->
+      <div class="tile message-widget" ng-controller="MessageController as widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Quick Message</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile widget -->
+        <section class="tile-widget">
+          <form role="form">
+            <div class="form-group">
+              <tags-input ng-model="widget.recipients" add-on-paste="true" placeholder="Select recipients...">
+                <auto-complete source="widget.availableRecipients" min-length="0"></auto-complete>
+              </tags-input>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Type subject...">
+            </div>
+          </form>
+        </section>
+        <!-- /tile widget -->
+
+        <!-- tile body -->
+        <section class="tile-body p-0">
+          <text-angular ng-model="widget.content" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['justifyLeft','justifyCenter','justifyRight'],['ul','ol']]"></text-angular>
+        </section>
+        <!-- /tile body -->
+
+        <!-- tile footer -->
+        <section class="tile-footer text-right">
+          <button class="btn btn-theme minotaur-btn colored">Submit</button>
+        </section>
+        <!-- /tile footer -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Chat</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" style="max-height: 350px;overflow:auto;" slimscroll="{
+            height: '100%',
+            size: '6px',
+            borderRadius: '0px',
+            opacity: .2
+          }">
+          <ul class="chats">
+            <li class="in">
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar2.jpg" alt="">
+                </div>
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">John Douey </a><span class="datetime">at 12.10.2014</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+              </div>
+            </li>
+            <li class="out">
+              <div class="media">
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">2 hours ago</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+                <div class="media-right">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar1.jpg" alt="">
+                </div>
+              </div>
+            </li>
+            <li class="in">
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar2.jpg" alt="">
+                </div>
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">John Douey </a><span class="datetime">2 hours ago</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+              </div>
+            </li>
+            <li class="out">
+              <div class="media">
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">1 hours ago</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+                <div class="media-right">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar1.jpg" alt="">
+                </div>
+              </div>
+            </li>
+            <li class="in">
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar2.jpg" alt="">
+                </div>
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">John Douey </a><span class="datetime">53 minutes ago</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+              </div>
+            </li>
+            <li class="out">
+              <div class="media">
+                <div class="media-body">
+                  <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">40 minutes ago</span></p>
+                  <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                </div>
+                <div class="media-right">
+                  <img class="media-object img-circle wh50" src="assets/images/random-avatar1.jpg" alt="">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <!-- /tile body -->
+
+        <!-- tile footer -->
+        <div class="tile-footer">
+          <form class="chat-form">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Type your message here...">
+              <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button"><i class="fa fa-chevron-right"></i></button>
+                </span>
+            </div>
+          </form>
+        </div>
+        <!-- /tile footer -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-6">
+
+
+      <!-- tile -->
+      <!-- controller is located in ui-widgets/ui-widgets.controller.js -->
+      <div class="tile appointments-widget bg-greensea" ng-controller="AppointmentsController as widget">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Appointments</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body">
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-6 text-center">
+
+              <h4 class="text-thin">Bratislava</h4>
+              <clock radius="60"></clock>
+              <span class="text-thin">30&deg;C</span>
+
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-6 b-l text-center">
+              <span class="day">{{widget.date | date:'dd'}}</span><br/>
+              <span class="month">{{widget.date | date:'MMMM'}}</span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+        </section>
+        <!-- /tile body -->
+
+        <!-- tile footer -->
+        <div class="tile-footer b-t b-tr-white mt-20">
+
+          <slick autoplay="true" dots="true" autoplay-speed="8000" infinite="true">
+
+            <div>
+              <p class="text-center text-strong"><i class="fa fa-clock-o"></i> 16:00, <small class="text-thin">Estimated time: 2 hours</small></p>
+              <p>
+              <h5 class="mt-10 mb-0 text-strong">Release Update</h5>
+              <small class="text-thin text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</small>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-center text-strong"><i class="fa fa-clock-o"></i> 19:00, <small class="text-thin">Estimated time: 5 hours</small></p>
+              <p>
+              <h5 class="mt-10 mb-0 text-strong">Make a Backup</h5>
+              <small class="text-thin text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</small>
+              </p>
+            </div>
+
+            <div>
+              <p class="text-center text-strong"><i class="fa fa-clock-o"></i> 22:45, <small class="text-thin">Estimated time: 8 hours 45 minutes</small></p>
+              <p>
+              <h5 class="mt-10 mb-0 text-strong">Buy Tickets</h5>
+              <small class="text-thin text-transparent-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...</small>
+              </p>
+            </div>
+
+          </slick>
+
+        </div>
+        <!-- /tile footer -->
+
+      </div>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

@@ -1,0 +1,608 @@
+<div class="page page-charts pull-to-header">
+
+
+
+  <ol class="breadcrumb bg-white">
+    <li><a ui-sref="dashboard">Home</a></li>
+    <li class="active">Charts</li>
+  </ol>
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Morris.js Charts</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="MorrisChartsController as vm">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-3">
+
+              <h4 class="custom-font"><strong>Line</strong> Chart</h4>
+              <div  line-chart
+                    line-data='vm.basicData'
+                    line-xkey='year'
+                    line-ykeys='["a", "b"]'
+                    line-labels='["Series", "Series"]'
+                    line-colors='["#16a085","#FF0066"]' style="height: 250px"></div>
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-3">
+
+              <h4 class="custom-font"><strong>Area</strong> Chart</h4>
+              <div  area-chart
+                    area-data='vm.areaData'
+                    area-xkey='year'
+                    area-ykeys='["a", "b"]'
+                    area-labels='["Series A", "Series B"]'
+                    show-grid='true' style="height: 250px"></div>
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-3">
+
+              <h4 class="custom-font"><strong>Bar</strong> Chart</h4>
+              <div  bar-chart
+                    bar-data='vm.basicData'
+                    bar-x='year'
+                    bar-y='["a", "b"]'
+                    bar-labels='["Series A", "Series B"]'
+                    bar-colors='["#ff4a43","#1693A5"]' style="height: 250px"></div>
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-3">
+
+              <h4 class="custom-font"><strong>Donut</strong> Chart</h4>
+              <div  donut-chart
+                    donut-data='vm.donutData' style="height: 250px"></div>
+            </div>
+            <!-- /col -->
+
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Sparkline Charts</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="SparklineChartsController as vm">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="custom-font"><strong>Line</strong> Chart</h4>
+              <span sparkline data="vm.lineChart.data" options="vm.lineChart.options"></span>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="custom-font"><strong>Bar</strong> Chart</h4>
+              <span sparkline data="vm.barChart.data" options="vm.barChart.options"></span>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-4">
+              <h4 class="custom-font"><strong>Pie</strong> Chart</h4>
+              <span sparkline data="vm.pieChart.data" options="vm.pieChart.options"></span>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Easy Pie Charts</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="EasyPieChartsController as vm">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <div easypiechart options="vm.easypiechart.options" percent="vm.easypiechart.percent" class="easypiechart" style="width: 180px; height: 180px;">
+                <span class="pie-percent" ng-bind="vm.easypiechart.percent" style="line-height: 170px;"></span>
+              </div>
+            </div>
+            <!-- /col
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <div easypiechart options="vm.easypiechart2.options" percent="vm.easypiechart2.percent" class="easypiechart" style="width: 180px; height: 180px;">
+                <span class="pie-percent" ng-bind="vm.easypiechart2.percent" style="line-height: 170px;"></span>
+              </div>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <div easypiechart options="vm.easypiechart3.options" percent="vm.easypiechart3.percent" class="easypiechart" style="width: 220px; height: 220px;">
+                <span class="pie-percent" ng-bind="vm.easypiechart3.percent" style="line-height: 210px;"></span>
+              </div>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <div easypiechart options="vm.easypiechart4.options" percent="vm.easypiechart4.percent" class="easypiechart" style="width: 220px; height: 220px;">
+                <span class="pie-percent" ng-bind="vm.easypiechart4.percent" style="line-height: 210px;"></span>
+              </div>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Gauge.js Charts</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="GaugejsChartsController as vm">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <canvas gauge-chart
+                      data="vm.gaugeChart1.data"
+                      options="vm.gaugeChart1.options"
+                      style="width: 220px; height: 110px; ">
+              </canvas>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <canvas gauge-chart
+                      data="vm.gaugeChart2.data"
+                      options="vm.gaugeChart2.options"
+                      style="width: 220px; height: 110px; ">
+              </canvas>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <canvas gauge-chart
+                      data="vm.gaugeChart3.data"
+                      options="vm.gaugeChart3.options"
+                      style="width: 220px; height: 110px; ">
+              </canvas>
+            </div>
+            <!-- /col -->
+            <!-- col -->
+            <div class="col-md-3 text-center">
+              <canvas gauge-chart
+                      data="vm.gaugeChart4.data"
+                      options="vm.gaugeChart4.options"
+                      style="width: 220px; height: 110px; ">
+              </canvas>
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+
+
+  </div>
+  <!-- /row -->
+
+
+  <!-- row -->
+  <div class="row">
+
+
+    <!-- col -->
+    <div class="col-lg-8 col-md-12">
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Line Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotLineChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Bar Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotBarChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Stacked Bar Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotStackedBarChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Combined Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotCombinedChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+
+    <!-- col -->
+    <div class="col-lg-4 col-md-12">
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Pie Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotPieChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Donut Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotDonutChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Flot - Realtime Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="FlotRealtimeChartController as vm">
+          <flot dataset="vm.dataset" options="vm.options" height="250px"></flot>
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+      <!-- tile -->
+      <div class="tile">
+
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">Rickshaw Chart</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <section class="tile-body" ng-controller="RickshawChartController as vm">
+
+          <rickshaw rickshaw-options="vm.options0"
+                    rickshaw-features="vm.features0"
+                    rickshaw-series="vm.series0">
+          </rickshaw>
+
+          <form class="form-inline mt-10">
+            <select class="form-control input-sm" ng-model="vm.renderer0" ng-options="renderer.name for renderer in vm.renderers" ng-change="vm.rendererChanged(0)"></select>
+            <select class="form-control input-sm" ng-model="vm.palette0" ng-options="palette for palette in vm.palettes" ng-change="vm.paletteChanged(0)"></select>
+            <button class="btn btn-sm btn-default" ng-click="vm.changeSeriesData(0)">Change series data</button>
+          </form>
+
+        </section>
+        <!-- /tile body -->
+
+      </div>
+      <!-- /tile -->
+
+
+
+    </div>
+    <!-- /col -->
+
+
+  </div>
+  <!-- /row -->
+
+
+
+
+</div>

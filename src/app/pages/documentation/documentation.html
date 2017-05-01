@@ -1,0 +1,1055 @@
+<div class="page page-documentation full-height">
+
+
+  <div class="tbox tbox-sm">
+
+
+
+
+
+
+    <!-- left side -->
+    <div class="tcol w-md bg-white b-r no-print">
+
+
+
+
+
+
+
+
+      <!-- left side header-->
+      <div class="p-15 b-b">
+
+        <h3 class="m-0 mr-5 inline-block">Documentation</h3>
+
+      </div>
+      <!-- /left side header -->
+
+
+
+
+
+
+
+
+      <!-- left side body -->
+      <div class="p-15" data-spy="affix" data-offset-top="60">
+
+        <ul class="list-unstyled">
+          <li class="text-orange b-b pb-10 mb-10 b-orange"><strong>General</strong></li>
+          <li><a href anchor-scroll="zip_structure">ZIP File Structure</a></li>
+          <li><a href anchor-scroll="folder_structure">Folder Structure</a></li>
+          <li class="mb-10"><a href anchor-scroll="routing">Routing</a></li>
+          <li class="text-blue b-b pb-10 mb-10 b-blue"><strong>Running Application</strong></li>
+          <li><a href anchor-scroll="requirements">Required Tools</a></li>
+          <li><a href anchor-scroll="nodejs">Node.js</a></li>
+          <li><a href anchor-scroll="bower">Bower</a></li>
+          <li><a href anchor-scroll="gulp">Gulp</a></li>
+          <li class="mb-10"><a href anchor-scroll="gulp_config">Nominify Build</a></li>
+          <li class="text-success b-b pb-10 mb-10 b-success"><strong>CSS</strong></li>
+          <li><a href anchor-scroll="colors">Colors</a></li>
+          <li><a href anchor-scroll="layouts">Layouts</a></li>
+          <li class="mb-10"><a href anchor-scroll="global_classes">Global Classes</a></li>
+          <li class="text-danger b-b pb-10 mb-10 b-danger"><strong>Plugins & Directives</strong></li>
+          <li><a href anchor-scroll="custom_directives">Custom Directives</a></li>
+          <li><a href anchor-scroll="plugins">3rd Party Plugins</a></li>
+        </ul>
+
+      </div>
+      <!-- /left side body -->
+
+
+
+
+
+
+
+
+    </div>
+    <!-- /left side -->
+
+
+
+
+
+
+
+    <!-- right side -->
+    <div class="tcol">
+
+
+
+      <!-- right side body -->
+      <div class="p-15">
+
+
+
+        <!-- tile -->
+        <section class="tile">
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <div class="text-center mb-30">
+              <img src="assets/images/logo-big.png" alt="" class="w-md"/>
+              <h1 class="mb-30">Minotaur - Angular Admin Dashboard</h1>
+
+              <p class="lead">
+                <strong>Minotaur</strong> is premium admin dashboard powered with AngularJS. It's builded on popular Twitter Bootstrap v3 framework. Minotaur is fully based on HTML5 + CSS3 standards. Is <strong>fully responsive</strong> and clean on every device and every browser. It contains many example pages with many ready to use elements and is <strong>strongly customizable</strong>. You can choose choose from few premaid layouts such as <strong>horizontal navbar, boxed layout or rtl layout.</strong> Minotaur work on <strong>every modern browser</strong>, any device and any screen size.
+              </p>
+
+            </div>
+
+            <hr/>
+
+            <h3 class="text-orange mt-0 mb-10">General</h3>
+
+            <h5 id="zip_structure" class="mt-30">Zip File Structure:</h5>
+
+            <pre>
+-admin
+  -app // folder with non-builded angular app
+    |-dashboard-style-1
+    |-dashboard-style-2
+  -dist // folder with builded angular app
+    |-dashboard-style-1
+      |-minified // builded app with minified files
+      |-non-minified // builded app with non minified files
+    |-dashboard-style-2
+      |-minified // builded app with minified files
+      |-non-minified // builded app with non minified files
+
+-documentation // there you can find pdf documentation
+-psd // there are some psd's
+</pre>
+
+            <h5 id="folder_structure" class="mt-30">Folder Structure:</h5>
+            <p>This is list of the most important files and folders</p>
+
+            <pre>
+/gulp -- this folder contain all gulp tasks
+/src -- everything regarding application is here
+  /app -- this folder contain application files
+    /components -- all application components are here
+      /directives -- all custom written directives are located here
+      /jsons -- just some jsons
+      /modules -- some modules can come here
+      /partials -- application partials
+        /header -- yeah I'm header section
+          .header.html -- that's how I'm builded
+          .header.scss -- that's how I look
+          .header.directive.js - that's how I work
+        /navigation - I'm the navigation section
+          .navigation.html -- that's how I'm builded
+          .navigation.scss -- that's how I look
+          .navigation.directive.js - that's how I work
+        /rightbar -- I'm the rightbar section
+          .rightbar.html -- that's how I'm builded
+          .rightbar.scss -- that's how I look
+          .rightbar.directive.js - that's how I work
+      /services -- some services can come here
+      /templates -- you can place there some more templates
+        .messages_tmpl.html -- ng-messages directive template to handle some form input errors etc.
+    /pages -- all pages and their controllers are located here
+      /dashboard -- all dashboard page files
+        .dashboard.controller.js -- dashboard controller
+        .dashboard.html -- dashboard html file
+      ...
+    /styles -- I'm the Lord of the Styles
+      /components -- all ui elements styling are here
+      /inc -- some variables, colors and mixins
+      /layouts -- some premaid templates styles
+      /pages -- page specific styles
+      /sections -- sections styles are defined here
+      /shared -- global custom styles
+    .index.config.js -- main config file where you can config application wide settings
+    .index.constants.js -- there is a space for all your constants you need for your application
+    .index.controller.js -- main controller
+    .index.module.js -- all modules dependencies are defined here
+    .index.route.js -- all routes comes to Rome
+    .index.run.js -- run Forest run!
+    .index.scss -- I'm also the Lord of the Styles
+  /assets -- images, language files and other trash is here
+  .index.html -- I'm the boss here!
+.bower.json -- all bower dependencies are here bro!
+.gulpfile.js -- gulp configuration file
+.package.json -- all node.js dependecies are here
+</pre>
+
+            <h5 id="routing" class="mt-30">Routing:</h5>
+            <p>There are two important things about routing which are specific.</p>
+
+            <h6>1. Defining specialClass parameter</h6>
+            <p>specialClass parameter is used to place some route specific class to main html elements "html", "body", "minotaur-header" and "minotaur-nav". For example you can add parameter "specialClass: 'boxed-layout'" to your route so it will be loaded in boxed layout, this parameter "specialClass: 'force-header-sm header-sm'" load routed page with small header as default. Use specialClass <strong>"core"</strong> in case you want to load some kind of core page like login/signup so header/navigation won't be displayes in that case.</p>
+
+            <pre>
+//layout-boxed
+.state('layouts.boxed', {
+  url: '/boxed',
+  templateUrl: 'app/pages/layout-boxed/layout-boxed.html',
+  controller: 'LayoutBoxedController',
+  controllerAs: 'layout',
+  parent: 'layouts',
+  specialClass: 'boxed-layout'
+})
+
+//layout-header-sm
+.state('layouts.header-sm', {
+  url: '/header-sm',
+  templateUrl: 'app/pages/layout-header-sm/layout-header-sm.html',
+  controller: 'LayoutHeaderSmController',
+  controllerAs: 'layout',
+  parent: 'layouts',
+  specialClass: 'force-header-sm header-sm'
+})
+
+//register
+.state('pages.signup', {
+  url: '/signup',
+  templateUrl: 'app/pages/pages-signup/pages-signup.html',
+  controller: 'SignupController',
+  controllerAs: 'ctrl',
+  parent: 'pages',
+  specialClass: 'core'
+})
+</pre>
+
+            <h6>2. Defining parent parameter</h6>
+            <p>Parent parameter is used to keep dropdown menu opened while you are moving on a submenu level of same parent, for example if you are on common form elements page and you are moving on validation elements page which are both under same "forms" parent route. So don't forget to define it.</p>
+
+            <pre>
+//form stuff
+.state('forms', {
+  url: '/app/forms',
+  template: '<div ui-view></div>'
+})
+//common-elements
+.state('forms.common', {
+  url: '/common',
+  templateUrl: 'app/pages/forms-common/forms-common.html',
+  controller: 'FormsCommonController',
+  controllerAs: 'forms',
+  parent: 'forms'
+})
+//validation-elements
+.state('forms.validation', {
+  url: '/validation',
+  templateUrl: 'app/pages/forms-validation/forms-validation.html',
+  controller: 'FormsValidationController',
+  controllerAs: 'forms',
+  parent: 'forms'
+})
+</pre>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+
+
+
+        <!-- tile -->
+        <section class="tile">
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <h3 class="text-blue mt-0 mb-10">Running Application</h3>
+            <p>Run properly this application using <a href="http://bower.io/" target="_blank">Bower</a> dependencies management tool and <a href="http://gulpjs.com/" target="_blank">Gulp</a> automation tool. Application is builded by Yeoman generator <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank">generator-gulp-angular</a></p>
+
+            <h5 id="requirements" class="mt-30">Required tools</h5>
+
+            <p>After downloading source ZIP file from <a href="https://themeforest.net/" target="_blank">@Themeforest</a>, you have to unzip it somewhere. We will be using non-builded application folder "admin/app".</p>
+            <ul>
+              <li>As first make sure you have installed <strong>Node.js</strong> with package manager <strong>npm</strong>. You can check it in your terminal window using these commands <code>node --version</code> and <code>npm --version</code>. You can download Node.js <a href="http://nodejs.org/download/" target="_blank">here</a></li>
+              <li>As next step you need to install <strong>bower and gulp</strong> <code>npm install -g bower gulp</code></li>
+              <li>After you have all tools installed, open your terminal window an go to application folder of our project "admin/app" as default, there have to be bower.json, package.json and gulpfile.js files located. There you need run this commands to install all dependencies <code>npm install</code> and <code>bower install</code></li>
+              <li>Now you will be able to run your local server with this command <code>gulp serve</code></li>
+            </ul>
+
+            <h5 id="nodejs" class="mt-30">Node.js</h5>
+            <p>You can download Node.js <a href="http://nodejs.org/download/" target="_blank">here</a>. Install it and check it in your terminal window with <code>node --version</code> and <code>npm --version</code>. If you get in some troubles try google it.</p>
+            <p>Now when you have node installed get to the application folder of our project "admin/app" as default in terminal window and run command <code>npm install</code>, there have to be package.json files located. Node will download and install all dependencies for you.</p>
+
+            <h5 id="bower" class="mt-30">Bower</h5>
+            <p>Bower works by fetching and installing packages from all over, taking care of hunting, finding, downloading, and saving the stuff you’re looking for. Bower keeps track of these packages in a manifest file, <code>bower.json</code>.</p>
+            <p>You can easily install Bower with npm running this command in terminal <code>npm install -g bower</code></p>
+            <p>Now when you have bower installed get to the application folder of our project "admin/app" as default in terminal window and run command <code>bower install</code>, there have to be bower.json files located. Bower will download and install all dependencies from <code>bower.json</code> file for you.</p>
+            <p>If you want add and install any additional dependency you can do it by running this command in application folder <code>bower install 'package name' --save</code></p>
+
+            <h5 id="gulp" class="mt-30">Gulp</h5>
+            <p><a href="http://gulpjs.com/" target="_blank">Gulp</a> is a JavaScript task runner (Automation), save yourself from repetitive tasks.</p>
+            <p>There are two important files for gulp <strong>gulpfile.js</strong> and <strong>package.json</strong>. <strong>gulpfile.js</strong> contains configurations for all plugins and tasks that gulp use. In <strong>package.json</strong> you can find all node packages that gulp needs.</p>
+            <p>As we have all configured in this application we can run localhost server with this command from application folder <code>gulp serve</code></p>
+            <p>To build your application use this command from application folder <code>gulp build</code></p>
+            <p>After bulding you'll get fresh copy of your builded application in "dist" folder located where your gulpfile.js file is.</p>
+
+            <h5 id="gulp_config" class="mt-30">Gulp build without minify/uglify</h5>
+            <p>If you want build application with Gulp and don't want to minify/uglify files, you have to use command <code>gulp build-nominify</code> for compilation.</p>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+
+
+        <!-- tile -->
+        <section class="tile">
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <h3 class="text-success mt-0 mb-10">CSS</h3>
+            <p>Main css file is compiled with Sass, all Sass files you can find in this folder <code>src/app/styles</code> and main scss file "index.scss" is located in <code>src/app</code>. Every part is divided into skeleton tree.</p>
+
+            <h5 id="colors" class="mt-30">Colors</h5>
+
+            <p>There are few default <strong>color palletes</strong> that you can use by assigning it's classes to elements. You can find all of them in file <code>src/app/styles/shared/global.scss</code> from line 34.</p>
+
+            <p>For background you can use class <code>.bg-'color-variant'</code> and for text <code>.text-'color-variant'</code></p>
+
+            <div class="row">
+              <div class="col-sm-6">
+
+                <p class="text-cyan">.bg-cyan</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-cyan dker">.dker</span>
+                      <span class="tcol text-center bg-cyan dk">.dk</span>
+                      <span class="tcol text-center bg-cyan">.bg</span>
+                      <span class="tcol text-center bg-cyan lt">.lt</span>
+                      <span class="tcol text-center bg-cyan lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-amethyst">.bg-amethyst</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-amethyst dker">.dker</span>
+                      <span class="tcol text-center bg-amethyst dk">.dk</span>
+                      <span class="tcol text-center bg-amethyst">.bg</span>
+                      <span class="tcol text-center bg-amethyst lt">.lt</span>
+                      <span class="tcol text-center bg-amethyst lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-green">.bg-green</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-green dker">.dker</span>
+                      <span class="tcol text-center bg-green dk">.dk</span>
+                      <span class="tcol text-center bg-green">.bg</span>
+                      <span class="tcol text-center bg-green lt">.lt</span>
+                      <span class="tcol text-center bg-green lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-orange">.bg-orange</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-orange dker">.dker</span>
+                      <span class="tcol text-center bg-orange dk">.dk</span>
+                      <span class="tcol text-center bg-orange">.bg</span>
+                      <span class="tcol text-center bg-orange lt">.lt</span>
+                      <span class="tcol text-center bg-orange lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-red">.bg-red</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-red dker">.dker</span>
+                      <span class="tcol text-center bg-red dk">.dk</span>
+                      <span class="tcol text-center bg-red">.bg</span>
+                      <span class="tcol text-center bg-red lt">.lt</span>
+                      <span class="tcol text-center bg-red lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-greensea">.bg-greensea</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-greensea dker">.dker</span>
+                      <span class="tcol text-center bg-greensea dk">.dk</span>
+                      <span class="tcol text-center bg-greensea">.bg</span>
+                      <span class="tcol text-center bg-greensea lt">.lt</span>
+                      <span class="tcol text-center bg-greensea lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-dutch">.bg-dutch</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-dutch dker">.dker</span>
+                      <span class="tcol text-center bg-dutch dk">.dk</span>
+                      <span class="tcol text-center bg-dutch">.bg</span>
+                      <span class="tcol text-center bg-dutch lt">.lt</span>
+                      <span class="tcol text-center bg-dutch lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-hotpink">.bg-hotpink</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-hotpink dker">.dker</span>
+                      <span class="tcol text-center bg-hotpink dk">.dk</span>
+                      <span class="tcol text-center bg-hotpink">.bg</span>
+                      <span class="tcol text-center bg-hotpink lt">.lt</span>
+                      <span class="tcol text-center bg-hotpink lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-drank">.bg-drank</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-drank dker">.dker</span>
+                      <span class="tcol text-center bg-drank dk">.dk</span>
+                      <span class="tcol text-center bg-drank">.bg</span>
+                      <span class="tcol text-center bg-drank lt">.lt</span>
+                      <span class="tcol text-center bg-drank lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-blue">.bg-blue</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-blue dker">.dker</span>
+                      <span class="tcol text-center bg-blue dk">.dk</span>
+                      <span class="tcol text-center bg-blue">.bg</span>
+                      <span class="tcol text-center bg-blue lt">.lt</span>
+                      <span class="tcol text-center bg-blue lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-theme">.bg-theme</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-theme dker">.dker</span>
+                      <span class="tcol text-center bg-theme dk">.dk</span>
+                      <span class="tcol text-center bg-theme">.bg</span>
+                      <span class="tcol text-center bg-theme lt">.lt</span>
+                      <span class="tcol text-center bg-theme lter">.lter</span>
+                    </span>
+                </div>
+
+              </div>
+              <div class="col-sm-6">
+
+                <p class="text-lightred">.bg-lightred</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-lightred dker">.dker</span>
+                      <span class="tcol text-center bg-lightred dk">.dk</span>
+                      <span class="tcol text-center bg-lightred">.bg</span>
+                      <span class="tcol text-center bg-lightred lt">.lt</span>
+                      <span class="tcol text-center bg-lightred lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-slategray">.bg-slategray</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-slategray dker">.dker</span>
+                      <span class="tcol text-center bg-slategray dk">.dk</span>
+                      <span class="tcol text-center bg-slategray">.bg</span>
+                      <span class="tcol text-center bg-slategray lt">.lt</span>
+                      <span class="tcol text-center bg-slategray lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-darkgray">.bg-darkgray</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-darkgray dker">.dker</span>
+                      <span class="tcol text-center bg-darkgray dk">.dk</span>
+                      <span class="tcol text-center bg-darkgray">.bg</span>
+                      <span class="tcol text-center bg-darkgray lt">.lt</span>
+                      <span class="tcol text-center bg-darkgray lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-primary">.bg-primary</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-primary dker">.dker</span>
+                      <span class="tcol text-center bg-primary dk">.dk</span>
+                      <span class="tcol text-center bg-primary">.bg</span>
+                      <span class="tcol text-center bg-primary lt">.lt</span>
+                      <span class="tcol text-center bg-primary lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-success">.bg-success</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-success dker">.dker</span>
+                      <span class="tcol text-center bg-success dk">.dk</span>
+                      <span class="tcol text-center bg-success">.bg</span>
+                      <span class="tcol text-center bg-success lt">.lt</span>
+                      <span class="tcol text-center bg-success lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-warning">.bg-warning</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-warning dker">.dker</span>
+                      <span class="tcol text-center bg-warning dk">.dk</span>
+                      <span class="tcol text-center bg-warning">.bg</span>
+                      <span class="tcol text-center bg-warning lt">.lt</span>
+                      <span class="tcol text-center bg-warning lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-danger">.bg-danger</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-danger dker">.dker</span>
+                      <span class="tcol text-center bg-danger dk">.dk</span>
+                      <span class="tcol text-center bg-danger">.bg</span>
+                      <span class="tcol text-center bg-danger lt">.lt</span>
+                      <span class="tcol text-center bg-danger lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-info">.bg-info</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-info dker">.dker</span>
+                      <span class="tcol text-center bg-info dk">.dk</span>
+                      <span class="tcol text-center bg-info">.bg</span>
+                      <span class="tcol text-center bg-info lt">.lt</span>
+                      <span class="tcol text-center bg-info lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-default">.bg-default</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-default dker">.dker</span>
+                      <span class="tcol text-center bg-default dk">.dk</span>
+                      <span class="tcol text-center bg-default">.bg</span>
+                      <span class="tcol text-center bg-default lt">.lt</span>
+                      <span class="tcol text-center bg-default lter">.lter</span>
+                    </span>
+                </div>
+
+                <p class="text-transparent-black">.bg-tr-black (transparent-black, there are also .bg-white and .bg-tr-white)</p>
+                <div class="mb-10">
+                    <span class="tbox">
+                      <span class="tcol text-center bg-tr-black dker">.dker</span>
+                      <span class="tcol text-center bg-tr-black dk">.dk</span>
+                      <span class="tcol text-center bg-tr-black">.bg</span>
+                      <span class="tcol text-center bg-tr-black lt">.lt</span>
+                      <span class="tcol text-center bg-tr-black lter">.lter</span>
+                    </span>
+                </div>
+
+              </div>
+            </div>
+
+            <h5 id="layouts" class="mt-30">Layouts</h5>
+            <p><strong>Boxed Layout</strong>, add <code>boxed-layout</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Expanded Sidebar</strong>, add <code>force-expanded nav-expanded</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Small Header</strong>, add <code>force-header-sm header-sm</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Header Aside</strong>, add <code>header-aside</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Sidebar Aside</strong>, add <code>sidebar-aside</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Horizontal Menu</strong>, add <code>hz-menu</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>RTL Layouts</strong>, add <code>rtl</code> class to html, body, minotaur-header and minotaur-nav elements or add it as specialClass parameter to route.</p>
+            <p><strong>Pull content to header</strong>, add <code>pull-to-header</code> class to ".page" div.</p>
+
+            <h5 id="global_classes" class="mt-30">Global Classes</h5>
+            <table class="table table-border b-a">
+              <tbody>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Text Sizes</td>
+              </tr>
+              <tr>
+                <td class="w-lg">.text-xs</td>
+                <td class="text-xs">font-size: 10px;</td>
+              </tr>
+              <tr>
+                <td>.text-sm</td>
+                <td class="text-sm">font-size: 12px;</td>
+              </tr>
+              <tr>
+                <td>.text-md</td>
+                <td class="text-md">font-size: 14px;</td>
+              </tr>
+              <tr>
+                <td>.text-lg</td>
+                <td class="text-lg">font-size: 18px;</td>
+              </tr>
+              <tr>
+                <td>.text-xl</td>
+                <td class="text-xl">font-size: 32px;</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Displays</td>
+              </tr>
+              <tr>
+                <td>.block</td>
+                <td>display: block</td>
+              </tr>
+              <tr>
+                <td>.inline</td>
+                <td>display: inline</td>
+              </tr>
+              <tr>
+                <td>.inline-block</td>
+                <td>display: inline-block</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Margins</td>
+              </tr>
+              <tr>
+                <td>.m-auto</td>
+                <td>margin: auto</td>
+              </tr>
+              <tr>
+                <td>.m-40, .mt-40, .mr-40, .mb-40, .ml-40</td>
+                <td>margin: 40px, margin-top: 40px, margin-right: 40px, margin-bottom: 40px, margin-left: 40px</td>
+              </tr>
+              <tr>
+                <td>.m-30, .mt-30, .mr-30, .mb-30, .ml-30</td>
+                <td>margin: 30px, margin-top: 30px, margin-right: 30px, margin-bottom: 30px, margin-left: 30px</td>
+              </tr>
+              <tr>
+                <td>.m-20, .mt-20, .mr-20, .mb-20, .ml-20</td>
+                <td>margin: 20px, margin-top: 20px, margin-right: 20px, margin-bottom: 20px, margin-left: 20px</td>
+              </tr>
+              <tr>
+                <td>.m-15, .mt-15, .mr-15, .mb-15, .ml-15</td>
+                <td>margin: 15px, margin-top: 15px, margin-right: 15px, margin-bottom: 15px, margin-left: 15px</td>
+              </tr>
+              <tr>
+                <td>.m-10, .mt-10, .mr-10, .mb-10, .ml-10</td>
+                <td>margin: 10px, margin-top: 10px, margin-right: 10px, margin-bottom: 10px, margin-left: 10px</td>
+              </tr>
+              <tr>
+                <td>.m-5, .mt-5, .mr-5, .mb-5, .ml-5</td>
+                <td>margin: 5px, margin-top: 5px, margin-right: 5px, margin-bottom: 5px, margin-left: 5px</td>
+              </tr>
+              <tr>
+                <td>.m-0, .mt-0, .mr-0, .mb-0, .ml-0</td>
+                <td>margin: 0, margin-top: 0, margin-right: 0, margin-bottom: 0, margin-left: 0</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Paddings</td>
+              </tr>
+              <tr>
+                <td>.p-40, .pt-40, .pr-40, .pb-40, .pl-40</td>
+                <td>padding: 40px, padding-top: 40px, padding-right: 40px, padding-bottom: 40px, padding-left: 40px</td>
+              </tr>
+              <tr>
+                <td>.p-30, .pt-30, .pr-30, .pb-30, .pl-30</td>
+                <td>padding: 30px, padding-top: 30px, padding-right: 30px, padding-bottom: 30px, padding-left: 30px</td>
+              </tr>
+              <tr>
+                <td>.p-20, .mt-20, .mr-20, .mb-20, .ml-20</td>
+                <td>padding: 20px, padding-top: 20px, padding-right: 20px, padding-bottom: 20px, padding-left: 20px</td>
+              </tr>
+              <tr>
+                <td>.p-15, .pt-15, .pr-15, .pb-15, .pl-15</td>
+                <td>padding: 15px, padding-top: 15px, padding-right: 15px, padding-bottom: 15px, padding-left: 15px</td>
+              </tr>
+              <tr>
+                <td>.p-10, .pt-10, .pr-10, .pb-10, .pl-10</td>
+                <td>padding: 10px, padding-top: 10px, padding-right: 10px, padding-bottom: 10px, padding-left: 10px</td>
+              </tr>
+              <tr>
+                <td>.p-5, .pt-5, .pr-5, .pb-5, .pl-5</td>
+                <td>padding: 5px, padding-top: 5px, padding-right: 5px, padding-bottom: 5px, padding-left: 5px</td>
+              </tr>
+              <tr>
+                <td>.p-0, .pt-0, .pr-0, .pb-0, .pl-0</td>
+                <td>padding: 0, padding-top: 0, padding-right: 0, padding-bottom: 0, padding-left: 0</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Borders</td>
+              </tr>
+              <tr>
+                <td>.b-0</td>
+                <td>border: 0</td>
+              </tr>
+              <tr>
+                <td>.bt-0</td>
+                <td>border-top: 0</td>
+              </tr>
+              <tr>
+                <td>.bb-0</td>
+                <td>border-bottom: 0</td>
+              </tr>
+              <tr>
+                <td>.b-a</td>
+                <td>border: 1px solid rgba(0,0,0,.05)</td>
+              </tr>
+              <tr>
+                <td>.b-t</td>
+                <td>border-top: 1px solid rgba(0,0,0,.05)</td>
+              </tr>
+              <tr>
+                <td>.b-r</td>
+                <td>border-right: 1px solid rgba(0,0,0,.05)</td>
+              </tr>
+              <tr>
+                <td>.b-b</td>
+                <td>border-bottom: 1px solid rgba(0,0,0,.05)</td>
+              </tr>
+              <tr>
+                <td>.b-l</td>
+                <td>border-left: 1px solid rgba(0,0,0,.05)</td>
+              </tr>
+              <tr>
+                <td>.b-dashed</td>
+                <td>border-style: dashed</td>
+              </tr>
+              <tr>
+                <td>.b-solid</td>
+                <td>border-coloe: #ddd</td>
+              </tr>
+              <tr>
+                <td>.b-2x</td>
+                <td>border-width: 2px</td>
+              </tr>
+              <tr>
+                <td>.b-3x</td>
+                <td>border-width: 3px</td>
+              </tr>
+              <tr>
+                <td>.b-'color-variant' (.b-cyan)</td>
+                <td>border-color: 'color-variant'</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Border Radius</td>
+              </tr>
+              <tr>
+                <td>.br-0</td>
+                <td>border-radius: 0</td>
+              </tr>
+              <tr>
+                <td>.br-2</td>
+                <td>border-radius: 2px</td>
+              </tr>
+              <tr>
+                <td>.br-2-t</td>
+                <td>border-radius: 2px 2px 0 0</td>
+              </tr>
+              <tr>
+                <td>.br-2-r</td>
+                <td>border-radius: 0 2px 2px 0</td>
+              </tr>
+              <tr>
+                <td>.br-2-b</td>
+                <td>border-radius: 0 0 2px 2px</td>
+              </tr>
+              <tr>
+                <td>.br-2-l</td>
+                <td>border-radius: 2px 0 0 2px</td>
+              </tr>
+              <tr class="bg-tr-black lter">
+                <td colspan="2">Sizes</td>
+              </tr>
+              <tr>
+                <td>.size-30x30, .wh30</td>
+                <td>width: 30px; height: 30px</td>
+              </tr>
+              <tr>
+                <td>.size-45x45, .wh45</td>
+                <td>width: 45px; height: 45px</td>
+              </tr>
+              <tr>
+                <td>.size-50x50, .wh50</td>
+                <td>width: 50px; height: 50px</td>
+              </tr>
+              <tr>
+                <td>.w-3xs, .w-40</td>
+                <td>width: 40px</td>
+              </tr>
+              <tr>
+                <td>.w-xxs, .w-60</td>
+                <td>width: 60px</td>
+              </tr>
+              <tr>
+                <td>.w-xs, .w-100</td>
+                <td>width: 100px</td>
+              </tr>
+              <tr>
+                <td>.w-sm, .w-150</td>
+                <td>width: 150px</td>
+              </tr>
+              <tr>
+                <td>.w-md, .w-240</td>
+                <td>width: 240px</td>
+              </tr>
+              <tr>
+                <td>.w-lg, .w-280</td>
+                <td>width: 280px</td>
+              </tr>
+              <tr>
+                <td>.w-xl, .w-360</td>
+                <td>width: 360px</td>
+              </tr>
+              <tr>
+                <td>.w-xxl, .w-420</td>
+                <td>width: 420px</td>
+              </tr>
+              <tr>
+                <td>.w-xxl, .w-530</td>
+                <td>width: 530px</td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+
+
+        <!-- tile -->
+        <section class="tile">
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <h3 class="text-danger mt-0 mb-10">Plugins & Directives</h3>
+
+            <h5 class="mt-30">AngularJS</h5>
+            <p>You must have some basic knowledge about AngularJS and some Angular modules (ui-router) to start work with this project.</p>
+
+            <h5 id="custom_directives" class="mt-30">Custom Directives</h5>
+            <p>All custom directives are located at <code>src/app/components/directives</code></p>
+
+            <table class="table table-bordered b-a">
+              <tbody>
+              <tr>
+                <td class="text-strong">activate-button.directive.js</td>
+                <td>Directive for animate button activate</td>
+              </tr>
+              <tr>
+                <td class="text-strong">active-toggle.directive.js</td>
+                <td>Directive for toggling active class on element and target</td>
+              </tr>
+              <tr>
+                <td class="text-strong">anchor-scroll.directive.js</td>
+                <td>Scroll to anchor point directive</td>
+              </tr>
+              <tr>
+                <td class="text-strong">bootstrap-filestyle.directive.js</td>
+                <td>Generate bootstrap filestyle input</td>
+              </tr>
+              <tr>
+                <td class="text-strong">clock.directive.js</td>
+                <td>Directive for svg analog clock</td>
+              </tr>
+              <tr>
+                <td class="text-strong">gaugejs-chart.directive.js</td>
+                <td>Gauge Charts directive</td>
+              </tr>
+              <tr>
+                <td class="text-strong">input-mask.directive.js</td>
+                <td>Directive to initialize input mask plugin</td>
+              </tr>
+              <tr>
+                <td class="text-strong">keypress-escape.directive.js</td>
+                <td>Directive to handle pressing escape key</td>
+              </tr>
+              <tr>
+                <td class="text-strong">leaflet.directive.js</td>
+                <td>A tiny customization of official leaflet directive</td>
+              </tr>
+              <tr>
+                <td class="text-strong">magnific-popup.directive.js</td>
+                <td>Directive to initialize magnific popup plugin</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-loading.directive.js</td>
+                <td>Handling loading state of <code>minoraur-loading</code> element</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-tile-close.directive.js</td>
+                <td>Handles closing of tile</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-tile-fullscreen.directive.js</td>
+                <td>Handles opening tile in fullscreen</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-tile-lightbox.directive.js</td>
+                <td>Handles opening tile in lightbox window</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-tile-minimize.directive.js</td>
+                <td>Handles minimizing of tile</td>
+              </tr>
+              <tr>
+                <td class="text-strong">minotaur-tile-refresh.directive.js</td>
+                <td>Handles refreshing of tile</td>
+              </tr>
+              <tr>
+                <td class="text-strong">mixitup.directive.js</td>
+                <td>Directive to initialize mixItUp plugin</td>
+              </tr>
+              <tr>
+                <td class="text-strong">native-tabs.directive.js</td>
+                <td>Directive to make basic bootstrap tabs work</td>
+              </tr>
+              <tr>
+                <td class="text-strong">slimscroll.directive.js</td>
+                <td>Initialize slimscroll plugin</td>
+              </tr>
+              <tr>
+                <td class="text-strong">sparkline.directive.js</td>
+                <td>Sparkline charts directive</td>
+              </tr>
+              <tr>
+                <td class="text-strong">validate-on-submit.directive.js</td>
+                <td>Validate form on submit</td>
+              </tr>
+              <tr>
+                <td class="text-strong">vector-map.directive.js</td>
+                <td>Initialize vectorMap plugin</td>
+              </tr>
+              </tbody>
+            </table>
+
+            <h5 id="plugins" class="mt-30">3rd Party Plugins</h5>
+
+            <p>Big thanks to you guys for providing these great plugins.</p>
+
+            <div class="row">
+
+              <div class="col-md-3">
+                <ul>
+                  <li><a href="https://github.com/lodash/lodash" target="_blank">lodash</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-animate" target="_blank">angular-animate</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-cookies" target="_blank">angular-cookies</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-touch" target="_blank">angular-touch</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-sanitize" target="_blank">angular-sanitize</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-messages" target="_blank">angular-messages</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-aria" target="_blank">angular-aria</a></li>
+                  <li><a href="https://github.com/jquery/jquery-dist" target="_blank">jquery</a></li>
+                  <li><a href="https://github.com/angular/bower-angular-resource" target="_blank">angular-resource</a></li>
+                  <li><a href="https://github.com/angular-ui/angular-ui-router-bower" target="_blank">angular-ui-router</a></li>
+                  <li><a href="https://github.com/twbs/bootstrap-sass" target="_blank">bootstrap-sass</a></li>
+                  <li><a href="https://github.com/angular-ui/bootstrap-bower" target="_blank">angular-bootstrap</a></li>
+                  <li><a href="https://github.com/Foxandxss/angular-toastr" target="_blank">angular-toastr</a></li>
+                  <li><a href="https://github.com/passy/angular-masonry" target="_blank">angular-masonry</a></li>
+                  <li><a href="https://github.com/moment/moment" target="_blank">moment</a></li>
+                  <li><a href="https://github.com/daneden/animate.css" target="_blank">animate.css</a></li>
+                  <li><a href="https://github.com/angular/bower-angular" target="_blank">angular</a></li>
+                  <li><a href="http://fontawesome.io" target="_blank">font-awesome</a></li>
+                  <li><a href="https://github.com/PascalPrecht/bower-angular-translate" target="_blank">angular-translate</a></li>
+                  <li><a href="https://github.com/PascalPrecht/bower-angular-translate-loader-static-files" target="_blank">angular-translate-loader-static-files</a></li>
+                </ul>
+              </div>
+
+              <div class="col-md-3">
+                <ul>
+                  <li><a href="https://github.com/PascalPrecht/bower-angular-translate-storage-local" target="_blank">angular-translate-storage-local</a></li>
+                  <li><a href="http://rocha.la/jQuery-slimScroll/" target="_blank">jquery-slimscroll</a></li>
+                  <li><a href="https://github.com/chieffancypants/angular-loading-bar" target="_blank">angular-loading-bar</a></li>
+                  <li><a href="https:///alertifyjs.org" target="_blank">ngAlertify</a></li>
+                  <li><a href="https://github.com/fabiobiondi/angular-fullscreen" target="_blank">angular-fullscreen</a></li>
+                  <li><a href="https://github.com/dimsemenov/Magnific-Popup" target="_blank">magnific-popup</a></li>
+                  <li><a href="https://github.com/thesabbir/simple-line-icons" target="_blank">simple-line-icons</a></li>
+                  <li><a href="http://erikflowers.github.io/weather-icons/" target="_blank">weather-icons</a></li>
+                  <li><a href="https://github.com/fragaria/angular-daterangepicker" target="_blank">angular-daterangepicker</a></li>
+                  <li><a href="https://github.com/angular-ui/ui-sortable" target="_blank">angular-ui-sortable</a></li>
+                  <li><a href="https://github.com/vasyabigi/angular-slick" target="_blank">angular-slick</a></li>
+                  <li><a href="http://mbenford.github.io/ngTagsInput" target="_blank">ng-tags-input</a></li>
+                  <li><a href="https://github.com/fraywing/textAngular" target="_blank">textAngular</a></li>
+                  <li><a href="http://omnipotent.net/jquery.sparkline" target="_blank">jquery.sparkline</a></li>
+                  <li><a href="https://github.com/nickperkinslondon/angular-bootstrap-nav-tree" target="_blank">angular-bootstrap-nav-tree</a></li>
+                  <li><a href="https://github.com/angular-ui-tree/angular-ui-tree" target="_blank">angular-ui-tree</a></li>
+                  <li><a href="http://masonry.desandro.com" target="_blank">masonry</a></li>
+                  <li><a href="https://github.com/adamczak/ng-ipsum" target="_blank">angular-ipsum</a></li>
+                  <li><a href="http://imagesloaded.desandro.com" target="_blank">imagesloaded</a></li>
+                  <li><a href="http://luckylooke.github.io/dragular/" target="_blank">dragular</a></li>
+                </ul>
+              </div>
+
+              <div class="col-md-3">
+                <ul>
+                  <li><a href="https://github.com/jtblin/angular-chart.js" target="_blank">angular-chart.js</a></li>
+                  <li><a href="https://github.com/rendro/easy-pie-chart" target="_blank">jquery.easy-pie-chart</a></li>
+                  <li><a href="https://angular-morris.io" target="_blank">angular-morris</a></li>
+                  <li><a href="https://github.com/crisbeto/angular-svg-round-progressbar" target="_blank">angular-svg-round-progressbar</a></li>
+                  <li><a href="https://github.com/ngyewch/angular-rickshaw" target="_blank">angular-rickshaw</a></li>
+                  <li><a href="https://github.com/l-lin/angular-datatables" target="_blank">angular-datatables</a></li>
+                  <li><a href="https://github.com/angular-slider/angularjs-slider" target="_blank">angularjs-slider</a></li>
+                  <li><a href="https://github.com/buberdds/angular-bootstrap-colorpicker" target="_blank">angular-bootstrap-colorpicker</a></li>
+                  <li><a href="https://github.com/nkovacic/angular-touchspin" target="_blank">angular-touchspin</a></li>
+                  <li><a href="https://github.com/leocaseiro/angular-chosen" target="_blank">angular-chosen-localytics</a></li>
+                  <li><a href="https://github.com/angular-ui/ui-select" target="_blank">angular-ui-select</a></li>
+                  <li><a href="https://github.com/danialfarid/ng-file-upload" target="_blank">ng-file-upload</a></li>
+                  <li><a href="https://github.com/markusslima/bootstrap-filestyle" target="_blank">bootstrap-filestyle</a></li>
+                  <li><a href="https://github.com/TheSharpieOne/angular-validation-match" target="_blank">angular-validation-match</a></li>
+                  <li><a href="http://robinherbots.github.io/jquery.inputmask" target="_blank">jquery.inputmask</a></li>
+                  <li><a href="https://github.com/nervgh/angular-file-upload" target="_blank">angular-file-upload</a></li>
+                  <li><a href="https://github.com/alexk111/ngImgCrop" target="_blank">ng-img-crop</a></li>
+                  <li><a href="https://datatables.net" target="_blank">datatables.net-colreorder-bs</a></li>
+                  <li><a href="https://datatables.net" target="_blank">datatables.net-responsive-bs</a></li>
+                  <li><a href="https://datatables.net" target="_blank">datatables.net-buttons-bs</a></li>
+                </ul>
+              </div>
+
+              <div class="col-md-3">
+                <ul>
+                  <li><a href="https://datatables.net" target="_blank">datatables.net-input-pagination</a></li>
+                  <li><a href="https://code.google.com/p/jquery-datatables-column-filter/" target="_blank">jquery-datatables-columnfilter</a></li>
+                  <li><a href="http://ui-grid.info" target="_blank">angular-ui-grid</a></li>
+                  <li><a href="https://github.com/esvit/ng-table" target="_blank">ng-table</a></li>
+                  <li><a href="https://github.com/lorenzofox3/Smart-Table" target="_blank">angular-smart-table</a></li>
+                  <li><a href="https://github.com/bradvin/FooTable" target="_blank">footable</a></li>
+                  <li><a href="https://github.com/ziscloud/angular-footable" target="_blank">angular-footable</a></li>
+                  <li><a href="https://github.com/patrickkunka/mixitup" target="_blank">mixitup2</a></li>
+                  <li><a href="https://github.com/mendhak/angular-intro.js" target="_blank">angular-intro.js</a></li>
+                  <li><a href="http://jqvmap.com" target="_blank">jqvmap</a></li>
+                  <li><a href="https://github.com/allenhwkim/angularjs-google-maps" target="_blank">ngmap</a></li>
+                  <li><a href="http://tombatossals.github.io/angular-leaflet-directive/" target="_blank">angular-leaflet-directive</a></li>
+                  <li><a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">leaflet-draw</a></li>
+                  <li><a href="https://github.com/Leaflet/Leaflet.heat" target="_blank">leaflet-heat</a></li>
+                  <li><a href="https://github.com/shramov/leaflet-plugins/" target="_blank">leaflet-plugins</a></li>
+                  <li><a href="http://angular-ui.github.com" target="_blank">angular-ui-calendar</a></li>
+                  <li><a href="https://github.com/bernii/gauge.js" target="_blank">gauge.js</a></li>
+                  <li><a href="http://github.com/develersrl/angular-flot" target="_blank">angular-flot</a></li>
+                  <li><a href="https://github.com/flot/flot" target="_blank">Flot</a></li>
+                  <li><a href="https://github.com/JohnPozy/flot-spline" target="_blank">flot-spline</a></li>
+                  <li><a href="https://github.com/krzysu/flot.tooltip" target="_blank">flot.tooltip</a></li>
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+
+
+      </div>
+      <!-- /right side body -->
+
+
+    </div>
+    <!-- /right side -->
+
+
+
+  </div>
+
+
+
+</div>
+

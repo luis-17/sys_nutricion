@@ -1,0 +1,41 @@
+<div class="page page-core page-login">
+
+  <div class="login-modal">
+
+    <div class="branding">
+      <img src="assets/images/logo-alt.png" alt>
+      <h2 class="brand"><strong>MIN</strong>OTAUR</h2>
+    </div>
+
+    <div class="row social-login">
+      <div class="col-sm-4"><button class="btn btn-primary btn-lg btn-block"><i class="fa fa-facebook"></i></button></div>
+      <div class="col-sm-4"><button class="btn btn-cyan btn-lg btn-block"><i class="fa fa-twitter"></i></button></div>
+      <div class="col-sm-4"><button class="btn btn-danger btn-lg btn-block"><i class="fa fa-google-plus"></i></button></div>
+    </div>
+
+    <div class="line-text"><span>or</span></div>
+
+    <form>
+      <div class="form-group with-addon">
+        <span class="input-addon"><i class="icon-user"></i></span>
+        <input type="email" placeholder="Email address" class="form-control">
+      </div>
+      <div class="form-group with-addon">
+        <span class="input-addon"><i class="icon-key"></i></span>
+        <input type="password" placeholder="Password" class="form-control">
+      </div>
+      <div class="form-group">
+        <a ui-sref="pages.forgotpass" class="pull-right">Forgot Password?</a>
+        <label class="minotaur-checkbox minotaur-label inline-block">Remember me
+          <input type="checkbox" checked>
+          <div class="input-indicator"></div>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-block btn-lg btn-rounded-40" ui-sref="dashboard">Login</button>
+    </form>
+
+    <div class="mt-15 text-center">Not Registered? <a ui-sref="pages.signup">Create an account</a></div>
+
+  </div>
+
+</div>
