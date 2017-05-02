@@ -169,3 +169,9 @@ gulp.task('clean', function () {
 gulp.task('build', ['html', 'fonts', 'other']);
 
 gulp.task('build-nominify', ['html-nominify', 'fonts', 'other']);
+
+gulp.task('browser-sync', function(){
+    browserSync.init({
+        proxy: "localhost/sys_nutricion"
+    });
+});

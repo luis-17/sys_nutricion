@@ -1,6 +1,12 @@
 (function() {
   'use strict';
 
+  var directoryApp = 'sys_nutricion';
+  // if (!window.location.origin) {
+  //   window.location.origin = window.location.protocol+"//"+window.location.host;
+  // }
+  var dirWebRoot =  'localhost/'+directoryApp+'/';
+  angular.patchURLCI = dirWebRoot+'ci.php/';
   angular
     .module('minotaur')
     .config(config);

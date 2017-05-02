@@ -15,7 +15,13 @@
         controller: 'DashboardController',
         controllerAs: 'dashboard'
       })
-
+    //empresa
+      .state('empresa', {
+        url: '/app/empresa',
+        templateUrl: 'app/pages/empresa/empresa.html',
+        controller: 'EmpresaController',
+        controllerAs: 'empresa'
+      })
       //mail
       .state('mail', {
         abstract: true,
