@@ -7,17 +7,18 @@
     .service('EmpresaServices', EmpresaServices);
 
   /** @ngInject */
-  function EmpresaController($scope,EmpresaServices) { 
+  function EmpresaController($scope,$log,EmpresaServices) { 
 
     var vm = this;
     vm.selectedItem = {};
     vm.options = {};
 
     
-    $scope.fDemo = {};
+    vm.fDemo = {};
+    $log('asd');
     EmpresaServices.sListarDemo().then(function (rpta) { 
-      $scope.fDemo = rpta.datos; 
-      console.log($scope.fDemo,'$scope.fDemo');
+      vm.fDemo = rpta.datos; 
+      $log(vm.fDemo,'vm.fDemo');
     }); 
 
     vm.remove = function(scope) {
@@ -28,8 +29,8 @@
       scope.toggle();
     };
 
-    vm.expandAll = function($event) {
-      $scope.$broadcast('angular-ui-tree:expand-all');
+    vm.expandAll = function() {
+      vm.$broadcast('angular-ui-tree:expand-all');
     };
 
   }
@@ -37,26 +38,12 @@
     return({
         sListarDemo: sListarDemo
     });
-/*    function sListarDemo(pDatos) { 
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url : angular.patchURLCI+"Empresa/obtener_fila_demo", 
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }*/
-
     function sListarDemo(pDatos) { 
       var datos = pDatos || {};
       var request = $http({
             method : "post",
             url :  angular.patchURLCI + "Empresa/obtener_fila_demo", 
-            data : datos,
-            headers:{
-              'User-Agent':       'Super Agent/0.0.1',
-              'Content-Type':     'application/x-www-form-urlencoded'
-            }               
+            data : datos          
       });
       return (request.then( handleSuccess,handleError ));
     }
