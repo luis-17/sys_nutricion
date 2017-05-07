@@ -5,7 +5,7 @@
   // if (!window.location.origin) {
   //   window.location.origin = window.location.protocol+"//"+window.location.host;
   // }
-  var dirWebRoot =  'localhost/'+directoryApp+'/';
+  var dirWebRoot =  'http://localhost/'+directoryApp+'/';
   angular.patchURLCI = dirWebRoot+'ci.php/';
   angular
     .module('minotaur')

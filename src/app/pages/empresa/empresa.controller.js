@@ -37,12 +37,26 @@
     return({
         sListarDemo: sListarDemo
     });
-    function sListarDemo(pDatos) { 
+/*    function sListarDemo(pDatos) { 
       var datos = pDatos || {};
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Empresa/obtener_fila_demo", 
             data : datos
+      });
+      return (request.then( handleSuccess,handleError ));
+    }*/
+
+    function sListarDemo(pDatos) { 
+      var datos = pDatos || {};
+      var request = $http({
+            method : "post",
+            url :  angular.patchURLCI + "Empresa/obtener_fila_demo", 
+            data : datos,
+            headers:{
+              'User-Agent':       'Super Agent/0.0.1',
+              'Content-Type':     'application/x-www-form-urlencoded'
+            }               
       });
       return (request.then( handleSuccess,handleError ));
     }
