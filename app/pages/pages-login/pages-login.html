@@ -4,37 +4,45 @@
 
     <div class="branding">
       <img src="assets/images/logo-alt.png" alt>
-      <h2 class="brand"><strong>MIN</strong>OTAUR</h2>
     </div>
 
-    <div class="row social-login">
+    <!-- <div class="row social-login">
       <div class="col-sm-4"><button class="btn btn-primary btn-lg btn-block"><i class="fa fa-facebook"></i></button></div>
       <div class="col-sm-4"><button class="btn btn-cyan btn-lg btn-block"><i class="fa fa-twitter"></i></button></div>
       <div class="col-sm-4"><button class="btn btn-danger btn-lg btn-block"><i class="fa fa-google-plus"></i></button></div>
-    </div>
+    </div> -->
 
-    <div class="line-text"><span>or</span></div>
+    <!-- <div class="line-text"><span>or</span></div> -->
 
     <form>
+      <div id="alertsPlaceholder" ng-show="fAlert" >
+        <uib-alert template-url="alert.html" class="alert alert-{{fAlert.type}}" >          
+          <i class="fa fa-warning"></i>
+          <strong class="text-uppercase">{{fAlert.strStrong}}</strong> 
+          {{fAlert.msg}}
+          <button type="button" class="close" aria-hidden="true" ng-click="fAlert = null" >×</button>
+        </uib-alert>
+      </div>
+
       <div class="form-group with-addon">
         <span class="input-addon"><i class="icon-user"></i></span>
-        <input type="email" placeholder="Email address" class="form-control">
+        <input type="text" placeholder="Usuario" class="form-control" ng-model="fLogin.usuario">
       </div>
       <div class="form-group with-addon">
         <span class="input-addon"><i class="icon-key"></i></span>
-        <input type="password" placeholder="Password" class="form-control">
+        <input type="password" placeholder="Contraseña" class="form-control" ng-model="fLogin.clave">
       </div>
       <div class="form-group">
         <a ui-sref="pages.forgotpass" class="pull-right">Forgot Password?</a>
-        <label class="minotaur-checkbox minotaur-label inline-block">Remember me
+        <!-- <label class="minotaur-checkbox minotaur-label inline-block">Remember me
           <input type="checkbox" checked>
           <div class="input-indicator"></div>
-        </label>
+        </label> -->
       </div>
-      <button type="submit" class="btn btn-block btn-lg btn-rounded-40" ui-sref="dashboard">Login</button>
+      <button type="submit" class="btn btn-block btn-lg btn-rounded-40" ng-click="btnLoginToSystem();">INGRESAR </button>
     </form>
 
-    <div class="mt-15 text-center">Not Registered? <a ui-sref="pages.signup">Create an account</a></div>
+    <!-- <div class="mt-15 text-center">No estas registrado? <a ui-sref="pages.signup">Crear una cuenta</a></div> -->
 
   </div>
 
