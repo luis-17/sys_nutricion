@@ -19,8 +19,8 @@
   /** @ngInject */
   function MainController($translate, $scope, rootServices, $location) {
     var vm = this;
-    // console.log('$translate',$translate); 
-    vm.changeLanguage = function (langKey) { 
+    // console.log('$translate',$translate);
+    vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey
       $translate.use(langKey);
       vm.currentLanguage = langKey;

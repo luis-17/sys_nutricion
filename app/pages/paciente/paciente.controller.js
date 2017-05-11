@@ -1,79 +1,73 @@
-(function() {
-  'use strict';
+angular.module('minotaur')
+  .controller('PacienteController', ['$scope', '$sce', '$filter',  '$window', '$http', '$log', '$timeout', 'uiGridConstants', '$resource',
+    'PacienteServices',
+    function($scope, $sce, $filter,  $window, $http, $log, $timeout, uiGridConstants, $resource,
+      PacienteServices,
 
-  angular
-    .module('minotaur')
-    .controller('PacienteController', PacienteController)
-    .controller('TablesUiGridController', TablesUiGridController)
-    .controller('BasicUiGridController', BasicUiGridController)
-    .controller('FooterUiGridController', FooterUiGridController)
-    .controller('EditUiGridController', EditUiGridController)
-    .filter('mapGender', mapGender)
-    .controller('FilterUiGridController', FilterUiGridController)
-    .controller('ResizeUiGridController', ResizeUiGridController)
-    .controller('ReorderUiGridController', ReorderUiGridController)
-    .service('PacienteServices', PacienteServices);
+    ) {
+    // 'use strict';
+      var vm = this;
+      vm.selectedItem = {};
+      vm.options = {};
 
-  /** @ngInject */
-  function PacienteController($resource, uiGridConstants) {
+      // vm.myData = $resource('http://www.filltext.com/?rows=300&name={firstName}~{lastName}&street={numberLength}&age={numberRange|18,80}&ageMin={numberRange|18,80}&ageMax={numberRange|18,80}&customCellTemplate={numberRange|18,80}&pretty=true').query();
+      // vm.myData = [{
+      //   'nombre' : 'JOHN',
+      //   'apellido' : 'DENVER',
+      // }];
 
-    var vm = this;
-    vm.selectedItem = {};
-    vm.options = {};
 
-    vm.myData = $resource('http://www.filltext.com/?rows=300&name={firstName}~{lastName}&street={numberLength}&age={numberRange|18,80}&ageMin={numberRange|18,80}&ageMax={numberRange|18,80}&customCellTemplate={numberRange|18,80}&pretty=true').query();
+      vm.gridOptions = {
+        // showGridFooter: true,
+        // showColumnFooter: true,
+        // enableFiltering: true,
+        columnDefs: [
+          { field: 'nombre', width: 150, },
+          { field: 'apellidos', width: 150 },
 
-    vm.gridOptions = {
-      // showGridFooter: true,
-      // showColumnFooter: true,
-      // enableFiltering: true,
-      columnDefs: [
-        { field: 'name', width: 150, aggregationType: uiGridConstants.aggregationTypes.count },
-        { field: 'street',aggregationType: uiGridConstants.aggregationTypes.sum, width: 150 },
-        { field: 'age', aggregationType: uiGridConstants.aggregationTypes.avg, aggregationHideLabel: true, width: 100 },
-        { name: 'ageMin', field: 'age', aggregationType: uiGridConstants.aggregationTypes.min, width: 130, displayName: 'Age for min' },
-        { name: 'ageMax', field: 'age', aggregationType: uiGridConstants.aggregationTypes.max, width: 130, displayName: 'Age for max' },
-        { name: 'customCellTemplate', field: 'age', width: 150, footerCellTemplate: '<div class="ui-grid-cell-contents" style="background-color: Red;color: White">custom template</div>' }
-      ],
-      data: vm.myData,
-      onRegisterApi: function(gridApi) {
-        vm.gridApi = gridApi;
-      }
-    };
-    vm.fDemo = {};
-    // $log('asd');
-    console.log('asd')
-    // PacienteServices.sListarDemo().then(function (rpta) {
-    //   vm.fDemo = rpta.datos;
-    //   // $log(vm.fDemo,'vm.fDemo');
-    //   console.log(vm.fDemo,'vm.fDemo');
-    // });
+        ],
+        // data: vm.myData,
+        onRegisterApi: function(gridApi) {
+          vm.gridApi = gridApi;
+        }
+      };
+      vm.fDemo = {};
+      // $log('asd');
+      PacienteServices.sListarPaciente().then(function (rpta) {
+        // vm.fDemo = rpta.datos;
+        // $log(vm.fDemo,'vm.fDemo');
+        console.log('RPTA',rpta.data.datos);
+        vm.gridOptions.data = rpta.data.datos;
+      });
 
-    vm.remove = function(scope) {
-      scope.remove();
-    };
 
-    vm.toggle = function(scope) {
-      scope.toggle();
-    };
+      vm.remove = function(scope) {
+        scope.remove();
+      };
 
-    vm.expandAll = function() {
-      vm.$broadcast('angular-ui-tree:expand-all');
-    };
+      vm.toggle = function(scope) {
+        scope.toggle();
+      };
 
-  }
-  function PacienteServices($http, $q) {
+      vm.expandAll = function() {
+        vm.$broadcast('angular-ui-tree:expand-all');
+      };
+
+  }])
+  .service("PacienteServices",function($http, $q) {
     return({
-        sListarDemo: sListarDemo
+        sListarPaciente: sListarPaciente,
+
     });
-    function sListarDemo(pDatos) {
-      var datos = pDatos || {};
+
+    function sListarPaciente(datos) {
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Paciente/obtener_fila_demo",
+            url : angular.patchURLCI+"Paciente/listar_pacientes",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      // return (request.then(handleSuccess,handleError));
+      return request;
     }
-  }
-})();
+
+  });
