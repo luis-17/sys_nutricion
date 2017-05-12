@@ -22,7 +22,14 @@
         controller: 'EmpresaController',
         controllerAs: 'empresa'
       })
-      //mail
+    //paciente
+      .state('paciente', {
+        url: '/app/paciente',
+        templateUrl: 'app/pages/paciente/paciente.html',
+        controller: 'PacienteController',
+        controllerAs: 'paciente'
+      })
+    //mail
       .state('mail', {
         abstract: true,
         url: '/app/mail',
