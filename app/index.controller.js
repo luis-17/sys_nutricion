@@ -70,6 +70,7 @@
         }
       });
     }   
+    $scope.getValidateSession();
   }
 
   function rootServices($http, $q) {
