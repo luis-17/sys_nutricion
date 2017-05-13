@@ -29,6 +29,13 @@
         controller: 'PacienteController',
         controllerAs: 'paciente'
       })
+      //citas
+      .state('citas', {
+        url: '/app/citas',
+        templateUrl: 'app/pages/citas/citas.html',
+        controller: 'CitasController',
+        controllerAs: 'citas'
+      })
     //mail
       .state('mail', {
         abstract: true,
