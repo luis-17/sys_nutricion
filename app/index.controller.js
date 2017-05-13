@@ -69,7 +69,9 @@
           $scope.goToUrl('/app/pages/login');
         }
       });
+
     }
+    $scope.getValidateSession();
   }
 
   function rootServices($http, $q) {

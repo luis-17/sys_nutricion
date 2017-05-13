@@ -7,22 +7,16 @@
     .service('EmpresaServices', EmpresaServices);
 
   /** @ngInject */
-  function EmpresaController($scope,$log,EmpresaServices) {
+  function EmpresaController($scope,EmpresaServices) { 
 
     var vm = this;
     vm.selectedItem = {};
     vm.options = {};
-
-
     vm.fDemo = {};
-    // $log('asd');
-    console.log('asd')
-    EmpresaServices.sListarDemo().then(function (rpta) {
-      vm.fDemo = rpta.datos;
-      // $log(vm.fDemo,'vm.fDemo');
-      console.log(vm.fDemo,'vm.fDemo');
-    });
-
+    EmpresaServices.sListarDemo().then(function (rpta) { 
+      vm.fDemo = rpta.datos; 
+      //console.log(vm.fDemo,'vm.fDemo');
+    }); 
     vm.remove = function(scope) {
       scope.remove();
     };
