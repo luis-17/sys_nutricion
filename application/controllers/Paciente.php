@@ -7,6 +7,7 @@ class Paciente extends CI_Controller {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
+        $this->load->helper(array('fechas'));
         $this->load->model(array('model_paciente'));
 
     }
@@ -24,7 +25,12 @@ class Paciente extends CI_Controller {
 					'idcliente' => $row['idcliente'],
 					'nombre' => $row['nombre'],
 					'apellidos' => $row['apellidos'],
-					'fecha_nacimiento' => $row['fecha_nacimiento'],
+					'fecha_nacimiento' => formatoFechaReporte3($row['fecha_nacimiento']),
+					'nombre_foto' => $row['nombre_foto'],
+					'celular' => $row['celular'],
+					'sexo' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
+					'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
+
 				)
 			);
 		}
@@ -34,6 +40,23 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 1;
 		if(empty($lista)){
 			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function ver_popup_formulario()
+	{
+		$this->load->view('Paciente/paciente_formView');
+	}
+	public function registrar()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+		if($this->model_paciente->m_registrar($allInputs)){
+			$arrData['message'] = 'Se registraron los datos correctamente';
+    		$arrData['flag'] = 1;
 		}
 		$this->output
 		    ->set_content_type('application/json')

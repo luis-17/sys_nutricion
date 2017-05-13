@@ -1,7 +1,6 @@
 angular.module('minotaur')
-  .controller('PacienteController', ['$scope', '$sce', '$filter',  '$window', '$http', '$log', '$timeout', 'uiGridConstants', '$resource',
-    'PacienteServices',
-    function($scope, $sce, $filter,  $window, $http, $log, $timeout, uiGridConstants, $resource,
+  .controller('PacienteController', ['$scope', '$sce', '$filter',  '$window', '$http', '$log', '$timeout', 'PacienteServices',
+    function($scope, $sce, $filter,  $window, $http, $log, $timeout,
       PacienteServices,
 
     ) {
@@ -16,47 +15,66 @@ angular.module('minotaur')
       //   'apellido' : 'DENVER',
       // }];
 
-
+      vm.mySelectionGrid = [];
       vm.gridOptions = {
         // showGridFooter: true,
         // showColumnFooter: true,
-        // enableFiltering: true,
-        columnDefs: [
-          { field: 'nombre', width: 150, },
-          { field: 'apellidos', width: 150 },
+        enableRowSelection: true,
+        enableRowHeaderSelection: false,
+        enableFullRowSelection: true,
+        enableFiltering: true,
+        multiSelect: false,
+      }
+      vm.gridOptions.columnDefs = [
+        { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
+        { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, },
 
-        ],
+      ];
         // data: vm.myData,
-        onRegisterApi: function(gridApi) {
-          vm.gridApi = gridApi;
-        }
-      };
-      vm.fDemo = {};
-      // $log('asd');
-      PacienteServices.sListarPaciente().then(function (rpta) {
-        // vm.fDemo = rpta.datos;
-        // $log(vm.fDemo,'vm.fDemo');
-        console.log('RPTA',rpta.data.datos);
-        vm.gridOptions.data = rpta.data.datos;
-      });
+      vm.gridOptions.onRegisterApi = function(gridApi) {
+        vm.gridApi = gridApi;
+        gridApi.selection.on.rowSelectionChanged($scope,function(row){
+          vm.mySelectionGrid = gridApi.selection.getSelectedRows();
+        });
+        gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
+          vm.mySelectionGrid = gridApi.selection.getSelectedRows();
+        });
+      }
 
 
-      vm.remove = function(scope) {
-        scope.remove();
-      };
+      vm.getPaginationServerSide = function() {
+        PacienteServices.sListarPaciente().then(function (rpta) {
+          // vm.fDemo = rpta.datos;
+          // $log(vm.fDemo,'vm.fDemo');
+          console.log('RPTA',rpta.datos);
+          vm.gridOptions.data = rpta.datos;
+          vm.mySelectionGrid = [];
+        });
+      }
+      vm.getPaginationServerSide();
 
-      vm.toggle = function(scope) {
-        scope.toggle();
-      };
+      vm.btnNuevo = function () {
+        console.log('btn nuevo');
+      }
 
-      vm.expandAll = function() {
-        vm.$broadcast('angular-ui-tree:expand-all');
-      };
+      // vm.remove = function(scope) {
+      //   scope.remove();
+      // };
+
+      // vm.toggle = function(scope) {
+      //   scope.toggle();
+      // };
+
+      // vm.expandAll = function() {
+      //   vm.$broadcast('angular-ui-tree:expand-all');
+      // };
 
   }])
   .service("PacienteServices",function($http, $q) {
     return({
         sListarPaciente: sListarPaciente,
+        sRegistrar: sRegistrar,
 
     });
 
@@ -66,8 +84,19 @@ angular.module('minotaur')
             url : angular.patchURLCI+"Paciente/listar_pacientes",
             data : datos
       });
-      // return (request.then(handleSuccess,handleError));
-      return request;
+      return (request.then(handleSuccess,handleError));
+      // return (request.then(function(response){
+      //   return( response.data );
+
+      // }));
+    }
+    function sRegistrar(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/registrar",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
     }
 
   });

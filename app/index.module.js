@@ -49,6 +49,7 @@
       'ui.grid.edit',
       'ui.grid.resizeColumns',
       'ui.grid.moveColumns',
+      'ui.grid.selection',
       'ngTable',
       'smart-table',
       'ui.footable',

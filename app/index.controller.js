@@ -6,16 +6,16 @@
     .controller('MainController', MainController)
     .service('rootServices', rootServices);
 
-  
-  function handleError( response ) {
-      if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-          return( $q.reject( "An unknown error occurred." ) );
-      }
-      return( $q.reject( response.data.message ) );
-  }
-  function handleSuccess( response ) {
-      return( response.data );
-  }
+
+  // function handleError( response ) {
+  //     if ( ! angular.isObject( response.data ) || ! response.data.message ) {
+  //         return( $q.reject( "An unknown error occurred." ) );
+  //     }
+  //     return( $q.reject( response.data.message ) );
+  // }
+  // function handleSuccess( response ) {
+  //     return( response.data );
+  // }
   /** @ngInject */
   function MainController($translate, $scope, rootServices, $location) {
     var vm = this;
@@ -69,7 +69,7 @@
           $scope.goToUrl('/app/pages/login');
         }
       });
-    }   
+    }
   }
 
   function rootServices($http, $q) {
@@ -77,21 +77,21 @@
         sLogoutSessionCI: sLogoutSessionCI,
         sGetSessionCI: sGetSessionCI,
     });
-    function sLogoutSessionCI(pDatos) { 
+    function sLogoutSessionCI(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Acceso/logoutSessionCI", 
-            data : datos          
+            url :  angular.patchURLCI + "Acceso/logoutSessionCI",
+            data : datos
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sGetSessionCI(pDatos) { 
+    function sGetSessionCI(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Acceso/getSessionCI", 
-            data : datos          
+            url :  angular.patchURLCI + "Acceso/getSessionCI",
+            data : datos
       });
       return (request.then( handleSuccess,handleError ));
     }

@@ -4,7 +4,7 @@
     <li class="active">Paciente</li>
   </ol>
   <!-- row -->
-  <div class="row" ng-controller="PacienteController as paciente">
+  <div class="row" ng-controller="PacienteController as pac">
     <div class="col-lg-12 col-md-12">
       <div class="tile">
 
@@ -16,7 +16,7 @@
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click="pac.getPaginationServerSide()"></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
@@ -27,10 +27,80 @@
         <!-- /tile header -->
 
         <!-- tile body -->
-        <section class="tile-body">
-          <div id="grid1" ui-grid="paciente.gridOptions" class="grid"></div>
+        <section class="tile-body col-sm-8">
+          <div>
+            <ul class="form-group demo-btns list-unstyled">
+              <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
+            </ul>
+          </div>
+          <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize class="grid table-responsive clear"></div>
         </section>
         <!-- /tile body -->
+        <section class="tile-body col-sm-4">
+          <div class="tile profile-widget">
+
+            <!-- tile widget -->
+            <section class="tile-widget bg-info">
+              <img class="img-circle profile-avatar" src="assets/images/sin-imagen.png" alt="" ng-if="pac.mySelectionGrid.length < 1">
+              <img class="img-circle profile-avatar" src="assets/images/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-if="pac.mySelectionGrid.length == 1">
+              <div class="row">
+                <div class="col-md-5">
+                  <h4 class="text-uppercase m-0">{{pac.mySelectionGrid[0].nombre}}</h4>
+                  <small class="uppercase-bold text-strong text-transparent-black">{{pac.mySelectionGrid[0].apellidos}}</small>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5" style="display: none">
+                  <div class="row">
+                    <div class="col-md-4 text-center">
+                      <i class="fa fa-heart-o text-transparent-black"></i>
+                      <span class="text-thin block">125</span>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fa fa-star-o text-transparent-black"></i>
+                      <span class="text-thin block">67</span>
+                    </div>
+                    <div class="col-md-4 text-center">
+                      <i class="fa fa-comment-o text-transparent-black"></i>
+                      <span class="text-thin block">26</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="divider"></div>
+            </section>
+            <!-- /tile widget -->
+
+            <!-- tile body -->
+            <section class="tile-body bg-info">
+              <dl class="dl-horizontal">
+                <dt style="width: 80px; padding: 3px 0;">Edad: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].edad}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Sexo: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].sexo}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Celular: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].celular}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Nacimiento: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].fecha_nacimiento}}</dd>
+              </dl>
+            </section>
+            <!-- /tile body -->
+
+            <!-- tile footer -->
+            <section class="tile-footer p-0">
+              <uib-tabset class="minotaur-tab minotaur-tab-info">
+                <uib-tab index="0" heading="Tab1">
+                </uib-tab>
+                <uib-tab index="1" heading="Tab2">
+                </uib-tab>
+                <uib-tab index="2" heading="Tab3">
+
+                </uib-tab>
+              </uib-tabset>
+            </section>
+            <!-- /tile footer -->
+
+          </div>
+        </section>
       </div>
     </div>
   </div>

@@ -8,15 +8,15 @@
   var dirWebRoot =  'http://localhost/'+directoryApp+'/';
   angular.patchURLCI = dirWebRoot+'ci.php/';
 
-  var handleError = function(response) {
-    if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-        return( $q.reject( "An unknown error occurred." ) );
-    }
-    return( $q.reject( response.data.message ) );
-  }
-  var handleSuccess = function(response) {
-    return( response.data );
-  }
+  // var handleError = function(response) {
+  //   if ( ! angular.isObject( response.data ) || ! response.data.message ) {
+  //       return( $q.reject( "An unknown error occurred." ) );
+  //   }
+  //   return( $q.reject( response.data.message ) );
+  // }
+  // var handleSuccess = function(response) {
+  //   return( response.data );
+  // }
 
 
   angular
@@ -50,3 +50,13 @@
   }
 
 })();
+
+function handleError( response ) {
+      if ( ! angular.isObject( response.data ) || ! response.data.message ) {
+          return( $q.reject( "An unknown error occurred." ) );
+      }
+      return( $q.reject( response.data.message ) );
+  }
+  function handleSuccess( response ) {
+      return( response.data );
+  }
