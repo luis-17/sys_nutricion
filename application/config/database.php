@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
+	'hostname' => '138.197.29.60',
+	'username' => 'invitado',
+	'password' => 'conehost@',
 	'database' => 'sys_nutricion',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

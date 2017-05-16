@@ -34,5 +34,7 @@
 	.demo-options {top: 70px;}
 	ul.demo-btns > li.pull-right{ margin-left: 4px;}
 	ul.demo-btns li > label { line-height: 0.7;}
+	.modal-header{padding: 10px!important}
+	.tab-wizard .nav-tabs > li > a{padding: 10px!important}
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}

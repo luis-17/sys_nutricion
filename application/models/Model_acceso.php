@@ -5,7 +5,7 @@ class Model_acceso extends CI_Model {
 		parent::__construct();
 	}
  	// ACCESO AL SISTEMA
-	public function m_logging_user($data){ 
+	public function m_logging_user($data){
 		$this->db->select('COUNT(*) AS logged, us.idusuario, us.estado_us, us.username, us.idgrupo, pro.estado_pf',FALSE);
 		$this->db->from('usuario us');
 		$this->db->join('profesional pro', 'pro.idusuario = us.idusuario AND pro.estado_pf = 1');

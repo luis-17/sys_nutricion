@@ -14,8 +14,8 @@ class Paciente extends CI_Controller {
 	public function listar_pacientes()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$paramPaginate = $allInputs['paginate'];
-		$lista = $this->model_paciente->m_cargar_pacientes($paramPaginate);
+		//$paramPaginate = $allInputs['paginate'];
+		$lista = $this->model_paciente->m_cargar_pacientes();
 		// $totalRows = $this->model_paciente->m_count_pacientes($paramPaginate);
 		$arrListado = array();
 		// var_dump($lista); exit();

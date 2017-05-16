@@ -27,7 +27,7 @@
         url: '/app/paciente',
         templateUrl: 'app/pages/paciente/paciente.html',
         controller: 'PacienteController',
-        controllerAs: 'paciente'
+        controllerAs: 'pac'
       })
       //citas
       .state('citas', {
