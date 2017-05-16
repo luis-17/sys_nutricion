@@ -90,7 +90,6 @@ class Cita extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-
 	public function actualizar_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;

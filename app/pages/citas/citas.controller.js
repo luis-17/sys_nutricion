@@ -94,28 +94,7 @@
 
     vm.alertOnClick = function(event){
       console.log('event',event);
-    }  
-
-    /* config object */
-    vm.uiConfig = {
-      calendar:{
-        height: 450,
-        contentHeight: 510,
-        editable: true,
-        dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
-        dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
-        header:{
-          left: 'prev',
-          center: 'title',
-          right: 'next',          
-        },          
-        dayClick: vm.btnNuevaCita,
-        eventDrop: vm.alertOnDrop,
-        eventResize: vm.alertOnResize,          
-        //eventMouseover: vm.tooltipOnMouseOver,
-        eventClick: vm.alertOnClick,
-      }
-    }; 
+    }   
 
     /* Change View */
     vm.changeView = function(view,calendar) {
@@ -130,17 +109,20 @@
     /* add custom event*/
     vm.btnNuevaCita = function(start, item){
       console.log('btnNuevaCita');      
-      console.log('start',start);      
-      vm.events.push({
-        title: 'New Event',
-        start: start,
-        className: ['bg-info']
-      });
-      vm.eventSources = [vm.events];
+      console.log('start',start);  
+
+      if(start){
+        vm.events.push({
+          title: 'New Event',
+          start: start,
+          className: ['bg-info']
+        });
+        vm.eventSources = [vm.events];
+      }       
 
       vm.cita = {}; 
       var modalInstance = $uibModal.open({
-        templateUrl: angular.patchURLCI+'Cita/ver_popup_formulario',
+        templateUrl:'app/pages/citas/cita_formView.html',
         controller: 'ModalInstanceController',
         controllerAs: 'modalcita',
         size: 'lg',
@@ -156,11 +138,13 @@
           }
         }
       });
-      // modalInstance.result.then(function (selectedItem) {
-      //   vm.selected = selectedItem;
-      // }, function () {
-      //   $log.info('Modal dismissed at: ' + new Date());
-      // });
+      modalInstance.result.then(function (selectedItem) {
+        vm.selected = selectedItem;
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+        // $log.info('Modal dismissed at: ' + new Date());
+      });
+
       function ModalInstanceController($uibModalInstance,start,item) {
         var vm = this;
         vm.titleForm = 'CREAR NUEVA CITA';
@@ -241,11 +225,32 @@
         };
       }
     }
+
+    /* config object */
+    vm.uiConfig = {
+      calendar:{
+        height: 450,
+        contentHeight: 510,
+        editable: true,
+        dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+        dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+        header:{
+          left: 'prev',
+          center: 'title',
+          right: 'next',          
+        },          
+        dayClick: vm.btnNuevaCita,
+        eventDrop: vm.alertOnDrop,
+        eventResize: vm.alertOnResize,          
+        //eventMouseover: vm.tooltipOnMouseOver,
+        eventClick: vm.alertOnClick,
+      }
+    };
   }
   function CitasServices($http, $q) {
     return({
         sListarCita: sListarCita,
-        sRegistrar: sRegistrar,
+        sRegistrarCita: sRegistrarCita,
     });
     function sListarCita(datos) {
       var request = $http({
@@ -254,16 +259,12 @@
             data : datos
       });
       return (request.then(handleSuccess,handleError));
-      // return (request.then(function(response){
-      //   return( response.data );
-
-      // }));
     }
 
-    function sRegistrar(datos) {
+    function sRegistrarCita(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Paciente/registrar",
+            url : angular.patchURLCI+"Cita/registrar_cita",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
