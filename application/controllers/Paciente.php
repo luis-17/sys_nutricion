@@ -45,10 +45,6 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function ver_popup_formulario()
-	{
-		$this->load->view('Paciente/paciente_formView');
-	}
 	public function registrar()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);

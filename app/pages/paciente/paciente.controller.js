@@ -3,7 +3,9 @@
   angular
     .module('minotaur')
     .controller('PacienteController', PacienteController)
-    .service('PacienteServices', PacienteServices);
+    .service('PacienteServices', PacienteServices)
+    .controller('ModalInstanceController', ModalInstanceController)
+    ;
 
   /** @ngInject */
   function PacienteController($scope,PacienteServices,$uibModal) {
@@ -58,15 +60,16 @@
         console.log('btn nuevo');
         vm.activeStep = 0;
         vm.user = {};
-        vm.titleForm = 'Regitro de Pacientes';
+
         // vm.items = ['item1', 'item2', 'item3'];
         var modalInstance = $uibModal.open({
-          templateUrl: angular.patchURLCI+'Paciente/ver_popup_formulario',
+          templateUrl: 'app/pages/paciente/paciente_formview.html',
           controller: 'ModalInstanceController',
-          controllerAs: 'modal',
+          controllerAs: 'modalPac',
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
           windowClass: 'splash splash-2 splash-ef-14',
+          // scope: vm,
           // animation: true,
           resolve: {
             items: function () {
@@ -77,22 +80,24 @@
             }
           }
         });
-        // modalInstance.result.then(function (selectedItem) {
-        //   vm.selected = selectedItem;
-        // }, function () {
-        //   $log.info('Modal dismissed at: ' + new Date());
-        // });
+        modalInstance.result.then(function (selectedItem) {
+          vm.selected = selectedItem;
+        }, function () {
+          console.log('Modal dismissed at: ' + new Date());
+          // $log.info('Modal dismissed at: ' + new Date());
+        });
         function ModalInstanceController($uibModalInstance,items) {
           var vm = this;
-          vm.getPaginationServerSide = getPaginationServerSide;
+          vm.modalTitle = 'Regitro de Pacientes';
+          // vm.getPaginationServerSide = getPaginationServerSide;
 
           // vm.items = items;
           // vm.selected = {
           //   item: vm.items[0]
           // };
-          console.log(vm.user);
           vm.ok = function () {
-            // $uibModalInstance.close(vm.selected.item);
+             // console.log(vm.user);
+            $uibModalInstance.close(vm.selected.item);
 
           };
 
