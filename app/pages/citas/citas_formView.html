@@ -1,0 +1,24 @@
+<div class="modal-content" uib-modal-transclude=""><div class="modal-header ng-scope">
+  <h3 class="modal-title custom-font">I'm a modal!</h3>
+</div>
+<div class="modal-body ng-scope">
+
+  <p>This sure is a fine modal, isn't it?</p>
+
+  <ul>
+    <!-- ngRepeat: item in modal.items --><li ng-repeat="item in modal.items" class="ng-scope">
+      <a ng-click="modal.selected.item = item" class="ng-binding">item1</a>
+    </li><!-- end ngRepeat: item in modal.items --><li ng-repeat="item in modal.items" class="ng-scope">
+      <a ng-click="modal.selected.item = item" class="ng-binding">item2</a>
+    </li><!-- end ngRepeat: item in modal.items --><li ng-repeat="item in modal.items" class="ng-scope">
+      <a ng-click="modal.selected.item = item" class="ng-binding">item3</a>
+    </li><!-- end ngRepeat: item in modal.items -->
+  </ul>
+
+  Selected: <b class="ng-binding">item1</b>
+
+</div>
+<div class="modal-footer ng-scope">
+  <button class="btn btn-default btn-border" ng-click="modal.ok()">Submit</button>
+  <button class="btn btn-default btn-border" ng-click="modal.cancel()">Cancel</button>
+</div></div>
