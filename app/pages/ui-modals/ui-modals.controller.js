@@ -42,9 +42,9 @@
     };
   }
 
-  function ModalInstanceController($uibModalInstance, items) {
+  function ModalInstanceController($uibModalInstance, items, title) {
     var vm = this;
-    //vm.modalTitle = 'Soy un Modal';
+    vm.modalTitle = title;
     vm.items = items;
     vm.selected = {
       item: vm.items[0]
@@ -80,6 +80,9 @@
         resolve: {
           items: function () {
             return vm.items;
+          },
+          title:  function(){
+            return 'Soy un Modal';
           }
         }
       });
