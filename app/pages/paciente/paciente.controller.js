@@ -3,12 +3,11 @@
   angular
     .module('minotaur')
     .controller('PacienteController', PacienteController)
-    .service('PacienteServices', PacienteServices)
-    .controller('ModalInstanceController', ModalInstanceController)
-    ;
+    .controller('ModalInstanceAController', ModalInstanceAController);
+
 
   /** @ngInject */
-  function PacienteController($scope,PacienteServices,$uibModal) {
+  function PacienteController($scope,$uibModal) {
 
     var vm = this;
     vm.selectedItem = {};
@@ -46,13 +45,13 @@
 
 
     vm.getPaginationServerSide = function() {
-      PacienteServices.sListarPaciente().then(function (rpta) {
-        // vm.fDemo = rpta.datos;
-        // $log(vm.fDemo,'vm.fDemo');
-        console.log('RPTA',rpta.datos);
-        vm.gridOptions.data = rpta.datos;
-        vm.mySelectionGrid = [];
-      });
+      // PacienteServices.sListarPaciente().then(function (rpta) {
+      //   // vm.fDemo = rpta.datos;
+      //   // $log(vm.fDemo,'vm.fDemo');
+      //   console.log('RPTA',rpta.datos);
+      //   vm.gridOptions.data = rpta.datos;
+      //   vm.mySelectionGrid = [];
+      // });
     }
     vm.getPaginationServerSide();
 
@@ -64,7 +63,7 @@
         // vm.items = ['item1', 'item2', 'item3'];
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/paciente/paciente_formview.html',
-          controller: 'ModalInstanceController',
+          controller: 'ModalInstanceAController',
           controllerAs: 'modalPac',
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
@@ -86,27 +85,28 @@
           console.log('Modal dismissed at: ' + new Date());
           // $log.info('Modal dismissed at: ' + new Date());
         });
-        function ModalInstanceController($uibModalInstance,items) {
-          var vm = this;
-          vm.modalTitle = 'Regitro de Pacientes';
-          // vm.getPaginationServerSide = getPaginationServerSide;
 
-          // vm.items = items;
-          // vm.selected = {
-          //   item: vm.items[0]
-          // };
-          vm.ok = function () {
-             // console.log(vm.user);
-            $uibModalInstance.close(vm.selected.item);
-
-          };
-
-          vm.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-          };
-        }
       }
 
+  }
+   function ModalInstanceAController($uibModalInstance,items) {
+    var vm = this;
+    vm.modalTitle = 'Regitro de Pacientes';
+    // vm.getPaginationServerSide = getPaginationServerSide;
+
+    // vm.items = items;
+    // vm.selected = {
+    //   item: vm.items[0]
+    // };
+    vm.ok = function () {
+       // console.log(vm.user);
+      $uibModalInstance.close(vm.selected.item);
+
+    };
+
+    vm.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
   }
   function PacienteServices($http, $q) {
     return({
@@ -131,4 +131,5 @@
       return (request.then(handleSuccess,handleError));
     }
   }
+  // angular.service('PacienteServices', PacienteServices);
 })();
