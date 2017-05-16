@@ -5,16 +5,14 @@ class Cita extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
+        $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper'));
         $this->load->model(array('model_cita'));
     }
 
     public function listar_citas(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		//$paramPaginate = $allInputs['paginate'];
 		$lista = $this->model_cita->m_cargar_citas();
-		// $totalRows = $this->model_paciente->m_count_pacientes($paramPaginate);
 		$arrListado = array();		
 		foreach ($lista as $row) {
 			if(empty($row['idatencion'])){
@@ -68,4 +66,38 @@ class Cita extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function ver_popup_formulario(){
+		$this->load->view('cita/cita_formView');
+	}
+
+	public function registrar_cita(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = '';
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function drop_cita(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = '';
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+
+	public function actualizar_cita(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = '';
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));	
+	}
 }
