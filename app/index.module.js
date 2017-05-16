@@ -57,8 +57,7 @@
       'ngMap',
       'leaflet-directive',
       'ui.calendar',
-      'angular-flot',
-      'blockUI'
+      'angular-flot'
     ]);
 
 })();

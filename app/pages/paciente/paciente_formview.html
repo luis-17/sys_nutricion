@@ -1,20 +1,5 @@
-<!-- <div class="modal-header">
-	<h4 class="modal-title"> {{ titleForm }}  </h4>
-</div>
-<div class="modal-body">
-    <form class="row" name="formPaciente">
-		<div class="form-group mb-md col-md-12">
-			<label class="control-label mb-xs">Nombre <small class="text-danger">(*)</small> </label>
-			<input type="text" class="form-control input-sm" ng-model="fData.nombre" placeholder="Registre nombre" tabindex="1" focus-me required />
-		</div>
-	</form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" ng-click="aceptar(); $event.preventDefault();" ng-disabled="formPaciente.$invalid">Aceptar</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
-</div> -->
 <div class="modal-header">
-  <h4 class="modal-title">{{titleForm}}</h4>
+  <h4 class="modal-title">{{modalPac.modalTitle}}</h4>
 </div>
 <div class="modal-body">
 
@@ -304,6 +289,6 @@
 
 </div>
 <div class="modal-footer">
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-click="modal.ok()"><i class="fa fa-arrow-right"></i> Submit</button>
-  <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="modal.cancel()"><i class="fa fa-arrow-left"></i> Cancel</button>
+  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-click="modalPac.ok()"><i class="fa fa-arrow-right"></i> Submit</button>
+  <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="modalPac.cancel()"><i class="fa fa-arrow-left"></i> Cancel</button>
 </div>

@@ -44,7 +44,7 @@
 
   function ModalInstanceController($uibModalInstance, items) {
     var vm = this;
-
+    //vm.modalTitle = 'Soy un Modal';
     vm.items = items;
     vm.selected = {
       item: vm.items[0]
@@ -70,7 +70,8 @@
       var options = angular.element(event.target).data('options');
 
       var modalInstance = $uibModal.open({
-        templateUrl: 'mySplashContent.html',
+        // templateUrl: 'mySplashContent.html',
+        templateUrl: 'app/pages/ui-modals/mySplashContent.html',
         controller: 'ModalInstanceController',
         controllerAs: 'modal',
         size: size,
