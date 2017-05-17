@@ -73,8 +73,26 @@ class Cita extends CI_Controller {
 	public function registrar_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
-		$arrData['message'] = '';
+		$arrData['message'] = 'Ha ocurrido un error registrando la cita.';
 
+		/*aqui van las validaciones*/
+
+		$data = array(
+			'idcliente' => $allInputs['paciente']['idcliente'],
+			'idubicacion' => $allInputs['ubicacion']['id'],
+			'idprofesional' => $this->sessionVP['idprofesional'],
+			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
+			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
+			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
+			'createdAt' => date('Y-m-d H:i:s'),
+			'updatedAt' => date('Y-m-d H:i:s')
+			);
+
+		if($this->model_cita->m_registrar($data)){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Cita registrada.';
+		}
+	
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

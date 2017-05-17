@@ -36,9 +36,10 @@ class Model_paciente extends CI_Model {
 
 	public function m_cargar_pacientes_autocomplete($datos){
 		$this->db->select("c.idcliente, c.email");
-		$this->db->select("(c.nombre || ' ' || c.apellidos ) AS paciente", FALSE);		
-		$this->db->from('cliente c'); //medico
-		$this->db->ilike("UPPER(c.nombre || ' ' || c.apellidos)", strtoupper($datos['search']));		
+		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);		
+		$this->db->from('cliente c'); 
+		$this->db->where("c.estado_cl",1);		
+		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper($datos['search']) . "%'");		
 				
 		$this->db->limit(10);
 		return $this->db->get()->result_array();

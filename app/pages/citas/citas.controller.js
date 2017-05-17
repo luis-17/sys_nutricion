@@ -6,7 +6,7 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController($scope,CitasServices,UbicacionServices,$uibModal) {
+  function CitasController($scope,CitasServices,UbicacionServices,PacienteServices,$uibModal) {
     var vm = this;
 
     var date = new Date();
@@ -39,12 +39,6 @@
       });
     };
     //vm.listarCitas();
-
-    /*lista ubicaciones*/
-    UbicacionServices.sListarUbicacionCbo().then(function(rpta){
-      vm.listaUbicaciones = rpta.datos;
-      console.log(vm.listaUbicaciones);
-    });
     
     /* event source that contains custom events on the scope */
     vm.events = [
@@ -121,86 +115,126 @@
           className: ['bg-info']
         });
         vm.eventSources = [vm.events];
-      }      
+      }   
 
-      /*DATEPICKER*/
-      vm.dp = {};
-      vm.dp.today = function() {
-        vm.dp.dt = new Date();
-      };
-      vm.dp.today();
-
-      vm.dp.clear = function() {
-        vm.dp.dt = null;
-      };
-
-      vm.dp.dateOptions = {
-        formatYear: 'yy',
-        maxDate: new Date(2020, 5, 22),
-        minDate: new Date(),
-        startingDay: 1
-      };
-
-      vm.dp.open = function() {
-        vm.dp.popup.opened = true;
-      };
-
-      vm.dp.formats = ['dd-MM-yyyy','dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-      vm.dp.format = vm.dp.formats[0];
-      vm.dp.altInputFormats = ['M!/d!/yyyy'];
-
-      vm.dp.popup = {
-        opened: false
-      }; 
-
-      /*TIMEPICKER*/
-      vm.tp = {};
-      vm.tp.mytime = new Date();
-
-      vm.tp.hstep = 1;
-      vm.tp.mstep = 15;
-
-      vm.tp.ismeridian = true;
-      vm.tp.toggleMode = function() {
-        vm.tp.ismeridian = ! vm.ismeridian;
-      };
-
-
-      vm.cita = {};
-      vm.items = []; 
-      vm.items.paciente = {};
-      vm.items.dp = vm.dp;
-      vm.items.tp1 = angular.copy(vm.tp);
-      vm.items.tp2 = angular.copy(vm.tp);
-      vm.items.cita = vm.cita;
-      vm.items.listaUbicaciones = vm.listaUbicaciones;
-      vm.items.ubicacion = vm.items.listaUbicaciones[0];
-      
-      vm.titulo = 'CREAR NUEVA CITA'; 
       var modalInstance = $uibModal.open({
-        templateUrl:'app/pages/citas/cita_formView.html',
-        controller: 'ModalInstanceController',
+        templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
         size: 'lg',
         backdropClass: 'splash splash-2 splash-ef-14',
         windowClass: 'splash splash-2 splash-ef-14',
-        // animation: true,
+        // controller: 'ModalInstanceController',
+        controller: function($scope, $uibModalInstance, arrToModal ){
+          var vm = this;
+          vm.fData = {};
+          vm.listarCitas = arrToModal.listarCitas;
+          vm.modalTitle = 'Registro de Citas';
+
+          /*lista ubicaciones*/
+          UbicacionServices.sListarUbicacionCbo().then(function(rpta){
+            vm.listaUbicaciones = rpta.datos;
+            vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+            vm.fData.ubicacion = vm.listaUbicaciones[0];
+            console.log(vm.listaUbicaciones);
+          });
+
+          /*DATEPICKER*/
+          vm.dp = {};
+          vm.dp.today = function() {
+            if(start){
+              vm.fData.fecha = start;
+            }else{
+              vm.fData.fecha = new Date();
+            }
+          };
+          vm.dp.today();
+
+          vm.dp.clear = function() {
+            vm.fData.fecha = null;
+          };
+
+          vm.dp.dateOptions = {
+            formatYear: 'yy',
+            maxDate: new Date(2020, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+          };
+
+          vm.dp.open = function() {
+            vm.dp.popup.opened = true;
+          };
+
+          vm.dp.formats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+          vm.dp.format = vm.dp.formats[0];
+          vm.dp.altInputFormats = ['M!/d!/yyyy'];
+
+          vm.dp.popup = {
+            opened: false
+          }; 
+
+          /*TIMEPICKER*/
+          vm.tp1 = {};
+          vm.tp1.hstep = 1;
+          vm.tp1.mstep = 15;
+          vm.tp1.ismeridian = true;
+          vm.tp1.toggleMode = function() {
+            vm.tp1.ismeridian = ! vm.ismeridian;
+          };
+
+          vm.tp2 = angular.copy(vm.tp1);          
+          vm.fData.hora_desde = new Date();
+          vm.fData.hora_hasta = new Date();
+
+          vm.getPacienteAutocomplete = function (value) {
+            var params = {};
+            params.search= value;
+            params.sensor= false;
+              
+            return PacienteServices.sListaPacientesAutocomplete(params).then(function(rpta) { 
+              vm.noResultsLM = false;
+              if( rpta.flag === 0 ){
+                vm.noResultsLM = true;
+              }
+              return rpta.datos; 
+            });
+          }
+
+          vm.getSelectedPaciente = function($item, $model, $label){
+            vm.fData.paciente = $item;
+          }          
+
+          vm.ok = function () {
+            console.log('fdata', vm.fData);            
+            CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {
+              if(rpta.flag == 1){
+                vm.listarCitas();
+                //$uibModalInstance.close(vm.fData);
+              }
+            });
+
+          };
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        },
         resolve: {
-          items: function () {
-            return vm.items;
-          },    
-          title: function() {
-            return vm.titulo;
-          }      
+          arrToModal: function() {
+            return {
+              listarCitas : vm.listarCitas,
+              // listaSexos : $scope.listaSexos,
+              // gridComboOptions : $scope.gridComboOptions,
+              // mySelectionComboGrid : $scope.mySelectionComboGrid
+            }
+          }
         }
       });
-      modalInstance.result.then(function (selectedItem) {
+      /*modalInstance.result.then(function (selectedItem) {
         vm.selected = selectedItem;
         console.log(selectedItem);
       }, function () {
         console.log('Modal dismissed at: ' + new Date());
         // $log.info('Modal dismissed at: ' + new Date());
-      });
+      });*/
     }
 
     /* config object */

@@ -7,34 +7,40 @@
 			<div class="row">
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Paciente <span class="text-red">*</span>: </label>
-	              <input type="text" required class="form-control" ng-model="modalcita.items.paciente" >
+	              <input type="text" ng-model="modalcita.fData.paciente" class="form-control " autocomplete="off"
+                             placeholder="Digite el Paciente..." 
+                                  typeahead-loading="loadingLocations" 
+                                  uib-typeahead="item as item.paciente for item in modalcita.getPacienteAutocomplete($viewValue)" 
+                                  typeahead-min-length="2" 
+                                  typeahead-on-select="modalcita.getSelectedPaciente($item, $model, $label)"
+                                  ng-change="fData.paciente = null;" />
 	            </div>
 
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Fecha <span class="text-red">*</span>: </label>
 	              <p class="input-group">
-	                <input type="text" required class="form-control" uib-datepicker-popup ng-model="modalcita.items.dp.dt" is-open="modalcita.items.dp.popup.opened" 
-	                		datepicker-options="modalcita.items.dp.dateOptions" close-text="Cerrar" />
+	                <input type="text" required class="form-control" uib-datepicker-popup ng-model="modalcita.fData.fecha" is-open="modalcita.dp.popup.opened" 
+	                		datepicker-options="modalcita.dp.dateOptions" close-text="Cerrar" />
 	                <span class="input-group-btn">
-	                	<button type="button" class="btn btn-default" ng-click="modalcita.items.dp.open()"><i class="fa fa-calendar"></i></button>
+	                	<button type="button" class="btn btn-default" ng-click="modalcita.dp.open()"><i class="fa fa-calendar"></i></button>
 	              	</span>
 	              </p>
 	            </div>
 
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Hora inicio <span class="text-red">*</span>: </label>
-	              <div uib-timepicker required ng-model="modalcita.items.tp1.mytime" hour-step="modalcita.items.tp1.hstep" minute-step="modalcita.items.tp1.mstep" show-meridian="modalcita.items.tp1.ismeridian"></div>
+	              <div uib-timepicker required ng-model="modalcita.fData.hora_desde" hour-step="modalcita.tp1.hstep" minute-step="modalcita.tp1.mstep" show-meridian="modalcita.tp1.ismeridian"></div>
 	            </div>
 
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Hora Fin <span class="text-red">*</span>: </label>
-	              <div uib-timepicker required ng-model="modalcita.items.tp2.mytime" hour-step="modalcita.items.tp2.hstep" minute-step="modalcita.items.tp2.mstep" show-meridian="modalcita.items.tp2.ismeridian"></div>
+	              <div uib-timepicker required ng-model="modalcita.fData.hora_hasta" hour-step="modalcita.tp2.hstep" minute-step="modalcita.tp2.mstep" show-meridian="modalcita.tp2.ismeridian"></div>
 	            </div>
 
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Ubicacion <span class="text-red">*</span>: </label>
-	              <select class="form-control " ng-model="modalcita.items.ubicacion"
-					ng-options="ub.descripcion_ub for ub in modalcita.items.listaUbicaciones">
+	              <select class="form-control " ng-model="modalcita.fData.ubicacion"
+					ng-options="ub.descripcion for ub in modalcita.listaUbicaciones">
 				  </select>	              
 	            </div>	            
 	        </div>

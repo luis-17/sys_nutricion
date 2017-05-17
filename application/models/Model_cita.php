@@ -22,5 +22,9 @@ class Model_cita extends CI_Model {
 		$this->db->where('ci.estado_ci <>', 0);
 		return $this->db->get()->result_array();
 	}
+
+	public function m_registrar($data){
+		return $this->db->insert('cita', $data);
+	}
 }
 ?>

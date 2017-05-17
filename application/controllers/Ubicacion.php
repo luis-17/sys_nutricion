@@ -16,9 +16,8 @@ class Ubicacion extends CI_Controller {
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'idubicacion' => $row['idubicacion'],
-					'descripcion_ub' => $row['descripcion_ub'],
-					'estado_ub' => $row['estado_ub'],					
+					'id' => $row['idubicacion'],
+					'descripcion' => $row['descripcion_ub'],			
 				)
 			);
 		}
