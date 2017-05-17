@@ -49,9 +49,14 @@
     vm.selected = {
       item: vm.items[0]
     };
-
+    /*console.log('vm.items', vm.items);
+    console.log('vm.modalTitle', vm.modalTitle);*/
     vm.ok = function () {
-      $uibModalInstance.close(vm.selected.item);
+      vm.selected = {
+        item: vm.items
+      };
+      console.log(vm.selected);
+      $uibModalInstance.close(vm.selected);
     };
 
     vm.cancel = function () {

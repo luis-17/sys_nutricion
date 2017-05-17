@@ -13,6 +13,8 @@
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
+    vm.openMenu = false;
+
     vm.listarCitas = function(){
       CitasServices.sListarCita().then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) {
@@ -42,9 +44,8 @@
     UbicacionServices.sListarUbicacionCbo().then(function(rpta){
       vm.listaUbicaciones = rpta.datos;
       console.log(vm.listaUbicaciones);
-    })
+    });
     
-
     /* event source that contains custom events on the scope */
     vm.events = [
       {title: 'All Day Event',start: new Date(y, m, 1), className: ['b-l b-2x b-greensea']},
@@ -94,6 +95,8 @@
 
     vm.alertOnClick = function(event){
       console.log('event',event);
+      vm.event = event;
+      vm.openMenu = true;
     }   
 
     /* Change View */
@@ -107,8 +110,8 @@
     };
 
     /* add custom event*/
-    vm.btnNuevaCita = function(start, item){
-      console.log('btnNuevaCita');      
+    vm.btnCita = function(start, type, item){
+      console.log('btnCita');      
       console.log('start',start);  
 
       if(start){
@@ -118,9 +121,62 @@
           className: ['bg-info']
         });
         vm.eventSources = [vm.events];
-      }       
+      }      
 
-      vm.cita = {}; 
+      /*DATEPICKER*/
+      vm.dp = {};
+      vm.dp.today = function() {
+        vm.dp.dt = new Date();
+      };
+      vm.dp.today();
+
+      vm.dp.clear = function() {
+        vm.dp.dt = null;
+      };
+
+      vm.dp.dateOptions = {
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+      };
+
+      vm.dp.open = function() {
+        vm.dp.popup.opened = true;
+      };
+
+      vm.dp.formats = ['dd-MM-yyyy','dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+      vm.dp.format = vm.dp.formats[0];
+      vm.dp.altInputFormats = ['M!/d!/yyyy'];
+
+      vm.dp.popup = {
+        opened: false
+      }; 
+
+      /*TIMEPICKER*/
+      vm.tp = {};
+      vm.tp.mytime = new Date();
+
+      vm.tp.hstep = 1;
+      vm.tp.mstep = 15;
+
+      vm.tp.ismeridian = true;
+      vm.tp.toggleMode = function() {
+        vm.tp.ismeridian = ! vm.ismeridian;
+      };
+
+
+      vm.cita = {};
+      vm.items = []; 
+      vm.items.paciente = {};
+      vm.items.dp = vm.dp;
+      vm.items.tp1 = angular.copy(vm.tp);
+      vm.items.tp2 = angular.copy(vm.tp);
+      vm.items.cita = vm.cita;
+      vm.items.listaUbicaciones = vm.listaUbicaciones;
+      vm.items.ubicacion = vm.items.listaUbicaciones[0];
+      
+      vm.titulo = 'CREAR NUEVA CITA'; 
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',
         controller: 'ModalInstanceController',
@@ -131,99 +187,20 @@
         // animation: true,
         resolve: {
           items: function () {
-            return vm.cita;
-          },          
-          listarCitas: function() {
-            return vm.listarCitas;
-          }
+            return vm.items;
+          },    
+          title: function() {
+            return vm.titulo;
+          }      
         }
       });
       modalInstance.result.then(function (selectedItem) {
         vm.selected = selectedItem;
+        console.log(selectedItem);
       }, function () {
         console.log('Modal dismissed at: ' + new Date());
         // $log.info('Modal dismissed at: ' + new Date());
       });
-
-      function ModalInstanceController($uibModalInstance,start,item) {
-        var vm = this;
-        vm.titleForm = 'CREAR NUEVA CITA';
-
-        /*DATEPICKER*/
-        vm.today = function() {
-          vm.dt = new Date();
-        };
-        vm.today();
-
-        vm.clear = function() {
-          vm.dt = null;
-        };
-
-        vm.dateOptions = {
-          dateDisabled: disabled,
-          formatYear: 'yy',
-          maxDate: new Date(2020, 5, 22),
-          minDate: new Date(),
-          startingDay: 1
-        };
-
-        vm.open = function() {
-          vm.popup.opened = true;
-        };
-
-        vm.setDate = function(year, month, day) {
-          vm.dt = new Date(year, month, day);
-        };
-
-        vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-        vm.format = vm.formats[0];
-        vm.altInputFormats = ['M!/d!/yyyy'];
-
-        vm.popup = {
-          opened: false
-        };
-
-
-        /*TIMEPICKER*/
-        vm.mytime = new Date();
-
-        vm.hstep = 1;
-        vm.mstep = 15;
-
-        vm.options = {
-          hstep: [1, 2, 3],
-          mstep: [1, 5, 10, 15, 25, 30]
-        };
-
-        vm.ismeridian = true;
-        vm.toggleMode = function() {
-          vm.ismeridian = ! vm.ismeridian;
-        };
-
-        vm.update = function() {
-          var d = new Date();
-          d.setHours( 14 );
-          d.setMinutes( 0 );
-          vm.mytime = d;
-        };
-
-        vm.changed = function () {
-          $log.log('Time changed to: ' + vm.mytime);
-        };
-
-        vm.clear = function() {
-          vm.mytime = null;
-        };
-
-        vm.ok = function () {
-          // $uibModalInstance.close(vm.selected.item);          
-        };
-
-        vm.cancel = function () {
-          console.log('paso por aqui...');
-          $uibModalInstance.close();
-        };
-      }
     }
 
     /* config object */
@@ -239,7 +216,7 @@
           center: 'title',
           right: 'next',          
         },          
-        dayClick: vm.btnNuevaCita,
+        dayClick: vm.btnCita,
         eventDrop: vm.alertOnDrop,
         eventResize: vm.alertOnResize,          
         //eventMouseover: vm.tooltipOnMouseOver,

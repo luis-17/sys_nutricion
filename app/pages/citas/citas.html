@@ -15,7 +15,7 @@
               <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click="pac.getPaginationServerSide()"></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click=" "></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
                 <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
               </ul>
@@ -36,7 +36,7 @@
                 <button class="btn btn-default btn-sm" ng-click="citas.changeView('agendaWeek', 'myCalendar1')">Semana</button>
                 <button class="btn btn-default btn-sm" ng-click="citas.changeView('month', 'myCalendar1')">Mes</button>
               </div>
-              <button type="button" class="btn btn-success btn-sm" ng-click='citas.btnNuevaCita()'>Nueva Cita</button>              
+              <button type="button" class="btn btn-success btn-sm" ng-click='citas.btnCita()'>Nueva Cita</button>              
             </div>
           </div>
           <!-- /right side header -->
@@ -52,6 +52,14 @@
                 <div class="mt-10">{{event.info}}</div>
                 <div class="mt-10">{{event.url}}</div>
               </div>
+            </div>
+            <div class="" ng-show="citas.openMenu" uib-dropdown>                
+              <ul class="dropdown-menu dropdown-menu-custom open" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click=" "></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>                               
             </div>
             <div class="calendar" ng-model="citas.eventSources" calendar="myCalendar1" ui-calendar="citas.uiConfig.calendar"></div>
           </div>
