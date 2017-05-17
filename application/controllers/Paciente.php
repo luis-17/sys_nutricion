@@ -58,4 +58,27 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
+	public function lista_pacientes_autocomplete(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit(); 		
+		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado, 
+				array(
+					'idcliente' => $row['idcliente'],
+					'paciente' => $row['paciente'],		
+				)
+			);
+		}
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

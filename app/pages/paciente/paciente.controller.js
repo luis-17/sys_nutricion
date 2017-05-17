@@ -111,6 +111,7 @@
     return({
         sListarPaciente: sListarPaciente,
         sRegistrar: sRegistrar,
+        sListaPacientesAutocomplete: sListaPacientesAutocomplete,
     });
     function sListarPaciente(pDatos) {
       var datos = pDatos || {};
@@ -125,6 +126,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/registrar",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }    
+    function sListaPacientesAutocomplete(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

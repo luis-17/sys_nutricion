@@ -22,4 +22,14 @@ class Model_paciente extends CI_Model {
 		);
 		return $this->db->insert('cliente', $data);
 	}
+
+	public function m_cargar_pacientes_autocomplete($datos){
+		$this->db->select("c.idcliente, c.email");
+		$this->db->select("(c.nombre || ' ' || c.apellidos ) AS paciente", FALSE);		
+		$this->db->from('cliente c'); //medico
+		$this->db->ilike("UPPER(c.nombre || ' ' || c.apellidos)", strtoupper($datos['search']));		
+				
+		$this->db->limit(10);
+		return $this->db->get()->result_array();
+	}
 }
