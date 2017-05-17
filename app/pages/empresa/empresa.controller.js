@@ -7,16 +7,13 @@
     .service('EmpresaServices', EmpresaServices);
 
   /** @ngInject */
-  function EmpresaController($scope,EmpresaServices) { 
+  function EmpresaController($scope,EmpresaServices) {
 
     var vm = this;
     vm.selectedItem = {};
     vm.options = {};
     vm.fDemo = {};
-    EmpresaServices.sListarDemo().then(function (rpta) { 
-      vm.fDemo = rpta.datos; 
-      //console.log(vm.fDemo,'vm.fDemo');
-    }); 
+
     vm.remove = function(scope) {
       scope.remove();
     };
@@ -32,13 +29,13 @@
   }
   function EmpresaServices($http, $q) {
     return({
-        sListarDemo: sListarDemo
+        sListarEmpresaCbo: sListarEmpresaCbo,
     });
-    function sListarDemo(pDatos) {
+    function sListarEmpresaCbo(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "Empresa/obtener_fila_demo",
+            url :  angular.patchURLCI + "Empresa/listar_empresa_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
