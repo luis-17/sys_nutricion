@@ -33,7 +33,7 @@
               <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
             </ul>
           </div>
-          <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize class="grid table-responsive clear"></div>
+          <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
         </section>
         <!-- /tile body -->
         <section class="tile-body col-sm-4">
@@ -42,7 +42,7 @@
             <!-- tile widget -->
             <section class="tile-widget bg-info">
               <img class="img-circle profile-avatar" src="assets/images/sin-imagen.png" alt="" ng-if="pac.mySelectionGrid.length < 1">
-              <img class="img-circle profile-avatar" src="assets/images/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-if="pac.mySelectionGrid.length == 1">
+              <img class="img-circle profile-avatar" src="assets/images/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-show="pac.mySelectionGrid.length >= 1">
               <div class="row">
                 <div class="col-md-5">
                   <h4 class="text-uppercase m-0">{{pac.mySelectionGrid[0].nombre}}</h4>

@@ -14,9 +14,9 @@ class Paciente extends CI_Controller {
 	public function listar_pacientes()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		//$paramPaginate = $allInputs['paginate'];
-		$lista = $this->model_paciente->m_cargar_pacientes();
-		// $totalRows = $this->model_paciente->m_count_pacientes($paramPaginate);
+		$paramPaginate = $allInputs['paginate'];
+		$lista = $this->model_paciente->m_cargar_pacientes($paramPaginate);
+		$totalRows = $this->model_paciente->m_count_pacientes($paramPaginate);
 		$arrListado = array();
 		// var_dump($lista); exit();
 		foreach ($lista as $row) {
@@ -36,6 +36,7 @@ class Paciente extends CI_Controller {
 		}
 
     	$arrData['datos'] = $arrListado;
+    	$arrData['paginate']['totalRows'] = $totalRows;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($lista)){
@@ -61,14 +62,14 @@ class Paciente extends CI_Controller {
 	}
 
 	public function lista_pacientes_autocomplete(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit(); 		
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
 		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
-			array_push($arrListado, 
+			array_push($arrListado,
 				array(
 					'idcliente' => $row['idcliente'],
-					'paciente' => $row['paciente'],		
+					'paciente' => $row['paciente'],
 				)
 			);
 		}
