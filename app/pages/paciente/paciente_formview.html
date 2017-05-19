@@ -136,13 +136,22 @@
 
 			        <ng-form name="step3">
 			        	<div class="row">
-			        		 <div class="form-group">
+			        		 <div class="form-group col-md-6">
 					            <label for="alergias" class="control-label minotaur-label">Alergias: </label>
 					            <textarea class="form-control" rows="5" name="alergias" id="alergias" placeholder="Registre las alergias..." ng-model="modalPac.fData.alergias_ia"></textarea>
 					        </div>
+					        <div class="form-group col-md-6">
+					            <label for="medicamentos" class="control-label minotaur-label">Medicamentos: </label>
+					            <textarea class="form-control" rows="5" name="medicamentos" id="medicamentos" placeholder="Registra tus medicamentos..." ng-model="modalPac.fData.medicamentos"></textarea>
+					        </div>
 			        	</div>
-		          		<div class="row">
-					        <div class="form-group">
+
+			          	<div class="row">
+					        <div class="form-group col-md-6">
+					            <label for="antecedentes" class="control-label minotaur-label">Antecedentes: </label>
+					            <textarea class="form-control" rows="5" name="antecedentes" id="antecedentes" placeholder="Escribe tus antecedentes..." ng-model="modalPac.fData.antecedentes_notas"></textarea>
+					        </div>
+					        <div class="form-group col-md-6">
 					            <label for="habitos" class="control-label minotaur-label">Hábitos: </label>
 					            <textarea class="form-control" rows="5" name="habitos" id="habitos" placeholder="Escribe tus hábitos..." ng-model="modalPac.fData.habitos_notas"></textarea>
 					        </div>

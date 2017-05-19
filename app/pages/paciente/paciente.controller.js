@@ -6,7 +6,8 @@
     .service('PacienteServices', PacienteServices);
 
   /** @ngInject */
-  function PacienteController($scope,$uibModal,uiGridConstants,PacienteServices,TipoClienteServices,EmpresaServices) {
+  function PacienteController($scope,$uibModal,uiGridConstants, alertify,toastr,
+    PacienteServices,TipoClienteServices,EmpresaServices) {
 
     var vm = this;
     // GRILLA PRINCIPAL
@@ -95,6 +96,7 @@
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
+            vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de pacientes';
             vm.activeStep = 0;
@@ -148,7 +150,104 @@
         });
       }
       vm.btnEditar = function(row){
-        console.log('Editando...',row.entity);
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'app/pages/paciente/paciente_formview.html',
+          controllerAs: 'modalPac',
+          size: 'lg',
+          backdropClass: 'splash splash-2 splash-ef-14',
+          windowClass: 'splash splash-2 splash-ef-14',
+          // controller: 'ModalInstanceController',
+          controller: function($scope, $uibModalInstance, arrToModal ){
+            var vm = this;
+            vm.fData = {};
+            vm.fData = arrToModal.seleccion;
+            vm.modoEdicion = true;
+            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            console.log(vm.fData);
+            vm.modalTitle = 'Edición de pacientes';
+            vm.activeStep = 0;
+            vm.listaSexos = [
+              { id:'', descripcion:'--Seleccione sexo--' },
+              { id:'M', descripcion:'MASCULINO' },
+              { id:'F', descripcion:'FEMENINO' }
+            ];
+            //vm.fData.sexo = vm.listaSexos[0].id;
+            // TIPO DE CLIENTE
+            TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
+              vm.listaTiposClientes = angular.copy(rpta.datos);
+              vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+              if(vm.fData.idtipocliente == null){
+                //vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
+              }
+            });
+            // LISTA DE EMPRESAS
+            EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
+              vm.listaEmpresas = angular.copy(rpta.datos);
+              vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+              if(vm.fData.idempresa == null){
+                // vm.fData.idempresa = vm.listaEmpresas[0].id;
+              }
+            });
+
+            vm.aceptar = function () {
+              console.log('edicion...', vm.fData);
+              $uibModalInstance.close(vm.fData);
+              PacienteServices.sEditarPaciente(vm.fData).then(function (rpta) {
+                vm.toast = {}
+                vm.options = {
+                  autoDismiss: false,
+                  position: 'toast-top-right',
+                  type: 'success',
+                  // iconClass: vm.toast.colors[1],
+                  timeout: '5000',
+                  extendedTimeout: '1000',
+                  // html: false,
+                  closeButton: true,
+                  tapToDismiss: true,
+                  progressBar: true,
+                  // closeHtml: '<button>&times;</button>',
+                  // newestOnTop: true,
+                  // maxOpened: 0,
+                  // preventDuplicates: false,
+                  // preventOpenDuplicates: false
+                };
+                if(rpta.flag == 1){
+                  vm.getPaginationServerSide();
+                  vm.toast.title = 'OK';
+                  vm.options.iconClass = {nombre:'success'}
+                }else if( rpta.flag == 0 ){
+                  vm.toast.title = 'OK';
+                  vm.options.type = 'error';
+                  vm.options.iconClass = {nombre:'warning'}
+                }
+                vm.toast.msg = rpta.message;
+
+
+                  var toast = toastr[vm.options.type](vm.toast.msg, vm.toast.title, {
+                    iconClass: 'toast-'+vm.options.iconClass.name + ' ' + 'bg-'+vm.options.iconClass.name
+                  });
+                  openedToasts.push(toast);
+
+              });
+
+            };
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel');
+            };
+          },
+          resolve: {
+            arrToModal: function() {
+              return {
+                getPaginationServerSide : vm.getPaginationServerSide,
+                seleccion : row.entity
+                // listaSexos : $scope.listaSexos,
+                // gridComboOptions : $scope.gridComboOptions,
+                // mySelectionComboGrid : $scope.mySelectionComboGrid
+              }
+            }
+          }
+        });
       }
       vm.btnAnular = function(row){
         alert('Se eliminará el paciente');
@@ -159,8 +258,10 @@
   function PacienteServices($http, $q) {
     return({
         sListarPaciente: sListarPaciente,
-        sRegistrarPaciente: sRegistrarPaciente,
         sListaPacientesAutocomplete: sListaPacientesAutocomplete,
+        sRegistrarPaciente: sRegistrarPaciente,
+        sEditarPaciente: sEditarPaciente,
+        sAnularPaciente: sAnularPaciente,
     });
     function sListarPaciente(pDatos) {
       var datos = pDatos || {};
@@ -171,6 +272,14 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
+    function sListaPacientesAutocomplete(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
     function sRegistrarPaciente(datos) {
       var request = $http({
             method : "post",
@@ -179,10 +288,19 @@
       });
       return (request.then(handleSuccess,handleError));
     }
-    function sListaPacientesAutocomplete(datos) {
+
+    function sEditarPaciente(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
+            url : angular.patchURLCI+"Paciente/editar_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sAnularPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/anular_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
