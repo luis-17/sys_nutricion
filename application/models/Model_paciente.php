@@ -5,7 +5,10 @@ class Model_paciente extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_pacientes($paramPaginate=FALSE){
-		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.email, cl.celular, cl.nombre_foto');
+		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento,
+			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa,
+			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
+			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
 		$this->db->from('cliente cl');
 		$this->db->where('cl.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
@@ -65,23 +68,46 @@ class Model_paciente extends CI_Model {
 			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
 			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
 			'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
+			'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
+			'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
 			'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		return $this->db->insert('cliente', $data);
 	}
-	public function m_anular($id)
+
+	public function m_editar($datos)
 	{
 		$data = array(
-			'estado_cl' => 0
+			'nombre' => strtoupper($datos['nombre']),
+			'apellidos' => strtoupper($datos['apellidos']),
+			'idtipocliente' => $datos['idtipocliente'],
+			'idempresa' => $datos['idempresa'],
+			'idmotivoconsulta' => empty($datos['idmotivoconsulta'])? 1 : $datos['idmotivoconsulta'],
+			'sexo' => $datos['sexo'],
+			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),
+			'email' => $datos['email'],
+			'celular' => $datos['celular'],
+			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
+			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
+			'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
+			'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
+			'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
+			'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
+			'updatedAt' => date('Y-m-d H:i:s')
 		);
-		$this->db->where('idcliente',$id);
-		if($this->db->update('cliente', $data)){
-			return true;
-		}else{
-			return false;
-		}
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+	public function m_anular($datos)
+	{
+		$data = array(
+			'estado_cl' => 0,
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
 	}
 
 }
