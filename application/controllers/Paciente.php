@@ -11,6 +11,7 @@ class Paciente extends CI_Controller {
         $this->load->model(array('model_paciente'));
 
     }
+    // LISTAS COMBOS Y AUTOCOMPLETES
 	public function listar_pacientes()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -46,20 +47,6 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function registrar_paciente()
-	{
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
-    	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
-		if($this->model_paciente->m_registrar($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente';
-    		$arrData['flag'] = 1;
-		}
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-	}
 
 	public function lista_pacientes_autocomplete(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
@@ -78,6 +65,35 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 1;
 		if(empty($lista)){
 			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	// MANTENIMIENTO
+	public function registrar_paciente()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+		if($this->model_paciente->m_registrar($allInputs)){
+			$arrData['message'] = 'Se registraron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function anular_paciente()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+
+		$arrData['message'] = 'No se pudo anular los datos';
+    	$arrData['flag'] = 0;
+		if( $this->model_paciente->m_anular($allInputs['idcliente']) ){
+			$arrData['message'] = 'Se anularon los datos correctamente';
+    		$arrData['flag'] = 1;
 		}
 		$this->output
 		    ->set_content_type('application/json')

@@ -38,6 +38,16 @@ class Model_paciente extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData['contador'];
 	}
+	public function m_cargar_pacientes_autocomplete($datos){
+		$this->db->select("c.idcliente, c.email");
+		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
+		$this->db->from('cliente c');
+		$this->db->where("c.estado_cl",1);
+		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper($datos['search']) . "%'");
+
+		$this->db->limit(10);
+		return $this->db->get()->result_array();
+	}
 
 	public function m_registrar($datos)
 	{
@@ -61,15 +71,17 @@ class Model_paciente extends CI_Model {
 		);
 		return $this->db->insert('cliente', $data);
 	}
-
-	public function m_cargar_pacientes_autocomplete($datos){
-		$this->db->select("c.idcliente, c.email");
-		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
-		$this->db->from('cliente c');
-		$this->db->where("c.estado_cl",1);
-		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper($datos['search']) . "%'");
-
-		$this->db->limit(10);
-		return $this->db->get()->result_array();
+	public function m_anular($id)
+	{
+		$data = array(
+			'estado_cl' => 0
+		);
+		$this->db->where('idcliente',$id);
+		if($this->db->update('cliente', $data)){
+			return true;
+		}else{
+			return false;
+		}
 	}
+
 }
