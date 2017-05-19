@@ -76,6 +76,7 @@ class Model_paciente extends CI_Model {
 		);
 		return $this->db->insert('cliente', $data);
 	}
+
 	public function m_editar($datos)
 	{
 		$data = array(

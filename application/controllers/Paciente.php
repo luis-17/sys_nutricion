@@ -11,6 +11,7 @@ class Paciente extends CI_Controller {
         $this->load->model(array('model_paciente'));
 
     }
+    // LISTAS COMBOS Y AUTOCOMPLETES
 	public function listar_pacientes()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -79,6 +80,7 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	// MANTENIMIENTO
 	public function registrar_paciente()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
@@ -121,5 +123,4 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 }

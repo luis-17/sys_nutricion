@@ -6,6 +6,7 @@
     .service('PacienteServices', PacienteServices);
 
   /** @ngInject */
+
   function PacienteController($scope,$uibModal,uiGridConstants, alertify,toastr,
     PacienteServices,TipoClienteServices,EmpresaServices) {
 
@@ -34,7 +35,7 @@
         enableRowHeaderSelection: true,
         enableFullRowSelection: false,
         multiSelect: false,
-        appScopeProvider: vm,
+        appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80, },
@@ -64,10 +65,11 @@
           var grid = this.grid;
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
-            'idcliente' : grid.columns[0].filters[0].term,
-            'nombre' : grid.columns[1].filters[0].term,
-            'apellidos' : grid.columns[2].filters[0].term,
+            'idcliente' : grid.columns[1].filters[0].term,
+            'nombre' : grid.columns[2].filters[0].term,
+            'apellidos' : grid.columns[3].filters[0].term,
           }
+          // console.log('columnas',paginationOptions.searchColumn);
           vm.getPaginationServerSide();
         });
       }
@@ -250,7 +252,31 @@
         });
       }
       vm.btnAnular = function(row){
-        alert('Se eliminará el paciente');
+        alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+            ev.preventDefault();
+            // alertify.alert("Successful AJAX after OK");
+            PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
+              if(rpta.flag == 1){
+                  pTitle = 'OK!';
+                  pType = 'success';
+                  vm.getPaginationServerSide();
+                }else if(rpta.flag == 0){
+                  var pTitle = 'Error!';
+                  var pType = 'danger';
+                }else{
+                  alert('Error inesperado');
+                }
+                //pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 1000 });
+            });
+
+
+
+        }, function(ev) {
+            ev.preventDefault();
+            // alertify.alert("Successful AJAX after Cancel");
+        });
+
+
       }
 
   }
@@ -288,7 +314,6 @@
       });
       return (request.then(handleSuccess,handleError));
     }
-
     function sEditarPaciente(datos) {
       var request = $http({
             method : "post",
