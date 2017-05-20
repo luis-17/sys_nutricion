@@ -20,7 +20,7 @@
 
 			          <div class="row">
 			            <div class="form-group col-md-6">
-			              <label for="nombre" class="control-label minotaur-label">Nombre <small class="text-red">(*)</small> </label>
+			              <label for="nombre" class="control-label minotaur-label">Nombres <small class="text-red">(*)</small> </label>
 			              <input type="text" name="nombre" id="nombre" class="form-control" ng-model="modalPac.fData.nombre" placeholder="Registre nombre del paciente" required>
 			              <div ng-messages="step1.name.$error" ng-if="step1.nombre.$dirty" role="alert" class="help-block text-red">
 			                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
@@ -37,6 +37,7 @@
 			          </div>
 
 			          <div class="row">
+
 
 			            <div class="form-group col-md-3">
 			              <label for="fecha" class="control-label minotaur-label">Fecha Nacimiento <small class="text-red">(*)</small> </label>
@@ -74,7 +75,23 @@
 
 			          </div>
 
+						<div class="row">
+							<div class="form-group col-md-3">
+								<label class="control-label mb-xs">Foto del Paciente </label>
+								<input type="file" class="filestyle" filestyle="{
+						            buttonText: 'Select file',
+						            iconName: 'fa fa-inbox'
+						          }" nv-file-select="" uploader="forms.uploader">
+							</div>
+							<div class="form-group col-md-3">
+				              <label for="motivo" class="control-label minotaur-label">Motivo consulta <small class="text-red">(*)</small> </label>
+				              <select class="form-control" ng-model="modalPac.fData.idmotivoconsulta" ng-options="item.id as item.descripcion for item in modalPac.listaMotivos" required > </select>
 
+				              <div ng-messages="step1.motivo.$error" ng-if="step1.motivo.$dirty" role="alert" class="help-block text-red">
+				                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+				              </div>
+				            </div>
+						</div>
 
 			          <button ng-disabled="step1.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 1">Siguiente</button>
 

@@ -8,7 +8,7 @@
   /** @ngInject */
 
   function PacienteController($scope,$uibModal,uiGridConstants, alertify,toastr,
-    PacienteServices,TipoClienteServices,EmpresaServices) {
+    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices) {
 
     var vm = this;
     // GRILLA PRINCIPAL
@@ -124,14 +124,39 @@
                 vm.fData.idempresa = vm.listaEmpresas[0].id;
               }
             });
+            // LISTA MOTIVO CONSULTA
+            MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
+              vm.listaMotivos = angular.copy(rpta.datos);
+              vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+              if(vm.fData.idmotivoconsulta == null){
+                vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
+              }
+            });
 
             vm.aceptar = function () {
-              console.log('fdata', vm.fData);
               $uibModalInstance.close(vm.fData);
               PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
+                var openedToasts = [];
+                vm.options = {
+                  timeout: '3000',
+                  extendedTimeout: '1000',
+                  // closeButton: true,
+                  // closeHtml : '<button>&times;</button>',
+                  preventDuplicates: false,
+                  preventOpenDuplicates: false
+                };
                 if(rpta.flag == 1){
                   vm.getPaginationServerSide();
+                  var title = 'OK';
+                  var iconClass = 'success';
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  var iconClass = 'warning';
+                }else{
+                  alert('Ocurrió un error');
                 }
+                var toast = toastr[iconClass](rpta.message, title, vm.options);
+                openedToasts.push(toast);
               });
 
             };
@@ -162,6 +187,7 @@
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
+            var openedToasts = [];
             vm.fData = {};
             vm.fData = arrToModal.seleccion;
             vm.modoEdicion = true;
@@ -187,50 +213,40 @@
             EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
               vm.listaEmpresas = angular.copy(rpta.datos);
               vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idempresa == null){
-                // vm.fData.idempresa = vm.listaEmpresas[0].id;
-              }
+            });
+            // LISTA MOTIVO CONSULTA
+            MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
+              vm.listaMotivos = angular.copy(rpta.datos);
+              vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
             });
 
             vm.aceptar = function () {
               console.log('edicion...', vm.fData);
               $uibModalInstance.close(vm.fData);
               PacienteServices.sEditarPaciente(vm.fData).then(function (rpta) {
-                vm.toast = {}
                 vm.options = {
-                  autoDismiss: false,
-                  position: 'toast-top-right',
-                  type: 'success',
-                  // iconClass: vm.toast.colors[1],
-                  timeout: '5000',
+                  timeout: '3000',
                   extendedTimeout: '1000',
-                  // html: false,
-                  closeButton: true,
-                  tapToDismiss: true,
+                  // closeButton: true,
+                  // closeHtml : '<button>&times;</button>',
                   progressBar: true,
-                  // closeHtml: '<button>&times;</button>',
-                  // newestOnTop: true,
-                  // maxOpened: 0,
-                  // preventDuplicates: false,
-                  // preventOpenDuplicates: false
+                  preventDuplicates: false,
+                  preventOpenDuplicates: false
                 };
                 if(rpta.flag == 1){
                   vm.getPaginationServerSide();
-                  vm.toast.title = 'OK';
-                  vm.options.iconClass = {nombre:'success'}
+                  var title = 'OK';
+                  var iconClass = 'success';
                 }else if( rpta.flag == 0 ){
-                  vm.toast.title = 'OK';
-                  vm.options.type = 'error';
-                  vm.options.iconClass = {nombre:'warning'}
+                  var title = 'Advertencia';
+                  // vm.toast.title = 'Advertencia';
+                  var iconClass = 'warning';
+                  // vm.options.iconClass = {name:'warning'}
+                }else{
+                  alert('Ocurrió un error');
                 }
-                vm.toast.msg = rpta.message;
-
-
-                  var toast = toastr[vm.options.type](vm.toast.msg, vm.toast.title, {
-                    iconClass: 'toast-'+vm.options.iconClass.name + ' ' + 'bg-'+vm.options.iconClass.name
-                  });
-                  openedToasts.push(toast);
-
+                var toast = toastr[iconClass](rpta.message, title, vm.options);
+                openedToasts.push(toast);
               });
 
             };
@@ -253,27 +269,32 @@
       }
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
-            ev.preventDefault();
-            // alertify.alert("Successful AJAX after OK");
-            PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
-              if(rpta.flag == 1){
-                  pTitle = 'OK!';
-                  pType = 'success';
-                  vm.getPaginationServerSide();
-                }else if(rpta.flag == 0){
-                  var pTitle = 'Error!';
-                  var pType = 'danger';
-                }else{
-                  alert('Error inesperado');
-                }
-                //pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 1000 });
-            });
-
-
-
+          ev.preventDefault();
+          PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
+            var openedToasts = [];
+            vm.options = {
+              timeout: '3000',
+              extendedTimeout: '1000',
+              // closeButton: true,
+              // closeHtml : '<button>&times;</button>',
+              preventDuplicates: false,
+              preventOpenDuplicates: false
+            };
+            if(rpta.flag == 1){
+              vm.getPaginationServerSide();
+              var title = 'OK';
+              var iconClass = 'success';
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var iconClass = 'warning';
+            }else{
+              alert('Ocurrió un error');
+            }
+            var toast = toastr[iconClass](rpta.message, title, vm.options);
+            openedToasts.push(toast);
+          });
         }, function(ev) {
             ev.preventDefault();
-            // alertify.alert("Successful AJAX after Cancel");
         });
 
 

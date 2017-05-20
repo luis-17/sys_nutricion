@@ -102,7 +102,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente';
+			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
     		$arrData['flag'] = 1;
 		}
 		$this->output
