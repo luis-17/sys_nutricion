@@ -390,6 +390,29 @@
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
         console.log('anular...');
+        CitasServices.sAnularCita(row).then(function (rpta) {              
+          var openedToasts = [];
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };       
+          if(rpta.flag == 1){
+            vm.eventSources = [vm.eventsF];
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            var iconClass = 'warning';
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
       }, function(ev) {
           ev.preventDefault();
       });
@@ -414,7 +437,7 @@
         // dayClick: vm.doubleClick,
         eventDrop: vm.alertOnDrop,
         eventResize: vm.alertOnResize,
-        eventMouseover: vm.tooltipOnMouseOver,
+        //eventMouseover: vm.tooltipOnMouseOver,
         eventClick: vm.alertOnClick
       }
     };
@@ -426,6 +449,7 @@
         sRegistrarCita: sRegistrarCita,
         sDropCita: sDropCita,
         sActualizarCita: sActualizarCita,
+        sAnularCita:sAnularCita,
     });
     function sListarCita(datos) {
       var request = $http({
@@ -458,6 +482,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Cita/actualizar_cita",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }    
+    function sAnularCita(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Cita/anular_cita",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

@@ -116,10 +116,8 @@ class Cita extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la cita.';
 
-		print_r(allInputs);
-
 		$data = array(
-			'idcliente' => $allInputs['paciente']['idcliente'],
+			'idcliente' => $allInputs['cliente']['idcliente'],
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
@@ -137,4 +135,20 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function anular_cita(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error actualizando la cita.';
+
+	
+		if($this->model_cita->m_anular($allInputs['id'])){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Cita anulada.';
+		}
+	
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
 }

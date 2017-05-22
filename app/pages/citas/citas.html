@@ -58,7 +58,7 @@
                 <li role="menuitem"><a><i class="fa fa-user"></i>Ir al Paciente</a></li>
                 <li role="menuitem" ng-if="!vm.event.atencion.idatencion"><a ><i class="fa fa-check-square-o"></i>Generar Consulta</a></li>
                 <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita()"><a ><i class="fa fa-calendar"></i>Modificar Cita</a></li>
-                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="citas.btnAnular(citas.event)"><a ><i class="fa fa-remove"></i>Anular Cita</a></li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnAnular(vm.event)"><a ><i class="fa fa-remove"></i>Anular Cita</a></li>
                 <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a></li>
                 <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-remove"></i>Anular Consulta</a></li>
               </ul>

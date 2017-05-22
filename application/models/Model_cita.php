@@ -31,5 +31,11 @@ class Model_cita extends CI_Model {
 		$this->db->where('idcita', $id);
 		return $this->db->update('cita', $data);
 	}
+
+	public function m_anular($id){
+		$data['estado_ci'] = 0;
+		$this->db->where('idcita', $id);
+		return $this->db->update('cita', $data);
+	}
 }
 ?>
