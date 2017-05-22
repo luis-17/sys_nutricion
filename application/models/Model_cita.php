@@ -25,6 +25,11 @@ class Model_cita extends CI_Model {
 
 	public function m_registrar($data){
 		return $this->db->insert('cita', $data);
+	}	
+
+	public function m_actualizar($data, $id){
+		$this->db->where('idcita', $id);
+		return $this->db->update('cita', $data);
 	}
 }
 ?>

@@ -38,3 +38,15 @@
 	.tab-wizard .nav-tabs > li > a{padding: 10px!important}
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}
+
+.fc-row .fc-content-skeleton {
+    z-index: auto;
+}
+
+.fc-event .my-dropdown a{
+	color: #333333 !important;
+}
+
+.fc-event .my-dropdown a:hover{
+	color: #333333 !important;
+}

@@ -16,15 +16,17 @@ class Cita extends CI_Controller {
 		$arrListado = array();		
 		foreach ($lista as $row) {
 			if(empty($row['idatencion'])){
-				$className = array('bg-info');
+				$className = array('b-l b-2x b-primary');
 			}else{
-				$className = array('bg-success');
+				$className = array('b-l b-2x b-success');
 			}
 			array_push($arrListado,
 				array(
 					'id' => $row['idcita'],
-					'hora_desde' => $row['hora_desde'],
-					'hora_hasta' => $row['hora_hasta'],
+					'hora_desde_sql' => $row['hora_desde'],
+					'hora_hasta_sql' => $row['hora_hasta'],
+					'hora_desde' => strtotime($row['hora_desde']),
+					'hora_hasta' => strtotime($row['hora_hasta']),
 					'estado_ci' => $row['estado_ci'],
 					'fecha' => $row['fecha'],
 					'cliente' => array(
@@ -34,13 +36,14 @@ class Cita extends CI_Controller {
 							'apellidos' => $row['apellidos'],
 							'sexo' => $row['sexo'],
 						),
+					'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 					'profesional' => array(
 							'idprofesional' => $row['idprofesional'],
 							'profesional' => $row['profesional'],
 						),
 					'ubicacion' => array(
-							'idubicacion' => $row['idubicacion'],
-							'descripcion_ub' => $row['descripcion_ub'],
+							'id' => $row['idubicacion'],
+							'descripcion' => $row['descripcion_ub'],
 						),
 					'atencion' => array(
 							'idatencion' => $row['idatencion'],
@@ -101,7 +104,7 @@ class Cita extends CI_Controller {
 	public function drop_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
-		$arrData['message'] = '';
+		$arrData['message'] = 'Error';
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -111,10 +114,27 @@ class Cita extends CI_Controller {
 	public function actualizar_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
-		$arrData['message'] = '';
+		$arrData['message'] = 'Ha ocurrido un error actualizando la cita.';
 
+		print_r(allInputs);
+
+		$data = array(
+			'idcliente' => $allInputs['paciente']['idcliente'],
+			'idubicacion' => $allInputs['ubicacion']['id'],
+			'idprofesional' => $this->sessionVP['idprofesional'],
+			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
+			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
+			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
+			'updatedAt' => date('Y-m-d H:i:s')
+			);
+
+		if($this->model_cita->m_actualizar($data, $allInputs['id'])){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Cita actualizada.';
+		}
+	
 		$this->output
 		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));	
+		    ->set_output(json_encode($arrData));
 	}
 }
