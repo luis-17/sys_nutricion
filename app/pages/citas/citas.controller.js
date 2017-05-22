@@ -120,11 +120,10 @@
 
     /* add custom event*/
     vm.btnCita = function(start, type){
-      vm.dropdown.removeClass('open');
-      console.log('btnCita');      
+      vm.dropdown.removeClass('open');     
       console.log('start',start);  
 
-      if(start){
+      /*if(start){
         vm.events.push({
           title: 'New Event',
           start: start,
@@ -132,7 +131,7 @@
         });
         vm.eventSources = [vm.events];
       }   
-
+*/
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -157,6 +156,7 @@
           vm.dp = {};
           vm.dp.today = function() {
             if(start){
+              console.log(start);
               vm.fData.fecha = start;
             }else{
               vm.fData.fecha = new Date();
@@ -219,12 +219,30 @@
           }          
 
           vm.ok = function () {
-            console.log('fdata', vm.fData);            
-            CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {
+            console.log('fdata', vm.fData);
+            $uibModalInstance.close(vm.fData);
+            CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {              
+              var openedToasts = [];
+              vm.options = {
+                timeout: '3000',
+                extendedTimeout: '1000',
+                // closeButton: true,
+                // closeHtml : '<button>&times;</button>',
+                preventDuplicates: false,
+                preventOpenDuplicates: false
+              };       
               if(rpta.flag == 1){
                 vm.listarCitas();
-                $uibModalInstance.close(vm.fData);
+                var title = 'OK';
+                var iconClass = 'success';
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                var iconClass = 'warning';
+              }else{
+                alert('Ocurrió un error');
               }
+              var toast = toastr[iconClass](rpta.message, title, vm.options);
+              openedToasts.push(toast);
             });
 
           };
@@ -351,7 +369,8 @@
       });
     }
 
-    vm.btnAnular = function(event){
+    vm.btnAnular = function(row){
+      vm.dropdown.removeClass('open');
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
         console.log('anular...');
@@ -368,6 +387,8 @@
         editable: true,
         dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
         dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+        months : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre","Diciembre"],
+        monthsShort : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
         header:{
           left: 'prev',
           center: 'title',
@@ -380,6 +401,7 @@
         eventClick: vm.alertOnClick,
       }
     };
+    console.log(vm.uiConfig.calendar);
   }
   function CitasServices($http, $q) {
     return({
