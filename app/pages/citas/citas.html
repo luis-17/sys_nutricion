@@ -53,20 +53,21 @@
                 <div class="mt-10">{{vm.event.url}}</div>
               </div>
             </div>
+            <div class="my-dropdown dropdown">
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu="" role="menu">
+                <li role="menuitem"><a><i class="fa fa-user"></i>Ir al Paciente</a></li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion"><a ><i class="fa fa-check-square-o"></i>Generar Consulta</a></li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita()"><a ><i class="fa fa-calendar"></i>Modificar Cita</a></li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion"><a ><i class="fa fa-remove"></i>Anular Cita</a></li>
+
+                <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a></li>
+                <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-remove"></i>Anular Consulta</a></li>
+              </ul>
+            </div>
             <div class="calendar" ng-model="vm.eventSources" calendar="calendarCitas" ui-calendar="vm.uiConfig.calendar"></div>
           </div>
           <!-- /right side body -->
         </section>
-        <!-- /tile body -->
-
-
-      <!-- left side -->
-      <!-- right side -->
-      
-        
-
-
-
       </div>
       <!-- /right side -->
     </div>
