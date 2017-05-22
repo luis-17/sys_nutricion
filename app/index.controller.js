@@ -6,16 +6,6 @@
     .controller('MainController', MainController)
     .service('rootServices', rootServices);
 
-
-  // function handleError( response ) {
-  //     if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-  //         return( $q.reject( "An unknown error occurred." ) );
-  //     }
-  //     return( $q.reject( response.data.message ) );
-  // }
-  // function handleSuccess( response ) {
-  //     return( response.data );
-  // }
   /** @ngInject */
   function MainController($translate, $scope, rootServices, $location) {
     var vm = this;
@@ -73,7 +63,6 @@
     }
     $scope.getValidateSession();
   }
-
   function rootServices($http, $q) {
     return({
         sLogoutSessionCI: sLogoutSessionCI,

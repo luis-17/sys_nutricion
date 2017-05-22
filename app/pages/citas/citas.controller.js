@@ -6,27 +6,26 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,CitasServices,UbicacionServices,PacienteServices,$uibModal, alertify,toastr,) {
+  function CitasController ($scope,$uibModal,alertify,toastr,CitasServices,UbicacionServices,PacienteServices) { 
     var vm = this;
 
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-    vm.openMenu = false;
 
-    vm.listarCitas = function(){
-      CitasServices.sListarCita().then(function (rpta) {
-        angular.forEach(rpta.datos, function(row, key) {
-          row.start = new Date(row.start);
-        });
-        vm.events = rpta.datos;  
-        vm.eventSources = [vm.events];
-        console.log(vm.eventSources);
-        //angular.element('.calendar').fullCalendar('refetchEvents');
-      });
-    };
-    vm.listarCitas();
+    // vm.listarCitas = function(){
+    //   CitasServices.sListarCita().then(function (rpta) {
+    //     angular.forEach(rpta.datos, function(row, key) {
+    //       row.start = new Date(row.start);
+    //     });
+    //     vm.events = rpta.datos;  
+    //     vm.eventSources = [vm.events];
+    //     console.log(vm.eventSources);
+    //     //angular.element('.calendar').fullCalendar('refetchEvents');
+    //   });
+    // };
+    // vm.listarCitas();
     
     /* event source that contains custom events on the scope */
     /*vm.events = [
@@ -39,17 +38,13 @@
       {title: 'Make cupcakes', start: new Date(y, m, 2), className: ['b-l b-2x b-info'], location:'Bratislava', info:'The best in whole world.'},
       {title: 'Call wife', start: new Date(y, m, 6),end: new Date(y, m, 7), className: ['b-l b-2x b-red'], location:'Piestany', info:'And say her hello.'}
     ];*/
-    vm.events = [
-      {"id":"5","hora_desde_sql":"22:30:38","hora_hasta_sql":"11:00:38","hora_desde":1495405838,"hora_hasta":1495364438,"estado_ci":"1","fecha":"2017-05-17","cliente":{"idcliente":"2","cod_historia_clinica":"001","nombre":"JOHN","apellidos":"LENNON","sexo":"M"},"paciente":"JOHN LENNON","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"1","descripcion":"UBICACION 1"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-17 22:30:38","title":"10:30 pm - 11:00 am","allDay":false},
-      {"id":"6","hora_desde_sql":"04:12:30","hora_hasta_sql":"05:12:30","hora_desde":1495339950,"hora_hasta":1495343550,"estado_ci":"1","fecha":"2017-05-27","cliente":{"idcliente":"5","cod_historia_clinica":"H001","nombre":"RINGO","apellidos":"STARR","sexo":"M"},"paciente":"RINGO STARR","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"1","descripcion":"UBICACION 1"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-27 04:12:30","title":"04:12 am - 05:12 am","allDay":false},
-      {"id":"4","hora_desde_sql":"20:20:18","hora_hasta_sql":"20:50:18","hora_desde":1495398018,"hora_hasta":1495399818,"estado_ci":"1","fecha":"2017-05-18","cliente":{"idcliente":"3","cod_historia_clinica":"002","nombre":"PAUL","apellidos":"MCCARTNEY","sexo":"M"},"paciente":"PAUL MCCARTNEY","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"2","descripcion":"UBICACION 2"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-18 20:20:18","title":"08:20 pm - 08:50 pm","allDay":false},
-      {"id":"3","hora_desde_sql":"20:20:18","hora_hasta_sql":"20:50:18","hora_desde":1495398018,"hora_hasta":1495399818,"estado_ci":"1","fecha":"2017-05-17","cliente":{"idcliente":"3","cod_historia_clinica":"002","nombre":"PAUL","apellidos":"MCCARTNEY","sexo":"M"},"paciente":"PAUL MCCARTNEY","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"3","descripcion":"UBICACION 3"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-17 20:20:18","title":"08:20 pm - 08:50 pm","allDay":false}
-    ];
-    vm.eventSources = [vm.events];
-
-    /* alert on dayClick */
-    vm.precision = 400;
-    vm.lastClickTime = 0;
+    // vm.events = [
+    //   {"id":"5","hora_desde_sql":"22:30:38","hora_hasta_sql":"11:00:38","hora_desde":1495405838,"hora_hasta":1495364438,"estado_ci":"1","fecha":"2017-05-17","cliente":{"idcliente":"2","cod_historia_clinica":"001","nombre":"JOHN","apellidos":"LENNON","sexo":"M"},"paciente":"JOHN LENNON","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"1","descripcion":"UBICACION 1"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-17 22:30:38","title":"10:30 pm - 11:00 am","allDay":false},
+    //   {"id":"6","hora_desde_sql":"04:12:30","hora_hasta_sql":"05:12:30","hora_desde":1495339950,"hora_hasta":1495343550,"estado_ci":"1","fecha":"2017-05-27","cliente":{"idcliente":"5","cod_historia_clinica":"H001","nombre":"RINGO","apellidos":"STARR","sexo":"M"},"paciente":"RINGO STARR","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"1","descripcion":"UBICACION 1"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-27 04:12:30","title":"04:12 am - 05:12 am","allDay":false},
+    //   {"id":"4","hora_desde_sql":"20:20:18","hora_hasta_sql":"20:50:18","hora_desde":1495398018,"hora_hasta":1495399818,"estado_ci":"1","fecha":"2017-05-18","cliente":{"idcliente":"3","cod_historia_clinica":"002","nombre":"PAUL","apellidos":"MCCARTNEY","sexo":"M"},"paciente":"PAUL MCCARTNEY","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"2","descripcion":"UBICACION 2"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-18 20:20:18","title":"08:20 pm - 08:50 pm","allDay":false},
+    //   {"id":"3","hora_desde_sql":"20:20:18","hora_hasta_sql":"20:50:18","hora_desde":1495398018,"hora_hasta":1495399818,"estado_ci":"1","fecha":"2017-05-17","cliente":{"idcliente":"3","cod_historia_clinica":"002","nombre":"PAUL","apellidos":"MCCARTNEY","sexo":"M"},"paciente":"PAUL MCCARTNEY","profesional":{"idprofesional":"1","profesional":"0"},"ubicacion":{"id":"3","descripcion":"UBICACION 3"},"atencion":{"idatencion":null,"fecha_atencion":null,"diagnostico_notas":null},"className":["b-l b-2x b-primary"],"start":"2017-05-17 20:20:18","title":"08:20 pm - 08:50 pm","allDay":false}
+    // ];
+    // vm.eventSources = [vm.events];
 
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){
@@ -65,14 +60,15 @@
         console.log(rpta);
       });
     };
-
     /* alert on Resize */
-    vm.alertOnResize = function(event, delta){
+    vm.alertOnResize = function(event, delta){ 
+      console.log('resize mee');
       vm.alertMessage = ('Event Resized to make dayDelta ' + delta);
     };
 
-    /*vm.overlay = angular.element('.fc-overlay');
+    vm.overlay = angular.element('.fc-overlay');
     vm.tooltipOnMouseOver = function( event, jsEvent){
+      console.log('hover me');
       vm.event = event;
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
@@ -86,8 +82,28 @@
       }
       if (wrap.find('.fc-overlay').length === 0) {
         wrap.append( vm.overlay );
+      }/**/
+    }
+    vm.eventsF = function (start, end, timezone, callback) {
+      var arrParams = { 
+        url: angular.patchURLCI+"Cita/listar_citas", 
+        datos:{ 
+          //'events': vm.events
+        }
       }
-    };*/
+      var events = []; 
+      CitasServices.sListarCita().then(function (rpta) {
+        angular.forEach(rpta.datos, function(row, key) { 
+            row.start = new Date(row.start);
+        });
+        events = rpta.datos; 
+        callback(events); 
+      });
+    } 
+    vm.selectCell = function(start, end) {
+      console.log(start, end,'select cell');
+    }
+    vm.eventSources = [vm.eventsF]; 
 
     vm.dropdown = angular.element('.my-dropdown');
     vm.alertOnClick = function(event, jsEvent){
@@ -106,7 +122,7 @@
       if (wrap.find('.my-dropdown').length === 0) {
         wrap.append( vm.dropdown );
       }
-    }   
+    }
 
     /* Change View */
     vm.changeView = function(view,calendar) {
@@ -378,13 +394,13 @@
           ev.preventDefault();
       });
     }
-
-    /* config object */
-    vm.uiConfig = {
+    vm.uiConfig = { 
       calendar:{
         height: 450,
         contentHeight: 510,
         editable: true,
+        selectable: true,
+        defaultView: 'agendaWeek',
         dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
         dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
         months : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre","Diciembre"],
@@ -392,13 +408,14 @@
         header:{
           left: 'prev',
           center: 'title',
-          right: 'next',          
-        },          
-        dayClick: vm.btnCita,
+          right: 'next'
+        },
+        select: vm.selectCell,
+        // dayClick: vm.doubleClick,
         eventDrop: vm.alertOnDrop,
-        eventResize: vm.alertOnResize,          
-        //eventMouseover: vm.tooltipOnMouseOver,
-        eventClick: vm.alertOnClick,
+        eventResize: vm.alertOnResize,
+        eventMouseover: vm.tooltipOnMouseOver,
+        eventClick: vm.alertOnClick
       }
     };
     console.log(vm.uiConfig.calendar);

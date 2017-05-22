@@ -2,22 +2,11 @@
   'use strict';
 
   var directoryApp = 'sys_nutricion';
-  // if (!window.location.origin) {
-  //   window.location.origin = window.location.protocol+"//"+window.location.host;
-  // }
-  var dirWebRoot =  'http://localhost/'+directoryApp+'/';
+  if (!window.location.origin) {
+    window.location.origin = window.location.protocol+"//"+window.location.host;
+  }
+  var dirWebRoot =  window.location.origin + '/'+directoryApp+'/';
   angular.patchURLCI = dirWebRoot+'ci.php/';
-
-  // var handleError = function(response) {
-  //   if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-  //       return( $q.reject( "An unknown error occurred." ) );
-  //   }
-  //   return( $q.reject( response.data.message ) );
-  // }
-  // var handleSuccess = function(response) {
-  //   return( response.data );
-  // }
-
 
   angular
     .module('minotaur')
@@ -49,16 +38,14 @@
     $locationProvider.hashPrefix('');
 
   }
-})();
 
-function handleError( response ) {
-  console.log(response.data);
-      if ( ! angular.isObject( response.data ) || ! response.data.message ) {
-          return( $q.reject( "An unknown error occurred." ) );
-      }
-      return( $q.reject( response.data.message ) );
-  }
-  function handleSuccess( response ) {
-      console.log(response);
-      return( response.data );
-  }
+})(); 
+
+function handleError(error) {
+  return function () {
+    return {success: false, message: Notification.warning({message: error})};
+  };
+}
+function handleSuccess(response) {
+    return( response.data );
+}
