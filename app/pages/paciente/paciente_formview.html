@@ -2,22 +2,16 @@
   <h4 class="modal-title">{{modalPac.modalTitle}}</h4>
 </div>
 <div class="modal-body">
-
 	<section class="tile-body p-0">
-
 		<form name="formCliente" role="form" novalidate class="form-validation">
 		    <uib-tabset active="modalPac.activeStep" justified="true" class="tab-wizard padded">
-
 			    <uib-tab index="0">
-
 			        <uib-tab-heading>
 			          <i class="fa fa-check" ng-if="step1.$valid"></i>
 			          Datos Principales
 			          <span class="pull-right wizard-step">1</span>
 			        </uib-tab-heading>
-
 			        <ng-form name="step1">
-
 			          <div class="row">
 			            <div class="form-group col-md-6">
 			              <label for="nombre" class="control-label minotaur-label">Nombres <small class="text-red">(*)</small> </label>
@@ -35,10 +29,7 @@
 			              </div>
 			            </div>
 			          </div>
-
 			          <div class="row">
-
-
 			            <div class="form-group col-md-3">
 			              <label for="fecha" class="control-label minotaur-label">Fecha Nacimiento <small class="text-red">(*)</small> </label>
 			              <input type="text" name="fecha" id="fecha" class="form-control" ng-model="modalPac.fData.fecha_nacimiento" placeholder="DD-MM-YYYY" ng-pattern="/(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[012])-[0-9]{4}$/" required>
@@ -72,194 +63,100 @@
 			                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 			              </div>
 			            </div>
-
 			          </div>
+								<div class="row">
+									<div class="form-group col-md-3">
+										<label class="control-label mb-xs">Foto del Paciente </label>
+										<input type="file" class="filestyle" filestyle="{
+								            buttonText: 'Select file',
+								            iconName: 'fa fa-inbox'
+								          }" nv-file-select="" uploader="forms.uploader">
+									</div>
+									<div class="form-group col-md-3">
+			              <label for="motivo" class="control-label minotaur-label">Motivo consulta <small class="text-red">(*)</small> </label>
+			              <select class="form-control" ng-model="modalPac.fData.idmotivoconsulta" ng-options="item.id as item.descripcion for item in modalPac.listaMotivos" required > </select>
 
-						<div class="row">
-							<div class="form-group col-md-3">
-								<label class="control-label mb-xs">Foto del Paciente </label>
-								<input type="file" class="filestyle" filestyle="{
-						            buttonText: 'Select file',
-						            iconName: 'fa fa-inbox'
-						          }" nv-file-select="" uploader="forms.uploader">
-							</div>
-							<div class="form-group col-md-3">
-				              <label for="motivo" class="control-label minotaur-label">Motivo consulta <small class="text-red">(*)</small> </label>
-				              <select class="form-control" ng-model="modalPac.fData.idmotivoconsulta" ng-options="item.id as item.descripcion for item in modalPac.listaMotivos" required > </select>
-
-				              <div ng-messages="step1.motivo.$error" ng-if="step1.motivo.$dirty" role="alert" class="help-block text-red">
-				                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-				              </div>
-				            </div>
-						</div>
-
-			          <button ng-disabled="step1.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 1">Siguiente</button>
-
+			              <div ng-messages="step1.motivo.$error" ng-if="step1.motivo.$dirty" role="alert" class="help-block text-red">
+			                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+			              </div>
+						      </div>
+								</div>
+								<div class="row">
+									<div class="form-group col-md-12">
+			          		<button ng-disabled="step1.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 1">Siguiente</button> 
+			          	</div>
+			          </div>
 			        </ng-form>
-
 			    </uib-tab>
-
-		      	<uib-tab index="1" disable="step1.$invalid">
-
-			        <uib-tab-heading>
-			          <i class="fa fa-check" ng-if="step2.$valid"></i>
-			          Datos Adicionales
-			          <span class="pull-right wizard-step">2</span>
-			        </uib-tab-heading>
-
-			        <ng-form name="step2">
-
-			          	<div class="row">
-				            <div class="form-group col-md-6">
-				              	<label for="email" class="control-label minotaur-label">Email <small class="text-red">(*)</small> </label>
-				              	<input type="email" name="email" id="email" class="form-control" ng-model="modalPac.fData.email" placeholder="micorreo@dominio.com" required>
-				              	<div ng-messages="step2.email.$error" ng-if="step2.email.$dirty" role="alert" class="help-block text-red">
-				                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-				              	</div>
-				            </div>
-				            <div class="form-group col-md-6">
-				              	<label for="celular" class="control-label minotaur-label">Celular <small class="text-red">(*)</small> </label>
-				              	<input type="text" name="celular" id="celular" class="form-control" ng-model="modalPac.fData.celular" placeholder="XXX XXXX XXX"  ng-pattern="/([0-9]{3}) ([0-9]{3}) ([0-9]{3})$/" required>
-				              	<div ng-messages="step2.celular.$error" ng-if="step2.celular.$dirty" role="alert" class="help-block text-red">
-				                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-				              	</div>
-				            </div>
-
-			          	</div>
-
-			          <div class="form-group">
-			            <label for="cargo" class="control-label minotaur-label">Cargo Laboral </label>
-			            <input type="text" name="cargo" id="cargo" class="form-control" ng-model="modalPac.fData.cargo_laboral" placeholder="Registre el cargo laboral (opcional)">
-			          </div>
-
-			          <div class="row">
-
-			          </div>
-
-			          <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 0">Anterior</button>
-			          <button ng-disabled="step2.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 2">Siguiente</button>
-
-			        </ng-form>
-
-		      	</uib-tab>
-
-		      	<uib-tab index="2" disable="step2.$invalid">
-
-			        <uib-tab-heading>
-			          <i class="fa fa-check" ng-if="step3.$valid"></i>
-			          Datos Médicos
-			          <span class="pull-right wizard-step">3</span>
-			        </uib-tab-heading>
-
-			        <ng-form name="step3">
-			        	<div class="row">
-			        		 <div class="form-group col-md-6">
-					            <label for="alergias" class="control-label minotaur-label">Alergias: </label>
-					            <textarea class="form-control" rows="5" name="alergias" id="alergias" placeholder="Registre las alergias..." ng-model="modalPac.fData.alergias_ia"></textarea>
-					        </div>
-					        <div class="form-group col-md-6">
-					            <label for="medicamentos" class="control-label minotaur-label">Medicamentos: </label>
-					            <textarea class="form-control" rows="5" name="medicamentos" id="medicamentos" placeholder="Registra tus medicamentos..." ng-model="modalPac.fData.medicamentos"></textarea>
-					        </div>
-			        	</div>
-
-			          	<div class="row">
-					        <div class="form-group col-md-6">
-					            <label for="antecedentes" class="control-label minotaur-label">Antecedentes: </label>
-					            <textarea class="form-control" rows="5" name="antecedentes" id="antecedentes" placeholder="Escribe tus antecedentes..." ng-model="modalPac.fData.antecedentes_notas"></textarea>
-					        </div>
-					        <div class="form-group col-md-6">
-					            <label for="habitos" class="control-label minotaur-label">Hábitos: </label>
-					            <textarea class="form-control" rows="5" name="habitos" id="habitos" placeholder="Escribe tus hábitos..." ng-model="modalPac.fData.habitos_notas"></textarea>
-					        </div>
-			          	</div>
-
-				        <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 1">Anterior</button>
-				        <button ng-disabled="step5.$invalid" class="btn btn-success minotaur-btn pull-right" ng-click="modalPac.aceptar()">Finalizar</button>
-
-			        </ng-form>
-
-		      	</uib-tab>
-
-		      <!-- <uib-tab index="3" disable="step3.$invalid">
-
-		        <uib-tab-heading>
-		          <i class="fa fa-check" ng-if="step4.$valid"></i>
-		          Contact
-		          <span class="pull-right wizard-step">4</span>
-		        </uib-tab-heading>
-
-		        <ng-form name="step4">
-
-		          <div class="row">
+		      <uib-tab index="1" disable="step1.$invalid">
+						<uib-tab-heading>
+		          <i class="fa fa-check" ng-if="step2.$valid"></i>
+		          Datos Adicionales
+		          <span class="pull-right wizard-step">2</span>
+			      </uib-tab-heading>
+		        <ng-form name="step2">
+	          	<div class="row">
 		            <div class="form-group col-md-6">
-		              <label for="email" class="control-label minotaur-label">Email <small class="text-red">(*)</small> </label>
-		              <input type="email" name="email" id="email" class="form-control" ng-model="modalPac.fData.email" required>
-		              <div ng-messages="step4.email.$error" ng-if="step4.email.$dirty" role="alert" class="help-block text-red">
-		                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-		              </div>
+		              	<label for="email" class="control-label minotaur-label">Email <small class="text-red">(*)</small> </label>
+		              	<input type="email" name="email" id="email" class="form-control" ng-model="modalPac.fData.email" placeholder="micorreo@dominio.com" required>
+		              	<div ng-messages="step2.email.$error" ng-if="step2.email.$dirty" role="alert" class="help-block text-red">
+		                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+		              	</div>
 		            </div>
 		            <div class="form-group col-md-6">
-		              <label for="phone" class="control-label minotaur-label">Phone: </label>
-		              <input type="text" name="phone" id="phone" class="form-control" ng-model="modalPac.fData.phone" placeholder="(XXX) XXXX XXX"  ng-pattern="/\([0-9]{3}\) ([0-9]{4}) ([0-9]{3})$/">
-		              <div ng-messages="step4.phone.$error" ng-if="step4.phone.$dirty" role="alert" class="help-block text-red">
-		                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-		              </div>
+		              	<label for="celular" class="control-label minotaur-label">Celular <small class="text-red">(*)</small> </label>
+		              	<input type="text" name="celular" id="celular" class="form-control" ng-model="modalPac.fData.celular" placeholder="XXX XXXX XXX"  ng-pattern="/([0-9]{3}) ([0-9]{3}) ([0-9]{3})$/" required>
+		              	<div ng-messages="step2.celular.$error" ng-if="step2.celular.$dirty" role="alert" class="help-block text-red">
+		                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+		              	</div>
 		            </div>
-		          </div>
-
+	          	</div>
 		          <div class="form-group">
-		            <label for="web" class="control-label minotaur-label">Website: </label>
-		            <input type="url" name="web" id="web" class="form-control" ng-model="modalPac.fData.web" placeholder="http://">
-		            <div ng-messages="step4.web.$error" ng-if="step4.web.$dirty" role="alert" class="help-block text-red">
-		              <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
-		            </div>
+		            <label for="cargo" class="control-label minotaur-label">Cargo Laboral </label>
+		            <input type="text" name="cargo" id="cargo" class="form-control" ng-model="modalPac.fData.cargo_laboral" placeholder="Registre el cargo laboral (opcional)">
 		          </div>
-
-		          <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 2">Anterior</button>
-		          <button ng-disabled="step4.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 4">Siguiente</button>
-
+		          <div class="row">
+									<div class="form-group col-md-12">
+					          <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 0">Anterior</button>
+					          <button ng-disabled="step2.$invalid" class="btn btn-default minotaur-btn pull-right" ng-click="modalPac.activeStep = 2">Siguiente</button>
+					        </div>
+					    </div>
 		        </ng-form>
-
 		      </uib-tab>
-
-		      <uib-tab index="4" disable="step4.$invalid">
-
+	      	<uib-tab index="2" disable="step2.$invalid">
 		        <uib-tab-heading>
-		          <i class="fa fa-check" ng-if="step5.$valid"></i>
-		          EULA
-		          <span class="pull-right wizard-step">5</span>
+		          <i class="fa fa-check" ng-if="step3.$valid"></i>
+		          Datos Médicos
+		          <span class="pull-right wizard-step">3</span>
 		        </uib-tab-heading>
-
-		        <ng-form name="step5">
-
-		          <p class="well">But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
-
-		          <label class="checkbox minotaur-checkbox">I agree to the <a href class="text-info">Terms of Service</a>
-		            <input type="checkbox" name="agree" id="agree" ng-model="modalPac.fData.agree" required>
-		            <div class="input-indicator"></div>
-		          </label>
-		          <div ng-messages="step5.agree.$error" ng-if="step5.agree.$dirty" role="alert" class="help-block text-red">
-		            <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
+		        <ng-form name="step3">
+		        	<div class="row">
+		        		 <div class="form-group col-md-6">
+				            <label for="alergias" class="control-label minotaur-label">Alergias: </label>
+				            <textarea class="form-control" rows="5" name="alergias" id="alergias" placeholder="Registre las alergias..." ng-model="modalPac.fData.alergias_ia"></textarea>
+				        </div>
+				        <div class="form-group col-md-6">
+				            <label for="medicamentos" class="control-label minotaur-label">Medicamentos: </label>
+				            <textarea class="form-control" rows="5" name="medicamentos" id="medicamentos" placeholder="Registra tus medicamentos..." ng-model="modalPac.fData.medicamentos"></textarea>
+				        </div>
+		        	</div>
+		          <div class="row">
+				        <div class="form-group col-md-6">
+				            <label for="antecedentes" class="control-label minotaur-label">Antecedentes: </label>
+				            <textarea class="form-control" rows="5" name="antecedentes" id="antecedentes" placeholder="Escribe tus antecedentes..." ng-model="modalPac.fData.antecedentes_notas"></textarea>
+				        </div>
+				        <div class="form-group col-md-6">
+				            <label for="habitos" class="control-label minotaur-label">Hábitos: </label>
+				            <textarea class="form-control" rows="5" name="habitos" id="habitos" placeholder="Escribe tus hábitos..." ng-model="modalPac.fData.habitos_notas"></textarea>
+				        </div>
 		          </div>
-
-		          <label class="checkbox minotaur-checkbox">Receive newsletter
-		            <input type="checkbox" name="newsletter" id="newsletter" ng-model="modalPac.fData.newsletter">
-		            <div class="input-indicator"></div>
-		          </label>
-
-		          <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 3">Anterior</button>
-		          <button ng-disabled="step5.$invalid" class="btn btn-success minotaur-btn pull-right" ng-click="modalPac.submit()">Finish</button>
-
+			        <!-- <button class="btn btn-default minotaur-btn" ng-click="modalPac.activeStep = 1">Anterior</button>
+			        <button ng-disabled="step5.$invalid" class="btn btn-success minotaur-btn pull-right" ng-click="modalPac.aceptar()">Finalizar</button> -->
 		        </ng-form>
-
-		      </uib-tab> -->
-
+	      	</uib-tab> 
 		    </uib-tabset>
 		</form>
-
 	</section>
-
 </div>
 <div class="modal-footer">
   <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formCliente.$invalid" ng-click="modalPac.aceptar()"><i class="fa fa-arrow-right"></i> Submit</button>

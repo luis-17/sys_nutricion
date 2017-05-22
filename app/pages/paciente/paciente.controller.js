@@ -92,8 +92,8 @@
           templateUrl: 'app/pages/paciente/paciente_formview.html',
           controllerAs: 'modalPac',
           size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-14',
-          windowClass: 'splash splash-2 splash-ef-14',
+          backdropClass: 'splash splash-ef-14',
+          windowClass: 'splash splash-ef-14',
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
