@@ -33,8 +33,7 @@
       .state('citas', {
         url: '/app/citas',
         templateUrl: 'app/pages/citas/citas.html',
-        controller: 'CitasController',
-        controllerAs: 'citas'
+        controller: 'CitasController as vm'
       })
     //mail
       .state('mail', {

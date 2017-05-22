@@ -6,56 +6,15 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController($scope,CitasServices,UbicacionServices,PacienteServices,$uibModal) {
+  function CitasController($scope,$http,$uibModal,CitasServices,UbicacionServices,PacienteServices) {
     var vm = this;
 
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-    vm.openMenu = false;
-
-    vm.listarCitas = function(){
-      CitasServices.sListarCita().then(function (rpta) {
-        angular.forEach(rpta.datos, function(row, key) {
-          row.start = new Date(row.start);
-        });
-        //vm.events = rpta.datos;  
-
-        vm.events = [
-          {title: 'All Day Event',start: new Date(y, m, 1), className: ['b-l b-2x b-greensea']},
-          {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2), className: ['bg-dutch']},
-          {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false, className: ['b-l b-2x b-primary']},
-          {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false, className: ['b-l b-2x b-primary']},
-          {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false, className: ['b-l b-2x b-default']},
-          {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/', className: ['b-l b-2x b-hotpink']},
-          {title: 'Make cupcakes', start: new Date(y, m, 2), className: ['b-l b-2x b-info'], location:'Bratislava', info:'The best in whole world.'},
-          {title: 'Call wife', start: new Date(y, m, 6),end: new Date(y, m, 7), className: ['b-l b-2x b-red'], location:'Piestany', info:'And say her hello.'}
-        ];
-
-        vm.eventSources = [vm.events];
-        console.log(vm.eventSources);
-        //angular.element('.calendar').fullCalendar('refetchEvents');
-      });
-    };
-    //vm.listarCitas();
     
-    /* event source that contains custom events on the scope */
-    vm.events = [
-      {title: 'All Day Event',start: new Date(y, m, 1), className: ['b-l b-2x b-greensea']},
-      {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2), className: ['bg-dutch']},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false, className: ['b-l b-2x b-primary']},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false, className: ['b-l b-2x b-primary']},
-      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false, className: ['b-l b-2x b-default']},
-      {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/', className: ['b-l b-2x b-hotpink']},
-      {title: 'Make cupcakes', start: new Date(y, m, 2), className: ['b-l b-2x b-info'], location:'Bratislava', info:'The best in whole world.'},
-      {title: 'Call wife', start: new Date(y, m, 6),end: new Date(y, m, 7), className: ['b-l b-2x b-red'], location:'Piestany', info:'And say her hello.'}
-    ];
-    vm.eventSources = [vm.events];
-
-    /* alert on dayClick */
-    vm.precision = 400;
-    vm.lastClickTime = 0;
+    
 
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){
@@ -64,13 +23,15 @@
     };
 
     /* alert on Resize */
-    vm.alertOnResize = function(event, delta){
+    vm.alertOnResize = function(event, delta){ 
+      console.log('resize mee');
       vm.alertMessage = ('Event Resized to make dayDelta ' + delta);
     };
 
     vm.overlay = angular.element('.fc-overlay');
 
-    vm.tooltipOnMouseOver = function( event, jsEvent){
+    vm.tooltipOnMouseOver = function( event, jsEvent){ 
+      console.log('hover me');
       vm.event = event;
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
@@ -86,12 +47,31 @@
         wrap.append( vm.overlay );
       }
     };
-
-    vm.alertOnClick = function(event){
-      console.log('event',event);
+    vm.selectCell = function(start, end) {
+      console.log(start, end,'select cell');
+    }
+    vm.alertOnClick = function(event){ 
+      console.log('click me',event);
       vm.event = event;
-      vm.openMenu = true;
-    }   
+    }
+
+    vm.eventsF = function (start, end, timezone, callback) {
+      var arrParams = { 
+        url: angular.patchURLCI+"Cita/listar_citas", 
+        datos:{ 
+          //'events': vm.events
+        }
+      }
+      var events = []; 
+      CitasServices.sListarCita().then(function (rpta) {
+        angular.forEach(rpta.datos, function(row, key) { 
+            row.start = new Date(row.start);
+        });
+        events = rpta.datos; 
+        callback(events); 
+      });
+    } 
+    vm.eventSources = [vm.eventsF]; 
 
     /* Change View */
     vm.changeView = function(view,calendar) {
@@ -236,27 +216,29 @@
         // $log.info('Modal dismissed at: ' + new Date());
       });*/
     }
-
-    /* config object */
-    vm.uiConfig = {
+    vm.uiConfig = { 
       calendar:{
         height: 450,
         contentHeight: 510,
         editable: true,
+        selectable: true,
+        defaultView: 'agendaWeek',
         dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
         dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
         header:{
           left: 'prev',
           center: 'title',
-          right: 'next',          
-        },          
-        dayClick: vm.btnCita,
+          right: 'next'
+        },
+        select: vm.selectCell,
+        // dayClick: vm.doubleClick,
         eventDrop: vm.alertOnDrop,
-        eventResize: vm.alertOnResize,          
-        //eventMouseover: vm.tooltipOnMouseOver,
-        eventClick: vm.alertOnClick,
+        eventResize: vm.alertOnResize,
+        eventMouseover: vm.tooltipOnMouseOver,
+        eventClick: vm.alertOnClick
       }
     };
+    
   }
   function CitasServices($http, $q) {
     return({
