@@ -35,6 +35,7 @@ class Cita extends CI_Controller {
 							'nombre' => $row['nombre'],
 							'apellidos' => $row['apellidos'],
 							'sexo' => $row['sexo'],
+							'estatura' => $row['estatura'],
 						),
 					'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 					'profesional' => array(
@@ -52,7 +53,8 @@ class Cita extends CI_Controller {
 						),
 					'className' => $className,
 					'start' => $row['fecha'] .' '. $row['hora_desde'],
-					'title' => darFormatoHora($row['hora_desde']). ' - ' . darFormatoHora($row['hora_hasta']),
+					'title' => $row['nombre'] . ' ' . $row['apellidos'],
+					//'title' => darFormatoHora($row['hora_desde']). ' - ' . darFormatoHora($row['hora_hasta']),
 					'allDay' => FALSE,
 				)
 			);
@@ -79,6 +81,41 @@ class Cita extends CI_Controller {
 		$arrData['message'] = 'Ha ocurrido un error registrando la cita.';
 
 		/*aqui van las validaciones*/
+		if(empty($allInputs['paciente']['idcliente'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar un paciente.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
+		if(empty($allInputs['ubicacion']['id'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar una ubicacion.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
+		if(empty($allInputs['fecha'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar una fecha.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}		
+
+		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
 
 		$data = array(
 			'idcliente' => $allInputs['paciente']['idcliente'],
@@ -87,8 +124,8 @@ class Cita extends CI_Controller {
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
 			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
 			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
-			'createdAt' => date('Y-m-d H:i:s'),
-			'updatedAt' => date('Y-m-d H:i:s')
+			'createdat' => date('Y-m-d H:i:s'),
+			'updatedat' => date('Y-m-d H:i:s')
 			);
 
 		if($this->model_cita->m_registrar($data)){
@@ -104,7 +141,39 @@ class Cita extends CI_Controller {
 	public function drop_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
-		$arrData['message'] = 'Error';
+		$arrData['message'] = 'Ha ocurrido un error actualizando la cita';
+
+		$cita = $this->model_cita->m_consulta_cita($allInputs['event']['id']);
+		if(!empty($cita['idatencion'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Solo puede modificar citas sin atenciones.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
+		//print_r($allInputs);
+		$nuevaFecha = date('Y-m-d',strtotime($allInputs['event']['start']));
+		$nuevaHora= date('H:i:s',strtotime($allInputs['event']['start']));
+		//print_r($nuevaFecha);
+		
+		$interval = $allInputs['event']['hora_hasta'] - $allInputs['event']['hora_desde'];
+		$nuevaHoraInicio = strtotime($allInputs['event']['start']);
+		$nuevaHoraFin = $nuevaHoraInicio + $interval;
+		//print_r($nuevaHoraInicio . ' - ' . $nuevaHoraFin);
+		$data = array(
+			'hora_desde' => Date('H:i:s',$nuevaHoraInicio),
+			'hora_hasta' => Date('H:i:s',$nuevaHoraFin),
+			'fecha' => $nuevaFecha,
+			'updatedat' => date('Y-m-d H:i:s')
+			);
+
+		if($this->model_cita->m_actualizar($data, $allInputs['event']['id'])){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Cita actualizada.';
+		}	
+		
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -116,6 +185,33 @@ class Cita extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la cita.';
 
+		if(empty($allInputs['ubicacion']['id'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar una ubicacion.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
+		if(empty($allInputs['fecha'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar una fecha.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}		
+
+		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
 		$data = array(
 			'idcliente' => $allInputs['cliente']['idcliente'],
 			'idubicacion' => $allInputs['ubicacion']['id'],
@@ -123,7 +219,7 @@ class Cita extends CI_Controller {
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
 			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
 			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
-			'updatedAt' => date('Y-m-d H:i:s')
+			'updatedat' => date('Y-m-d H:i:s')
 			);
 
 		if($this->model_cita->m_actualizar($data, $allInputs['id'])){
@@ -135,11 +231,21 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	
 	public function anular_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la cita.';
 
+		$cita = $this->model_cita->m_consulta_cita($allInputs['id']);
+		if(!empty($cita['idatencion'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Solo puede anular citas sin atenciones.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
 	
 		if($this->model_cita->m_anular($allInputs['id'])){
 			$arrData['flag'] = 1;
