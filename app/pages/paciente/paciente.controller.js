@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,uiGridConstants, alertify,toastr,
+  function PacienteController($scope,$uibModal,$timeout,uiGridConstants,$document, alertify,toastr,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices) {
 
     var vm = this;
@@ -32,8 +32,8 @@
         // showGridFooter: true,
         // showColumnFooter: true,
         enableRowSelection: true,
-        enableRowHeaderSelection: true,
-        enableFullRowSelection: false,
+        enableRowHeaderSelection: false,
+        enableFullRowSelection: true,
         multiSelect: false,
         appScopeProvider: vm
       }
@@ -42,8 +42,8 @@
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
-          cellTemplate:'<label class="btn btn-sm text-green" ng-click="grid.appScope.btnEditar(row)"> <i class="fa fa-edit"></i> </label>'+
-          '<label class="btn btn-sm text-red" ng-click="grid.appScope.btnAnular(row)"> <i class="fa fa-trash"></i> </label>'
+          cellTemplate:'<label class="btn btn-sm text-green" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </label>'+
+          '<label class="btn btn-sm text-red" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </label>'
          },
 
       ];
@@ -101,7 +101,8 @@
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de pacientes';
-            vm.activeStep = 0;
+            // vm.activeStep = 0;
+            vm.corp = false; // solo para tipo de cliente = corporativo sera true
             vm.listaSexos = [
               { id:'', descripcion:'--Seleccione sexo--' },
               { id:'M', descripcion:'MASCULINO' },
@@ -132,7 +133,35 @@
                 vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
               }
             });
+            vm.cambiaTipoCliente = function(){
+              vm.fData.idempresa = vm.listaEmpresas[0].id;
+              if(vm.fData.idtipocliente == 3 ){
+                vm.corp = true;
+              }else{
+                vm.corp = false;
+              }
+            }
+            // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+              vm.myImage='';
+              vm.myCroppedImage='';
+              vm.cropType='square';
 
+              var handleFileSelect=function(evt) {
+                var file = evt.currentTarget.files[0];
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                  /* eslint-disable */
+                  $scope.$apply(function(){
+                    vm.myImage=evt.target.result;
+                  });
+                  /* eslint-enable */
+                };
+                reader.readAsDataURL(file);
+              };
+              $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+                angular.element($document[0].querySelector('#fileInput')).on('change',handleFileSelect);
+              }/* no delay here */);
+            // BOTONES
             vm.aceptar = function () {
               $uibModalInstance.close(vm.fData);
               PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
@@ -168,6 +197,7 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
+                // document: $document,
                 // listaSexos : $scope.listaSexos,
                 // gridComboOptions : $scope.gridComboOptions,
                 // mySelectionComboGrid : $scope.mySelectionComboGrid
@@ -175,6 +205,9 @@
             }
           }
         });
+      }
+      vm.btnVerFicha = function(){
+        alert("Aún no implementado");
       }
       vm.btnEditar = function(row){
 
