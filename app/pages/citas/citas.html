@@ -44,25 +44,60 @@
           <div class="col-lg-12 col-md-12">
             <div class="fc-overlay">
               <div class="panel b-solid">
-                <h4 class="text-default-dark mt-0">{{vm.event.title}}</h4>
-                <div class="b-b b-solid mb-10"></div>
+                <h5 class="text-default-dark mt-0">Paciente: {{vm.event.title}}</h5>
+                <!-- <div class="b-b b-solid mb-10"></div>
                 <div class="text-muted"><i class="fa fa-calendar mr-5"></i> {{vm.event.start._d | date:'medium'}}</div>
                 <div class="text-muted" ng-show='vm.event.end'><i class="fa fa-clock-o mr-5"></i> {{vm.event.end._d | date:'medium'}}</div>
                 <div class="text-muted" ng-show='vm.event.location'><i class="fa fa-map-marker mr-5"></i> {{vm.event.location}}</div>
                 <div class="mt-10">{{vm.event.info}}</div>
-                <div class="mt-10">{{vm.event.url}}</div>
+                <div class="mt-10">{{vm.event.url}}</div> -->
+                <div class="">
+                  <ul class="" role="menu">
+                    <li role="menuitem">
+                      <a><i class="fa fa-user"></i>Ir al Paciente</a>
+                    </li>
+                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnGenerarConsulta(vm.event)">
+                      <a ><i class="fa fa-check-square-o"></i>Generar Consulta</a>
+                    </li>
+                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita(vm.event)">
+                      <a ><i class="fa fa-calendar"></i>Modificar Cita</a>
+                    </li>
+                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnAnular(vm.event)">
+                      <a ><i class="fa fa-remove"></i>Anular Cita</a>
+                    </li>
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion">
+                      <a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a>
+                    </li>
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion">
+                      <a ><i class="fa fa-remove"></i>Anular Consulta</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
+              
             </div>
-            <div class="my-dropdown dropdown">
+            <!-- <div class="my-dropdown dropdown open">
               <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu="" role="menu">
-                <li role="menuitem"><a><i class="fa fa-user"></i>Ir al Paciente</a></li>
-                <li role="menuitem" ng-if="!vm.event.atencion.idatencion"><a ><i class="fa fa-check-square-o"></i>Generar Consulta</a></li>
-                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita()"><a ><i class="fa fa-calendar"></i>Modificar Cita</a></li>
-                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnAnular(vm.event)"><a ><i class="fa fa-remove"></i>Anular Cita</a></li>
-                <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a></li>
-                <li role="menuitem" ng-if="vm.event.atencion.idatencion"><a ><i class="fa fa-remove"></i>Anular Consulta</a></li>
+                <li role="menuitem">
+                  <a><i class="fa fa-user"></i>Ir al Paciente</a>
+                </li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnGenerarConsulta(vm.event)">
+                  <a ><i class="fa fa-check-square-o"></i>Generar Consulta</a>
+                </li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita(vm.event)">
+                  <a ><i class="fa fa-calendar"></i>Modificar Cita</a>
+                </li>
+                <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnAnular(vm.event)">
+                  <a ><i class="fa fa-remove"></i>Anular Cita</a>
+                </li>
+                <li role="menuitem" ng-if="vm.event.atencion.idatencion">
+                  <a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a>
+                </li>
+                <li role="menuitem" ng-if="vm.event.atencion.idatencion">
+                  <a ><i class="fa fa-remove"></i>Anular Consulta</a>
+                </li>
               </ul>
-            </div>
+            </div> -->
             <div class="calendar" ng-model="vm.eventSources" calendar="calendarCitas" ui-calendar="vm.uiConfig.calendar"></div>
           </div>
           <!-- /right side body -->
