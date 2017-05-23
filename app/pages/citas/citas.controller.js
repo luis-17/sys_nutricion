@@ -18,7 +18,7 @@
     vm.alertOnDrop = function(event, delta){
       console.log('event', event);
       console.log('delta', delta);
-      vm.dropdown.removeClass('open');
+      //vm.dropdown.removeClass('open');
       var datos = {
         event: event,
         delta: delta,
@@ -89,24 +89,6 @@
     } 
     vm.eventSources = [vm.eventsF]; 
 
-    /*vm.dropdown = angular.element('.my-dropdown');
-    vm.alertOnClick = function(event, jsEvent){
-      vm.dropdown.addClass('open');
-      vm.event = event;
-      vm.dropdown.removeClass('left ');
-      var wrap = angular.element(jsEvent.target).closest('.fc-event');
-      var cal = wrap.closest('.calendar');
-      var left = wrap.offset().left - cal.offset().left;
-      var right = cal.width() - (wrap.offset().left - cal.offset().left + wrap.width());
-      if( right > vm.dropdown.width() ) {
-        vm.dropdown.addClass('left');
-      } else if ( left > vm.dropdown.width() ) {
-        vm.dropdown.addClass('right');
-      }
-      if (wrap.find('.my-dropdown').length === 0) {
-        wrap.append( vm.dropdown );
-      }
-    }*/
 
     /* Change View */
     vm.changeView = function(view,calendar) {
@@ -120,7 +102,7 @@
 
     /* add custom event*/
     vm.btnCita = function(start, type){
-      vm.dropdown.removeClass('open');     
+      //vm.dropdown.removeClass('open');     
       console.log('start',start);  
 
       var modalInstance = $uibModal.open({
@@ -245,7 +227,7 @@
     }
 
     vm.btnEditCita = function(row){
-      vm.dropdown.removeClass('open');
+      //vm.dropdown.removeClass('open');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -360,7 +342,7 @@
     }
 
     vm.btnAnular = function(row){
-      vm.dropdown.removeClass('open');
+      //vm.dropdown.removeClass('open');
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
         console.log('anular...', row);
@@ -391,7 +373,7 @@
     }
 
     vm.btnGenerarConsulta = function(row){
-      vm.dropdown.removeClass('open');
+      //vm.dropdown.removeClass('open');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/Consultas/consulta_formView.html',        
         controllerAs: 'modalcon',
