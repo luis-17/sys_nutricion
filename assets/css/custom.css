@@ -39,7 +39,7 @@
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}
 
-.fc-row .fc-content-skeleton {
+/*.fc-row .fc-content-skeleton {
     z-index: auto;
 }
 
@@ -49,4 +49,4 @@
 
 .fc-event .my-dropdown a:hover{
 	color: #333333 !important;
-}
+}*/
