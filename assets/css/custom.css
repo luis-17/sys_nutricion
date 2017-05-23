@@ -50,3 +50,10 @@
 .fc-event .my-dropdown a:hover{
 	color: #333333 !important;
 }
+
+.ui-grid-viewport .ui-grid-cell button.btn-action {
+	margin-left: 4px;
+	width: 34px; }
+	.ui-grid-viewport .ui-grid-cell button.btn-action i {
+		font-size: 15px; }
+	
