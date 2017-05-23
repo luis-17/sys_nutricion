@@ -15,6 +15,20 @@
         controller: 'DashboardController',
         controllerAs: 'dashboard'
       })
+      //app core pages (errors, login,signup)
+      .state('pages', {
+        url: '/app/pages',
+        template: '<div ui-view></div>'
+      })
+      //login
+      .state('pages.login', { 
+        url: '/login',
+        templateUrl: 'app/pages/pages-login/pages-login.html',
+        controller: 'LoginController',
+        controllerAs: 'ctrl',
+        parent: 'pages',
+        specialClass: 'core'
+      })
       //empresa
       .state('empresa', {
         url: '/app/empresa',
@@ -35,6 +49,8 @@
         templateUrl: 'app/pages/citas/citas.html',
         controller: 'CitasController as vm'
       })
+      
+
       //alimentos 
       .state('alimento', { 
         url: '/app/alimento',
