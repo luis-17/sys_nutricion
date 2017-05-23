@@ -88,7 +88,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_registrar($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente';
+			$arrData['message'] = 'Se registraron los datos correctamente' . date('H:n:s');
     		$arrData['flag'] = 1;
 		}
 		$this->output
@@ -116,7 +116,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_anular($allInputs)){
-			$arrData['message'] = 'Se anularon los datos correctamente';
+			$arrData['message'] = 'Se anularon los datos correctamente' . date('H:n:s');
     		$arrData['flag'] = 1;
 		}
 		$this->output
