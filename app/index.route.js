@@ -49,6 +49,12 @@
         templateUrl: 'app/pages/citas/citas.html',
         controller: 'CitasController as vm'
       })
+      //consulta
+      .state('consulta', {
+        url: '/app/consulta',
+        templateUrl: 'app/pages/consultas/consulta.html',
+        controller: 'ConsultasController as vm'
+      })
       
 
       //alimentos 

@@ -374,6 +374,7 @@
 
     vm.btnGenerarConsulta = function(row){
       //vm.dropdown.removeClass('open');
+      
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/Consultas/consulta_formView.html',        
         controllerAs: 'modalcon',

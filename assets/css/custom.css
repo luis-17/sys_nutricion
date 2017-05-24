@@ -48,9 +48,24 @@
 .fc-row .fc-content-skeleton {
     z-index: auto;
 }
+.fc-event .my-dropdown ul{
+	list-style-type: none;
+	padding: 0;
+}
+.fc-event .my-dropdown ul li{
+	    font-size: 14px;
+}
 .fc-event .my-dropdown a{
 	color: #333333 !important;
+	display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42858;
+    color: #333333;
+    white-space: nowrap;
 }
 .fc-event .my-dropdown a:hover{
 	color: #333333 !important;
 }
+

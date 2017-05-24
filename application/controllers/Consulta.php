@@ -1,0 +1,53 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Consulta extends CI_Controller {
+	public function __construct(){
+        parent::__construct();
+        // Se le asigna a la informacion a la variable $sessionVP.
+        $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
+        $this->load->helper(array('fechas_helper'));
+        $this->load->model(array('model_consulta'));
+    }
+
+	public function registrar_consulta(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error registrando la consulta.';
+
+		/*aqui van las validaciones*/
+		
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	public function actualizar_consulta(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
+
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	
+	public function anular_consulta(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
+
+	
+		if($this->model_consulta->m_anular($allInputs['id'])){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Consulta anulada.';
+		}
+	
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+}

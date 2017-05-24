@@ -52,6 +52,18 @@
         }        
       });
     }
+
+    vm.isOpen = false;
+    vm.titleToggle = "Ver Pliegues";
+    vm.changeToggle = function(){
+      if(vm.isOpen){
+        vm.isOpen = false;
+        vm.titleToggle = "Ver Pliegues";
+      }else{
+        vm.isOpen = true;
+        vm.titleToggle = "Ocultar Pliegues";
+      }
+    }
   }
   function ConsultasServices($http, $q) {
     return({

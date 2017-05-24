@@ -45,19 +45,13 @@
             <div class="fc-overlay">
               <div class="panel b-solid">
                 <h5 class="text-default-dark mt-0">Paciente: {{vm.event.title}}</h5>
-                <!-- <div class="b-b b-solid mb-10"></div>
-                <div class="text-muted"><i class="fa fa-calendar mr-5"></i> {{vm.event.start._d | date:'medium'}}</div>
-                <div class="text-muted" ng-show='vm.event.end'><i class="fa fa-clock-o mr-5"></i> {{vm.event.end._d | date:'medium'}}</div>
-                <div class="text-muted" ng-show='vm.event.location'><i class="fa fa-map-marker mr-5"></i> {{vm.event.location}}</div>
-                <div class="mt-10">{{vm.event.info}}</div>
-                <div class="mt-10">{{vm.event.url}}</div> -->
-                <div class="">
+                <div class="my-dropdown">
                   <ul class="" role="menu">
                     <li role="menuitem">
                       <a><i class="fa fa-user"></i>Ir al Paciente</a>
                     </li>
-                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnGenerarConsulta(vm.event)">
-                      <a ><i class="fa fa-check-square-o"></i>Generar Consulta</a>
+                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" >
+                      <a href="#/app/consulta"><i class="fa fa-check-square-o"></i>Generar Consulta</a>
                     </li>
                     <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita(vm.event)">
                       <a ><i class="fa fa-calendar"></i>Modificar Cita</a>
