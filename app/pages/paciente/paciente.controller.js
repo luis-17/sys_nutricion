@@ -364,7 +364,9 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/registrar_paciente",
-            data : datos
+            data : datos,
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
       });
       return (request.then(handleSuccess,handleError));
     }

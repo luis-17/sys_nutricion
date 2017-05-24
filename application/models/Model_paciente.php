@@ -14,7 +14,7 @@ class Model_paciente extends CI_Model {
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
-					$this->db->like($key ,strtoupper($value) ,FALSE);
+					$this->db->like($key ,strtoupper_total($value) ,FALSE);
 				}
 			}
 		}
@@ -34,7 +34,7 @@ class Model_paciente extends CI_Model {
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
-					$this->db->like($key ,strtoupper($value) ,FALSE);
+					$this->db->like($key ,strtoupper_total($value) ,FALSE);
 				}
 			}
 		}
@@ -46,7 +46,7 @@ class Model_paciente extends CI_Model {
 		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
 		$this->db->from('cliente c');
 		$this->db->where("c.estado_cl",1);
-		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper($datos['search']) . "%'");
+		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper_total($datos['search']) . "%'");
 
 		$this->db->limit(10);
 		return $this->db->get()->result_array();
@@ -55,8 +55,8 @@ class Model_paciente extends CI_Model {
 	public function m_registrar($datos)
 	{
 		$data = array(
-			'nombre' => strtoupper($datos['nombre']),
-			'apellidos' => strtoupper($datos['apellidos']),
+			'nombre' => strtoupper_total($datos['nombre']),
+			'apellidos' => strtoupper_total($datos['apellidos']),
 			'idtipocliente' => $datos['idtipocliente'],
 			'idempresa' => empty($datos['idempresa'])? NULL : $datos['idempresa'],
 			'idmotivoconsulta' => $datos['idmotivoconsulta'],
@@ -81,8 +81,8 @@ class Model_paciente extends CI_Model {
 	public function m_editar($datos)
 	{
 		$data = array(
-			'nombre' => strtoupper($datos['nombre']),
-			'apellidos' => strtoupper($datos['apellidos']),
+			'nombre' => strtoupper_total($datos['nombre']),
+			'apellidos' => strtoupper_total($datos['apellidos']),
 			'idtipocliente' => $datos['idtipocliente'],
 			'idempresa' => $datos['idempresa'],
 			'idmotivoconsulta' => $datos['idmotivoconsulta'],

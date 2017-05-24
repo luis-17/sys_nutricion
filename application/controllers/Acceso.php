@@ -44,6 +44,7 @@ class Acceso extends CI_Controller {
 					$arrData['message'] = 'Usuario inició sesión correctamente';
 					if( isset($arrPerfilUsuario['idusuario']) ){ 
 						$this->session->set_userdata('sess_vp_'.substr(base_url(),-8,7),$arrPerfilUsuario);
+						
 					}else{
 						$arrData['flag'] = 0;
 	    				$arrData['message'] = 'No se encontró los datos del usuario.';
@@ -66,6 +67,8 @@ class Acceso extends CI_Controller {
 	public function getSessionCI(){
 		$arrData['flag'] = 0;
 		$arrData['datos'] = array();
+			// var_dump($_SESSION); exit();
+		
 		if( $this->session->has_userdata( 'sess_vp_'.substr(base_url(),-8,7) ) && 
 			!empty($_SESSION['sess_vp_'.substr(base_url(),-8,7) ]['idusuario']) ){
 			$arrData['flag'] = 1;
