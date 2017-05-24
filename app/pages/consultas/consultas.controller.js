@@ -9,6 +9,18 @@
   function ConsultasController ($scope,$uibModal,alertify,toastr,ConsultasServices) { 
     var vm = this;
 
+    vm.isOpen = false;
+    vm.titleToggle = "Ver Pliegues";
+    vm.changeToggle = function(){
+      if(vm.isOpen){
+        vm.isOpen = false;
+        vm.titleToggle = "Ver Pliegues";
+      }else{
+        vm.isOpen = true;
+        vm.titleToggle = "Ocultar Pliegues";
+      }
+    }
+
     vm.generarConsulta = function(row){      
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/Consultas/consulta_formView.html',        
@@ -51,19 +63,7 @@
           };
         }        
       });
-    }
-
-    vm.isOpen = false;
-    vm.titleToggle = "Ver Pliegues";
-    vm.changeToggle = function(){
-      if(vm.isOpen){
-        vm.isOpen = false;
-        vm.titleToggle = "Ver Pliegues";
-      }else{
-        vm.isOpen = true;
-        vm.titleToggle = "Ocultar Pliegues";
-      }
-    }
+    }    
   }
   function ConsultasServices($http, $q) {
     return({

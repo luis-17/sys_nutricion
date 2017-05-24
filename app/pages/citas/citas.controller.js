@@ -344,8 +344,7 @@
     vm.btnAnular = function(row){
       //vm.dropdown.removeClass('open');
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
-        ev.preventDefault();
-        console.log('anular...', row);
+        ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
           var openedToasts = [];
           vm.options = {
@@ -372,54 +371,12 @@
       });
     }
 
+    vm.viewCita = true;
+    vm.viewConsulta = false;
     vm.btnGenerarConsulta = function(row){
-      //vm.dropdown.removeClass('open');
-      
-      var modalInstance = $uibModal.open({
-        templateUrl:'app/pages/Consultas/consulta_formView.html',        
-        controllerAs: 'modalcon',
-        size: 'lg',
-        backdropClass: 'splash splash-2 splash-ef-14',
-        windowClass: 'splash splash-2 splash-ef-14',
-        controller: function($scope, $uibModalInstance ){
-          var vm = this;
-          vm.fDataCita = row;
-          vm.modalTitle = 'Generar Consulta';   
-          vm.fData ={};
-          vm.fData.paciente = vm.fDataCita.paciente;              
-          vm.fData.estatura = vm.fDataCita.cliente.estatura;              
-          vm.fData.fecha = new Date();              
-
-          vm.ok = function () {
-            console.log('vm.fData', vm.fData);            
-            CitasServices.sActualizarCita(vm.fData).then(function (rpta) {
-              var openedToasts = [];
-              vm.options = {
-                timeout: '3000',
-                extendedTimeout: '1000',
-                preventDuplicates: false,
-                preventOpenDuplicates: false
-              };       
-              if(rpta.flag == 1){ 
-                angular.element('.calendar').fullCalendar( 'refetchEvents' );            
-                $uibModalInstance.close();
-                var title = 'OK';
-                var iconClass = 'success';
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var iconClass = 'warning';
-              }else{
-                alert('Ocurrió un error');
-              }
-              var toast = toastr[iconClass](rpta.message, title, vm.options);
-              openedToasts.push(toast);
-            });
-          };
-          vm.cancel = function () {
-            $uibModalInstance.close();
-          };
-        }        
-      });
+      //console.log('btnGenerarConsulta', row);      
+      vm.viewConsulta = true;
+      //console.log('vm.viewConsulta', vm.viewConsulta);
     }
 
     vm.uiConfig = { 
