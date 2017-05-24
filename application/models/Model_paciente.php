@@ -5,11 +5,12 @@ class Model_paciente extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_pacientes($paramPaginate=FALSE){
-		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento,
-			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa,
+		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
+			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion,
 			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
 			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
 		$this->db->from('cliente cl');
+		$this->db->join('motivo_consulta mc', 'cl.idmotivoconsulta = mc.idmotivoconsulta');
 		$this->db->where('cl.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {

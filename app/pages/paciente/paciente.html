@@ -43,31 +43,108 @@
             </uib-tab>
 
             <uib-tab heading="Datos Personales">
-              <div class="tile-body col-sm-12">
-                <h4 class="heading">Datos Personales</h4>
-                <form class="form-horizontal" role="form">
+              <form class="form-horizontal" role="form">
+                <div class="tile-body col-sm-12">
+                  <h4 class="text-info f-16">Datos Personales</h4>
                   <div class="form-group">
                     <label for="nombre" class="col-sm-2 control-label minotaur-label">Nombre</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="true">
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control underline-input" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="true">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="apellidos" class="col-sm-2 control-label minotaur-label">Apellidos</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="true">
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control underline-input" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="true">
                     </div>
                   </div>
-                </form>
-              </div>
+                  <div class="form-group">
+                    <label for="fecha_nac" class="col-sm-2 control-label minotaur-label">Fecha de nacimiento</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control underline-input" id="fecha_nac" placeholder="Fecha de Nacimiento" ng-model="pac.ficha.fecha_nacimiento" ng-readonly="true">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="edad" class="col-sm-2 control-label minotaur-label">Edad</label>
+                    <div class="col-sm-10">
+                      <p type="text" class="form-control underline-input" >{{pac.ficha.edad}} </p>
+                      <!-- <input type="text" class="form-control underline-input" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="true"> -->
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="sexo" class="col-sm-2 control-label minotaur-label">Sexo</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" ng-if="false" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
+                      <p type="text" ng-if="true" class="form-control underline-input" >{{pac.ficha.sexo_desc}} </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="tile-body col-sm-12">
+                  <h4 class="text-info f-14">Datos de Contacto</h4>
+                  <div class="form-group">
+                    <label for="celular" class="col-sm-2 control-label minotaur-label">Celular</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control underline-input" id="celular" placeholder="Celular" ng-model="pac.ficha.celular" ng-readonly="true">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label minotaur-label">Email</label>
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control underline-input" id="email" placeholder="micorreo@dominio.com" ng-model="pac.ficha.email" ng-readonly="true">
+                    </div>
+                  </div>
+                </div>
+                <div class="tile-body col-sm-12">
+                  <h4 class="text-info f-14">Otros Datos</h4>
+                  <div class="form-group">
+                    <label for="estatura" class="col-sm-2 control-label minotaur-label">Estatura (cm)</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control underline-input" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="true">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="clasificacion" class="col-sm-2 control-label minotaur-label">Clasificación</label>
+                    <div class="col-sm-10">
+                      <input type="clasificacion" class="form-control underline-input" id="clasificacion" placeholder="" ng-model="pac.ficha.clasificacion" ng-readonly="true">
+                    </div>
+                  </div>
+                </div>
+              </form>
 
 
             </uib-tab>
 
             <uib-tab heading="Antecedentes">
-              <div class="tile-body col-sm-12">
-                <label>En desarrollo</label>
-              </div>
+              <form class="form-horizontal" role="form">
+                <div class="tile-body col-sm-12">
+                  <h4 class="text-info f-16">Patológicos</h4>
+                  <div class="row">
+                    <div class="col-sm-6" ng-repeat="item in pac.listaAntPatologicos">
+                      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
+                        <input type="checkbox" ng-disabled="true">
+                        <div class="input-indicator"></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-control col-sm-4">
+                      <label class="control-label">Alergias / Intolerancias Alimentarias</label>
+                      <textarea class="form-control input-sm" ng-model="pac.ficha.alergia_ia" tabindex="115"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="tile-body col-sm-12">
+                  <h4 class="text-info f-16">Heredados</h4>
+                  <div class="row">
+                    <div class="col-sm-6" ng-repeat="item in pac.listaAntHeredados">
+                      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
+                        <input type="checkbox" ng-disabled="true">
+                        <div class="input-indicator"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </uib-tab>
 
             <uib-tab heading="Hábitos">

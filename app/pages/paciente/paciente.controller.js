@@ -8,10 +8,24 @@
   /** @ngInject */
 
   function PacienteController($scope,$uibModal,$timeout,uiGridConstants,$document, alertify,toastr,
-    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices) {
+    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
 
     var vm = this;
     vm.modoFicha = false;
+    // LISTA ANTECEDENTES PATOLOGICOS
+      var paramDatos = {
+        'tipo': 'P'
+      }
+      AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
+        vm.listaAntPatologicos = rpta.datos;
+      });
+      // LISTA ANTECEDENTES HEREDADOS
+      var paramDatos = {
+        'tipo': 'H'
+      }
+      AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
+        vm.listaAntHeredados = rpta.datos;
+      });
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -211,8 +225,8 @@
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
-        vm.ficha.nombre = row.entity.nombre;
-        vm.ficha.apellidos = row.entity.apellidos;
+        vm.ficha = angular.copy(row.entity);
+
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
