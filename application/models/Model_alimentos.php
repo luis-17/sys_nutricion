@@ -5,7 +5,7 @@ class Model_alimentos extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_alimentos($paramPaginate=FALSE){
-		$this->db->select('al.idalimento, nombre, calorias, proteinas, grasas, carbohidratos, estado_ali, g1.idgrupo1, g1.descripcion_gr1, 
+		$this->db->select('al.idalimento, al.nombre, al.calorias, al.proteinas, al.grasas, al.carbohidratos, al.estado_ali, g1.idgrupo1, g1.descripcion_gr1, 
 			g2.idgrupo2, g2.descripcion_gr2'); 
 		$this->db->from('alimento al');
 		$this->db->join('grupo1 g1','al.idgrupo1 = g1.idgrupo1');

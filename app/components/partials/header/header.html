@@ -3,8 +3,9 @@
     <span class="sr-only">Toggle header</span>
     <i class="fa fa-cog"></i>
   </button>
-  <a class="navbar-brand" ui-sref="dashboard">
-    <span><strong>MIN</strong>OTAUR</span>
+  <a class="navbar-brand" ui-sref="dashboard"> 
+    <img class="mb" src="assets/images/dinamic/logo.png" alt="Sistema para Nutricionistas"> 
+    <!-- <span><strong>MIN</strong>OTAUR</span> -->
   </a>
   <button type="button" class="navigation-toggle" id="navigation-toggle">
     <span class="sr-only">Toggle navigation</span>
@@ -21,8 +22,7 @@
 </div>
 <div id="header-navbar" class="navbar-collapse collapse">
   <ul class="nav navbar-nav navbar-right">
-    <li>
-      <!-- Single button -->
+    <!-- <li>
       <div uib-dropdown>
         <button id="notifications" type="button" class="btn" uib-dropdown-toggle>
           <i class="fa fa-bell-o"></i>
@@ -50,11 +50,11 @@
           </section>
         </div>
       </div>
-    </li>
+    </li> -->
     <li>
-      <!-- Single button -->
       <div uib-dropdown>
-        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
+        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle> 
+          <!-- <span class="inline"> Profesional: Luis Luna </span> --> 
           <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
           <span class="nav-text"><i class="fa fa-user"></i> Ing. Imrich Kamarel</span>
         </button>
@@ -74,14 +74,14 @@
             </div>
           </div>
           <div class="footer">
-            <button class="btn btn-theme minotaur-btn pull-right" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> Logout</button>
+            <button class="btn btn-theme minotaur-btn pull-right" ng-click="btnLogoutToSystem();" ><i class="fa fa-power-off"></i> Cerrar Sesión </button>
             <button class="btn btn-theme minotaur-btn"><i class="fa fa-lock"></i> Lock</button>
           </div>
         </div>
       </div>
     </li>
-    <li>
-      <!-- Single button 
+    <!--<li>
+       Single button 
       <div uib-dropdown>
         <button id="language" type="button" class="btn no-bg" uib-dropdown-toggle>
           <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-States-of-America.png" class="img-responsive img-circle hidden-xs" alt="">
@@ -120,7 +120,7 @@
             </a>
           </li>
         </ul>
-      </div>--> 
+      </div>
     </li>
     <li>
       <div>
@@ -129,6 +129,6 @@
           <span class="nav-text">Toggle Rightbar</span>
         </button>
       </div>
-    </li>
+    </li>--> 
   </ul>
 </div>

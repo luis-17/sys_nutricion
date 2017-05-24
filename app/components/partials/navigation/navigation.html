@@ -19,7 +19,7 @@
     <li ng-class="{'open active':$state.includes('mail')}">
       <a href="javascript:;">
         <span class="nav-text">{{ 'Menu.SEGURIDAD' | translate }}</span>
-        <i class="fa fa-envelope-o"><span class="badge bg-red">4</span></i>
+        <i class="fa fa-envelope-o"></i> 
       </a>
       <ul>
         <li ui-sref-active="active">
@@ -66,14 +66,14 @@
         <i class="fa fa-home"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('dashboard')}">
-      <a ui-sref="dashboard">
+    <li ng-class="{'active':$state.includes('estadistica')}">
+      <a ui-sref="estadistica">
         <span class="nav-text">{{ 'Menu.ESTADISTICAS' | translate }}</span>
         <i class="fa fa-home"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('dashboard')}">
-      <a ui-sref="dashboard">
+    <li ng-class="{'active':$state.includes('informe')}">
+      <a ui-sref="informe">
         <span class="nav-text">{{ 'Menu.INFORMES' | translate }}</span>
         <i class="fa fa-home"></i>
       </a>

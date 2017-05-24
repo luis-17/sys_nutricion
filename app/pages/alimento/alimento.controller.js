@@ -36,7 +36,7 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [ 
-        { field: 'idalimento', name:'idalimento', displayName: 'ID', minWidth: 30 },
+        { field: 'idalimento', name:'idalimento', displayName: 'ID', minWidth: 30, sort: { direction: uiGridConstants.DESC} },
         { field: 'grupo1', name:'descripcion_gr1', displayName: 'GRUPO 1', minWidth: 160 },
         { field: 'grupo2', name:'descripcion_gr2', displayName: 'GRUPO 2', minWidth: 160 },
         { field: 'alimento', name:'nombre', displayName: 'ALIMENTO', minWidth: 300 },
@@ -45,7 +45,7 @@
         { field: 'grasas', name:'grasas', displayName: 'GRASAS', minWidth: 80 },
         { field: 'carbohidratos', name:'carbohidratos', displayName: 'CARBOHIDRATOS', minWidth: 80 },
         { field: 'accion', name:'accion', displayName: 'ACCION', minWidth: 80, enableFiltering: false,
-          cellTemplate: '<div class="text-center">' + 
+          cellTemplate: '<div class="text-center">' +  
           '<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnEditar(row)"> <i class="fa fa-edit"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row)"> <i class="fa fa-trash"></i> </button>' + 
           '</div>' 
@@ -59,7 +59,7 @@
         gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
         });
-        gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+        gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) { 
           paginationOptions.pageNumber = newPage;
           paginationOptions.pageSize = pageSize;
           paginationOptions.firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
@@ -68,18 +68,23 @@
         vm.gridApi.core.on.filterChanged( $scope, function(grid, searchColumns) {
           var grid = this.grid;
           paginationOptions.search = true;
-          // paginationOptions.searchColumn = {
-          //   'idcliente' : grid.columns[1].filters[0].term,
-          //   'nombre' : grid.columns[2].filters[0].term,
-          //   'apellidos' : grid.columns[3].filters[0].term,
-          // }
+          paginationOptions.searchColumn = { 
+            'al.idalimento' : grid.columns[1].filters[0].term,
+            'gr1.descripcion_gr1' : grid.columns[2].filters[0].term,
+            'gr2.descripcion_gr2' : grid.columns[3].filters[0].term,
+            'al.nombre' : grid.columns[4].filters[0].term,
+            'al.calorias' : grid.columns[5].filters[0].term,
+            'al.proteinas' : grid.columns[6].filters[0].term,
+            'al.grasas' : grid.columns[7].filters[0].term,
+            'al.carbohidratos' : grid.columns[8].filters[0].term 
+          }
           // console.log('columnas',paginationOptions.searchColumn);
           vm.getPaginationServerSide();
         });
       }
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
+      vm.getPaginationServerSide = function() { 
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -93,18 +98,18 @@
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/paciente/paciente_formview.html',
-          controllerAs: 'modalPac',
-          size: 'lg',
-          backdropClass: 'splash splash-ef-14',
-          windowClass: 'splash splash-ef-14',
+          templateUrl: 'app/pages/alimento/alimento_formview.html',
+          controllerAs: 'modalAli',
+          size: 'md',
+          backdropClass: 'splash',
+          windowClass: 'splash',
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Registro de pacientes';
+            vm.modalTitle = 'Registro de alimentos';
             vm.activeStep = 0;
             vm.listaSexos = [
               { id:'', descripcion:'--Seleccione sexo--' },

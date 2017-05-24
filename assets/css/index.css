@@ -18800,7 +18800,7 @@ html.boxed-layout {
 
 .appWrap.core #content {
   padding: 0;
-  background: url(../assets/images/bg.jpg) left top/cover no-repeat; }
+  background: url(../images/bg.jpg) left top/cover no-repeat; }
   .appWrap.core #content .page {
     padding-top: 100px; }
 
