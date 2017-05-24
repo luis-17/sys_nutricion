@@ -163,7 +163,6 @@
               }/* no delay here */);
             // BOTONES
             vm.aceptar = function () {
-              $uibModalInstance.close(vm.fData);
               PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
                 var openedToasts = [];
                 vm.options = {
@@ -175,6 +174,7 @@
                   preventOpenDuplicates: false
                 };
                 if(rpta.flag == 1){
+                  $uibModalInstance.close(vm.fData);
                   vm.getPaginationServerSide();
                   var title = 'OK';
                   var iconClass = 'success';

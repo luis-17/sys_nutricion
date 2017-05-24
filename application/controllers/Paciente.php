@@ -83,7 +83,10 @@ class Paciente extends CI_Controller {
 	// MANTENIMIENTO
 	public function registrar_paciente()
 	{
-		// $allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		var_dump($_POST);
+		var_dump($allInputs);
+		exit();
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	/*
@@ -107,18 +110,18 @@ class Paciente extends CI_Controller {
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
     	*/
-    	$allInputs['nombre'] = strtoupper_total($this->input->post('nombre'));
-    	$allInputs['apellidos'] = strtoupper_total($this->input->post('apellidos'));
-    	$allInputs['idtipocliente'] = empty($this->input->post('idtipocliente'))? NULL : $this->input->post('idtipocliente');
-    	$allInputs['idempresa'] = empty($this->input->post('idempresa'))? NULL : $this->input->post('idempresa');
+    	$allInputs['nombre'] = $this->input->post('nombre');
+    	$allInputs['apellidos'] = $this->input->post('apellidos');
+    	$allInputs['idtipocliente'] = $this->input->post('idtipocliente');
+    	$allInputs['idempresa'] = $this->input->post('idempresa');
     	$allInputs['idmotivoconsulta'] = $this->input->post('idmotivoconsulta');
-    	$allInputs['cod_historia_clinica'] = empty($this->input->post('cod_historia_clinica'))? NULL : $this->input->post('cod_historia_clinica');
+    	$allInputs['cod_historia_clinica'] = $this->input->post('cod_historia_clinica');
     	$allInputs['sexo'] = $this->input->post('sexo');
     	$allInputs['estatura'] = $this->input->post('estatura');
-    	$allInputs['fecha_nacimiento'] = darFormatoYMD($this->input->post('fecha_nacimiento'));
-    	$allInputs['email'] = empty($this->input->post('email'))? '' : $this->input->post('email');
+    	$allInputs['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
+    	$allInputs['email'] = $this->input->post('email');
     	$allInputs['celular'] = $this->input->post('celular');
-    	$allInputs['cargo_laboral'] = empty($this->input->post('cargo_laboral'))? NULL : $this->input->post('cargo_laboral');
+    	$allInputs['cargo_laboral'] = $this->input->post('cargo_laboral');
     	$allInputs['createdAt'] = date('Y-m-d H:i:s');
     	$allInputs['updatedAt'] = date('Y-m-d H:i:s');
     	// $allInputs['nombre'] = $this->input->post('nombre');
