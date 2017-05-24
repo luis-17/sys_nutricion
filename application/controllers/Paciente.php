@@ -7,7 +7,7 @@ class Paciente extends CI_Controller {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
-        $this->load->helper(array('fechas','otros'));
+        $this->load->helper(array('fechas','otros','imagen'));
         $this->load->model(array('model_paciente'));
 
     }
@@ -83,10 +83,10 @@ class Paciente extends CI_Controller {
 	// MANTENIMIENTO
 	public function registrar_paciente()
 	{
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		var_dump($_POST);
-		var_dump($allInputs);
-		exit();
+		//$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		// var_dump($_POST);
+		// var_dump($allInputs);
+		//exit();
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	/*
@@ -124,11 +124,15 @@ class Paciente extends CI_Controller {
     	$allInputs['cargo_laboral'] = $this->input->post('cargo_laboral');
     	$allInputs['createdAt'] = date('Y-m-d H:i:s');
     	$allInputs['updatedAt'] = date('Y-m-d H:i:s');
-    	// $allInputs['nombre'] = $this->input->post('nombre');
-    	var_dump($allInputs);
-    	var_dump($_FILES);
+    	$allInputs['Base64Img'] = $this->input->post('myCroppedImage');
+    	$allInputs['nombre_foto'] = NULL;
 
-    	exit();
+    	if(!empty($allInputs['Base64Img'])){
+    		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
+    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
+
+    	}
+
     	// AQUI ESTARAN LAS VALIDACIONES
 
     	// INICIA EL REGISTRO

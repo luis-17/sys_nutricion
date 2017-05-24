@@ -8,8 +8,8 @@
     <div class="col-lg-12 col-md-12">
       <div class="tile">
 
-        <!-- tile header -->
-        <section class="tile-header">
+        <!-- CABECERA -->
+        <section class="tile-header" ng-show="!pac.modoFicha">
           <h1 class="heading">Pacientes</h1>
           <div class="controls">
             <div class="btn-group" uib-dropdown>
@@ -24,10 +24,8 @@
             <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
-        <!-- /tile header -->
-
-        <!-- tile body -->
-        <section class="tile-body col-sm-8">
+        <!-- PANEL PRINCIPAL -->
+        <section class="tile-body col-sm-8 pr-0" ng-show="!pac.modoFicha">
           <div>
             <ul class="form-group demo-btns list-unstyled">
               <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
@@ -35,8 +33,66 @@
           </div>
           <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
         </section>
-        <!-- /tile body -->
+        <section class="tile-header col-sm-8 p-0" ng-show="pac.modoFicha">
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
+
+            <uib-tab heading="Evolución">
+              <div class="tile-body col-sm-12">
+                <label>En desarrollo</label>
+              </div>
+            </uib-tab>
+
+            <uib-tab heading="Datos Personales">
+              <div class="tile-body col-sm-12">
+                <h4 class="heading">Datos Personales</h4>
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="nombre" class="col-sm-2 control-label minotaur-label">Nombre</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="true">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="apellidos" class="col-sm-2 control-label minotaur-label">Apellidos</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="true">
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+
+            </uib-tab>
+
+            <uib-tab heading="Antecedentes">
+              <div class="tile-body col-sm-12">
+                <label>En desarrollo</label>
+              </div>
+            </uib-tab>
+
+            <uib-tab heading="Hábitos">
+              <div class="tile-body col-sm-12">
+                <label>En desarrollo</label>
+              </div>
+            </uib-tab>
+
+            <uib-tab heading="Historial de Consultas">
+              <div class="tile-body col-sm-12">
+                <label>En desarrollo</label>
+              </div>
+            </uib-tab>
+            <uib-tab heading="Planes Alimenticios">
+              <div class="tile-body col-sm-12">
+                <label>En desarrollo</label>
+              </div>
+            </uib-tab>
+
+          </uib-tabset>
+
+        </section>
+        <!-- PANEL DE VISTA PREVIA - LATERAL DERECHO -->
         <section class="tile-body col-sm-4">
+          <button type="button" class="btn btn-warning pull-right" ng-show="pac.modoFicha" ng-click="pac.btnRegresar();">REGRESAR</button>
           <div class="tile profile-widget">
 
             <!-- tile widget -->

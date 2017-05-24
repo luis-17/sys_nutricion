@@ -11,6 +11,7 @@
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices) {
 
     var vm = this;
+    vm.modoFicha = false;
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -142,8 +143,8 @@
               }
             }
             // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
-              vm.myImage='';
-              vm.myCroppedImage='';
+              vm.fData.myImage='';
+              vm.fData.myCroppedImage='';
               vm.cropType='square';
 
               var handleFileSelect=function(evt) {
@@ -152,7 +153,7 @@
                 reader.onload = function (evt) {
                   /* eslint-disable */
                   $scope.$apply(function(){
-                    vm.myImage=evt.target.result;
+                    vm.fData.myImage=evt.target.result;
                   });
                   /* eslint-enable */
                 };
@@ -206,8 +207,16 @@
           }
         });
       }
-      vm.btnVerFicha = function(){
-        alert("Aún no implementado");
+      vm.btnVerFicha = function(row){
+        vm.modoFicha = true;
+        vm.mySelectionGrid = [row.entity];
+        vm.ficha = {}
+        vm.ficha.nombre = row.entity.nombre;
+        vm.ficha.apellidos = row.entity.apellidos;
+      }
+      vm.btnRegresar = function(){
+        vm.modoFicha = false;
+        vm.getPaginationServerSide();
       }
       vm.btnEditar = function(row){
 
@@ -365,8 +374,22 @@
             method : "post",
             url : angular.patchURLCI+"Paciente/registrar_paciente",
             data : datos,
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
+            // transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},
+            // headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            // transformRequest: function(obj) {
+            //     var str = [];
+            //     for(var p in obj)
+            //     str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            //     return str.join("&");
+            // },
+            transformRequest: function (data) {
+                var formData = new FormData();
+                angular.forEach(data, function (value, key) {
+                    formData.append(key, value);
+                });
+                return formData;
+            }
       });
       return (request.then(handleSuccess,handleError));
     }
