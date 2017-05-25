@@ -12,6 +12,7 @@
 
     var vm = this;
     vm.modoFicha = false;
+    vm.modoEditar = false;
     // LISTA ANTECEDENTES PATOLOGICOS
       var paramDatos = {
         'tipo': 'P'
@@ -26,6 +27,15 @@
       AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
         vm.listaAntHeredados = rpta.datos;
       });
+      vm.templates = [
+        { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
+        { tab: 'Datos Personales', url: 'app/pages/paciente/ficha_datos_personales.html'},
+        { tab: 'Antecedentes', url: 'app/pages/paciente/ficha_antecedentes.html'},
+        { tab: 'Hábitos', url: 'app/pages/paciente/ficha_habitos.html'},
+        { tab: 'Historial de Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
+        { tab: 'Planes Alimentarios', url: 'app/pages/paciente/ficha_planes.html'},
+      ];
+
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -231,6 +241,22 @@
       vm.btnRegresar = function(){
         vm.modoFicha = false;
         vm.getPaginationServerSide();
+      }
+      vm.verPrevio = function(index){
+        console.log('index: ', index);
+        if(index == 0){
+          vm.previo0 = true;
+          vm.previo1 = false;
+          vm.previo2 = false;
+        }else if(index == 1){
+          vm.previo0 = false;
+          vm.previo1 = true;
+          vm.previo2 = false;
+        }else{
+          vm.previo0 = false;
+          vm.previo1 = false;
+          vm.previo2 = true;
+        }
       }
       vm.btnEditar = function(row){
 

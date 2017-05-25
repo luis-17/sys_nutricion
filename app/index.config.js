@@ -39,7 +39,7 @@
 
   }
 
-})(); 
+})();
 
 function handleError(error) {
   return function () {

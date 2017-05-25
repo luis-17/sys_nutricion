@@ -1,0 +1,75 @@
+<form class="form-horizontal" role="form">
+  <div class="tile-body row">
+    <div class="col-sm-8">
+      <h4 class="text-info f-16 col-sm-12">Datos Personales</h4>
+      <div class="form-group col-sm-12">
+        <label for="nombre" class="col-sm-3 control-label minotaur-label">Nombre : </label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control underline-input text-center" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="!pac.modoEditar">
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label for="apellidos" class="col-sm-3 control-label minotaur-label">Apellidos : </label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control underline-input text-center" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="!pac.modoEditar">
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label for="fecha_nac" class="col-sm-3 control-label minotaur-label">Fecha de nacimiento : </label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control underline-input text-center" id="fecha_nac" placeholder="Fecha de Nacimiento" ng-model="pac.ficha.fecha_nacimiento" ng-readonly="!pac.modoEditar">
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label for="edad" class="col-sm-3 control-label minotaur-label">Edad : </label>
+        <div class="col-sm-9">
+          <p type="text" class="form-control underline-input text-center" >{{pac.ficha.edad}} </p>
+          <!-- <input type="text" class="form-control underline-input text-center" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="!pac.modoEditar"> -->
+        </div>
+      </div>
+      <div class="form-group col-sm-12">
+        <label for="sexo" class="col-sm-3 control-label minotaur-label">Sexo : </label>
+        <div class="col-sm-9">
+          <select class="form-control" ng-if="false" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
+          <p type="text" ng-if="!pac.modoEditar" class="form-control underline-input text-center" >{{pac.ficha.sexo_desc}} </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h4 class="text-info f-14 col-sm-12">Foto</h4>
+      <div class="text-center">
+        <img src="assets/images/pacientes/{{pac.ficha.nombre_foto}}" style="width: 100%">
+      </div>
+    </div>
+  </div>
+  <div class="tile-body row">
+    <h4 class="text-info f-14 col-sm-12">Datos de Contacto</h4>
+    <div class="form-group col-sm-6">
+      <label for="celular" class="col-sm-3 control-label minotaur-label">Celular : </label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control underline-input text-center" id="celular" placeholder="Celular" ng-model="pac.ficha.celular" ng-readonly="!pac.modoEditar">
+      </div>
+    </div>
+    <div class="form-group col-sm-6">
+      <label for="email" class="col-sm-3 control-label minotaur-label">Email : </label>
+      <div class="col-sm-9">
+        <input type="email" class="form-control underline-input text-center" id="email" placeholder="micorreo@dominio.com" ng-model="pac.ficha.email" ng-readonly="!pac.modoEditar">
+      </div>
+    </div>
+  </div>
+  <div class="tile-body row">
+    <h4 class="text-info f-14 col-sm-12">Otros Datos</h4>
+    <div class="form-group col-sm-6">
+      <label for="estatura" class="col-sm-3 control-label minotaur-label">Estatura (cm) : </label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control underline-input text-center" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="!pac.modoEditar">
+      </div>
+    </div>
+    <div class="form-group col-sm-6">
+      <label for="clasificacion" class="col-sm-3 control-label minotaur-label">Clasificación : </label>
+      <div class="col-sm-9">
+        <input type="clasificacion" class="form-control underline-input text-center" id="clasificacion" placeholder="" ng-model="pac.ficha.clasificacion" ng-readonly="!pac.modoEditar">
+      </div>
+    </div>
+  </div>
+</form>

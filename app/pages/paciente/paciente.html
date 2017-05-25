@@ -2,14 +2,15 @@
   <ol class="breadcrumb bg-white">
     <li><a ui-sref="dashboard">Inicio</a></li>
     <li class="active">Paciente</li>
+
   </ol>
-  <!-- row -->
-  <div class="row">
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha" ng-click="pac.btnRegresar();">REGRESAR</button>
+  <!-- LISTADO -->
+  <div class="row" ng-show="!pac.modoFicha">
     <div class="col-lg-12 col-md-12">
       <div class="tile">
-
         <!-- CABECERA -->
-        <section class="tile-header" ng-show="!pac.modoFicha">
+        <section class="tile-header">
           <h1 class="heading">Pacientes</h1>
           <div class="controls">
             <div class="btn-group" uib-dropdown>
@@ -25,7 +26,7 @@
           </div>
         </section>
         <!-- PANEL PRINCIPAL -->
-        <section class="tile-body col-sm-8 pr-0" ng-show="!pac.modoFicha">
+        <section class="tile-body col-sm-8 pr-0">
           <div>
             <ul class="form-group demo-btns list-unstyled">
               <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
@@ -33,147 +34,12 @@
           </div>
           <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
         </section>
-        <section class="tile-header col-sm-8 p-0" ng-show="pac.modoFicha">
-          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
-
-            <uib-tab heading="Evolución">
-              <div class="tile-body col-sm-12">
-                <label>En desarrollo</label>
-              </div>
-            </uib-tab>
-
-            <uib-tab heading="Datos Personales">
-              <form class="form-horizontal" role="form">
-                <div class="tile-body col-sm-12">
-                  <h4 class="text-info f-16">Datos Personales</h4>
-                  <div class="form-group">
-                    <label for="nombre" class="col-sm-2 control-label minotaur-label">Nombre</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control underline-input" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="apellidos" class="col-sm-2 control-label minotaur-label">Apellidos</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control underline-input" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="fecha_nac" class="col-sm-2 control-label minotaur-label">Fecha de nacimiento</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control underline-input" id="fecha_nac" placeholder="Fecha de Nacimiento" ng-model="pac.ficha.fecha_nacimiento" ng-readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="edad" class="col-sm-2 control-label minotaur-label">Edad</label>
-                    <div class="col-sm-10">
-                      <p type="text" class="form-control underline-input" >{{pac.ficha.edad}} </p>
-                      <!-- <input type="text" class="form-control underline-input" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="true"> -->
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="sexo" class="col-sm-2 control-label minotaur-label">Sexo</label>
-                    <div class="col-sm-10">
-                      <select class="form-control" ng-if="false" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
-                      <p type="text" ng-if="true" class="form-control underline-input" >{{pac.ficha.sexo_desc}} </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="tile-body col-sm-12">
-                  <h4 class="text-info f-14">Datos de Contacto</h4>
-                  <div class="form-group">
-                    <label for="celular" class="col-sm-2 control-label minotaur-label">Celular</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control underline-input" id="celular" placeholder="Celular" ng-model="pac.ficha.celular" ng-readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="email" class="col-sm-2 control-label minotaur-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control underline-input" id="email" placeholder="micorreo@dominio.com" ng-model="pac.ficha.email" ng-readonly="true">
-                    </div>
-                  </div>
-                </div>
-                <div class="tile-body col-sm-12">
-                  <h4 class="text-info f-14">Otros Datos</h4>
-                  <div class="form-group">
-                    <label for="estatura" class="col-sm-2 control-label minotaur-label">Estatura (cm)</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control underline-input" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="true">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="clasificacion" class="col-sm-2 control-label minotaur-label">Clasificación</label>
-                    <div class="col-sm-10">
-                      <input type="clasificacion" class="form-control underline-input" id="clasificacion" placeholder="" ng-model="pac.ficha.clasificacion" ng-readonly="true">
-                    </div>
-                  </div>
-                </div>
-              </form>
-
-
-            </uib-tab>
-
-            <uib-tab heading="Antecedentes">
-              <form class="form-horizontal" role="form">
-                <div class="tile-body col-sm-12">
-                  <h4 class="text-info f-16">Patológicos</h4>
-                  <div class="row">
-                    <div class="col-sm-6" ng-repeat="item in pac.listaAntPatologicos">
-                      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
-                        <input type="checkbox" ng-disabled="true">
-                        <div class="input-indicator"></div>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form-control col-sm-4">
-                      <label class="control-label">Alergias / Intolerancias Alimentarias</label>
-                      <textarea class="form-control input-sm" ng-model="pac.ficha.alergia_ia" tabindex="115"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="tile-body col-sm-12">
-                  <h4 class="text-info f-16">Heredados</h4>
-                  <div class="row">
-                    <div class="col-sm-6" ng-repeat="item in pac.listaAntHeredados">
-                      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
-                        <input type="checkbox" ng-disabled="true">
-                        <div class="input-indicator"></div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </uib-tab>
-
-            <uib-tab heading="Hábitos">
-              <div class="tile-body col-sm-12">
-                <label>En desarrollo</label>
-              </div>
-            </uib-tab>
-
-            <uib-tab heading="Historial de Consultas">
-              <div class="tile-body col-sm-12">
-                <label>En desarrollo</label>
-              </div>
-            </uib-tab>
-            <uib-tab heading="Planes Alimenticios">
-              <div class="tile-body col-sm-12">
-                <label>En desarrollo</label>
-              </div>
-            </uib-tab>
-
-          </uib-tabset>
-
-        </section>
         <!-- PANEL DE VISTA PREVIA - LATERAL DERECHO -->
         <section class="tile-body col-sm-4">
-          <button type="button" class="btn btn-warning pull-right" ng-show="pac.modoFicha" ng-click="pac.btnRegresar();">REGRESAR</button>
           <div class="tile profile-widget">
 
             <!-- tile widget -->
-            <section class="tile-widget bg-info">
+            <section class="tile-widget bg-info" style="min-height: 145px;">
               <img class="img-circle profile-avatar" src="assets/images/sin-imagen.png" alt="" ng-if="pac.mySelectionGrid.length < 1">
               <img class="img-circle profile-avatar" src="assets/images/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-show="pac.mySelectionGrid.length >= 1">
               <div class="row">
@@ -189,8 +55,8 @@
             <!-- /tile widget -->
 
             <!-- tile body -->
-            <section class="tile-body bg-info">
-              <dl class="dl-horizontal">
+            <section class="tile-body bg-info" style="min-height: 166px;">
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo0">
                 <dt style="width: 80px; padding: 3px 0;">Edad: </dt>
                 <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].edad}}</dd>
                 <dt style="width: 80px; padding: 3px 0;">Sexo: </dt>
@@ -200,17 +66,32 @@
                 <dt style="width: 80px; padding: 3px 0;">Nacimiento: </dt>
                 <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].fecha_nacimiento_st}}</dd>
               </dl>
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo1">
+                <dt style="width: 80px; padding: 3px 0;">Peso: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">IMC: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Diferencia: </dt>
+              </dl>
+              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo2">
+                <dt style="width: 80px; padding: 3px 0;">Antecedente 1: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Antecedente 2: </dt>
+                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+                <dt style="width: 80px; padding: 3px 0;">Antecedente 3: </dt>
+              </dl>
+              <div ng-if="pac.mySelectionGrid.length < 1">Seleccione un paciente</div>
             </section>
             <!-- /tile body -->
 
             <!-- tile footer -->
             <section class="tile-footer p-0">
               <uib-tabset class="minotaur-tab minotaur-tab-info">
-                <uib-tab index="0" heading="Datos Gen.">
+                <uib-tab index="0" heading="Datos Gen." ng-click="pac.verPrevio(0)">
                 </uib-tab>
-                <uib-tab index="1" heading="Evolución">
+                <uib-tab index="1" heading="Evolución" ng-click="pac.verPrevio(1)">
                 </uib-tab>
-                <uib-tab index="2" heading="Ult.Antec.">
+                <uib-tab index="2" heading="Ult.Antec." ng-click="pac.verPrevio(2)">
 
                 </uib-tab>
               </uib-tabset>
@@ -222,5 +103,20 @@
       </div>
     </div>
   </div>
-  <!-- /row -->
+  <!-- FICHA DEL PACIENTE -->
+  <div class="row" ng-show="pac.modoFicha">
+    <div class="col-lg-12 col-md-12">
+      <div class="tile">
+
+        <!-- CABECERA -->
+        <section class="tile-header p-0">
+          <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
+            <uib-tab heading="{{item.tab}}" ng-repeat="item in pac.templates">
+              <div ng-include="item.url"></div>
+            </uib-tab>
+          </uib-tabset>
+        </section>
+      </div>
+    </div>
+  </div>
 </div>
