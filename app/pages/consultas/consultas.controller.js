@@ -24,7 +24,7 @@
     }
 
     vm.pestania = 1;
-    vm.chancePestania = function(value){
+    vm.changePestania = function(value){
       vm.pestania = value;
     }
 
@@ -34,6 +34,57 @@
         vm.fData.si_embarazo  = false;
       }else{
         vm.fData.si_embarazo  = true;
+      }
+    }
+
+    vm.changeComposicion = function(value){
+      if(value == 'peso'){
+        if(vm.fData.porc_masa_grasa && vm.fData.porc_masa_grasa != null && vm.fData.porc_masa_grasa != ''){
+          vm.fData.porc_masa_grasa = (100 - parseFloat(vm.fData.porc_masa_libre)).toFixed(2);
+          vm.fData.kg_masa_grasa = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2);
+        }
+
+        if(vm.fData.porc_masa_libre && vm.fData.porc_masa_libre != null && vm.fData.porc_masa_libre != ''){
+          vm.fData.porc_masa_libre = (100 - parseFloat(vm.fData.porc_masa_grasa)).toFixed(2);
+          vm.fData.kg_masa_libre = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2);
+        }
+      }else if(vm.fData.peso && vm.fData.peso != null && vm.fData.peso != ''){
+        console.log(value);
+        if(value == 'porc_masa_grasa'){
+          vm.fData.porc_masa_libre = (100 - parseFloat(vm.fData.porc_masa_grasa)).toFixed(2);
+          vm.fData.kg_masa_libre = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2);
+          vm.fData.kg_masa_grasa = (parseFloat(vm.fData.peso) - parseFloat(vm.fData.kg_masa_libre)).toFixed(2);
+        }
+
+        if(value == 'porc_masa_libre'){
+          vm.fData.porc_masa_grasa = (100 - parseFloat(vm.fData.porc_masa_libre)).toFixed(2);
+          vm.fData.kg_masa_grasa = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2);
+          vm.fData.kg_masa_libre = (parseFloat(vm.fData.peso) - parseFloat(vm.fData.kg_masa_grasa)).toFixed(2);
+        }        
+
+        if(value == 'porc_masa_muscular'){
+          vm.fData.kg_masa_muscular = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_muscular)) / 100).toFixed(2);
+        }
+
+        if(value == 'kg_masa_muscular'){
+          vm.fData.porc_masa_grasa = ((parseFloat(vm.fData.kg_masa_muscular) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
+        }
+
+        if(value == 'porc_agua_corporal'){
+          vm.fData.kg_agua_corporal = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_agua_corporal)) / 100).toFixed(2);
+        }
+
+        if(value == 'kg_agua_corporal'){
+          vm.fData.porc_agua_corporal = ((parseFloat(vm.fData.kg_agua_corporal) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
+        }
+        
+        if(value == 'porc_grasa_visceral'){
+          vm.fData.kg_grasa_visceral = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_grasa_visceral)) / 100).toFixed(2);
+        }
+
+        if(value == 'kg_masa_muscular'){
+          vm.fData.porc_grasa_visceral = ((parseFloat(vm.fData.kg_grasa_visceral) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
+        }
       }
     }
 

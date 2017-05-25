@@ -57,52 +57,61 @@
                   <div class="form-group">
                     <label for="peso" class="col-sm-5 control-label minotaur-label">Peso <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-3">
-                      <input type="text" name="peso" required class="form-control" ng-model="cons.fData.peso" />
+                      <input type="text" name="peso" required class="form-control" ng-model="cons.fData.peso"
+                              ng-change="cons.changeComposicion('peso');"  />
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Masa Grasa <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-6">
-                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_grasa" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_grasa" 
+                              ng-change="cons.changeComposicion('porc_masa_grasa');" /> 
                       <span class="input-group-addon">%</span>
-                      <input type="text" disabled class="form-control" />
+                      <input type="text" disabled class="form-control" ng-model="cons.fData.kg_masa_grasa"/>
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Masa Libre de Grasa <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-6">
-                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_libre" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_libre"
+                              ng-change="cons.changeComposicion('porc_masa_libre');" />
                       <span class="input-group-addon">%</span>
-                      <input type="text" disabled class="form-control" />
+                      <input type="text" disabled class="form-control" ng-model="cons.fData.kg_masa_libre" />
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Masa Muscular <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-6">
-                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_muscular" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.porc_masa_muscular"
+                              ng-change="cons.changeComposicion('porc_masa_muscular');" />
                       <span class="input-group-addon">%</span>
-                      <input type="text" required class="form-control" ng-model="cons.fData.kg_masa_muscular" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.kg_masa_muscular" 
+                              ng-change="cons.changeComposicion('kg_masa_muscular');"/>
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Agua Corporal <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-6">
-                      <input type="text" required class="form-control" ng-model="cons.fData.porc_agua_corporal" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.porc_agua_corporal" 
+                              ng-change="cons.changeComposicion('porc_agua_corporal');"/>
                       <span class="input-group-addon">%</span>
-                      <input type="text" required class="form-control" ng-model="cons.fData.kg_agua_corporal" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.kg_agua_corporal" 
+                              ng-change="cons.changeComposicion('kg_agua_corporal');"/>
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Grasa Visceral <span class="text-red">*</span>: </label>
                     <div class="input-group col-sm-6">
-                      <input type="text" required class="form-control" ng-model="cons.fData.porc_grasa_visceral" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.porc_grasa_visceral" 
+                              ng-change="cons.changeComposicion('porc_grasa_visceral');"/>
                       <span class="input-group-addon">%</span>
-                      <input type="text" required class="form-control" ng-model="cons.fData.kg_grasa_visceral" />
+                      <input type="text" required class="form-control" ng-model="cons.fData.kg_grasa_visceral" 
+                              ng-change="cons.changeComposicion('kg_grasa_visceral');"/>
                       <span class="input-group-addon">Kg</span>
                     </div>                    
                   </div>                
@@ -292,7 +301,7 @@
           <div class="col-lg-12 col-md-12 mt-10">
             <div class="btn-group">
               <button type="button" class="btn btn-success" 
-                      ng-click="cons.chancePestania('2');"
+                      ng-click="cons.changePestania('2');"
                       ng-disabled="formMedidas.$invalid">Siguiente
               </button>
             </div>
@@ -334,7 +343,7 @@
           <div class="col-lg-12 col-md-12 mt-10">
             <div class="btn-group">
               <button type="button" class="btn btn-blue" 
-                      ng-click="cons.chancePestania('1');">Atras
+                      ng-click="cons.changePestania('1');">Atras
               </button>
               <button type="button" class="btn btn-success" 
                       ng-click="cons.btnRegistrarConsulta(vm.event)"                      
