@@ -62,7 +62,7 @@
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion">
                       <a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a>
                     </li>
-                    <li role="menuitem" ng-if="vm.event.atencion.idatencion">
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion" ng-click="vm.btnAnularConsulta(vm.event)">
                       <a ><i class="fa fa-remove"></i>Anular Consulta</a>
                     </li>
                   </ul>

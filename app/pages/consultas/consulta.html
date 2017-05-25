@@ -10,34 +10,22 @@
       <div class="tile">
         <!-- tile header -->
         <section class="tile-header">
-          <h1 class="heading">Datos de la Consulta</h1> 
-          <div class="controls">
-            <div class="btn-group" uib-dropdown>
-              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
-              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh ng-click=" "></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
-                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
-              </ul>
+          <h1 class="heading col-lg-8 col-md-8 col-sm-12 mb-10">Datos de la Consulta</h1> 
+          
+          <div class="col-lg-4 col-md-4 mb-10 col-sm-12">
+            <div class="pull-right">
+              <button type="button" class="btn btn-warning" ng-click='vm.viewConsulta = false'>Cancelar</button>
             </div>
-            <minotaur-tile-close></minotaur-tile-close>
           </div>
+          
         </section>
         <!-- /tile header -->
 
          <!-- tile body -->
-        <section class="tile-body col-lg-12 col-md-12">
-          <!-- right side header -->
-          <div class="col-lg-12 col-md-12 mb-10">
-            <div class="pull-right">
-              <button type="button" class="btn btn-red btn-sm" ng-click='vm.viewConsulta = false'>Cancelar</button>              
-            </div>
-          </div>
-          <!-- /right side header -->
+        <section class="tile-body col-lg-12 col-md-12" ng-show="cons.pestania == '1'">
           <!-- right side body -->
           <div class="col-lg-12 col-md-12">
-            <form name="outerForm" role="form" novalidate class="form-validation">
+            <form name="formMedidas" role="form" novalidate class="form-validation">
               <div class="row">
                 <div class="form-horizontal col-md-12">               
                   <div class="form-group col-md-10">
@@ -52,7 +40,8 @@
                     <input type="checkbox" required class="form-control"  />
                      -->
                      <label class="checkbox minotaur-checkbox minotaur-label">¿Embarazo? 
-                      <input type="checkbox" ng-model="cons.fData.si_embarazo"><div class="input-indicator"></div>
+                      <input type="checkbox" ng-model="cons.fData.si_embarazo" ng-click="changeEmbarazo();" ng-checked="cons.fData.si_embarazo">
+                      <div class="input-indicator"></div>
                     </label>
                   </div>
                 </div>
@@ -250,28 +239,27 @@
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                            <label class="col-sm-5 control-label minotaur-label">Axilar: </label>
-                            <div class="input-group col-sm-6">
-                              <input type="text"  class="form-control" ng-model="cons.fData.cm_axilar" />
-                              <span class="input-group-addon">cm</span>
-                            </div>                    
-                          </div> 
-                          <div class="form-group">
-                            <label class="col-sm-5 control-label minotaur-label">Pectoral: </label>
-                            <div class="input-group col-sm-6">
-                              <input type="text"  class="form-control" ng-model="cons.fData.cm_pectoral" />
-                              <span class="input-group-addon">cm</span>
-                            </div>                    
-                          </div>
-                          <div class="form-group">
-                            <label class="col-sm-5 control-label minotaur-label">Suprailiaco: </label>
-                            <div class="input-group col-sm-6">
-                              <input type="text"  class="form-control" ng-model="cons.fData.cm_suprailiaco" />
-                              <span class="input-group-addon">cm</span>
-                            </div>                    
-                          </div>
-                      </div>                                
-                      
+                          <label class="col-sm-5 control-label minotaur-label">Axilar: </label>
+                          <div class="input-group col-sm-6">
+                            <input type="text"  class="form-control" ng-model="cons.fData.cm_axilar" />
+                            <span class="input-group-addon">cm</span>
+                          </div>                    
+                        </div> 
+                        <div class="form-group">
+                          <label class="col-sm-5 control-label minotaur-label">Pectoral: </label>
+                          <div class="input-group col-sm-6">
+                            <input type="text"  class="form-control" ng-model="cons.fData.cm_pectoral" />
+                            <span class="input-group-addon">cm</span>
+                          </div>                    
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-5 control-label minotaur-label">Suprailiaco: </label>
+                          <div class="input-group col-sm-6">
+                            <input type="text"  class="form-control" ng-model="cons.fData.cm_suprailiaco" />
+                            <span class="input-group-addon">cm</span>
+                          </div>                    
+                        </div>
+                      </div>
                       <div class="col-md-4">                    
                         <div class="form-group">
                           <label class="col-sm-5 control-label minotaur-label">Supraespinal: </label>
@@ -297,11 +285,62 @@
                       </div>                
                     </div>        
                   </div>        
-                </div>
-                </div>
-                                        
+                </div>                  
               </div>
             </form>
+          </div>
+          <div class="col-lg-12 col-md-12 mt-10">
+            <div class="btn-group">
+              <button type="button" class="btn btn-success" 
+                      ng-click="cons.chancePestania('2');"
+                      ng-disabled="formMedidas.$invalid">Siguiente
+              </button>
+            </div>
+          </div>
+          <!-- /right side body -->
+        </section>
+
+        <section class="tile-body col-lg-12 col-md-12" ng-show="cons.pestania == '2'">
+          <!-- right side header -->
+          <!-- <div class="col-lg-12 col-md-12 mb-10">
+            <div class="pull-right">
+              <button type="button" class="btn btn-red btn-sm" ng-click='vm.viewConsulta = false'>Cancelar</button>              
+            </div>
+          </div> -->
+          <!-- /right side header -->
+          <!-- right side body -->
+          <div class="col-lg-12 col-md-12">
+            <form name="formDiagnostico" role="form" novalidate class="form-validation">
+              <div class="row">
+                <div class="form-horizontal col-md-12">               
+                  <legend>Diagnóstico</legend>  
+                </div>                
+                                                        
+              </div>
+            </form>
+
+            <form name="formDiagnostico" role="form" novalidate class="form-validation">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label class="minotaur-label">Diagnóstico / notas generales</label>
+                  <textarea  ng-model="cons.fData.diagnostico_notas" placeholder="Esta nota no será vista por el paciente" 
+                      class="form-control" style="rezise:none;" >
+                  </textarea>
+                </div>
+                                               
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-12 col-md-12 mt-10">
+            <div class="btn-group">
+              <button type="button" class="btn btn-blue" 
+                      ng-click="cons.chancePestania('1');">Atras
+              </button>
+              <button type="button" class="btn btn-success" 
+                      ng-click="cons.btnRegistrarConsulta(vm.event)"                      
+                      ng-disabled="formDiagnostico.$invalid">Finalizar
+              </button>
+            </div>
           </div>
           <!-- /right side body -->
         </section>

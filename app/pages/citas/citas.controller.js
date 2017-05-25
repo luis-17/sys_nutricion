@@ -6,7 +6,7 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, $controller) { 
+  function CitasController ($scope,$uibModal,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices) { 
     var vm = this;
 
     var date = new Date();
@@ -377,6 +377,36 @@
       //console.log('btnGenerarConsulta', row);      
       vm.viewConsulta = true;
       //console.log('vm.viewConsulta', vm.viewConsulta);
+    }
+
+    vm.btnAnularConsulta = function(row){
+      console.log('btnAnularConsulta', row);
+      alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+        ev.preventDefault();        
+        ConsultasServices.sAnularConsulta(row).then(function (rpta) {              
+          var openedToasts = [];
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };       
+          if(rpta.flag == 1){
+            angular.element('.calendar').fullCalendar( 'refetchEvents' ); 
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            var iconClass = 'warning';
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }, function(ev) {
+          ev.preventDefault();
+      });
     }
 
     vm.uiConfig = { 

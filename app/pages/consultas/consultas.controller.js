@@ -9,6 +9,8 @@
   function ConsultasController ($scope,$uibModal,alertify,toastr,ConsultasServices) { 
     var vm = this;
 
+    vm.fData = {};
+
     vm.isOpen = false;
     vm.titleToggle = "Ver Pliegues";
     vm.changeToggle = function(){
@@ -19,6 +21,31 @@
         vm.isOpen = true;
         vm.titleToggle = "Ocultar Pliegues";
       }
+    }
+
+    vm.pestania = 1;
+    vm.chancePestania = function(value){
+      vm.pestania = value;
+    }
+
+    vm.fData.si_embarazo = false;
+    vm.changeEmbarazo = function(){
+      if(vm.fData.si_embarazo){
+        vm.fData.si_embarazo  = false;
+      }else{
+        vm.fData.si_embarazo  = true;
+      }
+    }
+
+    vm.btnRegistrarConsulta = function(cita){
+      var datos={
+        cita:cita,
+        consulta:vm.fData
+      };
+
+      ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){
+        console.log(rpta);
+      });
     }
 
     vm.generarConsulta = function(row){      
@@ -68,11 +95,20 @@
   function ConsultasServices($http, $q) {
     return({
         sRegistrarConsulta: sRegistrarConsulta,
+        sAnularConsulta : sAnularConsulta ,
     });
     function sRegistrarConsulta(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Consulta/registrar_citas",
+            url : angular.patchURLCI+"Consulta/registrar_consulta",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sAnularConsulta(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Consulta/anular_consulta",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

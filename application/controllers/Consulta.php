@@ -17,6 +17,11 @@ class Consulta extends CI_Controller {
 
 		/*aqui van las validaciones*/
 		
+		/*registro de datos*/
+		if($this->model_consulta->m_registrar($allInputs)){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Ha consulta ha sido registrada.';
+		}
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -40,7 +45,7 @@ class Consulta extends CI_Controller {
 		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
 
 	
-		if($this->model_consulta->m_anular($allInputs['id'])){
+		if($this->model_consulta->m_anular($allInputs['atencion']['idatencion'])){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Consulta anulada.';
 		}
