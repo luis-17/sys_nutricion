@@ -16,16 +16,48 @@
       vm.tipoVista = tipoVista;
       console.log('vm.cita',vm.cita);
 
+      
       if(vm.tipoVista == 'new'){
         vm.fData = {};
         vm.fData.si_embarazo = false;
+        vm.dp.today();
       }else if(vm.tipoVista == 'edit'){
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           vm.fData = rpta.datos;
+          vm.fData.fecha_atencion = new Date(vm.fData.fecha_atencion);
           console.log(rpta);
         });        
       }
     }
+
+    /*DATEPICKER*/
+    vm.dp = {};
+    vm.dp.today = function() {
+      vm.fData.fecha_atencion = new Date();
+    };      
+    
+    vm.dp.clear = function() {
+      vm.fData.fecha_atencion = null;
+    };
+
+    vm.dp.dateOptions = {
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      startingDay: 1,
+      placement:'bottom'
+    };
+
+    vm.dp.open = function() {
+      vm.dp.popup.opened = true;
+    };
+
+    vm.dp.formats = ['dd/MM/yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    vm.dp.format = vm.dp.formats[0];
+    vm.dp.altInputFormats = ['M!/d!/yyyy'];
+
+    vm.dp.popup = {
+      opened: false
+    }; 
 
     vm.isOpen = false;
     vm.titleToggle = "Ver Pliegues";
@@ -82,7 +114,7 @@
         }
 
         if(value == 'kg_masa_muscular'){
-          vm.fData.porc_masa_grasa = ((parseFloat(vm.fData.kg_masa_muscular) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
+          vm.fData.porc_masa_muscular = ((parseFloat(vm.fData.kg_masa_muscular) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
         }
 
         if(value == 'porc_agua_corporal'){
@@ -97,7 +129,7 @@
           vm.fData.kg_grasa_visceral = ((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_grasa_visceral)) / 100).toFixed(2);
         }
 
-        if(value == 'kg_masa_muscular'){
+        if(value == 'kg_grasa_visceral'){
           vm.fData.porc_grasa_visceral = ((parseFloat(vm.fData.kg_grasa_visceral) * 100) / parseFloat(vm.fData.peso)).toFixed(2);
         }
       }

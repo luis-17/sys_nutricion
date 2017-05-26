@@ -42,6 +42,7 @@ class Model_consulta extends CI_Model {
 			'cm_pierna' 			=> (empty($datos['consulta']['cm_pierna'])) ? NULL : $datos['consulta']['cm_pierna'], 
 			'si_embarazo' 			=> ($datos['consulta']['si_embarazo']) ? 1 : 2, 
 			'diagnostico_notas' 	=> (empty($datos['consulta']['diagnostico_notas'])) ? NULL : $datos['consulta']['diagnostico_notas'], 
+			'fecha_atencion' 		=> date('Y-m-d H:i:s', strtotime($datos['consulta']['fecha_atencion'])),
 			'createdat' 			=> date('Y-m-d H:i:s'),
 			'updatedat'				=> date('Y-m-d H:i:s')
 			);
@@ -63,7 +64,7 @@ class Model_consulta extends CI_Model {
 			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital, 
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna, 
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion');
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion');
 
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);

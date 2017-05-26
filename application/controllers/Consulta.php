@@ -20,7 +20,7 @@ class Consulta extends CI_Controller {
 		/*registro de datos*/
 		if($this->model_consulta->m_registrar($allInputs)){
 			$arrData['flag'] = 1;
-			$arrData['message'] = 'Ha consulta ha sido registrada.';
+			$arrData['message'] = 'La consulta ha sido registrada.';
 		}
 
 		$this->output
@@ -64,8 +64,8 @@ class Consulta extends CI_Controller {
 
 		if(!empty($atencion['idatencion'])){
 			$atencion['si_embarazo'] = $atencion['si_embarazo'] == 2 ? FALSE:TRUE;
-			$arrData['flag'] = 0;
-			$arrData['message'] = 'No se encontro la atencion.';
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Se encontro la atencion.';
 			$arrData['datos'] = $atencion;
 		}
 

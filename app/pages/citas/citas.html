@@ -89,10 +89,10 @@
     display: block;
   }
 </style>
-<div class="page page-ui pull-to-header" ng-if="viewConsulta && vm.tipoVista == 'new'" ng-include="'app/pages/consultas/consulta.html'"
+<div class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" ng-include="'app/pages/consultas/consulta.html'"
       ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'new');" > 
 </div>
-<div class="page page-ui pull-to-header" ng-if="viewConsulta && vm.tipoVista == 'edit'" ng-include="'app/pages/consultas/consulta.html'"
+<div class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" ng-include="'app/pages/consultas/consulta.html'"
       ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
 </div>
 

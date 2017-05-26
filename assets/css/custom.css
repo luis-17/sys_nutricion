@@ -75,3 +75,7 @@
 section.tile-body{
 	margin-top: 0;
 }
+
+.page-consulta.tile{
+	min-height: 500px;
+}
