@@ -82,6 +82,54 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_habitos_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		// var_dump($allInputs); exit();
+		$arrListado = array();
+		$rowHabitos = $this->model_paciente->m_cargar_habitos_paciente($allInputs);
+		$arrListado = array(
+					'actividad_fisica' => $rowHabitos['actividad_fisica'],
+					'frecuencia' => $rowHabitos['frecuencia'],
+					'detalle_act_fisica' => $rowHabitos['detalle_act_fisica'],
+					'consumo_agua' => $rowHabitos['consumo_agua'],
+					'consumo_gaseosa' => $rowHabitos['consumo_gaseosa'],
+					'consumo_alcohol' => $rowHabitos['consumo_alcohol'],
+					'consumo_tabaco' => $rowHabitos['consumo_tabaco'],
+					'tiempo_suenio' => $rowHabitos['tiempo_suenio'],
+					'notas_generales' => $rowHabitos['notas_generales']
+
+		);
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($rowHabitos)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_antecedentes_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrListado = array();
+		var_dump($allInputs); exit();
+		$lista = $this->model_paciente->m_cargar_antecedentes_paciente($allInputs);
+		$arrListado = array(
+					'actividad_fisica' => $rowHabitos['actividad_fisica'],
+
+		);
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($rowHabitos)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	// MANTENIMIENTO
 	public function registrar_paciente()
 	{

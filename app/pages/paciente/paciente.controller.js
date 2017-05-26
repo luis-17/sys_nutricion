@@ -13,6 +13,9 @@
     var vm = this;
     vm.modoFicha = false;
     vm.modoEditar = false;
+    vm.previo0 = true;
+    vm.previo1 = false;
+    vm.previo2 = false;
     // LISTA ANTECEDENTES PATOLOGICOS
       var paramDatos = {
         'tipo': 'P'
@@ -104,7 +107,7 @@
         vm.datosGrid = {
           paginate : paginationOptions
         };
-        PacienteServices.sListarPaciente(vm.datosGrid).then(function (rpta) {
+        PacienteServices.sListarPacientes(vm.datosGrid).then(function (rpta) {
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
@@ -236,7 +239,12 @@
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
         vm.ficha = angular.copy(row.entity);
-
+        PacienteServices.sListarHabitosPaciente(row.entity).then(function (rpta) {
+          vm.ficha.habitos = rpta.datos;
+        });
+        // PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
+        //   vm.ficha.antecedentes = rpta.datos;
+        // });
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
@@ -386,13 +394,15 @@
 
   function PacienteServices($http, $q) {
     return({
-        sListarPaciente: sListarPaciente,
+        sListarPacientes: sListarPacientes,
         sListaPacientesAutocomplete: sListaPacientesAutocomplete,
+        sListarHabitosPaciente: sListarHabitosPaciente,
+        sListarAntecedentesPaciente: sListarAntecedentesPaciente,
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
     });
-    function sListarPaciente(pDatos) {
+    function sListarPacientes(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
@@ -405,6 +415,22 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarHabitosPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_habitos_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarAntecedentesPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_antecedentes_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
