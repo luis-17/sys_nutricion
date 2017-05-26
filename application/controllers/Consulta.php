@@ -60,10 +60,50 @@ class Consulta extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'No se encontro la atencion.';
 
-		$atencion = $this->model_consulta->m_consultar_atencion($allInputs['atencion']['idatencion']);
+		$row = $this->model_consulta->m_consultar_atencion($allInputs['atencion']['idatencion']);
 
-		if(!empty($atencion['idatencion'])){
-			$atencion['si_embarazo'] = $atencion['si_embarazo'] == 2 ? FALSE:TRUE;
+		if(!empty($row['idatencion'])){
+				$atencion = array(
+					'idcliente' 			=> $row['idcliente'],
+					'idcita' 				=> $row['idcita'],
+					'idatencion' 			=> $row['idatencion'],
+					'si_embarazo' 			=> $row['si_embarazo'] == 1 ? TRUE:FALSE,
+					'peso' 					=> (float)$row['peso'],
+					'porc_masa_grasa' 		=> (float)$row['porc_masa_grasa'], 
+					'porc_masa_libre' 		=> (float)$row['porc_masa_libre'], 
+					'porc_masa_muscular' 	=> (float)$row['porc_masa_muscular'], 
+					'kg_masa_muscular' 		=> (float)$row['kg_masa_muscular'], 
+					'porc_agua_corporal' 	=> (float)$row['porc_agua_corporal'], 
+					'kg_agua_corporal' 		=> (float)$row['kg_agua_corporal'], 
+					'porc_grasa_visceral' 	=> (float)$row['porc_grasa_visceral'], 
+					'kg_grasa_visceral' 	=> (float)$row['kg_grasa_visceral'], 
+					'cm_pecho' 				=> (float)$row['cm_pecho'], 
+					'cm_antebrazo' 			=> (float)$row['cm_antebrazo'], 
+					'cm_cintura' 			=> (float)$row['cm_cintura'], 
+					'cm_abdomen' 			=> (float)$row['cm_abdomen'], 
+					'cm_cadera_gluteo' 		=> (float)$row['cm_cadera_gluteo'], 
+					'cm_muslo' 				=> (float)$row['cm_muslo'], 
+					'cm_hombros' 			=> (float)$row['cm_hombros'], 
+					'cm_biceps_relajados' 	=> (float)$row['cm_biceps_relajados'], 
+					'cm_biceps_contraidos' 	=> (float)$row['cm_biceps_contraidos'], 
+					'cm_muneca' 			=> (float)$row['cm_muneca'], 
+					'cm_rodilla' 			=> (float)$row['cm_rodilla'], 
+					'cm_gemelos' 			=> (float)$row['cm_gemelos'], 
+					'cm_tobillo' 			=> (float)$row['cm_tobillo'], 
+					'cm_tricipital' 		=> (float)$row['cm_tricipital'], 
+					'cm_bicipital' 			=> (float)$row['cm_bicipital'], 
+					'cm_subescapular' 		=> (float)$row['cm_subescapular'], 
+					'cm_axilar' 			=> (float)$row['cm_axilar'], 
+					'cm_pectoral' 			=> (float)$row['cm_pectoral'], 
+					'cm_suprailiaco' 		=> (float)$row['cm_suprailiaco'], 
+					'cm_supraespinal' 		=> (float)$row['cm_supraespinal'], 
+					'cm_abdominal' 			=> (float)$row['cm_abdominal'], 
+					'cm_pierna' 			=> (float)$row['cm_pierna'], 
+					'diagnostico_notas' 	=> $row['diagnostico_notas'], 
+					'fecha_atencion' 		=> $row['fecha_atencion'],
+					'estado_atencion' 		=> $row['estado_atencion'],
+				);
+
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Se encontro la atencion.';
 			$arrData['datos'] = $atencion;
