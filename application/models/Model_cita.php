@@ -11,7 +11,7 @@ class Model_cita extends CI_Model {
 		$this->db->select("UPPER(CONCAT(pro.nombre, ' ',pro.apellidos)) AS profesional",FALSE);
 		$this->db->select('ub.descripcion_ub, ub.idubicacion',FALSE);
 
-		$this->db->select('at.idatencion, at.createdat AS fecha_atencion, at.diagnostico_notas',FALSE);
+		$this->db->select('at.idatencion, at.fecha_atencion, at.diagnostico_notas',FALSE);
 
 		$this->db->from('cita ci');
 		$this->db->join('cliente cli', 'cli.idcliente = ci.idcliente AND cli.estado_cl = 1');

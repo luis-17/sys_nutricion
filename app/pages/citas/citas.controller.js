@@ -16,9 +16,6 @@
 
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){
-      console.log('event', event);
-      console.log('delta', delta);
-      //vm.dropdown.removeClass('open');
       var datos = {
         event: event,
         delta: delta,
@@ -48,14 +45,12 @@
     };
     /* alert on Resize */
     vm.alertOnResize = function(event, delta){ 
-      console.log('resize mee');
-      vm.alertMessage = ('Event Resized to make dayDelta ' + delta);
+      angular.element('.calendar').fullCalendar( 'refetchEvents' );
     };
 
     vm.overlay = angular.element('.fc-overlay');
     //vm.tooltipOnMouseOver = function( event, jsEvent){
     vm.alertOnClick = function( event, jsEvent){
-      console.log('hover me');
       vm.event = event;
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
@@ -72,12 +67,6 @@
       }/**/
     }
     vm.eventsF = function (start, end, timezone, callback) {
-      /*var arrParams = { 
-        url: angular.patchURLCI+"Cita/listar_citas", 
-        datos:{ 
-          //'events': vm.events
-        }
-      }*/
       var events = []; 
       CitasServices.sListarCita().then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) { 
@@ -87,8 +76,7 @@
         callback(events); 
       });
     } 
-    vm.eventSources = [vm.eventsF]; 
-
+    vm.eventSources = [vm.eventsF];
 
     /* Change View */
     vm.changeView = function(view,calendar) {
@@ -102,9 +90,6 @@
 
     /* add custom event*/
     vm.btnCita = function(start, type){
-      //vm.dropdown.removeClass('open');     
-      console.log('start',start);  
-
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -122,7 +107,6 @@
             vm.listaUbicaciones = rpta.datos;
             vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
             vm.fData.ubicacion = vm.listaUbicaciones[0];
-            console.log(vm.listaUbicaciones);
           });
 
           /*DATEPICKER*/
@@ -192,8 +176,6 @@
           }          
 
           vm.ok = function () {
-            console.log('fdata', vm.fData);
-            
             CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {              
               var openedToasts = [];
               vm.options = {
@@ -227,7 +209,6 @@
     }
 
     vm.btnEditCita = function(row){
-      //vm.dropdown.removeClass('open');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -342,7 +323,6 @@
     }
 
     vm.btnAnular = function(row){
-      //vm.dropdown.removeClass('open');
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
@@ -371,16 +351,23 @@
       });
     }
 
-    vm.viewCita = true;
-    vm.viewConsulta = false;
-    vm.btnGenerarConsulta = function(row){
-      //console.log('btnGenerarConsulta', row);      
-      vm.viewConsulta = true;
-      //console.log('vm.viewConsulta', vm.viewConsulta);
+    $scope.changeViewConsulta(false);
+    vm.tipoVista = '';
+    vm.btnGenerarConsulta = function(row){      
+      vm.tipoVista = 'new';
+      $scope.changeViewConsulta(true);            
+    }
+    
+    vm.btnEditarConsulta = function(row){      
+      vm.tipoVista = 'edit';
+      $scope.changeViewConsulta(true);           
+    }
+
+    vm.callback = function(){
+      angular.element('.calendar').fullCalendar( 'refetchEvents' );
     }
 
     vm.btnAnularConsulta = function(row){
-      console.log('btnAnularConsulta', row);
       alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();        
         ConsultasServices.sAnularConsulta(row).then(function (rpta) {              

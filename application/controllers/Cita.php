@@ -47,7 +47,7 @@ class Cita extends CI_Controller {
 							'descripcion' => $row['descripcion_ub'],
 						),
 					'atencion' => array(
-							'idatencion' => $row['idatencion'],
+							'idatencion' => (int)$row['idatencion'],
 							'fecha_atencion' => $row['fecha_atencion'],
 							'diagnostico_notas' => $row['diagnostico_notas']
 						),

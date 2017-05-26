@@ -62,6 +62,11 @@
 
     }
     $scope.getValidateSession();
+
+    $scope.changeViewConsulta = function(value){
+      $scope.viewConsulta = value;
+    }
+    $scope.changeViewConsulta(false);
   }
   function rootServices($http, $q) {
     return({

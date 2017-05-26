@@ -55,4 +55,22 @@ class Consulta extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function cargar_consulta(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'No se encontro la atencion.';
+
+		$atencion = $this->model_consulta->m_consultar_atencion($allInputs['atencion']['idatencion']);
+
+		if(!empty($atencion['idatencion'])){
+			$atencion['si_embarazo'] = $atencion['si_embarazo'] == 2 ? FALSE:TRUE;
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'No se encontro la atencion.';
+			$arrData['datos'] = $atencion;
+		}
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }
