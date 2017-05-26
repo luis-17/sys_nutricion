@@ -63,13 +63,13 @@ class Model_paciente extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_antecedentes_paciente($datos){
-		$this->db->select("clan.idantecedente");
+		$this->db->select("clan.idantecedente, an.nombre as antecedente, an.tipo, clan.texto_otros");
+		$this->db->select("clan.idcliente, CASE WHEN idcliente IS NOT NULL THEN 1 ELSE 0 END AS checkbox",FALSE);
 		$this->db->from('cliente_antecedente clan');
-		$this->db->where("clan.estado_clan",1);
-		$this->db->where("clan.idcliente",$datos['idcliente']);
+		$this->db->join('antecedente an', 'clan.idantecedente = an.idantecedente AND clan.idcliente = ' . $datos['idcliente'] . ' AND clan.estado_clan = 1','right');
 
 
-		return $this->db->get()->row_array();
+		return $this->db->get()->result_array();
 	}
 
 	public function m_registrar($datos)

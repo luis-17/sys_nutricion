@@ -4,7 +4,7 @@
 		<div class="row">
 		    <div class="col-sm-6" ng-repeat="item in pac.listaAntPatologicos">
 		      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
-		        <input type="checkbox" ng-disabled="true">
+		        <input type="checkbox" ng-disabled="true" ng-checked="item.check == 1">
 		        <div class="input-indicator"></div>
 		      </label>
 		    </div>
@@ -29,7 +29,7 @@
 	  <div class="row">
 	    <div class="col-sm-6" ng-repeat="item in pac.listaAntHeredados">
 	      <label class="checkbox minotaur-checkbox"> {{item.descripcion}}
-	        <input type="checkbox" ng-disabled="true">
+	        <input type="checkbox" ng-disabled="true" ng-checked="item.check == 1">
 	        <div class="input-indicator"></div>
 	      </label>
 	    </div>

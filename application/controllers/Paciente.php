@@ -113,13 +113,34 @@ class Paciente extends CI_Controller {
 	public function listar_antecedentes_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrListado = array();
-		var_dump($allInputs); exit();
+		$arrListadoPatologico = array();
+		$arrListadoHeredado = array();
 		$lista = $this->model_paciente->m_cargar_antecedentes_paciente($allInputs);
-		$arrListado = array(
-					'actividad_fisica' => $rowHabitos['actividad_fisica'],
-
-		);
-
+		foreach ($lista as $row) {
+			if( $row['tipo'] == 'P' ){
+				array_push($arrListadoPatologico, array(
+					'id' => $row['idantecedente'],
+					'descripcion' => $row['antecedente'],
+					'tipo' => $row['tipo'],
+					'texto_otros' => $row['texto_otros'],
+					'check' => $row['checkbox'],
+					)
+				);
+			}else{
+				array_push($arrListadoHeredado, array(
+					'id' => $row['idantecedente'],
+					'descripcion' => $row['antecedente'],
+					'tipo' => $row['tipo'],
+					'texto_otros' => $row['texto_otros'],
+					
+					'check' => $row['checkbox'],
+					)
+				);
+			}
+		}
+		$arrListado['patologicos'] =  $arrListadoPatologico;
+		$arrListado['heredados'] =  $arrListadoHeredado;
+		// var_dump($arrListado); exit();
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

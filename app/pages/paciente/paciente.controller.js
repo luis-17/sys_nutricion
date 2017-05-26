@@ -17,19 +17,19 @@
     vm.previo1 = false;
     vm.previo2 = false;
     // LISTA ANTECEDENTES PATOLOGICOS
-      var paramDatos = {
-        'tipo': 'P'
-      }
-      AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
-        vm.listaAntPatologicos = rpta.datos;
-      });
-      // LISTA ANTECEDENTES HEREDADOS
-      var paramDatos = {
-        'tipo': 'H'
-      }
-      AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
-        vm.listaAntHeredados = rpta.datos;
-      });
+      // var paramDatos = {
+      //   'tipo': 'P'
+      // }
+      // AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
+      //   vm.listaAntPatologicos = rpta.datos;
+      // });
+      // // LISTA ANTECEDENTES HEREDADOS
+      // var paramDatos = {
+      //   'tipo': 'H'
+      // }
+      // AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
+      //   vm.listaAntHeredados = rpta.datos;
+      // });
       vm.templates = [
         { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
         { tab: 'Datos Personales', url: 'app/pages/paciente/ficha_datos_personales.html'},
@@ -242,9 +242,13 @@
         PacienteServices.sListarHabitosPaciente(row.entity).then(function (rpta) {
           vm.ficha.habitos = rpta.datos;
         });
-        // PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
-        //   vm.ficha.antecedentes = rpta.datos;
-        // });
+        PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
+          // vm.ficha.antecedentes = rpta.datos;
+          console.log(rpta.datos);
+          console.log(rpta.datos.patologicos);
+          vm.listaAntPatologicos = rpta.datos.patologicos;
+          vm.listaAntHeredados = rpta.datos.heredados;
+        });
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
