@@ -33,6 +33,10 @@ class Consulta extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
 
+		if($this->model_consulta->m_actualizar($allInputs)){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'La consulta ha sido actualizada.';
+		}
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -113,4 +117,5 @@ class Consulta extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
 }
