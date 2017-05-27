@@ -38,7 +38,44 @@
         { tab: 'Historial de Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
         { tab: 'Planes Alimentarios', url: 'app/pages/paciente/ficha_planes.html'},
       ];
+      vm.listaSexos = [
+        { id:'', descripcion:'--Seleccione sexo--' },
+        { id:'M', descripcion:'MASCULINO' },
+        { id:'F', descripcion:'FEMENINO' }
+      ];
 
+      // TIPO DE CLIENTE
+      TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
+        vm.listaTiposClientes = angular.copy(rpta.datos);
+        vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+        // if(vm.fData.idtipocliente == null){
+        //   vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
+        // }
+      });
+      // LISTA DE EMPRESAS
+      EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
+        vm.listaEmpresas = angular.copy(rpta.datos);
+        vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+        // if(vm.fData.idempresa == null){
+        //   vm.fData.idempresa = vm.listaEmpresas[0].id;
+        // }
+      });
+      // LISTA MOTIVO CONSULTA
+        MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
+          vm.listaMotivos = angular.copy(rpta.datos);
+          vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+          // if(vm.fData.idmotivoconsulta == null){
+          //   vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
+          // }
+        });
+        vm.cambiaTipoCliente = function(){
+          vm.fData.idempresa = vm.listaEmpresas[0].id;
+          if(vm.fData.idtipocliente == 3 ){
+            vm.corp = true;
+          }else{
+            vm.corp = false;
+          }
+        }
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -243,12 +280,47 @@
           vm.ficha.habitos = rpta.datos;
         });
         PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
-          // vm.ficha.antecedentes = rpta.datos;
-          console.log(rpta.datos);
-          console.log(rpta.datos.patologicos);
           vm.listaAntPatologicos = rpta.datos.patologicos;
           vm.listaAntHeredados = rpta.datos.heredados;
         });
+
+      }
+
+      vm.btnAceptarTab2 = function(datos){
+        PacienteServices.sEditarPaciente(datos).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            // vm.getPaginationServerSide();
+            PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+              vm.ficha = rpta.datos;
+              vm.mySelectionGrid = [rpta.datos];
+            });
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.btnCancelarTab2 = function(){
+        vm.modoEditar = false;
+        vm.ficha = angular.copy(vm.mySelectionGrid[0]);
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
@@ -402,6 +474,7 @@
         sListaPacientesAutocomplete: sListaPacientesAutocomplete,
         sListarHabitosPaciente: sListarHabitosPaciente,
         sListarAntecedentesPaciente: sListarAntecedentesPaciente,
+        sListarPacientePorId: sListarPacientePorId,
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
@@ -435,6 +508,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/listar_antecedentes_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarPacientePorId(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_paciente_por_id",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

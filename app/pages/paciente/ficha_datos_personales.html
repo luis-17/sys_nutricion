@@ -1,36 +1,43 @@
 <form class="form-horizontal" role="form">
   <div class="tile-body row">
     <div class="col-sm-8">
-      <h4 class="text-info f-16 col-sm-12">Datos Personales</h4>
+      <h4 class="text-info f-16 col-sm-6">Datos Personales</h4>
+      <button class="pull-right btn btn-input-sm btn-warning mb-20" type="button" ng-if="!pac.modoEditar" ng-click="pac.modoEditar=true">Editar</button>
+      <!-- <button class="pull-right btn btn-input-sm btn-success mb-20" type="button" ng-if="pac.modoEditar" ng-click="pac.btnEditar">Guardar</button>
+      <button class="pull-right btn btn-input-sm btn-danger mb-20" type="button" ng-if="pac.modoEditar" ng-click="pac.btnCancelar">Cancelar</button>
+       -->
+      <button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-20" ng-if="pac.modoEditar" ng-click="pac.btnAceptarTab2(pac.ficha)"><i class="fa fa-arrow-right"></i> Guardar</button>
+      <button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-20" ng-if="pac.modoEditar" ng-click="pac.btnCancelarTab2()" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
+
       <div class="form-group col-sm-12">
         <label for="nombre" class="col-sm-3 control-label minotaur-label">Nombre : </label>
         <div class="col-sm-9">
-          <input type="text" class="form-control underline-input text-center" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="!pac.modoEditar">
+          <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="nombre" placeholder="Nombre" ng-model="pac.ficha.nombre" ng-readonly="!pac.modoEditar">
         </div>
       </div>
       <div class="form-group col-sm-12">
         <label for="apellidos" class="col-sm-3 control-label minotaur-label">Apellidos : </label>
         <div class="col-sm-9">
-          <input type="text" class="form-control underline-input text-center" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="!pac.modoEditar">
+          <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="apellidos" placeholder="Apellidos" ng-model="pac.ficha.apellidos" ng-readonly="!pac.modoEditar">
         </div>
       </div>
       <div class="form-group col-sm-12">
         <label for="fecha_nac" class="col-sm-3 control-label minotaur-label">Fecha de nacimiento : </label>
         <div class="col-sm-9">
-          <input type="text" class="form-control underline-input text-center" id="fecha_nac" placeholder="Fecha de Nacimiento" ng-model="pac.ficha.fecha_nacimiento" ng-readonly="!pac.modoEditar">
+          <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="fecha_nac" placeholder="Fecha de Nacimiento" ng-model="pac.ficha.fecha_nacimiento" ng-readonly="!pac.modoEditar">
         </div>
       </div>
       <div class="form-group col-sm-12">
         <label for="edad" class="col-sm-3 control-label minotaur-label">Edad : </label>
         <div class="col-sm-9">
           <p type="text" class="form-control underline-input text-center" >{{pac.ficha.edad}} </p>
-          <!-- <input type="text" class="form-control underline-input text-center" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="!pac.modoEditar"> -->
+          <!-- <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="!pac.modoEditar"> -->
         </div>
       </div>
       <div class="form-group col-sm-12">
         <label for="sexo" class="col-sm-3 control-label minotaur-label">Sexo : </label>
         <div class="col-sm-9">
-          <select class="form-control" ng-if="false" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
+          <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
           <p type="text" ng-if="!pac.modoEditar" class="form-control underline-input text-center" >{{pac.ficha.sexo_desc}} </p>
         </div>
       </div>
@@ -47,13 +54,13 @@
     <div class="form-group col-sm-6">
       <label for="celular" class="col-sm-3 control-label minotaur-label">Celular : </label>
       <div class="col-sm-9">
-        <input type="text" class="form-control underline-input text-center" id="celular" placeholder="Celular" ng-model="pac.ficha.celular" ng-readonly="!pac.modoEditar">
+        <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="celular" placeholder="Celular" ng-model="pac.ficha.celular" ng-readonly="!pac.modoEditar">
       </div>
     </div>
     <div class="form-group col-sm-6">
       <label for="email" class="col-sm-3 control-label minotaur-label">Email : </label>
       <div class="col-sm-9">
-        <input type="email" class="form-control underline-input text-center" id="email" placeholder="micorreo@dominio.com" ng-model="pac.ficha.email" ng-readonly="!pac.modoEditar">
+        <input type="email" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="email" placeholder="micorreo@dominio.com" ng-model="pac.ficha.email" ng-readonly="!pac.modoEditar">
       </div>
     </div>
   </div>
@@ -62,13 +69,14 @@
     <div class="form-group col-sm-6">
       <label for="estatura" class="col-sm-3 control-label minotaur-label">Estatura (cm) : </label>
       <div class="col-sm-9">
-        <input type="text" class="form-control underline-input text-center" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="!pac.modoEditar">
+        <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="!pac.modoEditar">
       </div>
     </div>
     <div class="form-group col-sm-6">
       <label for="clasificacion" class="col-sm-3 control-label minotaur-label">Clasificación : </label>
       <div class="col-sm-9">
-        <input type="clasificacion" class="form-control underline-input text-center" id="clasificacion" placeholder="" ng-model="pac.ficha.clasificacion" ng-readonly="!pac.modoEditar">
+        <p type="text" class="form-control underline-input text-center" ng-if="!pac.modoEditar">{{pac.ficha.clasificacion}} </p>
+        <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.idmotivoconsulta" ng-options="item.id as item.descripcion for item in pac.listaMotivos" required > </select>
       </div>
     </div>
   </div>

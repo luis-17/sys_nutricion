@@ -60,6 +60,44 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_paciente_por_id(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		// var_dump($allInputs); exit();
+		$row = $this->model_paciente->m_cargar_paciente_por_id($allInputs);
+		$arrListado = array(
+			'idcliente' => $row['idcliente'],
+			'nombre' => $row['nombre'],
+			'apellidos' => $row['apellidos'],
+			'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
+			'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
+			'nombre_foto' => $row['nombre_foto'],
+			'celular' => $row['celular'],
+			'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
+			'sexo' => $row['sexo'],
+			'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
+			'estatura' => $row['estatura'],
+			'idempresa' => $row['idempresa'],
+			'idtipocliente' => $row['idtipocliente'],
+			'email' => $row['email'],
+			'idmotivoconsulta' => $row['idmotivoconsulta'],
+			'clasificacion' => $row['clasificacion'],
+			'cod_historia_clinica' => $row['cod_historia_clinica'],
+			'alergias_ia' => $row['alergias_ia'],
+			'medicamentos' => $row['medicamentos'],
+			'antecedentes_notas' => $row['antecedentes_notas'],
+			'habitos_notas' => $row['habitos_notas'],
+			);
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function lista_pacientes_autocomplete(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
 		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);
@@ -132,7 +170,7 @@ class Paciente extends CI_Controller {
 					'descripcion' => $row['antecedente'],
 					'tipo' => $row['tipo'],
 					'texto_otros' => $row['texto_otros'],
-					
+
 					'check' => $row['checkbox'],
 					)
 				);
