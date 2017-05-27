@@ -267,6 +267,23 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function registrar_antecedente_paciente()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	var_dump($allInputs); exit();
+    	// primero ponemos en 0 todos los antecedentes anteriores del paciente.
+    	$this->model_paciente->m_anular_antecedentes_paciente($allInputs);
+    	
+		if($this->model_paciente->m_editar($allInputs)){
+			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function anular_paciente()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);

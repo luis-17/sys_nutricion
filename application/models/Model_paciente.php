@@ -144,5 +144,14 @@ class Model_paciente extends CI_Model {
 		$this->db->where('idcliente',$datos['idcliente']);
 		return $this->db->update('cliente', $data);
 	}
+	public function m_anular_antecedentes_paciente($datos)
+	{
+		$data = array(
+			'estado_clan' => 0,
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente_antecedente', $data);
+	}
 
 }

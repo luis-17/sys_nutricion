@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$timeout,uiGridConstants,$document, alertify,toastr,
+  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
 
     var vm = this;
@@ -276,16 +276,36 @@
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
         vm.ficha = angular.copy(row.entity);
+        vm.ficha.antecedentes = null;
+
         PacienteServices.sListarHabitosPaciente(row.entity).then(function (rpta) {
           vm.ficha.habitos = rpta.datos;
         });
         PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
           vm.listaAntHeredados = rpta.datos.heredados;
+          vm.checkboxes = angular.copy(vm.listaAntPatologicos);
         });
 
-      }
+        // watch for check all checkbox
+       
 
+
+      }
+      vm.cambiarCheck = function(item,index){
+        console.log('index',index);
+        angular.forEach(vm.checkboxes, function(value, key) {
+          if(key == index){
+            if(value.check == 1)
+              vm.checkboxes[index].check = 0;
+            else
+              vm.checkboxes[index].check = 1;
+
+          }
+        });
+        console.log('vm.checkboxes',vm.checkboxes);
+        vm.listaAntPatologicos = angular.copy(vm.checkboxes);
+      }
       vm.btnAceptarTab2 = function(datos){
         PacienteServices.sEditarPaciente(datos).then(function (rpta) {
           vm.options = {
@@ -319,6 +339,43 @@
         });
       }
       vm.btnCancelarTab2 = function(){
+        vm.modoEditar = false;
+        vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+      }
+      vm.btnAceptarTab3 = function(datos){
+        console.log('array',vm.listaAntPatologicos);
+        // PacienteServices.sRegistrarAntecedentePaciente(datos).then(function (rpta) {
+        //   vm.options = {
+        //     timeout: '3000',
+        //     extendedTimeout: '1000',
+        //     // closeButton: true,
+        //     // closeHtml : '<button>&times;</button>',
+        //     progressBar: true,
+        //     preventDuplicates: false,
+        //     preventOpenDuplicates: false
+        //   };
+        //   if(rpta.flag == 1){
+        //     vm.modoEditar = false;
+        //     // vm.getPaginationServerSide();
+        //     PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+        //       vm.ficha = rpta.datos;
+        //       vm.mySelectionGrid = [rpta.datos];
+        //     });
+        //     var title = 'OK';
+        //     var iconClass = 'success';
+        //   }else if( rpta.flag == 0 ){
+        //     var title = 'Advertencia';
+        //     // vm.toast.title = 'Advertencia';
+        //     var iconClass = 'warning';
+        //     // vm.options.iconClass = {name:'warning'}
+        //   }else{
+        //     alert('Ocurrió un error');
+        //   }
+        //   var toast = toastr[iconClass](rpta.message, title, vm.options);
+        //   openedToasts.push(toast);
+        // });
+      }
+      vm.btnCancelarTab3 = function(){
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
       }
@@ -478,6 +535,7 @@
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
+        sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -556,6 +614,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/anular_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sRegistrarAntecedentePaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/registrar_antecedente_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
