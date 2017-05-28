@@ -37,8 +37,8 @@ class Cita extends CI_Controller {
 							'sexo' => $row['sexo'],
 							'estatura' => (float)$row['estatura'],
 							'edad' => (int)devolverEdad($row['fecha_nacimiento']),
+							'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 						),
-					'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 					'profesional' => array(
 							'idprofesional' => $row['idprofesional'],
 							'profesional' => $row['profesional'],
@@ -82,7 +82,7 @@ class Cita extends CI_Controller {
 		$arrData['message'] = 'Ha ocurrido un error registrando la cita.';
 
 		/*aqui van las validaciones*/
-		if(empty($allInputs['paciente']['idcliente'])){
+		if(empty($allInputs['cliente']['idcliente'])){
 			$arrData['flag'] = 0;
 			$arrData['message'] = 'Debe seleccionar un paciente.';
 			$this->output
@@ -119,7 +119,7 @@ class Cita extends CI_Controller {
 		}
 
 		$data = array(
-			'idcliente' => $allInputs['paciente']['idcliente'],
+			'idcliente' => $allInputs['cliente']['idcliente'],
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),

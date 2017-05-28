@@ -89,7 +89,7 @@
     };
 
     /* add custom event*/
-    vm.btnCita = function(start, type){
+    vm.btnCita = function(start, paciente){
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -101,6 +101,12 @@
           vm.fData = {};
           //vm.eventsF = arrToModal.eventsF;
           vm.modalTitle = 'Registro de Citas';
+
+          if(paciente){
+            vm.type='edit';
+            vm.fData.cliente = paciente;
+            console.log('vm.fData.paciente',vm.fData.cliente);
+          }
 
           /*lista ubicaciones*/
           UbicacionServices.sListarUbicacionCbo().then(function(rpta){
@@ -150,7 +156,7 @@
           vm.tp1.mstep = 15;
           vm.tp1.ismeridian = true;
           vm.tp1.toggleMode = function() {
-            vm.tp1.ismeridian = ! vm.ismeridian;
+            vm.tp1.ismeridian = ! vm.tp1.ismeridian;
           };
 
           vm.tp2 = angular.copy(vm.tp1);          
@@ -172,7 +178,7 @@
           }
 
           vm.getSelectedPaciente = function($item, $model, $label){
-            vm.fData.paciente = $item;
+            vm.fData.cliente = $item;
           }          
 
           vm.ok = function () {

@@ -7,15 +7,15 @@
 			<div class="row">
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label">Paciente <span class="text-red">*</span>: </label>
-	              <input type="text" ng-model="modalcita.fData.paciente" class="form-control " autocomplete="off"
+	              <input type="text" ng-model="modalcita.fData.cliente" class="form-control " autocomplete="off"
                              placeholder="Digite el Paciente..." 
                                   typeahead-loading="loadingLocations" 
                                   uib-typeahead="item as item.paciente for item in modalcita.getPacienteAutocomplete($viewValue)" 
                                   typeahead-min-length="2" 
                                   typeahead-on-select="modalcita.getSelectedPaciente($item, $model, $label)"
-                                  ng-change="fData.paciente = null;" 
+                                  ng-change="fData.cliente = null;" 
                                   ng-if="modalcita.type != 'edit'"/>
-                  <input type="text" ng-model="modalcita.fData.paciente" class="form-control " autocomplete="off"
+                  <input type="text" ng-model="modalcita.fData.cliente.paciente" class="form-control " autocomplete="off"
                   				disabled ng-if="modalcita.type=='edit'"/>
 	            </div>
 
