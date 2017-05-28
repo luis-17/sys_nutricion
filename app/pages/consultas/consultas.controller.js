@@ -215,7 +215,31 @@
         vm.fData.metabolismo = ((10 * vm.fData.peso) + (6.25 * vm.cita.cliente.estatura) - (5 * vm.cita.cliente.edad) - 161).toFixed(2);
       }
 
-      vm.fData.porcFlecha1 = ((40 * vm.fData.imc)/100).toFixed(2);
+      if(vm.fData.imc < 18.5){
+        vm.fData.porcFlecha1 = 9;
+        vm.fData.colorImc = '#3A6FFF';
+      }else if(vm.fData.imc >= 18.5 && vm.fData.imc <= 24.9){
+        vm.fData.porcFlecha1 = 25;
+        vm.fData.colorImc = '#49C45B';
+      }else if(vm.fData.imc >= 25 && vm.fData.imc <= 29.9){
+        vm.fData.porcFlecha1 = 42;
+        vm.fData.colorImc = '#FFFD43';
+      }else if(vm.fData.imc >= 30 && vm.fData.imc <= 34.9){
+        vm.fData.porcFlecha1 = 58;
+        vm.fData.colorImc = '#FF985B';
+      }else if(vm.fData.imc >= 35 && vm.fData.imc <= 39.9){
+        vm.fData.porcFlecha1 = 75;
+        vm.fData.colorImc = '#FF4747';
+      }else if(vm.fData.imc >= 40){
+        vm.fData.porcFlecha1 = 91;
+        vm.fData.colorImc = '#D63235';
+      }
+
+      if(vm.fData.porc_masa_grasa > 59){
+        vm.fData.porcFlecha2 = 98;
+      }else{
+        vm.fData.porcFlecha2 = parseInt((vm.fData.porc_masa_grasa * 100)/60);
+      }
     }
 
   }
