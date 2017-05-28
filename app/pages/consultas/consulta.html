@@ -8,7 +8,7 @@
   <div class="col-lg-12 col-md-12"> 
     <div class="tile">
       <!-- tile header -->
-      <section class="tile-header">
+      <section class="tile-header" ng-if="cons.pestania != '3'">
         <h1 class="heading col-lg-8 col-md-8 col-sm-12 mb-10">Datos de la Consulta</h1> 
         
         <div class="col-lg-4 col-md-4 mb-10 col-sm-12">
@@ -26,18 +26,26 @@
           <form name="formMedidas" role="form" novalidate class="form-validation">
             <div class="row">
               <div class="form-horizontal col-md-12">               
-                <div class="form-group col-md-10">
+                <div class="form-group col-md-6">
                   <label class="col-sm-2 control-label minotaur-label">Paciente: </label>
-                  <div class="col-sm-6">
+                  <div class="col-sm-10">
                     <p type="text" class="form-control-static" > {{cons.cita.title}}</p>
                   </div>                    
                 </div>
-
                 <div class="form-group col-md-2">
-                  <!-- <label for="name" class="control-label minotaur-label"> <span class="text-red">*</span>: </label>
-                  <input type="checkbox" required class="form-control"  />
-                   -->
-                   <label class="checkbox minotaur-checkbox minotaur-label">¿Embarazo? 
+                  <label class="col-sm-7 control-label minotaur-label">Edad: </label>
+                  <div class="col-sm-5">
+                    <p type="text" class="form-control-static" > {{cons.cita.cliente.edad}}</p>
+                  </div>                    
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-sm-7 control-label minotaur-label">Sexo: </label>
+                  <div class="col-sm-5">
+                    <p type="text" class="form-control-static" > {{cons.cita.cliente.sexo}}</p>
+                  </div>                    
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="checkbox minotaur-checkbox minotaur-label"  ng-if="cons.cita.cliente.sexo=='F'">¿Embarazo?
                     <input type="checkbox" ng-model="cons.fData.si_embarazo" ng-click="changeEmbarazo();" ng-checked="cons.fData.si_embarazo">
                     <div class="input-indicator"></div>
                   </label>
@@ -308,9 +316,30 @@
       </section>
 
       <section class="tile-body col-lg-12 col-md-12" ng-show="cons.pestania == '2'">
+        
         <div class="col-lg-12 col-md-12">
           <form name="formDiagnostico" role="form" novalidate class="form-validation">
             <div class="row">
+              <div class="form-horizontal col-md-12">               
+                <div class="form-group col-md-6">
+                  <label class="col-sm-2 control-label minotaur-label">Paciente: </label>
+                  <div class="col-sm-10">
+                    <p type="text" class="form-control-static" > {{cons.cita.title}}</p>
+                  </div>                    
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-sm-7 control-label minotaur-label">Edad: </label>
+                  <div class="col-sm-5">
+                    <p type="text" class="form-control-static" > {{cons.cita.cliente.edad}}</p>
+                  </div>                    
+                </div>
+                <div class="form-group col-md-2">
+                  <label class="col-sm-7 control-label minotaur-label">Sexo: </label>
+                  <div class="col-sm-5">
+                    <p type="text" class="form-control-static" > {{cons.cita.cliente.sexo}}</p>
+                  </div>                    
+                </div>
+              </div>
               <div class="form-horizontal col-md-12">               
                 <legend>Diagnóstico</legend>  
               </div>                
@@ -382,7 +411,7 @@
           <div class="btn-group">
             <button type="button" class="btn btn-blue" 
                     ng-click="cons.changePestania('1');">Atras
-            </button>
+            </button>            
             <button type="button" class="btn btn-success" ng-if="cons.tipoVista == 'new'"
                     ng-click="cons.btnRegistrarConsulta()"                      
                     ng-disabled="formDiagnostico.$invalid">Finalizar
@@ -391,6 +420,77 @@
                     ng-click="cons.btnActualizarConsulta()"                      
                     ng-disabled="formDiagnostico.$invalid">Finalizar
             </button>
+          </div>
+        </div>
+        <!-- /right side body -->
+      </section>
+
+      <section class="tile-body col-lg-12 col-md-12" ng-show="cons.pestania == '3'">
+        <div class="col-lg-12 col-md-12">
+          <div class="row">
+            <div class="form-horizontal col-md-12">               
+              <div class="form-group col-md-6">
+                <label class="col-sm-2 control-label minotaur-label">Paciente: </label>
+                <div class="col-sm-10">
+                  <p type="text" class="form-control-static" > {{cons.cita.title}}</p>
+                </div>                    
+              </div>
+              <div class="form-group col-md-2">
+                <label class="col-sm-7 control-label minotaur-label">Edad: </label>
+                <div class="col-sm-5">
+                  <p type="text" class="form-control-static" > {{cons.cita.cliente.edad}}</p>
+                </div>                    
+              </div>
+              <div class="form-group col-md-2">
+                <label class="col-sm-7 control-label minotaur-label">Sexo: </label>
+                <div class="col-sm-5">
+                  <p type="text" class="form-control-static" > {{cons.cita.cliente.sexo}}</p>
+                </div>                    
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="accion-img">
+                <img src="assets/images/dinamic/pdf.png">
+              </div>
+              <div class="accion-texto ml-10">
+                <label class="control-label minotaur-label">Reporte Personalizado</label>
+                <div class="button">
+                  <a>Ver reporte creado</a>
+                </div>
+                <div class="button">
+                  <a>Enviar reporte al paciente</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="accion-img">
+                  <img src="assets/images/dinamic/calendar.png">
+              </div>
+              <div class="accion-texto ml-10">
+                <label class="control-label minotaur-label">Proxima Cita</label>
+                <div class="button">
+                  <a ng-click="vm.btnCita();">Agendar la siguiente cita</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+              <div class="accion-img">
+                <img src="assets/images/dinamic/plan.png">
+              </div>
+              <div class="accion-texto ml-10">
+                <label class="control-label minotaur-label">Dieta o Plan alimentario</label>
+                <div class="button">
+                  <a>Generar plan</a>
+                </div>                
+              </div>
+            </div>
+          </div>          
+        </div>
+        <div class="col-lg-12 col-md-12 mt-30">
+          <div class="btn-group">
+            
           </div>
         </div>
         <!-- /right side body -->

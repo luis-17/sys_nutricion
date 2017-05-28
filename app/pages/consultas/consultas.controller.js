@@ -136,66 +136,6 @@
       }
     }
 
-    vm.btnRegistrarConsulta = function(){
-      var datos={
-        cita:vm.cita,
-        consulta:vm.fData
-      };
-
-      ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){
-        var openedToasts = [];
-        vm.options = {
-          timeout: '3000',
-          extendedTimeout: '1000',
-          preventDuplicates: false,
-          preventOpenDuplicates: false
-        };       
-        if(rpta.flag == 1){                    
-          var title = 'OK';
-          var iconClass = 'success';
-          $scope.changeViewConsulta(false);
-          vm.callback();
-        }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
-        }else{
-          alert('Ocurrió un error');
-        }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
-      });
-    }
-
-    vm.btnActualizarConsulta = function(){
-      var datos={
-        cita:vm.cita,
-        consulta:vm.fData
-      };
-
-      ConsultasServices.sActualizarConsulta(datos).then(function(rpta){
-        var openedToasts = [];
-        vm.options = {
-          timeout: '3000',
-          extendedTimeout: '1000',
-          preventDuplicates: false,
-          preventOpenDuplicates: false
-        };       
-        if(rpta.flag == 1){                    
-          var title = 'OK';
-          var iconClass = 'success';
-          $scope.changeViewConsulta(false);
-          vm.callback();
-        }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
-        }else{
-          alert('Ocurrió un error');
-        }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
-      });
-    }
-
     vm.calcularIndicadores = function(){
       //redondear peso
       vm.fData.peso = parseFloat((vm.fData.peso * 1).toFixed(2));
@@ -242,6 +182,67 @@
       }
     }
 
+    vm.btnRegistrarConsulta = function(){
+      var datos={
+        cita:vm.cita,
+        consulta:vm.fData
+      };
+
+      ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){
+        var openedToasts = [];
+        vm.options = {
+          timeout: '3000',
+          extendedTimeout: '1000',
+          preventDuplicates: false,
+          preventOpenDuplicates: false
+        };       
+        if(rpta.flag == 1){                    
+          var title = 'OK';
+          var iconClass = 'success';
+          /*$scope.changeViewConsulta(false);
+          vm.callback();*/
+          vm.changePestania(3);
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var iconClass = 'warning';
+        }else{
+          alert('Ocurrió un error');
+        }
+        var toast = toastr[iconClass](rpta.message, title, vm.options);
+        openedToasts.push(toast);
+      });
+    }
+
+    vm.btnActualizarConsulta = function(){
+      var datos={
+        cita:vm.cita,
+        consulta:vm.fData
+      };
+
+      ConsultasServices.sActualizarConsulta(datos).then(function(rpta){
+        var openedToasts = [];
+        vm.options = {
+          timeout: '3000',
+          extendedTimeout: '1000',
+          preventDuplicates: false,
+          preventOpenDuplicates: false
+        };       
+        if(rpta.flag == 1){                    
+          var title = 'OK';
+          var iconClass = 'success';
+          /*$scope.changeViewConsulta(false);
+          vm.callback();*/
+          vm.changePestania(3);
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var iconClass = 'warning';
+        }else{
+          alert('Ocurrió un error');
+        }
+        var toast = toastr[iconClass](rpta.message, title, vm.options);
+        openedToasts.push(toast);
+      });
+    }
   }
   function ConsultasServices($http, $q) {
     return({

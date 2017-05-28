@@ -278,5 +278,19 @@ section.tile-body{
     padding-top: 10px;
 }
 
+.accion-img{
+    float: left;
+    width: 35%;
+}
+.accion-img img{
+    max-width: 100px;
+}
 
+.accion-texto{
+    float: left;
+}
+
+.accion-texto .button a{
+    cursor: pointer;
+}
 
