@@ -146,7 +146,8 @@ class Paciente extends CI_Controller {
 				$objActividad['descripcion'] = 'Moderado';
 				break;
 			default:
-				# code...
+				$objActividad['id'] = '';
+				$objActividad['descripcion'] = '';
 				break;
 		}
 		switch ($rowHabitos['frecuencia']) {
@@ -183,7 +184,9 @@ class Paciente extends CI_Controller {
 				$objFrecuencia['descripcion'] = 'Todos los días';
 				break;
 			default:
-				# code...
+				$objFrecuencia['id'] = '';
+				$objFrecuencia['descripcion'] = '';
+				break;
 				break;
 		}
 		switch ($rowHabitos['consumo_agua']) {
@@ -200,7 +203,8 @@ class Paciente extends CI_Controller {
 				$objAgua['descripcion'] = 'Mas de 2L';
 				break;
 			default:
-				# code...
+				$objAgua['id'] = '';
+				$objAgua['descripcion'] = '';
 				break;
 		}
 		switch ($rowHabitos['consumo_gaseosa']) {
@@ -221,11 +225,12 @@ class Paciente extends CI_Controller {
 				$objGaseosa['descripcion'] = 'Excesivo';
 				break;
 			default:
-				# code...
+				$objGaseosa['id'] = '';
+				$objGaseosa['descripcion'] = '';
 				break;
 		}
 		switch ($rowHabitos['consumo_alcohol']) {
-			case 'NR':
+			case 'NC':
 				$objAlcohol['id'] = 'NC';
 				$objAlcohol['descripcion'] = 'No consume';
 				break;
@@ -242,11 +247,12 @@ class Paciente extends CI_Controller {
 				$objAlcohol['descripcion'] = 'Excesivo';
 				break;
 			default:
-				# code...
+				$objAlcohol['id'] = '';
+				$objAlcohol['descripcion'] = '';
 				break;
 		}
 		switch ($rowHabitos['consumo_tabaco']) {
-			case 'NR':
+			case 'NC':
 				$objTabaco['id'] = 'NC';
 				$objTabaco['descripcion'] = 'No consume';
 				break;
@@ -263,7 +269,8 @@ class Paciente extends CI_Controller {
 				$objTabaco['descripcion'] = 'Excesivo';
 				break;
 			default:
-				# code...
+				$objTabaco['id'] = '';
+				$objTabaco['descripcion'] = '';
 				break;
 		}
 		switch ($rowHabitos['tiempo_suenio']) {
@@ -280,7 +287,8 @@ class Paciente extends CI_Controller {
 				$objSuenio['descripcion'] = 'Excesivo';
 				break;
 			default:
-				# code...
+				$objSuenio['id'] = '';
+				$objSuenio['descripcion'] = '';
 				break;
 		}
 		$arrListado = array(
