@@ -14,8 +14,7 @@
       vm.origen = origen;
       vm.callback = callback;
       vm.tipoVista = tipoVista;
-      console.log('vm.cita',vm.cita);
-
+      //console.log('vm.cita',vm.cita);
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};
@@ -242,6 +241,11 @@
         var toast = toastr[iconClass](rpta.message, title, vm.options);
         openedToasts.push(toast);
       });
+    }
+
+    vm.btnGeneraPlan = function(){
+      vm.fData.cita = vm.cita;
+      $scope.changeViewPlan(true,vm.fData);
     }
   }
   function ConsultasServices($http, $q) {

@@ -67,6 +67,12 @@
       $scope.viewConsulta = value;
     }
     $scope.changeViewConsulta(false);
+
+    $scope.changeViewPlan = function(value, consulta){
+      $scope.viewPlan = value;
+      $scope.consulta = consulta;
+    }
+    $scope.changeViewPlan(false);
   }
   function rootServices($http, $q) {
     return({

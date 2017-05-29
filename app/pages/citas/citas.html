@@ -89,12 +89,29 @@
     display: block;
   }
 </style>
-<div class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" ng-include="'app/pages/consultas/consulta.html'"
+<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" ng-include="'app/pages/consultas/consulta.html'"
       ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'new');" > 
 </div>
-<div class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" ng-include="'app/pages/consultas/consulta.html'"
+<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" ng-include="'app/pages/consultas/consulta.html'"
       ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
 </div>
+
+<style type="text/css" ng-if="viewPlan">
+  #pageConsulta{
+    display: none;
+  }
+</style>
+<style type="text/css" ng-if="!viewPlan">
+  #pageConsulta{
+    display: block;
+  }
+</style>
+<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" 
+      ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new');" > 
+</div>
+
+
 
 
 

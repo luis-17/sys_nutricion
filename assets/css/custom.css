@@ -278,6 +278,7 @@ section.tile-body{
     padding-top: 10px;
 }
 
+/*tab 3 consulta*/
 .accion-img{
     float: left;
     width: 35%;
@@ -294,3 +295,32 @@ section.tile-body{
     cursor: pointer;
 }
 
+/*estilo seleccion plan*/
+.item-plan{
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+.item-plan:hover{
+    background-color: #eef3f8;
+}
+
+.item-plan .plan1{    
+    float: right;
+}
+
+.item-plan .plan2{
+    float: left;
+}
+
+/*estilos turnos en plan*/
+.turno{
+    padding: 10px;
+    text-align: center;
+}
+
+.turno textarea{
+    min-height: 100px;
+}
