@@ -13,36 +13,58 @@
     var vm = this;
     vm.modoFicha = false;
     vm.modoEditar = false;
+    vm.ficha = {}
     vm.previo0 = true;
     vm.previo1 = false;
     vm.previo2 = false;
-    // LISTA ANTECEDENTES PATOLOGICOS
-      // var paramDatos = {
-      //   'tipo': 'P'
-      // }
-      // AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
-      //   vm.listaAntPatologicos = rpta.datos;
-      // });
-      // // LISTA ANTECEDENTES HEREDADOS
-      // var paramDatos = {
-      //   'tipo': 'H'
-      // }
-      // AntecedenteServices.sListarAntecedentePorTipo(paramDatos).then(function (rpta) {
-      //   vm.listaAntHeredados = rpta.datos;
-      // });
+    var openedToasts = [];
+    // LISTA DE TABS DE LA FICHA
       vm.templates = [
         { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
         { tab: 'Datos Personales', url: 'app/pages/paciente/ficha_datos_personales.html'},
         { tab: 'Antecedentes', url: 'app/pages/paciente/ficha_antecedentes.html'},
         { tab: 'Hábitos', url: 'app/pages/paciente/ficha_habitos.html'},
-        { tab: 'Historial de Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
+        { tab: 'Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
         { tab: 'Planes Alimentarios', url: 'app/pages/paciente/ficha_planes.html'},
       ];
+      // LISTAS VARIAS
       vm.listaSexos = [
         { id:'', descripcion:'--Seleccione sexo--' },
         { id:'M', descripcion:'MASCULINO' },
         { id:'F', descripcion:'FEMENINO' }
       ];
+      vm.actividadFisica = [
+        { id: 'NR', descripcion: 'No realiza' },
+        { id: 'LE', descripcion: 'Leve' },
+        { id: 'MO', descripcion: 'Moderado' },
+      ];
+      vm.frecuencia = [
+        { id: '', descripcion: '--' },
+        { id: '1s', descripcion: 'Una vez a la semana' },
+        { id: '2s', descripcion: 'Dos veces a la semana' },
+        { id: '3s', descripcion: 'Tres veces a la semana' },
+        { id: '4s', descripcion: 'Cuatro veces a la semana' },
+        { id: '5s', descripcion: 'Cinco veces a la semana' },
+        { id: '6s', descripcion: 'Seis veces a la semana' },
+        { id: 'all', descripcion: 'Todos los días' },
+      ];
+      vm.consumoAgua = [
+        { id: '-2L', descripcion : 'Menos de 2L' },
+        { id: '2L', descripcion : '2L' },
+        { id: '+2L', descripcion : 'Mas de 2L' },
+      ];
+      vm.consumos = [
+        { id: 'NC', descripcion: 'No consume'},
+        { id: 'OC', descripcion: 'Ocasional'},
+        { id: 'FR', descripcion: 'Frecuente'},
+        { id: 'EX', descripcion: 'Excesivo'},
+      ]
+      vm.tiempoSuenio = [
+        { id: 'P', descripcion : 'Poco' },
+        { id: 'A', descripcion : 'Adecuado' },
+        { id: 'E', descripcion : 'Excesivo' },
+      ];
+
 
       // TIPO DE CLIENTE
       TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
@@ -272,39 +294,60 @@
         });
       }
       vm.btnVerFicha = function(row){
+        vm.basicData = [
+          { year: '2009', a: 15,  b: 5 },
+          { year: '2010', a: 20,  b: 10 },
+          { year: '2011', a: 35,  b: 25 },
+          { year: '2012', a: 40, b: 30 }
+        ];
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
         vm.ficha = angular.copy(row.entity);
-        vm.ficha.antecedentes = null;
-
-        PacienteServices.sListarHabitosPaciente(row.entity).then(function (rpta) {
-          vm.ficha.habitos = rpta.datos;
-        });
+        vm.ficha.cambiaPatologico = false;
+        vm.ficha.cambiaHeredado = false;
+        vm.cargarHabitos(row.entity);
         PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
           vm.listaAntHeredados = rpta.datos.heredados;
-          vm.checkboxes = angular.copy(vm.listaAntPatologicos);
+          vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
+          vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
         });
-
-        // watch for check all checkbox
-       
-
-
       }
-      vm.cambiarCheck = function(item,index){
-        console.log('index',index);
-        angular.forEach(vm.checkboxes, function(value, key) {
+      vm.cargarHabitos = function(row){
+        PacienteServices.sListarHabitosPaciente(row).then(function (rpta) {
+          vm.ficha.habitos = rpta.datos;
+        });
+      }
+      vm.cambiarCheckPatologico = function(item,index){
+        // console.log('index',index);
+        vm.ficha.cambiaPatologico = true;
+        angular.forEach(vm.ficha.antPatologicos, function(value, key) {
           if(key == index){
             if(value.check == 1)
-              vm.checkboxes[index].check = 0;
+              vm.ficha.antPatologicos[index].check = 0;
             else
-              vm.checkboxes[index].check = 1;
+              vm.ficha.antPatologicos[index].check = 1;
 
           }
         });
-        console.log('vm.checkboxes',vm.checkboxes);
-        vm.listaAntPatologicos = angular.copy(vm.checkboxes);
+        console.log('vm.ficha.antPatologicos',vm.ficha.antPatologicos);
+        vm.listaAntPatologicos = angular.copy(vm.ficha.antPatologicos);
+      }
+      vm.cambiarCheckHeredado = function(item,index){
+        // console.log('index',index);
+        vm.ficha.cambiaHeredado = true;
+        angular.forEach(vm.ficha.antHeredados, function(value, key) {
+          if(key == index){
+            if(value.check == 1)
+              vm.ficha.antHeredados[index].check = 0;
+            else
+              vm.ficha.antHeredados[index].check = 1;
+
+          }
+        });
+        console.log('vm.ficha.antHeredados',vm.ficha.antHeredados);
+        vm.listaAntHeredados = angular.copy(vm.ficha.antHeredados);
       }
       vm.btnAceptarTab2 = function(datos){
         PacienteServices.sEditarPaciente(datos).then(function (rpta) {
@@ -342,42 +385,75 @@
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
       }
-      vm.btnAceptarTab3 = function(datos){
+      vm.btnAceptarTab3 = function(){
         console.log('array',vm.listaAntPatologicos);
-        // PacienteServices.sRegistrarAntecedentePaciente(datos).then(function (rpta) {
-        //   vm.options = {
-        //     timeout: '3000',
-        //     extendedTimeout: '1000',
-        //     // closeButton: true,
-        //     // closeHtml : '<button>&times;</button>',
-        //     progressBar: true,
-        //     preventDuplicates: false,
-        //     preventOpenDuplicates: false
-        //   };
-        //   if(rpta.flag == 1){
-        //     vm.modoEditar = false;
-        //     // vm.getPaginationServerSide();
-        //     PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-        //       vm.ficha = rpta.datos;
-        //       vm.mySelectionGrid = [rpta.datos];
-        //     });
-        //     var title = 'OK';
-        //     var iconClass = 'success';
-        //   }else if( rpta.flag == 0 ){
-        //     var title = 'Advertencia';
-        //     // vm.toast.title = 'Advertencia';
-        //     var iconClass = 'warning';
-        //     // vm.options.iconClass = {name:'warning'}
-        //   }else{
-        //     alert('Ocurrió un error');
-        //   }
-        //   var toast = toastr[iconClass](rpta.message, title, vm.options);
-        //   openedToasts.push(toast);
-        // });
+        PacienteServices.sRegistrarAntecedentePaciente(vm.ficha).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            // vm.getPaginationServerSide();
+            // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+            //   vm.ficha = rpta.datos;
+            //   vm.mySelectionGrid = [rpta.datos];
+            // });
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
       }
       vm.btnCancelarTab3 = function(){
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+      }
+      vm.btnAceptarTab4 = function(){
+        vm.ficha.habitos.idcliente = vm.ficha.idcliente;
+        PacienteServices.sRegistrarHabitoPaciente(vm.ficha.habitos).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            vm.cargarHabitos(vm.ficha);
+            var title = 'OK',
+                iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia',
+                iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.btnCancelarTab4 = function(){
+        vm.modoEditar = false;
+        vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        vm.cargarHabitos(vm.ficha);
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
@@ -536,6 +612,7 @@
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
         sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
+        sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -622,6 +699,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/registrar_antecedente_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sRegistrarHabitoPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/registrar_habito_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

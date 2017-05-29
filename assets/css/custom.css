@@ -22,7 +22,7 @@
 	.text-black	{color: #1c2429;}
 	.text-red	{color: #dd191d;}
 	.text-green	{color: #038009;}
-	.text-gray	{color: #ccc;} 
+	.text-gray	{color: #ccc;}
 
 
 /* FONT SIZE´s */
@@ -37,7 +37,7 @@
 	ul.demo-btns > li.pull-right{ margin-left: 4px;}
 	ul.demo-btns li > label { line-height: 0.7;}
 	.modal-header{padding: 10px!important}
-	.tab-wizard .nav-tabs > li > a{padding: 10px!important} 
+	.tab-wizard .nav-tabs > li > a{padding: 10px!important}
 
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}

@@ -11,16 +11,8 @@
   }
   function AntecedenteServices($http, $q) {
     return({
-        sListarAntecedentePorTipo: sListarAntecedentePorTipo
+
     });
-    function sListarAntecedentePorTipo(pDatos) {
-      var datos = pDatos || {};
-      var request = $http({
-            method : "post",
-            url :  angular.patchURLCI + "Antecedente/listar_antecedente_por_tipo",
-            data : datos
-      });
-      return (request.then( handleSuccess,handleError ));
-    }
+
   }
 })();
