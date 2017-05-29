@@ -38,6 +38,11 @@
 	ul.demo-btns li > label { line-height: 0.7;}
 	.modal-header{padding: 10px!important}
 	.tab-wizard .nav-tabs > li > a{padding: 10px!important}
+    .cbo-sm{
+        width: 50px;
+        padding: 5px;
+        display: inline-block;
+    }
 
 /*para corregir error en scroll de ui-grid*/
 .ui-grid-viewport { overflow-anchor: none;}

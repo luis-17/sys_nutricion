@@ -120,6 +120,39 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+		public function listar_habitos_alim_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrListado = array();
+		$lista = $this->model_paciente->m_cargar_habitos_alim_paciente($allInputs);
+
+		$hora = '--';
+		$minuto = '--';
+		$periodo = 'am';
+		foreach ($lista as $row) {
+			array_push($arrListado, array(
+				'idclientehabitoturno' => $row['idclientehabitoturno'],
+				'idturno' => $row['idturno'],
+				'descripcion_tu' => $row['descripcion_tu'],
+				'hora' => $hora,
+				'minuto' => $minuto,
+				'periodo' => $periodo,
+				)
+			);
+		}
+
+
+		// var_dump($arrListado); exit();
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($rowHabitos)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function listar_habitos_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		// var_dump($allInputs); exit();

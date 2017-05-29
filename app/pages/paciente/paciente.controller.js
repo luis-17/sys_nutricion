@@ -64,7 +64,32 @@
         { id: 'A', descripcion : 'Adecuado' },
         { id: 'E', descripcion : 'Excesivo' },
       ];
-
+      vm.listaHoras = [
+        { id: '', descripcion: '--'},
+        { id: '01', descripcion: '01'},
+        { id: '02', descripcion: '02'},
+        { id: '03', descripcion: '03'},
+        { id: '04', descripcion: '04'},
+        { id: '05', descripcion: '05'},
+        { id: '06', descripcion: '06'},
+        { id: '07', descripcion: '07'},
+        { id: '08', descripcion: '08'},
+        { id: '09', descripcion: '09'},
+        { id: '10', descripcion: '10'},
+        { id: '11', descripcion: '11'},
+        { id: '12', descripcion: '12'},
+      ];
+      vm.listaMinutos = [
+        { id: '', descripcion: '--'},
+        { id: '00', descripcion: '00'},
+        { id: '15', descripcion: '15'},
+        { id: '30', descripcion: '30'},
+        { id: '45', descripcion: '45'},
+      ];
+      vm.listaPeriodos = [
+        { id: 'am', descripcion: 'am'},
+        { id: 'pm', descripcion: 'pm'},
+      ];
 
       // TIPO DE CLIENTE
       TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
@@ -303,15 +328,22 @@
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
+
         vm.ficha = angular.copy(row.entity);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
-        vm.cargarHabitos(row.entity);
         PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
           vm.listaAntHeredados = rpta.datos.heredados;
           vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
           vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
+        });
+        vm.cargarHabitosAlimentarios(row.entity);
+        vm.cargarHabitos(row.entity);
+      }
+      vm.cargarHabitosAlimentarios = function(row){
+        PacienteServices.sListarHabitosAlimPaciente(row).then(function (rpta) {
+          vm.ficha.habitosAlim = rpta.datos[0];
         });
       }
       vm.cargarHabitos = function(row){
@@ -453,6 +485,7 @@
       vm.btnCancelarTab4 = function(){
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        vm.cargarHabitosAlimentarios(vm.ficha);
         vm.cargarHabitos(vm.ficha);
       }
       vm.btnRegresar = function(){
@@ -605,6 +638,7 @@
     return({
         sListarPacientes: sListarPacientes,
         sListaPacientesAutocomplete: sListaPacientesAutocomplete,
+        sListarHabitosAlimPaciente: sListarHabitosAlimPaciente,
         sListarHabitosPaciente: sListarHabitosPaciente,
         sListarAntecedentesPaciente: sListarAntecedentesPaciente,
         sListarPacientePorId: sListarPacientePorId,
@@ -627,6 +661,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarHabitosAlimPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_habitos_alim_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

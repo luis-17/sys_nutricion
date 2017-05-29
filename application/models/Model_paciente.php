@@ -65,14 +65,20 @@ class Model_paciente extends CI_Model {
 		$this->db->limit(10);
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_habitos_alim_paciente($datos){
+		$this->db->select("ht.idclientehabitoturno, tu.idturno, tu.descripcion_tu, ht.hora, ht.texto_alimentos");
+
+		$this->db->from('cliente_habito_turno ht');
+		$this->db->join('turno tu', 'ht.idturno = tu.idturno AND ht.idcliente = ' . $datos['idcliente'] . ' AND ht.estado_ht = 1','right');
+
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_habitos_paciente($datos){
 		$this->db->select("clha.idclientehabitogen, clha.actividad_fisica, clha.frecuencia,clha.detalle_act_fisica, clha.consumo_agua, clha.consumo_gaseosa");
 		$this->db->select("clha.consumo_alcohol, clha.consumo_tabaco,clha.tiempo_suenio, clha.notas_generales, clha.estado_clha");
 		$this->db->from('cliente_habito_gen clha');
 		$this->db->where("clha.estado_clha",1);
 		$this->db->where("clha.idcliente",$datos['idcliente']);
-
-
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_antecedentes_paciente($datos){
