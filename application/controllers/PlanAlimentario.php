@@ -39,14 +39,16 @@ class PlanAlimentario extends CI_Controller {
 			return;
 		}
 
-		if($sinIndicaciones){
-			$arrData['flag'] = 0;
-			$arrData['message'] = 'Debe ingresar todas las indicaciones.';
-			$this->output
-			    ->set_content_type('application/json')
-			    ->set_output(json_encode($arrData));
-			return;
-		}
+		if($allInputs['tipo']=='simple'){
+			if($sinIndicaciones){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar todas las indicaciones.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}		
 		
 		/*registro de datos*/
 		$errorEnCiclo = FALSE;
@@ -63,12 +65,15 @@ class PlanAlimentario extends CI_Controller {
 					'idatencion' => $allInputs['consulta']['idatencion'],
 					'iddia' => $dia['id'],
 					'idturno' => $turno['id'],
-					'indicaciones' => $turno['indicaciones'],
+					'indicaciones' => empty($turno['indicaciones'])? null : $turno['indicaciones'],
 					'hora' => $hora,
 				);
 
 				if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
 					$errorEnCiclo = TRUE;
+					if($allInputs['tipo'] == 'compuesto'){
+						//inserto detalle de alimentos
+					}
 				}
 			}
 		}

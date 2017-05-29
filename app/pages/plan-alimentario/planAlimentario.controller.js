@@ -49,7 +49,23 @@
           });
         });
       });
-    });    
+    }); 
+
+     vm.movies = [
+      'The Dark Knight',
+      'Heat',
+      'Inception',
+      'The Dark Knight Rises',
+      'Kill Bill: Vol. 1',
+      'Terminator 2: Judgment Day',
+      'The Matrix',
+      'Minority Report',
+      'The Bourne Ultimatum'
+    ];
+
+    vm.loadMovies = function() {
+      return $http.get('app/components/jsons/movies.json');
+    };   
 
     vm.initPlan = function(origen,tipoVista){
       vm.consulta = $scope.consulta;
