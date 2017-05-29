@@ -30,15 +30,15 @@
       <div class="form-group col-sm-12">
         <label for="edad" class="col-sm-3 control-label minotaur-label">Edad : </label>
         <div class="col-sm-9">
-          <p type="text" class="form-control underline-input text-center" >{{pac.ficha.edad}} </p>
+          <p class="form-control underline-input text-center" >{{pac.ficha.edad}} </p>
           <!-- <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="!pac.modoEditar"> -->
         </div>
       </div>
       <div class="form-group col-sm-12">
         <label for="sexo" class="col-sm-3 control-label minotaur-label">Sexo : </label>
         <div class="col-sm-9">
+          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center" >{{pac.ficha.sexo_desc}} </p>
           <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
-          <p type="text" ng-if="!pac.modoEditar" class="form-control underline-input text-center" >{{pac.ficha.sexo_desc}} </p>
         </div>
       </div>
     </div>

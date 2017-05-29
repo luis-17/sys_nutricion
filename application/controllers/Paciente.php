@@ -124,17 +124,184 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		// var_dump($allInputs); exit();
 		$arrListado = array();
+		$objActividad = array();
+		$objFrecuencia = array();
+		$objAgua = array();
+		$objGaseosa = array();
+		$objAlcohol = array();
+		$objTabaco = array();
+		$objSuenio = array();
 		$rowHabitos = $this->model_paciente->m_cargar_habitos_paciente($allInputs);
+		switch ($rowHabitos['actividad_fisica']) {
+			case 'NR':
+				$objActividad['id'] = 'NR';
+				$objActividad['descripcion'] = 'No realiza';
+				break;
+			case 'LE':
+				$objActividad['id'] = 'LE';
+				$objActividad['descripcion'] = 'Leve';
+				break;
+			case 'MO':
+				$objActividad['id'] = 'MO';
+				$objActividad['descripcion'] = 'Moderado';
+				break;
+			default:
+				$objActividad['id'] = '';
+				$objActividad['descripcion'] = '';
+				break;
+		}
+		switch ($rowHabitos['frecuencia']) {
+			case '':
+				$objFrecuencia['id'] = '';
+				$objFrecuencia['descripcion'] = '--';
+				break;
+			case '1s':
+				$objFrecuencia['id'] = '1s';
+				$objFrecuencia['descripcion'] = 'Una vez a la semana';
+				break;
+			case '2s':
+				$objFrecuencia['id'] = '2s';
+				$objFrecuencia['descripcion'] = 'Dos veces a la semana';
+				break;
+			case '3s':
+				$objFrecuencia['id'] = '3s';
+				$objFrecuencia['descripcion'] = 'Tres veces a la semana';
+				break;
+			case '4s':
+				$objFrecuencia['id'] = '4s';
+				$objFrecuencia['descripcion'] = 'Cuatro veces a la semana';
+				break;
+			case '5s':
+				$objFrecuencia['id'] = '5s';
+				$objFrecuencia['descripcion'] = 'Cinco veces a la semana';
+				break;
+			case '6s':
+				$objFrecuencia['id'] = '6s';
+				$objFrecuencia['descripcion'] = 'Seis veces a la semana';
+				break;
+			case 'all':
+				$objFrecuencia['id'] = 'all';
+				$objFrecuencia['descripcion'] = 'Todos los días';
+				break;
+			default:
+				$objFrecuencia['id'] = '';
+				$objFrecuencia['descripcion'] = '';
+				break;
+				break;
+		}
+		switch ($rowHabitos['consumo_agua']) {
+			case '-2L':
+				$objAgua['id'] = '-2L';
+				$objAgua['descripcion'] = 'Menos de 2L';
+				break;
+			case '2L':
+				$objAgua['id'] = '2L';
+				$objAgua['descripcion'] = '2L';
+				break;
+			case '+2L':
+				$objAgua['id'] = '+2L';
+				$objAgua['descripcion'] = 'Mas de 2L';
+				break;
+			default:
+				$objAgua['id'] = '';
+				$objAgua['descripcion'] = '';
+				break;
+		}
+		switch ($rowHabitos['consumo_gaseosa']) {
+			case 'NR':
+				$objGaseosa['id'] = 'NC';
+				$objGaseosa['descripcion'] = 'No consume';
+				break;
+			case 'OC':
+				$objGaseosa['id'] = 'OC';
+				$objGaseosa['descripcion'] = 'Ocasional';
+				break;
+			case 'FR':
+				$objGaseosa['id'] = 'FR';
+				$objGaseosa['descripcion'] = 'Frecuente';
+				break;
+			case 'EX':
+				$objGaseosa['id'] = 'EX';
+				$objGaseosa['descripcion'] = 'Excesivo';
+				break;
+			default:
+				$objGaseosa['id'] = '';
+				$objGaseosa['descripcion'] = '';
+				break;
+		}
+		switch ($rowHabitos['consumo_alcohol']) {
+			case 'NC':
+				$objAlcohol['id'] = 'NC';
+				$objAlcohol['descripcion'] = 'No consume';
+				break;
+			case 'OC':
+				$objAlcohol['id'] = 'OC';
+				$objAlcohol['descripcion'] = 'Ocasional';
+				break;
+			case 'FR':
+				$objAlcohol['id'] = 'FR';
+				$objAlcohol['descripcion'] = 'Frecuente';
+				break;
+			case 'EX':
+				$objAlcohol['id'] = 'EX';
+				$objAlcohol['descripcion'] = 'Excesivo';
+				break;
+			default:
+				$objAlcohol['id'] = '';
+				$objAlcohol['descripcion'] = '';
+				break;
+		}
+		switch ($rowHabitos['consumo_tabaco']) {
+			case 'NC':
+				$objTabaco['id'] = 'NC';
+				$objTabaco['descripcion'] = 'No consume';
+				break;
+			case 'OC':
+				$objTabaco['id'] = 'OC';
+				$objTabaco['descripcion'] = 'Ocasional';
+				break;
+			case 'FR':
+				$objTabaco['id'] = 'FR';
+				$objTabaco['descripcion'] = 'Frecuente';
+				break;
+			case 'EX':
+				$objTabaco['id'] = 'EX';
+				$objTabaco['descripcion'] = 'Excesivo';
+				break;
+			default:
+				$objTabaco['id'] = '';
+				$objTabaco['descripcion'] = '';
+				break;
+		}
+		switch ($rowHabitos['tiempo_suenio']) {
+			case 'P':
+				$objSuenio['id'] = 'P';
+				$objSuenio['descripcion'] = 'Poco';
+				break;
+			case 'A':
+				$objSuenio['id'] = 'A';
+				$objSuenio['descripcion'] = 'Adecuado';
+				break;
+			case 'E':
+				$objSuenio['id'] = 'E';
+				$objSuenio['descripcion'] = 'Excesivo';
+				break;
+			default:
+				$objSuenio['id'] = '';
+				$objSuenio['descripcion'] = '';
+				break;
+		}
 		$arrListado = array(
-					'actividad_fisica' => $rowHabitos['actividad_fisica'],
-					'frecuencia' => $rowHabitos['frecuencia'],
-					'detalle_act_fisica' => $rowHabitos['detalle_act_fisica'],
-					'consumo_agua' => $rowHabitos['consumo_agua'],
-					'consumo_gaseosa' => $rowHabitos['consumo_gaseosa'],
-					'consumo_alcohol' => $rowHabitos['consumo_alcohol'],
-					'consumo_tabaco' => $rowHabitos['consumo_tabaco'],
-					'tiempo_suenio' => $rowHabitos['tiempo_suenio'],
-					'notas_generales' => $rowHabitos['notas_generales']
+			'idclientehabitogen' => $rowHabitos['idclientehabitogen'],
+			'actividad_fisica' => $objActividad,
+			'frecuencia' => $objFrecuencia,
+			'detalle_act_fisica' => $rowHabitos['detalle_act_fisica'],
+			'consumo_agua' => $objAgua,
+			'consumo_gaseosa' => $objGaseosa,
+			'consumo_alcohol' => $objAlcohol,
+			'consumo_tabaco' => $objTabaco,
+			'tiempo_suenio' => $objSuenio,
+			'notas_generales' => $rowHabitos['notas_generales']
 
 		);
 
@@ -272,14 +439,54 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	var_dump($allInputs); exit();
-    	// primero ponemos en 0 todos los antecedentes anteriores del paciente.
-    	$this->model_paciente->m_anular_antecedentes_paciente($allInputs);
-    	
-		if($this->model_paciente->m_editar($allInputs)){
+    	// var_dump($allInputs); exit();
+		if($this->model_paciente->m_editar_antecedentes_cliente($allInputs)){
 			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
     		$arrData['flag'] = 1;
+    		if( $allInputs['cambiaPatologico'] ){
+    			$allInputs['tipo'] = 'P';
+		    	$this->model_paciente->m_anular_antecedentes_paciente($allInputs);
+				foreach ($allInputs['antPatologicos'] as $row) {
+					if($row['check'] == 1 ){
+						$row['idcliente'] = $allInputs['idcliente'];
+						$this->model_paciente->m_registrar_antecedente($row);
+					}
+				}
+    		}
+    		if( $allInputs['cambiaHeredado'] ){
+    			$allInputs['tipo'] = 'H';
+		    	$this->model_paciente->m_anular_antecedentes_paciente($allInputs);
+				foreach ($allInputs['antHeredados'] as $row) {
+					if($row['check'] == 1 ){
+						$row['idcliente'] = $allInputs['idcliente'];
+						$this->model_paciente->m_registrar_antecedente($row);
+					}
+				}
+    		}
 		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function registrar_habito_paciente()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+
+    	if( empty($allInputs['idclientehabitogen']) ){ // si no hay id es por que es nuevo
+    		if($this->model_paciente->m_registrar_habito_cliente($allInputs)){
+    			$arrData['message'] = 'Se registraron los datos correctamente ' . date('H:n:s');
+    			$arrData['flag'] = 1;
+    		}
+    	}else{
+    		if($this->model_paciente->m_editar_habito_cliente($allInputs)){
+    			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+    			$arrData['flag'] = 1;
+    		}
+    	}
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

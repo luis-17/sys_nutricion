@@ -66,7 +66,7 @@ class Model_paciente extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_habitos_paciente($datos){
-		$this->db->select("clha.actividad_fisica, clha.frecuencia,clha.detalle_act_fisica, clha.consumo_agua, clha.consumo_gaseosa");
+		$this->db->select("clha.idclientehabitogen, clha.actividad_fisica, clha.frecuencia,clha.detalle_act_fisica, clha.consumo_agua, clha.consumo_gaseosa");
 		$this->db->select("clha.consumo_alcohol, clha.consumo_tabaco,clha.tiempo_suenio, clha.notas_generales, clha.estado_clha");
 		$this->db->from('cliente_habito_gen clha');
 		$this->db->where("clha.estado_clha",1);
@@ -76,7 +76,7 @@ class Model_paciente extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_antecedentes_paciente($datos){
-		$this->db->select("clan.idantecedente, an.nombre as antecedente, an.tipo, clan.texto_otros");
+		$this->db->select("an.idantecedente, an.nombre as antecedente, an.tipo, clan.texto_otros");
 		$this->db->select("clan.idcliente, CASE WHEN idcliente IS NOT NULL THEN 1 ELSE 0 END AS checkbox",FALSE);
 		$this->db->from('cliente_antecedente clan');
 		$this->db->join('antecedente an', 'clan.idantecedente = an.idantecedente AND clan.idcliente = ' . $datos['idcliente'] . ' AND clan.estado_clan = 1','right');
@@ -135,10 +135,34 @@ class Model_paciente extends CI_Model {
 		$this->db->where('idcliente',$datos['idcliente']);
 		return $this->db->update('cliente', $data);
 	}
+
 	public function m_anular($datos)
 	{
 		$data = array(
 			'estado_cl' => 0,
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+	// ANTECEDENTES
+	public function m_registrar_antecedente($datos)
+	{
+		$data = array(
+			'idcliente' => $datos['idcliente'],
+			'idantecedente' => $datos['id'],
+			// 'texto_otros' => empty($datos['texto_otros'])? NULL : $datos['texto_otros'],
+			'createdAt' => date('Y-m-d H:i:s'),
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		return $this->db->insert('cliente_antecedente', $data);
+	}
+	public function m_editar_antecedentes_cliente($datos)
+	{
+		$data = array(
+			'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
+			'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
+			'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idcliente',$datos['idcliente']);
@@ -151,7 +175,45 @@ class Model_paciente extends CI_Model {
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idcliente',$datos['idcliente']);
+		$this->db->where("idantecedente IN (
+			SELECT idantecedente
+			FROM antecedente
+			WHERE tipo = '" . $datos['tipo'] . "' )");
 		return $this->db->update('cliente_antecedente', $data);
+	}
+	// HABITOS
+	public function m_registrar_habito_cliente($datos)
+	{
+		$data = array(
+			'idcliente' => $datos['idcliente'],
+			'actividad_fisica' => $datos['actividad_fisica']['id'],
+			'frecuencia' => $datos['frecuencia']['id'],
+			'detalle_act_fisica' => $datos['detalle_act_fisica'],
+			'consumo_agua' => $datos['consumo_agua']['id'],
+			'consumo_gaseosa' => $datos['consumo_gaseosa']['id'],
+			'consumo_alcohol' => $datos['consumo_alcohol']['id'],
+			'consumo_tabaco' => $datos['consumo_tabaco']['id'],
+			'tiempo_suenio' => $datos['tiempo_suenio']['id'],
+			'notas_generales' => $datos['notas_generales'],
+
+		);
+		return $this->db->insert('cliente_habito_gen', $data);
+	}
+	public function m_editar_habito_cliente($datos)
+	{
+		$data = array(
+			'actividad_fisica' => $datos['actividad_fisica']['id'],
+			'frecuencia' => $datos['frecuencia']['id'],
+			'detalle_act_fisica' => $datos['detalle_act_fisica'],
+			'consumo_agua' => $datos['consumo_agua']['id'],
+			'consumo_gaseosa' => $datos['consumo_gaseosa']['id'],
+			'consumo_alcohol' => $datos['consumo_alcohol']['id'],
+			'consumo_tabaco' => $datos['consumo_tabaco']['id'],
+			'tiempo_suenio' => $datos['tiempo_suenio']['id'],
+			'notas_generales' => $datos['notas_generales'],
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente_habito_gen', $data);
 	}
 
 }
