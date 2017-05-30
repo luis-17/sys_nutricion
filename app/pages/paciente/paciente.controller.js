@@ -343,7 +343,7 @@
       }
       vm.cargarHabitosAlimentarios = function(row){
         PacienteServices.sListarHabitosAlimPaciente(row).then(function (rpta) {
-          vm.ficha.habitosAlim = rpta.datos[0];
+          vm.ficha.listaHabitosAlim = rpta.datos;
         });
       }
       vm.cargarHabitos = function(row){

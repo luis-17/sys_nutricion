@@ -1,27 +1,27 @@
 <form class="form-horizontal" role="form">
 	<div class="tile-body row">
-		<div class="col-sm-4">
+		<div class="col-sm-5">
 			<div class="row">
     			<h4 class="text-info f-16 col-sm-12">Hábitos Alimentarios</h4>
 			</div>
-    		<div class="form-group row">
-		        <label for="desayuno" class="col-sm-6 control-label minotaur-label mb-10" style="text-align: left">Desayuno : </label>
+    		<div class="form-group row" ng-repeat="val in pac.ficha.listaHabitosAlim">
+		        <label class="col-sm-6 control-label minotaur-label mb-10" style="text-align: left">{{val.descripcion_tu}} </label>
 
 		        <div  ng-if="!pac.modoEditar">
 		        	<label>Hora: </label>
-		        	<span>{{pac.ficha.habitosAl.hora}} : {{pac.ficha.habitosAl.minuto}} {{pac.ficha.habitosAl.periodo}}</span>
+		        	<span>{{val.hora}} : {{val.minuto}} {{val.periodo}}</span>
 		        </div>
 		        <div  ng-if="pac.modoEditar">
-			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.habitosAl.hora" ng-options="item.id as item.descripcion for item in pac.listaHoras" > </select> :
-			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.habitosAl.minuto" ng-options="item.id as item.descripcion for item in pac.listaMinutos" > </select>
-			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.habitosAl.periodo" ng-options="item.id as item.descripcion for item in pac.listaPeriodos" > </select>
+			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.listaHabitosAlim[$index].hora" ng-options="item.id as item.descripcion for item in pac.listaHoras" > </select> :
+			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.listaHabitosAlim[$index].minuto" ng-options="item.id as item.descripcion for item in pac.listaMinutos" > </select>
+			        <select class="form-control input-sm cbo-sm" ng-model="pac.ficha.listaHabitosAlim[$index].periodo" ng-options="item.id as item.descripcion for item in pac.listaPeriodos" > </select>
 		        </div>
 		        <div class="col-sm-12 pr-5">
-		          <textarea class="form-control input-sm" ng-model="pac.ficha.habitos.desayuno" ng-disabled="!pac.modoEditar" id="desayuno"></textarea>
+		          <textarea class="form-control input-sm" ng-model="pac.ficha.listaHabitosAlim[$index].texto_alimentos" ng-disabled="!pac.modoEditar" id="val.descripcion_tu"></textarea>
 		        </div>
     		</div>
 		</div>
-		<div class="col-sm-8">
+		<div class="col-sm-7">
 			<div class="row">
 				<h4 class="text-info f-16 col-sm-6">Hábitos Generales</h4>
 				<button class="pull-right btn btn-input-sm btn-warning mb-20" type="button" ng-if="!pac.modoEditar" ng-click="pac.modoEditar=true">Editar</button>

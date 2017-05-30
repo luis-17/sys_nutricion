@@ -120,15 +120,21 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-		public function listar_habitos_alim_paciente(){
+	public function listar_habitos_alim_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrListado = array();
 		$lista = $this->model_paciente->m_cargar_habitos_alim_paciente($allInputs);
 
 		$hora = '--';
 		$minuto = '--';
-		$periodo = 'am';
 		foreach ($lista as $row) {
+			if( $row['idclientehabitoturno'] == null ){
+				if( $row['idturno'] == 1 || $row['idturno'] == 2 ){
+					$periodo = 'am';
+				}else{
+					$periodo = 'pm';
+				}
+			}
 			array_push($arrListado, array(
 				'idclientehabitoturno' => $row['idclientehabitoturno'],
 				'idturno' => $row['idturno'],
@@ -136,6 +142,7 @@ class Paciente extends CI_Controller {
 				'hora' => $hora,
 				'minuto' => $minuto,
 				'periodo' => $periodo,
+				'texto_alimentos' => $row['texto_alimentos'],
 				)
 			);
 		}
