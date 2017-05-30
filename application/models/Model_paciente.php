@@ -8,9 +8,10 @@ class Model_paciente extends CI_Model {
 		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
 			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion,
 			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
-			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
+			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl, MAX(at.fecha_atencion) AS fec_ult_atencion');
 		$this->db->from('cliente cl');
 		$this->db->join('motivo_consulta mc', 'cl.idmotivoconsulta = mc.idmotivoconsulta');
+		$this->db->join('atencion at', 'cl.idcliente = at.idcliente AND at.estado_atencion = 1','left');
 		$this->db->where('cl.estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -19,7 +20,7 @@ class Model_paciente extends CI_Model {
 				}
 			}
 		}
-
+		$this->db->group_by('cl.idcliente');
 		if( $paramPaginate['sortName'] ){
 			$this->db->order_by($paramPaginate['sortName'], $paramPaginate['sort']);
 		}
@@ -30,7 +31,7 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_count_pacientes($paramPaginate=FALSE){
 		$this->db->select('count(*) AS contador');
-		$this->db->from('cliente');
+		$this->db->from('cliente cl');
 		$this->db->where('estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -69,7 +70,7 @@ class Model_paciente extends CI_Model {
 		$this->db->select("ht.idclientehabitoturno, tu.idturno, tu.descripcion_tu, ht.hora, ht.texto_alimentos");
 
 		$this->db->from('cliente_habito_turno ht');
-		$this->db->join('turno tu', 'ht.idturno = tu.idturno AND ht.idcliente = ' . $datos['idcliente'] . ' AND ht.estado_ht = 1','right');
+		$this->db->join('turno tu', 'ht.idturno = tu.idturno AND ht.idcliente = ' . $datos['idcliente'] . ' AND ht.estado_ht = 1 AND tu.estado_tu = 1','right');
 
 		return $this->db->get()->result_array();
 	}
@@ -188,6 +189,27 @@ class Model_paciente extends CI_Model {
 		return $this->db->update('cliente_antecedente', $data);
 	}
 	// HABITOS
+	public function m_registrar_habito_alimentario($datos)
+	{
+		$data = array(
+			'idcliente' => $datos['idcliente'],
+			'idturno' => $datos['idturno'],
+			'hora' => $datos['hora'],
+			'texto_alimentos' => $datos['texto_alimentos'],
+		);
+		return $this->db->insert('cliente_habito_turno', $data);
+	}
+	public function m_editar_habito_alimentario($datos)
+	{
+		$data = array(
+			// 'idcliente' => $datos['idcliente'],
+			// 'idturno' => $datos['idturno'],
+			'hora' => $datos['hora'],
+			'texto_alimentos' => empty($datos['texto_alimentos'])? '' : $datos['texto_alimentos'],
+		);
+		$this->db->where('idclientehabitoturno',$datos['idclientehabitoturno']);
+		return $this->db->update('cliente_habito_turno', $data);
+	}
 	public function m_registrar_habito_cliente($datos)
 	{
 		$data = array(

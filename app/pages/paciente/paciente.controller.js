@@ -65,7 +65,7 @@
         { id: 'E', descripcion : 'Excesivo' },
       ];
       vm.listaHoras = [
-        { id: '', descripcion: '--'},
+        { id: '--', descripcion: '--'},
         { id: '01', descripcion: '01'},
         { id: '02', descripcion: '02'},
         { id: '03', descripcion: '03'},
@@ -80,7 +80,7 @@
         { id: '12', descripcion: '12'},
       ];
       vm.listaMinutos = [
-        { id: '', descripcion: '--'},
+        { id: '--', descripcion: '--'},
         { id: '00', descripcion: '00'},
         { id: '15', descripcion: '15'},
         { id: '30', descripcion: '30'},
@@ -177,7 +177,7 @@
           var grid = this.grid;
           paginationOptions.search = true;
           paginationOptions.searchColumn = {
-            'idcliente' : grid.columns[1].filters[0].term,
+            'cl.idcliente' : grid.columns[1].filters[0].term,
             'nombre' : grid.columns[2].filters[0].term,
             'apellidos' : grid.columns[3].filters[0].term,
           }
@@ -456,6 +456,7 @@
       }
       vm.btnAceptarTab4 = function(){
         vm.ficha.habitos.idcliente = vm.ficha.idcliente;
+        vm.ficha.habitos.alimentarios = vm.ficha.listaHabitosAlim;
         PacienteServices.sRegistrarHabitoPaciente(vm.ficha.habitos).then(function (rpta) {
           vm.options = {
             timeout: '3000',
@@ -469,6 +470,7 @@
           if(rpta.flag == 1){
             vm.modoEditar = false;
             vm.cargarHabitos(vm.ficha);
+            vm.cargarHabitosAlimentarios(vm.ficha);
             var title = 'OK',
                 iconClass = 'success';
           }else if( rpta.flag == 0 ){
@@ -508,97 +510,7 @@
           vm.previo2 = true;
         }
       }
-      vm.btnEditar = function(row){
 
-        var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/paciente/paciente_formview.html',
-          controllerAs: 'modalPac',
-          size: 'lg',
-          backdropClass: 'splash splash-2 splash-ef-14',
-          windowClass: 'splash splash-2 splash-ef-14',
-          // controller: 'ModalInstanceController',
-          controller: function($scope, $uibModalInstance, arrToModal ){
-            var vm = this;
-            var openedToasts = [];
-            vm.fData = {};
-            vm.fData = arrToModal.seleccion;
-            vm.modoEdicion = true;
-            vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            console.log(vm.fData);
-            vm.modalTitle = 'Edición de pacientes';
-            vm.activeStep = 0;
-            vm.listaSexos = [
-              { id:'', descripcion:'--Seleccione sexo--' },
-              { id:'M', descripcion:'MASCULINO' },
-              { id:'F', descripcion:'FEMENINO' }
-            ];
-            //vm.fData.sexo = vm.listaSexos[0].id;
-            // TIPO DE CLIENTE
-            TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
-              vm.listaTiposClientes = angular.copy(rpta.datos);
-              vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idtipocliente == null){
-                //vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
-              }
-            });
-            // LISTA DE EMPRESAS
-            EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
-              vm.listaEmpresas = angular.copy(rpta.datos);
-              vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            });
-            // LISTA MOTIVO CONSULTA
-            MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
-              vm.listaMotivos = angular.copy(rpta.datos);
-              vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            });
-
-            vm.aceptar = function () {
-              console.log('edicion...', vm.fData);
-              $uibModalInstance.close(vm.fData);
-              PacienteServices.sEditarPaciente(vm.fData).then(function (rpta) {
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  // closeButton: true,
-                  // closeHtml : '<button>&times;</button>',
-                  progressBar: true,
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
-                if(rpta.flag == 1){
-                  vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
-                }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  // vm.toast.title = 'Advertencia';
-                  var iconClass = 'warning';
-                  // vm.options.iconClass = {name:'warning'}
-                }else{
-                  alert('Ocurrió un error');
-                }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
-              });
-
-            };
-            vm.cancel = function () {
-              $uibModalInstance.dismiss('cancel');
-            };
-          },
-          resolve: {
-            arrToModal: function() {
-              return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                seleccion : row.entity
-                // listaSexos : $scope.listaSexos,
-                // gridComboOptions : $scope.gridComboOptions,
-                // mySelectionComboGrid : $scope.mySelectionComboGrid
-              }
-            }
-          }
-        });
-      }
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();

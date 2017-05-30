@@ -44,6 +44,7 @@ class Paciente extends CI_Controller {
 					'medicamentos' => $row['medicamentos'],
 					'antecedentes_notas' => $row['antecedentes_notas'],
 					'habitos_notas' => $row['habitos_notas'],
+					'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion'])
 
 				)
 			);
@@ -125,15 +126,20 @@ class Paciente extends CI_Controller {
 		$arrListado = array();
 		$lista = $this->model_paciente->m_cargar_habitos_alim_paciente($allInputs);
 
-		$hora = '--';
-		$minuto = '--';
 		foreach ($lista as $row) {
 			if( $row['idclientehabitoturno'] == null ){
+				$hora = '--';
+				$minuto = '--';
 				if( $row['idturno'] == 1 || $row['idturno'] == 2 ){
 					$periodo = 'am';
 				}else{
 					$periodo = 'pm';
 				}
+			}else{
+				$horaUT = strtotime($row['hora']); // obtengo una fecha UNIX ( integer )
+				$hora	= date('h', $horaUT);
+				$minuto= date('i', $horaUT);
+				$periodo= date('a', $horaUT);
 			}
 			array_push($arrListado, array(
 				'idclientehabitoturno' => $row['idclientehabitoturno'],
@@ -514,7 +520,20 @@ class Paciente extends CI_Controller {
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-
+    	//HABITOS ALIMENTARIOS
+    	foreach ($allInputs['alimentarios'] as $row) {
+    		if( !empty($row['texto_alimentos']) ){
+	    		$row['idcliente'] = $allInputs['idcliente'];
+	    		$hora = $row['hora'].':'.$row['minuto'].' '.$row['periodo'];
+	    		$row['hora'] = darFormatoHora2($hora);
+	    		if( empty($row['idclientehabitoturno']) ){ // si no hay id lo registramos
+	    			$this->model_paciente->m_registrar_habito_alimentario($row);
+	    		}else{
+	    			$this->model_paciente->m_editar_habito_alimentario($row);
+	    		}
+    		}
+    	}
+    	// HABITOS GENERALES
     	if( empty($allInputs['idclientehabitogen']) ){ // si no hay id es por que es nuevo
     		if($this->model_paciente->m_registrar_habito_cliente($allInputs)){
     			$arrData['message'] = 'Se registraron los datos correctamente ' . date('H:n:s');
