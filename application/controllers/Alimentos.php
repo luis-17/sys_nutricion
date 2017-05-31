@@ -46,15 +46,22 @@ class Alimentos extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function lista_pacientes_autocomplete(){
+	public function lista_alimentos_autocomplete(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
-		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);
+		$lista = $this->model_alimentos->m_cargar_alimentos_cbo($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
 			array_push($arrListado,
 				array(
-					'idcliente' => $row['idcliente'],
-					'paciente' => $row['paciente'],
+					'idalimento' => $row['idalimento'],
+					'idgrupo1' => $row['idgrupo1'],
+					'idgrupo2' => $row['idgrupo2'],
+					'nombre' => $row['nombre'],
+					'calorias' => (float)$row['calorias'],
+					'proteinas' => (float)$row['proteinas'],
+					'grasas' => (float)$row['grasas'],
+					'carbohidratos' => (float)$row['carbohidratos'],
+					'estado_ali' => $row['estado_ali'],
 				)
 			);
 		}

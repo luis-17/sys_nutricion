@@ -312,7 +312,7 @@
   function AlimentoServices($http, $q) {
     return({
         sListarAlimentos: sListarAlimentos,
-        sListaPacientesAutocomplete: sListaPacientesAutocomplete,
+        sListaAlimentosAutocomplete: sListaAlimentosAutocomplete,
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
@@ -326,10 +326,10 @@
       });
       return (request.then( handleSuccess,handleError ));
     }
-    function sListaPacientesAutocomplete(datos) {
+    function sListaAlimentosAutocomplete(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Alimentos/lista_pacientes_autocomplete",
+            url : angular.patchURLCI+"Alimentos/lista_alimentos_autocomplete",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

@@ -6,7 +6,7 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices) { 
+  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices) { 
     var vm = this;
     vm.horas = [
       {id:0, value:'--'},
@@ -42,30 +42,27 @@
       TurnoServices.sListarTurnosCbo().then(function(rpta){
         angular.forEach(vm.dias, function(value, key) {
           vm.dias[key].turnos = angular.copy(rpta.datos);
+          vm.dias[key].valoresGlobales = {
+              calorias: 0,
+              proteinas: 0,
+              carbohidratos:0,
+              grasas: 0,
+            };
           angular.forEach(vm.dias[key].turnos, function(val, ind) {
             vm.dias[key].turnos[ind].hora = vm.horas[0];            
             vm.dias[key].turnos[ind].minuto = vm.minutos[0];            
             vm.dias[key].turnos[ind].tiempo = vm.tiempo[0];            
+            vm.dias[key].turnos[ind].alimentos = [];            
+            vm.dias[key].turnos[ind].valoresTurno = {
+              calorias: 0,
+              proteinas: 0,
+              carbohidratos:0,
+              grasas: 0,
+            };            
           });
         });
       });
     }); 
-
-     vm.movies = [
-      'The Dark Knight',
-      'Heat',
-      'Inception',
-      'The Dark Knight Rises',
-      'Kill Bill: Vol. 1',
-      'Terminator 2: Judgment Day',
-      'The Matrix',
-      'Minority Report',
-      'The Bourne Ultimatum'
-    ];
-
-    vm.loadMovies = function() {
-      return $http.get('app/components/jsons/movies.json');
-    };   
 
     vm.initPlan = function(origen,tipoVista){
       vm.consulta = $scope.consulta;
@@ -123,7 +120,83 @@
         var toast = toastr[iconClass](rpta.message, title, vm.options);
         openedToasts.push(toast);
       });
+    }
+
+    vm.getAlimentoAutocomplete = function (value) {
+      var params = {};
+      params.search= value;
+      params.sensor= false;
+        
+      return AlimentoServices.sListaAlimentosAutocomplete(params).then(function(rpta) { 
+        vm.noResultsLM = false;
+        if( rpta.flag === 0 ){
+          vm.noResultsLM = true;
+        }
+        return rpta.datos; 
+      });
+    }
+
+    vm.getSelectedAlimento = function($item, $model, $label, turno){
+      vm.fData.cliente = $item;
     }   
+
+    vm.getSelectedTemporalAlimento = function($item, $model, $label, indexDia, indexTurno){
+      vm.dias[indexDia].turnos[indexTurno].seleccionado = $item;
+    }
+
+    vm.agregarAlimento = function(indexDia, indexTurno){
+      vm.dias[indexDia].turnos[indexTurno].alimentos.push(vm.dias[indexDia].turnos[indexTurno].seleccionado);
+      vm.dias[indexDia].turnos[indexTurno].alimentos[vm.dias[indexDia].turnos[indexTurno].alimentos.length - 1].cantidad = vm.dias[indexDia].turnos[indexTurno].temporalCantidad; 
+      vm.dias[indexDia].turnos[indexTurno].seleccionado = null;
+      vm.dias[indexDia].turnos[indexTurno].temporalCantidad = null;
+      vm.dias[indexDia].turnos[indexTurno].temporal = null;
+      vm.calcularValoresTurno(indexDia, indexTurno);
+    }
+
+    vm.calcularValoresTurno = function(indexDia, indexTurno){
+      var total_calorias = 0;
+      var total_proteinas = 0;
+      var total_carbohidratos = 0;
+      var total_grasas = 0;
+      angular.forEach(vm.dias[indexDia].turnos[indexTurno].alimentos, function(alimento, ind) { 
+        var cantidad = parseFloat(alimento.cantidad);                  
+        total_calorias = total_calorias + (cantidad * alimento.calorias);
+        total_proteinas = total_proteinas + (cantidad * alimento.proteinas);
+        total_carbohidratos = total_carbohidratos + (cantidad * alimento.carbohidratos);
+        total_grasas = total_grasas + (cantidad * alimento.grasas);           
+      });
+
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.calorias = total_calorias;
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.proteinas = total_proteinas;
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.carbohidratos = total_carbohidratos;
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.grasas = total_grasas; 
+
+      vm.calcularValoresDia(indexDia , indexTurno);
+    }
+
+    vm.calcularValoresDia = function(indexDia , indexTurno){
+      var total_calorias = 0;
+      var total_proteinas = 0;
+      var total_carbohidratos = 0;
+      var total_grasas = 0;
+      angular.forEach(vm.dias[indexDia].turnos, function(turno, ind) { 
+        total_calorias = total_calorias + turno.valoresTurno.calorias;
+        total_proteinas = total_proteinas + turno.valoresTurno.proteinas;
+        total_carbohidratos = total_carbohidratos + turno.valoresTurno.carbohidratos;
+        total_grasas = total_grasas + turno.valoresTurno.grasas;           
+      });
+
+      vm.dias[indexDia].valoresGlobales.calorias = total_calorias;
+      vm.dias[indexDia].valoresGlobales.proteinas = total_proteinas;
+      vm.dias[indexDia].valoresGlobales.carbohidratos = total_carbohidratos;
+      vm.dias[indexDia].valoresGlobales.grasas = total_grasas; 
+    }
+
+    vm.eliminarAlimento = function(indexAlimento,indexTurno,indexDia){
+      vm.dias[indexDia].turnos[indexTurno].alimentos.splice(indexAlimento,1);
+      vm.calcularValoresTurno(indexDia,indexTurno);      
+    }
+   
   }
 
   function PlanAlimentarioServices($http, $q) {

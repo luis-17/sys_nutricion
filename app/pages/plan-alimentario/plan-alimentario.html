@@ -63,7 +63,7 @@
       </section>
       <section class="tile-body">
         <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10 mt-20" justified="true">
-          <uib-tab heading="{{dia.nombre_dia}}" ng-repeat="dia in plan.dias">
+          <uib-tab heading="{{dia.nombre_dia}}" ng-repeat="(indexDia, dia) in plan.dias">
             <div ng-if="plan.tipoPlan == 'simple'" ng-include="'app/pages/plan-alimentario/plan-simple-template.html'"></div>
             <div ng-if="plan.tipoPlan == 'compuesto'" ng-include="'app/pages/plan-alimentario/plan-compuesto-template.html'"></div>
           </uib-tab>
