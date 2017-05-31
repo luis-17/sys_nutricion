@@ -118,8 +118,15 @@ class Model_paciente extends CI_Model {
 		return $this->db->insert('cliente', $data);
 	}
 
-	public function m_editar($datos)
-	{
+	public function m_editar($datos){
+		$data = array(
+			'nombre_foto' => $datos['nombre_foto'],
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idcliente',$datos['idcliente']);
+		return $this->db->update('cliente', $data);
+	}
+	public function m_editar_foto($datos){
 		$data = array(
 			'nombre' => strtoupper_total($datos['nombre']),
 			'apellidos' => strtoupper_total($datos['apellidos']),

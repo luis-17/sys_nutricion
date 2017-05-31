@@ -44,9 +44,35 @@
     </div>
     <div class="col-sm-4">
       <h4 class="text-info f-14 col-sm-12">Foto</h4>
-      <div class="text-center">
+      <div class="text-center" ng-show="!pac.fotoCrop">
         <img src="assets/images/pacientes/{{pac.ficha.nombre_foto}}" style="width: 100%">
       </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="p-10 bg-white b-a b-solid" style="height:180px">
+            <img-crop
+              image="pac.ficha.fotoNueva"
+              result-image="pac.ficha.nuevoCrop"
+              result-image-size="160"
+              area-type="{{pac.cropType}}"
+            ></img-crop>
+          </div>
+        </div>
+        <div class="col-md-12" ng-show="false">
+          <div class="p-15 bg-white b-a b-solid inline-block">
+            <img ng-src="{{pac.ficha.nuevoCrop}}" />
+          </div>
+        </div>
+      </div>
+
+      <input type="file" class="filestyle" filestyle="{
+                  buttonText: 'Select image',
+                  iconName: 'fa fa-file-image-o'
+                }" id="fileInput2" ng-click="pac.fotoCrop = true" >
+      <div class="text-center" ng-show="pac.fotoCrop" >
+        <button class="btn btn-sm btn-success" ng-click="pac.subirFoto();">Guardar Foto</button>
+      </div>
+
     </div>
   </div>
   <div class="tile-body row">

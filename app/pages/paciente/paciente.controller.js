@@ -13,6 +13,7 @@
     var vm = this;
     vm.modoFicha = false;
     vm.modoEditar = false;
+    vm.fotoCrop = false;
     vm.ficha = {}
     vm.previo0 = true;
     vm.previo1 = false;
@@ -341,6 +342,46 @@
         vm.cargarHabitosAlimentarios(row.entity);
         vm.cargarHabitos(row.entity);
       }
+      // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+        vm.ficha.fotoNueva='';
+        vm.ficha.nuevoCrop='';
+        vm.cropType='square';
+
+        var handleFileSelect2=function(evt) {
+          var file = evt.currentTarget.files[0];
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            /* eslint-disable */
+            $scope.$apply(function(){
+              vm.ficha.fotoNueva=evt.target.result;
+            });
+            /* eslint-enable */
+          };
+          reader.readAsDataURL(file);
+        };
+        $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+          angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
+        },500);
+        vm.subirFoto = function(){
+          console.log('image', vm.ficha.nuevoCrop);
+          PacienteServices.sSubirFoto(vm.ficha).then(function(rpta){
+            if(rpta.flag == 1){
+              vm.fotoCrop = false;
+
+              var title = 'OK';
+              var iconClass = 'success';
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              // vm.toast.title = 'Advertencia';
+              var iconClass = 'warning';
+              // vm.options.iconClass = {name:'warning'}
+            }else{
+              alert('Ocurrió un error');
+            }
+            var toast = toastr[iconClass](rpta.message, title, vm.options);
+            openedToasts.push(toast);
+          });
+        }
       vm.cargarHabitosAlimentarios = function(row){
         PacienteServices.sListarHabitosAlimPaciente(row).then(function (rpta) {
           vm.ficha.listaHabitosAlim = rpta.datos;
@@ -559,6 +600,7 @@
         sAnularPaciente: sAnularPaciente,
         sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
         sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
+        sSubirFoto: sSubirFoto,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -661,6 +703,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/registrar_habito_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sSubirFoto(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/subir_foto_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

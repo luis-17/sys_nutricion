@@ -466,12 +466,30 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function editar_paciente()
-	{
+	public function subir_foto_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al subir la foto, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+    	if(!empty($allInputs['nuevoCrop'])){
+    		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
+    		var_dump($allInputs); exit();
+
+    		subir_imagen_Base64($allInputs['nuevoCrop'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
+    		if($this->model_paciente->m_editar_foto($allInputs)){
+	    		$arrData['message'] = 'La foto se cambió correctamente';
+	    		$arrData['flag'] = 1;
+	    	}
+    	}
+
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function editar_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_editar($allInputs)){
 			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
     		$arrData['flag'] = 1;
@@ -480,8 +498,7 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function registrar_antecedente_paciente()
-	{
+	public function registrar_antecedente_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
