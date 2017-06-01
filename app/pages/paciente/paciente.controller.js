@@ -320,12 +320,6 @@
         });
       }
       vm.btnVerFicha = function(row){
-        vm.basicData = [
-          { year: '2009', a: 15,  b: 5 },
-          { year: '2010', a: 20,  b: 10 },
-          { year: '2011', a: 35,  b: 25 },
-          { year: '2012', a: 40, b: 30 }
-        ];
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
         vm.ficha = {}
@@ -343,17 +337,37 @@
         vm.cargarHabitos(row.entity);
       }
       // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
-        vm.ficha.fotoNueva='';
-        vm.ficha.nuevoCrop='';
-        vm.cropType='square';
+        vm.image = {
+           originalImage: '',
+           croppedImage: '',
+        };
+        vm.cropType='circle';
 
         var handleFileSelect2=function(evt) {
           var file = evt.currentTarget.files[0];
+          // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
+          //       // notify({
+          //       //     message: 'Only .jpg and .png files are accepted!',
+          //       //     classes: ["alert-danger"]
+          //       // });
+          //       alert('Solo se permiten imagenes');
+          //       return false;
+          //   }
+          //   if (file.size > 4194304) {
+          //       // notify({
+          //       //     message: 'Max file size is 4mb!',
+          //       //     classes: ["alert-danger"]
+          //       // });
+          //       alert('Max. 4Mb');
+          //       return false;
+          //   }
           var reader = new FileReader();
           reader.onload = function (evt) {
             /* eslint-disable */
-            $scope.$apply(function(){
-              vm.ficha.fotoNueva=evt.target.result;
+            $scope.$apply(function($scope){
+              vm.image.originalImage=evt.target.result;
+              // vm.image.fotoNueva=evt.target.result;
+              console.log("foto", vm.image);
             });
             /* eslint-enable */
           };
@@ -361,15 +375,22 @@
         };
         $timeout(function() { // lo pongo dentro de un timeout sino no funciona
           angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
-        },500);
+        });
         vm.subirFoto = function(){
-          console.log('image', vm.ficha.nuevoCrop);
-          PacienteServices.sSubirFoto(vm.ficha).then(function(rpta){
+          vm.image.nombre_foto = vm.ficha.nombre_foto;
+          vm.image.idcliente = vm.ficha.idcliente;
+          vm.image.nombre = vm.ficha.nombre;
+          PacienteServices.sSubirFoto(vm.image).then(function(rpta){
             if(rpta.flag == 1){
               vm.fotoCrop = false;
-
               var title = 'OK';
               var iconClass = 'success';
+              vm.ficha.nombre_foto = rpta.datos;
+              vm.image = {
+                 originalImage: '',
+                 croppedImage: '',
+              };
+
             }else if( rpta.flag == 0 ){
               var title = 'Advertencia';
               // vm.toast.title = 'Advertencia';

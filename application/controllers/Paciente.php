@@ -471,14 +471,14 @@ class Paciente extends CI_Controller {
 		$arrData['message'] = 'Error al subir la foto, inténtelo nuevamente';
     	$arrData['flag'] = 0;
 
-    	if(!empty($allInputs['nuevoCrop'])){
+    	if(!empty($allInputs['croppedImage'])){
     		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
-    		var_dump($allInputs); exit();
 
-    		subir_imagen_Base64($allInputs['nuevoCrop'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
     		if($this->model_paciente->m_editar_foto($allInputs)){
 	    		$arrData['message'] = 'La foto se cambió correctamente';
 	    		$arrData['flag'] = 1;
+	    		$arrData['datos'] = $allInputs['nombre_foto'];
 	    	}
     	}
 
