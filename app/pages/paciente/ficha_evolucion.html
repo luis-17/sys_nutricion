@@ -8,16 +8,13 @@
 				<div class="row">
 	    			<h4 class="custom-font text-info f-16 col-sm-12">Evolución</h4>
 					<div class=" col-sm-12">
-					  <div line-chart line-data='[
-					    { y: "2006", a: 100},
-					    { y: "2007", a: 75 },
-					    { y: "2008", a: 50 },
-					    { y: "2009", a: 75 },
-					    { y: "2010", a: 50 },
-					    { y: "2011", a: 75 },
-					    { y: "2012", a: 100 }
-					]' line-xkey='y' line-ykeys='["a"]' line-labels='["Serie A"]' line-colors='["#c7254e"]'>
-					  </div>
+					  	<div line-chart line-data='pac.dataEvolucion'
+						  line-xkey='fecha'
+						  line-ykeys='["peso"]'
+						  line-labels='["Peso(kg.)"]'
+						  line-colors='["#16a085"]'
+						>
+					  	</div>
 					</div>
 				</div>
 

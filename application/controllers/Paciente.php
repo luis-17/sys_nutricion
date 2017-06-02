@@ -152,14 +152,35 @@ class Paciente extends CI_Controller {
 				)
 			);
 		}
-
-
-		// var_dump($arrListado); exit();
-
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($rowHabitos)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_evolucion_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrListado = array();
+		$arrPeso = array();
+		$lista = $this->model_paciente->m_cargar_historial_paciente($allInputs);
+		foreach ($lista as $row) {
+			array_push($arrPeso, array(
+				'fecha' => $row['fecha_atencion'],
+				'peso'	=> $row['peso']
+				)
+			);
+		}
+		$arrListado['peso'] = $arrPeso;
+		// var_dump($arrListado['peso'] );exit();
+
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
 			$arrData['flag'] = 0;
 		}
 		$this->output

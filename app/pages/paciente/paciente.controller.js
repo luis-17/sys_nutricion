@@ -335,57 +335,78 @@
         });
         vm.cargarHabitosAlimentarios(row.entity);
         vm.cargarHabitos(row.entity);
-      }
-      // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
-        vm.image = {
-           originalImage: '',
-           croppedImage: '',
-        };
-        vm.cropType='circle';
+        vm.cargarEvolucion(row.entity);
 
-        var handleFileSelect2=function(evt) {
-          var file = evt.currentTarget.files[0];
-          // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
-          //       // notify({
-          //       //     message: 'Only .jpg and .png files are accepted!',
-          //       //     classes: ["alert-danger"]
-          //       // });
-          //       alert('Solo se permiten imagenes');
-          //       return false;
-          //   }
-          //   if (file.size > 4194304) {
-          //       // notify({
-          //       //     message: 'Max file size is 4mb!',
-          //       //     classes: ["alert-danger"]
-          //       // });
-          //       alert('Max. 4Mb');
-          //       return false;
-          //   }
-          var reader = new FileReader();
-          reader.onload = function (evt) {
-            /* eslint-disable */
-            $scope.$apply(function($scope){
-              vm.image.originalImage=evt.target.result;
-              // vm.image.fotoNueva=evt.target.result;
-              console.log("foto", vm.image);
-            });
-            /* eslint-enable */
+      }
+      // CARGAR GRAFICO
+        vm.cargarEvolucion = function(row){
+          PacienteServices.slistarEvolucion(row).then(function(rpta){
+            console.log('rpta', rpta.datos.peso);
+            vm.dataEvolucion = rpta.datos.peso;
+            // vm.dataEvolucion = [
+            //   { y: "2006", a: 100},
+            //   { y: "2007", a: 75 },
+            //   { y: "2008", a: 50 },
+            //   { y: "2009", a: 75 },
+            //   { y: "2010", a: 50 },
+            //   { y: "2011", a: 75 },
+            //   { y: "2012", a: 100 }
+            // ]
+          });
+        }
+      // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+        vm.cargarImagen = function(){
+          vm.fotoCrop = true;
+          vm.image = {
+             originalImage: '',
+             croppedImage: '',
           };
-          reader.readAsDataURL(file);
-        };
-        $timeout(function() { // lo pongo dentro de un timeout sino no funciona
-          angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
-        });
+          vm.cropType='circle';
+
+          var handleFileSelect2=function(evt) {
+            var file = evt.currentTarget.files[0];
+            // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
+            //       // notify({
+            //       //     message: 'Only .jpg and .png files are accepted!',
+            //       //     classes: ["alert-danger"]
+            //       // });
+            //       alert('Solo se permiten imagenes');
+            //       return false;
+            //   }
+            //   if (file.size > 4194304) {
+            //       // notify({
+            //       //     message: 'Max file size is 4mb!',
+            //       //     classes: ["alert-danger"]
+            //       // });
+            //       alert('Max. 4Mb');
+            //       return false;
+            //   }
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+              /* eslint-disable */
+              $scope.$apply(function($scope){
+                vm.image.originalImage=evt.target.result;
+                // vm.image.fotoNueva=evt.target.result;
+                console.log("foto", vm.image);
+              });
+              /* eslint-enable */
+            };
+            reader.readAsDataURL(file);
+          };
+          $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+            angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
+          });
+        }
         vm.subirFoto = function(){
           vm.image.nombre_foto = vm.ficha.nombre_foto;
           vm.image.idcliente = vm.ficha.idcliente;
           vm.image.nombre = vm.ficha.nombre;
           PacienteServices.sSubirFoto(vm.image).then(function(rpta){
             if(rpta.flag == 1){
-              vm.fotoCrop = false;
               var title = 'OK';
               var iconClass = 'success';
               vm.ficha.nombre_foto = rpta.datos;
+              vm.fotoCrop = false;
               vm.image = {
                  originalImage: '',
                  croppedImage: '',
@@ -403,6 +424,14 @@
             openedToasts.push(toast);
           });
         }
+        vm.cancelarFoto = function(){
+          vm.fotoCrop = false;
+          vm.image = {
+             originalImage: '',
+             croppedImage: '',
+          };
+        }
+
       vm.cargarHabitosAlimentarios = function(row){
         PacienteServices.sListarHabitosAlimPaciente(row).then(function (rpta) {
           vm.ficha.listaHabitosAlim = rpta.datos;
@@ -554,6 +583,11 @@
       }
       vm.btnRegresar = function(){
         vm.modoFicha = false;
+        vm.fotoCrop = false;
+        vm.image = {
+           originalImage: '',
+           croppedImage: '',
+        };
         vm.getPaginationServerSide();
       }
       vm.verPrevio = function(index){
@@ -572,7 +606,6 @@
           vm.previo2 = true;
         }
       }
-
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
@@ -602,10 +635,7 @@
         }, function(ev) {
             ev.preventDefault();
         });
-
-
       }
-
   }
 
   function PacienteServices($http, $q) {
@@ -622,6 +652,7 @@
         sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
         sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
         sSubirFoto: sSubirFoto,
+        slistarEvolucion: slistarEvolucion,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -732,6 +763,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/subir_foto_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function slistarEvolucion(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_evolucion_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

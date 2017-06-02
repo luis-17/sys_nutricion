@@ -45,9 +45,10 @@
     <div class="col-sm-4">
       <h4 class="text-info f-14 col-sm-12">Foto</h4>
       <div class="text-center" ng-if="!pac.fotoCrop">
-        <img src="assets/images/pacientes/{{pac.ficha.nombre_foto}}" style="width: 100%">
+        <img ng-src="assets/images/pacientes/{{pac.ficha.nombre_foto}}" ng-click="pac.cargarImagen();" style="width: 100%">
       </div>
-      <div class="row" ng-if="pac.fotoCrop">
+
+      <div class="row" ng-show="pac.fotoCrop">
         <div class="col-md-12">
           <div class="p-10 bg-white b-a b-solid" style="height:180px">
             <img-crop
@@ -64,12 +65,13 @@
           </div>
         </div>
       </div>
-
       <input type="file" class="filestyle" filestyle="{
           buttonText: 'Select image',
           iconName: 'fa fa-file-image-o'
-        }" id="fileInput2" ng-click="pac.fotoCrop = true" >
-      <div class="text-center" ng-show="pac.fotoCrop" >
+        }" id="fileInput2" ng-click="pac.cargarImagen();" >
+
+      <div class="text-center mt-10" ng-show="pac.fotoCrop" >
+        <button class="btn btn-sm btn-danger" ng-click="pac.cancelarFoto();">Cancelar</button>
         <button class="btn btn-sm btn-success" ng-click="pac.subirFoto();">Guardar Foto</button>
       </div>
 

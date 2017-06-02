@@ -91,6 +91,14 @@ class Model_paciente extends CI_Model {
 
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_historial_paciente($datos){
+		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.peso, at.fecha_atencion");
+		$this->db->from('atencion at');
+		$this->db->where('at.idcliente',$datos['idcliente']);
+		$this->db->where('at.estado_atencion',1);
+		$this->db->order_by('at.fecha_atencion','ASC');
+		return $this->db->get()->result_array();
+	}
 
 	public function m_registrar($datos)
 	{
