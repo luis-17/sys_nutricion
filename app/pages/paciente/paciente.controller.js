@@ -164,6 +164,14 @@
         vm.gridApi = gridApi;
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
+          if( vm.mySelectionGrid[0] ){
+            PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
+              vm.mySelectionGrid[0].peso = rpta.datos.peso;
+              if(vm.mySelectionGrid[0].estatura > 50){
+                vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+              }
+            });
+          }
         });
         gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
@@ -322,6 +330,12 @@
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
+        PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
+          vm.mySelectionGrid[0].peso = rpta.datos.peso;
+          if(vm.mySelectionGrid[0].estatura > 50){
+            vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+          }
+        });
         vm.ficha = {}
 
         vm.ficha = angular.copy(row.entity);
@@ -646,6 +660,7 @@
         sListarHabitosPaciente: sListarHabitosPaciente,
         sListarAntecedentesPaciente: sListarAntecedentesPaciente,
         sListarPacientePorId: sListarPacientePorId,
+        sListarUltimaConsulta: sListarUltimaConsulta,
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
         sAnularPaciente: sAnularPaciente,
@@ -699,6 +714,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/listar_paciente_por_id",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarUltimaConsulta(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Consulta/listar_ultima_consulta",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

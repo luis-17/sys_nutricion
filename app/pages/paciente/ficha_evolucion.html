@@ -12,7 +12,7 @@
 						  line-xkey='fecha'
 						  line-ykeys='["peso"]'
 						  line-labels='["Peso(kg.)"]'
-						  line-colors='["#16a085"]'
+						  line-colors='["#0B658A"]'
 						>
 					  	</div>
 					</div>
@@ -45,8 +45,10 @@
 		              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo0">
 		                <dt style="width: 80px; padding: 3px 0;">Edad: </dt>
 		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].edad}}</dd>
-		                <dt style="width: 80px; padding: 3px 0;">Sexo: </dt>
-		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].sexo_desc}}</dd>
+		                <!-- <dt style="width: 80px; padding: 3px 0;">Sexo: </dt>
+		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].sexo_desc}}</dd> -->
+		                <dt style="width: 80px; padding: 3px 0;">Cargo Lab.: </dt>
+		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].cargo_laboral}}</dd>
 		                <dt style="width: 80px; padding: 3px 0;">Celular: </dt>
 		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].celular}}</dd>
 		                <dt style="width: 80px; padding: 3px 0;">Nacimiento: </dt>
@@ -54,9 +56,9 @@
 		              </dl>
 		              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo1">
 		                <dt style="width: 80px; padding: 3px 0;">Peso: </dt>
-		                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].peso}} kg.</dd>
 		                <dt style="width: 80px; padding: 3px 0;">IMC: </dt>
-		                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
+		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].imc}}</dd>
 		                <dt style="width: 80px; padding: 3px 0;">Diferencia: </dt>
 		              </dl>
 		              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo2">

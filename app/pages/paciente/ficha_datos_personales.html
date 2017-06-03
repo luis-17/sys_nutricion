@@ -107,5 +107,12 @@
         <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.idmotivoconsulta" ng-options="item.id as item.descripcion for item in pac.listaMotivos" required > </select>
       </div>
     </div>
+    <div class="form-group col-sm-6">
+      <label for="cargo_laboral" class="col-sm-3 control-label minotaur-label">Cargo Laboral : </label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="cargo_laboral" placeholder="Cargo Laboral" ng-model="pac.ficha.cargo_laboral" ng-readonly="!pac.modoEditar">
+
+      </div>
+    </div>
   </div>
 </form>

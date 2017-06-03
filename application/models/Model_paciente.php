@@ -5,9 +5,10 @@ class Model_paciente extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_pacientes($paramPaginate=FALSE){
-		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
-			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion,
-			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
+		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento,
+			cl.estatura,cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa,
+			mc.descripcion_mc AS clasificacion,	cl.idmotivoconsulta, cl.cod_historia_clinica,
+			cl.alergias_ia, cl.medicamentos, cl.cargo_laboral,
 			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl, MAX(at.fecha_atencion) AS fec_ult_atencion');
 		$this->db->from('cliente cl');
 		$this->db->join('motivo_consulta mc', 'cl.idmotivoconsulta = mc.idmotivoconsulta');
@@ -45,7 +46,7 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_cargar_paciente_por_id($datos){
 		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
-			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion,
+			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion, cl.cargo_laboral,
 			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
 			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
 		$this->db->from('cliente cl');
@@ -146,7 +147,7 @@ class Model_paciente extends CI_Model {
 			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),
 			'email' => $datos['email'],
 			'celular' => $datos['celular'],
-			// 'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
+			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
 			// 'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
 			// 'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
 			// 'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
