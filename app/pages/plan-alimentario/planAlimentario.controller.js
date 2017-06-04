@@ -145,6 +145,41 @@
     }
 
     vm.agregarAlimento = function(indexDia, indexTurno){
+      if(!(vm.dias[indexDia].turnos[indexTurno].seleccionado) ||
+          vm.dias[indexDia].turnos[indexTurno].seleccionado.idalimento == null ||
+          vm.dias[indexDia].turnos[indexTurno].seleccionado.idalimento == ''
+        ){
+        var openedToasts = [];
+        vm.options = {
+          timeout: '3000',
+          extendedTimeout: '1000',
+          preventDuplicates: false,
+          preventOpenDuplicates: false
+        };       
+        var title = 'Advertencia';
+        var iconClass = 'warning';        
+        var toast = toastr[iconClass]('Debe seleccionar alimento.', title, vm.options);
+        openedToasts.push(toast);
+        return;
+      }
+
+      if(vm.dias[indexDia].turnos[indexTurno].temporalCantidad == null ||
+          vm.dias[indexDia].turnos[indexTurno].temporalCantidad == ''
+        ){
+        var openedToasts = [];
+        vm.options = {
+          timeout: '3000',
+          extendedTimeout: '1000',
+          preventDuplicates: false,
+          preventOpenDuplicates: false
+        };       
+        var title = 'Advertencia';
+        var iconClass = 'warning';        
+        var toast = toastr[iconClass]('Debe agregar cantidad.', title, vm.options);
+        openedToasts.push(toast);
+        return;
+      }
+
       vm.dias[indexDia].turnos[indexTurno].alimentos.push(vm.dias[indexDia].turnos[indexTurno].seleccionado);
       vm.dias[indexDia].turnos[indexTurno].alimentos[vm.dias[indexDia].turnos[indexTurno].alimentos.length - 1].cantidad = vm.dias[indexDia].turnos[indexTurno].temporalCantidad; 
       vm.dias[indexDia].turnos[indexTurno].seleccionado = null;
