@@ -85,7 +85,7 @@
     display: none;
   }
 </style>
-<style type="text/css" ng-if="!viewConsulta">
+<style type="text/css" ng-if="!viewConsulta && !viewFicha">
   #pageCitas{
     display: block;
   }
@@ -114,11 +114,6 @@
 <style type="text/css" ng-if="viewFicha">
   #pageCitas{
     display: none;
-  }
-</style>
-<style type="text/css" ng-if="!viewFicha">
-  #pageCitas{
-    display: block;
   }
 </style>
 <div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'"
