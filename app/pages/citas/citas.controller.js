@@ -52,7 +52,7 @@
     //vm.tooltipOnMouseOver = function( event, jsEvent){
     vm.alertOnClick =function(event, jsEvent, view) {
       vm.event = event;
-      console.log(jsEvent);
+      //console.log(jsEvent);
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
       var cal = wrap.closest('.calendar');
@@ -92,7 +92,7 @@
 
     vm.selectCell = function(date, jsEvent, view) {    
       var typeView = angular.element('.calendar').fullCalendar('getView');      
-      console.log('date.format()',date.format());
+      //console.log('date.format()',date.format());
       if(typeView.type == 'month'){        
         angular.element('.calendar').fullCalendar( 'gotoDate', date );
         angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
@@ -342,7 +342,8 @@
     }
 
     vm.btnAnular = function(row){
-      alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+      alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm('¿Realmente desea realizar la acción?', 
+        function (ev) {
         ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
           var openedToasts = [];
@@ -365,8 +366,6 @@
           var toast = toastr[iconClass](rpta.message, title, vm.options);
           openedToasts.push(toast);
         });
-      }, function(ev) {
-          ev.preventDefault();
       });
     }
 
@@ -387,7 +386,7 @@
     }
 
     vm.btnAnularConsulta = function(row){
-      alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+      alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();        
         ConsultasServices.sAnularConsulta(row).then(function (rpta) {              
           var openedToasts = [];
@@ -410,8 +409,6 @@
           var toast = toastr[iconClass](rpta.message, title, vm.options);
           openedToasts.push(toast);
         });
-      }, function(ev) {
-          ev.preventDefault();
       });
     }
 
