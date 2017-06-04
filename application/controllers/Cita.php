@@ -57,6 +57,7 @@ class Cita extends CI_Controller {
 					//'title' => $row['nombre'] . ' ' . $row['apellidos'],
 					'title' => $row['nombre'] . ' ' . $row['apellidos'] . ' ' .darFormatoHora($row['hora_desde']). ' - ' . darFormatoHora($row['hora_hasta']),
 					'allDay' => FALSE,
+					'durationEditable' => FALSE,
 				)
 			);
 		}

@@ -50,8 +50,9 @@
 
     vm.overlay = angular.element('.fc-overlay');
     //vm.tooltipOnMouseOver = function( event, jsEvent){
-    vm.alertOnClick = function( event, jsEvent){
+    vm.alertOnClick =function(event, jsEvent, view) {
       vm.event = event;
+      console.log(jsEvent);
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
       var cal = wrap.closest('.calendar');
@@ -70,7 +71,8 @@
       var events = []; 
       CitasServices.sListarCita().then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) { 
-            row.start = new Date(row.start);
+            //row.start = new Date(row.start);
+            row.start =  moment(row.start);
         });
         events = rpta.datos; 
         callback(events); 
@@ -274,7 +276,7 @@
             opened: false
           }; 
 
-          vm.fData.fecha = new Date(vm.fData.fecha);
+          vm.fData.fecha = vm.fData.start.toDate();
 
           /*TIMEPICKER*/
           vm.tp1 = {};
