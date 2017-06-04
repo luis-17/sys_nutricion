@@ -330,6 +330,7 @@
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
+        
         PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
           vm.mySelectionGrid[0].peso = rpta.datos.peso;
           if(vm.mySelectionGrid[0].estatura > 50){
@@ -337,7 +338,6 @@
           }
         });
         vm.ficha = {}
-
         vm.ficha = angular.copy(row.entity);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
@@ -350,7 +350,34 @@
         vm.cargarHabitosAlimentarios(row.entity);
         vm.cargarHabitos(row.entity);
         vm.cargarEvolucion(row.entity);
-
+      }
+      vm.btnExternoVerFicha = function(event){
+        //console.log(event);
+        vm.externo = true;
+        vm.modoFicha = true;
+        PacienteServices.sListarPacientePorId(event.cliente).then(function (rpta) {
+          vm.ficha = rpta.datos;
+          vm.mySelectionGrid = [];
+          vm.mySelectionGrid[0] = vm.ficha;          
+          PacienteServices.sListarUltimaConsulta(vm.ficha).then(function(rpta){
+            console.log(vm.mySelectionGrid);
+            vm.mySelectionGrid[0].peso = rpta.datos.peso;
+            if(vm.mySelectionGrid[0].estatura > 50){
+              vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+            }            
+          });
+          vm.ficha.cambiaPatologico = false;
+          vm.ficha.cambiaHeredado = false;
+          PacienteServices.sListarAntecedentesPaciente(vm.ficha).then(function (rpta) {
+            vm.listaAntPatologicos = rpta.datos.patologicos;
+            vm.listaAntHeredados = rpta.datos.heredados;
+            vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
+            vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
+          });
+          vm.cargarHabitosAlimentarios(vm.ficha);
+          vm.cargarHabitos(vm.ficha);
+          vm.cargarEvolucion(vm.ficha);
+        });     
       }
       // CARGAR GRAFICO
         vm.cargarEvolucion = function(row){

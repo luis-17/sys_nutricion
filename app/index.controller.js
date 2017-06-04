@@ -68,6 +68,11 @@
     }
     $scope.changeViewConsulta(false);
 
+    $scope.changeViewFicha = function(value){
+      $scope.viewFicha = value;
+    }
+    $scope.changeViewFicha(false);
+
     $scope.changeViewPlan = function(value, consulta){
       $scope.viewPlan = value;
       $scope.consulta = consulta;
