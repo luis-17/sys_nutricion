@@ -6,7 +6,12 @@
 		<form name="outerForm" role="form" novalidate class="form-validation">
 			<div class="row">
 	            <div class="form-group col-md-6">
-	              <label for="name" class="control-label minotaur-label">Paciente <span class="text-red">*</span>: </label>
+	              <label for="name" class="control-label minotaur-label" style="width: 100%;">Paciente 
+	              	<span class="text-red">*</span>: 
+	              	<span ng-controller="PacienteController as pac" ng-click="pac.btnNuevo();" 
+	              			style="float: right;font-size: 10px;font-weight: 500;">¿Nuevo paciente?
+	              	</span> 
+	              </label>
 	              <input type="text" ng-model="modalcita.fData.cliente" class="form-control " autocomplete="off"
                              placeholder="Digite el Paciente..." 
                                   typeahead-loading="loadingLocations" 

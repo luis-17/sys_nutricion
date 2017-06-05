@@ -23,7 +23,7 @@
       }else if(vm.tipoVista == 'edit'){
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           vm.fData = rpta.datos;
-          vm.fData.fecha_atencion = new Date(vm.fData.fecha_atencion);
+          vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
           vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
           vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
         });        

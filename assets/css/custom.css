@@ -337,3 +337,14 @@ section.tile-body{
 .alimentos{
     text-align: left;
 }
+
+/*colores calendar*/
+.fc-event.b-primary{
+    background-color: #428bca !important;
+    color: #fff !important;
+}
+
+.fc-event.b-success{
+    background-color: #5cb85c !important;
+    color: #fff !important;
+}

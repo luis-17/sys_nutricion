@@ -50,8 +50,9 @@
 
     vm.overlay = angular.element('.fc-overlay');
     //vm.tooltipOnMouseOver = function( event, jsEvent){
-    vm.alertOnClick = function( event, jsEvent){
+    vm.alertOnClick =function(event, jsEvent, view) {
       vm.event = event;
+      //console.log(jsEvent);
       vm.overlay.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
       var cal = wrap.closest('.calendar');
@@ -70,7 +71,8 @@
       var events = []; 
       CitasServices.sListarCita().then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) { 
-            row.start = new Date(row.start);
+            //row.start = new Date(row.start);
+            row.start =  moment(row.start);
         });
         events = rpta.datos; 
         callback(events); 
@@ -84,9 +86,20 @@
     };
 
     vm.today = function() {
-      angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
+      angular.element('.calendar').fullCalendar('changeView', 'agendaWeek');
       angular.element('.calendar').fullCalendar('today');
     };
+
+    vm.selectCell = function(date, jsEvent, view) {    
+      var typeView = angular.element('.calendar').fullCalendar('getView');      
+      //console.log('date.format()',date.format());
+      if(typeView.type == 'month'){        
+        angular.element('.calendar').fullCalendar( 'gotoDate', date );
+        angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
+      }else{
+        vm.btnCita(date);
+      }
+    }
 
     /* add custom event*/
     vm.btnCita = function(start, paciente){
@@ -120,7 +133,7 @@
           vm.dp.today = function() {
             if(start){
               console.log(start);
-              vm.fData.fecha = start;
+              vm.fData.fecha = start.toDate();
             }else{
               vm.fData.fecha = new Date();
             }
@@ -263,7 +276,7 @@
             opened: false
           }; 
 
-          vm.fData.fecha = new Date(vm.fData.fecha);
+          vm.fData.fecha = vm.fData.start.toDate();
 
           /*TIMEPICKER*/
           vm.tp1 = {};
@@ -329,7 +342,8 @@
     }
 
     vm.btnAnular = function(row){
-      alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+      alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm('¿Realmente desea realizar la acción?', 
+        function (ev) {
         ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
           var openedToasts = [];
@@ -352,8 +366,6 @@
           var toast = toastr[iconClass](rpta.message, title, vm.options);
           openedToasts.push(toast);
         });
-      }, function(ev) {
-          ev.preventDefault();
       });
     }
 
@@ -374,7 +386,7 @@
     }
 
     vm.btnAnularConsulta = function(row){
-      alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+      alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();        
         ConsultasServices.sAnularConsulta(row).then(function (rpta) {              
           var openedToasts = [];
@@ -397,13 +409,12 @@
           var toast = toastr[iconClass](rpta.message, title, vm.options);
           openedToasts.push(toast);
         });
-      }, function(ev) {
-          ev.preventDefault();
       });
     }
 
     vm.uiConfig = { 
       calendar:{
+        allDaySlot: false,
         height: 450,
         contentHeight: 510,
         editable: true,
@@ -412,13 +423,14 @@
         dayNames: ["Domingo", "Lunes ", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
         dayNamesShort : ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
         monthNames : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre","Diciembre"],
-        monthNamesShort : ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        monthNamesShort : ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre","Diciembre"],
         header:{
           left: 'prev',
           center: 'title',
           right: 'next'
         },
-        select: vm.btnCita,
+        select: vm.selectCell,
+        //select: vm.btnCita,
         eventDrop: vm.alertOnDrop,
         eventResize: vm.alertOnResize,
         //eventMouseover: vm.tooltipOnMouseOver,
