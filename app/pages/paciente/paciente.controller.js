@@ -341,12 +341,8 @@
         vm.ficha = angular.copy(row.entity);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
-        PacienteServices.sListarAntecedentesPaciente(row.entity).then(function (rpta) {
-          vm.listaAntPatologicos = rpta.datos.patologicos;
-          vm.listaAntHeredados = rpta.datos.heredados;
-          vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
-          vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
-        });
+
+        vm.cargarAntecedentes(row.entity);
         vm.cargarHabitosAlimentarios(row.entity);
         vm.cargarHabitos(row.entity);
         vm.cargarEvolucion(row.entity);
@@ -445,7 +441,14 @@
              croppedImage: '',
           };
         }
-
+      vm.cargarAntecedentes = function(row){
+        PacienteServices.sListarAntecedentesPaciente(row).then(function (rpta) {
+          vm.listaAntPatologicos = rpta.datos.patologicos;
+          vm.listaAntHeredados = rpta.datos.heredados;
+          vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
+          vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
+        });
+      }
       vm.cargarHabitosAlimentarios = function(row){
         PacienteServices.sListarHabitosAlimPaciente(row).then(function (rpta) {
           vm.ficha.listaHabitosAlim = rpta.datos;
@@ -457,36 +460,34 @@
         });
       }
       vm.cambiarCheckPatologico = function(item,index){
-        // console.log('index',index);
-        vm.ficha.cambiaPatologico = true;
-        angular.forEach(vm.ficha.antPatologicos, function(value, key) {
-          if(key == index){
-            if(value.check == 1)
-              vm.ficha.antPatologicos[index].check = 0;
-            else
-              vm.ficha.antPatologicos[index].check = 1;
-
-          }
-        });
-        console.log('vm.ficha.antPatologicos',vm.ficha.antPatologicos);
-        vm.listaAntPatologicos = angular.copy(vm.ficha.antPatologicos);
+        if(vm.modoEditar == true){
+          vm.ficha.cambiaPatologico = true;
+          angular.forEach(vm.ficha.antPatologicos, function(value, key) {
+            if(key == index){
+              if(value.check == 1)
+                vm.ficha.antPatologicos[index].check = 0;
+              else
+                vm.ficha.antPatologicos[index].check = 1;
+            }
+          });
+          vm.listaAntPatologicos = angular.copy(vm.ficha.antPatologicos);
+        }
       }
       vm.cambiarCheckHeredado = function(item,index){
-        // console.log('index',index);
+        if(vm.modoEditar == true){
         vm.ficha.cambiaHeredado = true;
-        angular.forEach(vm.ficha.antHeredados, function(value, key) {
-          if(key == index){
-            if(value.check == 1)
-              vm.ficha.antHeredados[index].check = 0;
-            else
-              vm.ficha.antHeredados[index].check = 1;
-
-          }
-        });
-        console.log('vm.ficha.antHeredados',vm.ficha.antHeredados);
-        vm.listaAntHeredados = angular.copy(vm.ficha.antHeredados);
+          angular.forEach(vm.ficha.antHeredados, function(value, key) {
+            if(key == index){
+              if(value.check == 1)
+                vm.ficha.antHeredados[index].check = 0;
+              else
+                vm.ficha.antHeredados[index].check = 1;
+            }
+          });
+          vm.listaAntHeredados = angular.copy(vm.ficha.antHeredados);
+        }
       }
-      vm.btnAceptarTab2 = function(datos){
+      vm.btnAceptarTab2 = function(datos){//datos personales
         PacienteServices.sEditarPaciente(datos).then(function (rpta) {
           vm.options = {
             timeout: '3000',
@@ -522,7 +523,7 @@
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
       }
-      vm.btnAceptarTab3 = function(){
+      vm.btnAceptarTab3 = function(){// antecedentes
         console.log('array',vm.listaAntPatologicos);
         PacienteServices.sRegistrarAntecedentePaciente(vm.ficha).then(function (rpta) {
           vm.options = {
@@ -558,6 +559,7 @@
       vm.btnCancelarTab3 = function(){
         vm.modoEditar = false;
         vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        vm.cargarAntecedentes(vm.ficha);
       }
       vm.btnAceptarTab4 = function(){
         vm.ficha.habitos.idcliente = vm.ficha.idcliente;

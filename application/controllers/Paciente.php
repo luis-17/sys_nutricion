@@ -434,27 +434,15 @@ class Paciente extends CI_Controller {
 		//exit();
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
-    	/*
-			'nombre' => strtoupper_total($datos['nombre']),
-			'apellidos' => strtoupper_total($datos['apellidos']),
-			'idtipocliente' => $datos['idtipocliente'],
-			'idempresa' => empty($datos['idempresa'])? NULL : $datos['idempresa'],
-			'idmotivoconsulta' => $datos['idmotivoconsulta'],
-			'cod_historia_clinica' => empty($datos['cod_historia_clinica'])? 'H001' : $datos['cod_historia_clinica'],
-			'sexo' => $datos['sexo'],
-			'estatura' => $datos['estatura'],
-			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),
-			'email' => empty($datos['email'])? '' : $datos['email'],
-			'celular' => $datos['celular'],
-			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
-			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
-			// 'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
-			// 'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
-			// 'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
-			// 'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
-			'createdAt' => date('Y-m-d H:i:s'),
-			'updatedAt' => date('Y-m-d H:i:s')
-    	*/
+    	// AQUI ESTARAN LAS VALIDACIONES
+    	$estatura = $this->input->post('estatura');
+    	if( !soloNumeros($estatura) ){
+    		$arrData['message'] = 'Ingrese solo números';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+    	}
+
     	$allInputs['nombre'] = $this->input->post('nombre');
     	$allInputs['apellidos'] = $this->input->post('apellidos');
     	$allInputs['idtipocliente'] = $this->input->post('idtipocliente');
@@ -462,7 +450,7 @@ class Paciente extends CI_Controller {
     	$allInputs['idmotivoconsulta'] = $this->input->post('idmotivoconsulta');
     	$allInputs['cod_historia_clinica'] = $this->input->post('cod_historia_clinica');
     	$allInputs['sexo'] = $this->input->post('sexo');
-    	$allInputs['estatura'] = $this->input->post('estatura');
+    	$allInputs['estatura'] = $estatura;
     	$allInputs['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
     	$allInputs['email'] = $this->input->post('email');
     	$allInputs['celular'] = $this->input->post('celular');
@@ -478,7 +466,6 @@ class Paciente extends CI_Controller {
 
     	}
 
-    	// AQUI ESTARAN LAS VALIDACIONES
 
     	// INICIA EL REGISTRO
 		if($this->model_paciente->m_registrar($allInputs)){

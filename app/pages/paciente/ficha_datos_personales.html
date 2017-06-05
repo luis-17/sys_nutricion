@@ -97,7 +97,7 @@
     <div class="form-group col-sm-6">
       <label for="estatura" class="col-sm-3 control-label minotaur-label">Estatura (cm) : </label>
       <div class="col-sm-9">
-        <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="estatura" placeholder="Celular" ng-model="pac.ficha.estatura" ng-readonly="!pac.modoEditar">
+        <input type="number" min="100" max="290" step="1" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="estatura" placeholder="Estatura" ng-model="pac.ficha.estatura" ng-readonly="!pac.modoEditar">
       </div>
     </div>
     <div class="form-group col-sm-6">
