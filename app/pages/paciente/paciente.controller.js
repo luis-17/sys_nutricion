@@ -330,7 +330,7 @@
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
-        
+        vm.evoRadio = 'Peso';
         PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
           vm.mySelectionGrid[0].peso = rpta.datos.peso;
           if(vm.mySelectionGrid[0].estatura > 50){
@@ -354,13 +354,13 @@
         PacienteServices.sListarPacientePorId(event.cliente).then(function (rpta) {
           vm.ficha = rpta.datos;
           vm.mySelectionGrid = [];
-          vm.mySelectionGrid[0] = vm.ficha;          
+          vm.mySelectionGrid[0] = vm.ficha;
           PacienteServices.sListarUltimaConsulta(vm.ficha).then(function(rpta){
             console.log(vm.mySelectionGrid);
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
-            }            
+            }
           });
           vm.ficha.cambiaPatologico = false;
           vm.ficha.cambiaHeredado = false;
@@ -373,7 +373,7 @@
           vm.cargarHabitosAlimentarios(vm.ficha);
           vm.cargarHabitos(vm.ficha);
           vm.cargarEvolucion(vm.ficha);
-        });     
+        });
       }
       // CARGAR GRAFICO
         vm.cargarEvolucion = function(row){
