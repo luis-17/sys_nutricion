@@ -442,11 +442,11 @@
           right: 'next'
         },
         select: vm.selectCell,
-        //select: vm.btnCita,
         eventDrop: vm.alertOnDrop,
         eventResize: vm.alertOnResize,
-        //eventMouseover: vm.tooltipOnMouseOver,
-        eventClick: vm.alertOnClick
+        eventClick: vm.alertOnClick,
+        minTime: '07:00:00',
+        maxTime: '23:00:00'
       }
     };
     //console.log(vm.uiConfig.calendar);
