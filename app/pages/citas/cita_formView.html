@@ -8,7 +8,8 @@
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label" style="width: 100%;">Paciente 
 	              	<span class="text-red">*</span>: 
-	              	<span ng-controller="PacienteController as pac" ng-click="pac.btnNuevo();" 
+	              	<span ng-controller="PacienteController as pac" ng-click="pac.btnNuevo(true,modalcita.callback);" 
+	              			ng-if="modalcita.type != 'edit'"
 	              			style="float: right;font-size: 10px;font-weight: 500;">¿Nuevo paciente?
 	              	</span> 
 	              </label>

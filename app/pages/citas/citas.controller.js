@@ -219,8 +219,8 @@
             $uibModalInstance.close();
           };
 
-          vm.callback = function(){
-            vm.fData.cliente = $scope.pacienteAgregado;
+          vm.callback = function(pacienteAgregado){
+            vm.fData.cliente = pacienteAgregado;
             console.log('vm.fData.cliente',vm.fData.cliente);
           }
         },

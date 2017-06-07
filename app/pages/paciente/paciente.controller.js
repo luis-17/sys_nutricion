@@ -7,9 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,
-    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
-
+  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
     var vm = this;
     vm.modoFicha = false;
     vm.modoEditar = false;
@@ -210,7 +208,8 @@
       }
       vm.getPaginationServerSide();
     // MANTENIMIENTO
-      vm.btnNuevo = function () {
+      vm.btnNuevo = function (externo,callback) {
+        var externo = externo || null;
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/paciente/paciente_formview.html',
           controllerAs: 'modalPac',
@@ -223,6 +222,7 @@
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+            vm.pacienteRegistrado = arrToModal.pacienteRegistrado;
             vm.modalTitle = 'Registro de pacientes';
             // vm.activeStep = 0;
             vm.corp = false; // solo para tipo de cliente = corporativo sera true
@@ -296,11 +296,15 @@
                   preventDuplicates: false,
                   preventOpenDuplicates: false
                 };
-                if(rpta.flag == 1){
-                  $uibModalInstance.close(vm.fData);
-                  vm.getPaginationServerSide();
+                if(rpta.flag == 1){                                    
                   var title = 'OK';
                   var iconClass = 'success';
+                  if(externo){
+                    vm.pacienteRegistrado(rpta.idcliente, vm.fData.nombre + ' ' + vm.fData.apellidos, callback);                    
+                  }else{
+                    vm.getPaginationServerSide();
+                  }
+                  $uibModalInstance.close(vm.fData);
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
                   var iconClass = 'warning';
@@ -320,6 +324,7 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
+                pacienteRegistrado : vm.pacienteRegistrado,
                 // document: $document,
                 // listaSexos : $scope.listaSexos,
                 // gridComboOptions : $scope.gridComboOptions,
@@ -329,6 +334,15 @@
           }
         });
       }
+
+      vm.pacienteRegistrado = function(id,nombre, callback){
+        vm.pacienteAgregado = {};
+        vm.pacienteAgregado.idcliente = id;
+        vm.pacienteAgregado.paciente = nombre;
+        //console.log(vm.pacienteAgregado);
+        callback(vm.pacienteAgregado);
+      }
+
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
