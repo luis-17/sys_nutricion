@@ -43,11 +43,11 @@
           <!-- right side body -->
           <div class="col-lg-12 col-md-12">
             <!-- style="top: {{vm.event.posTop}}px;right: {{vm.event.posRight}}px;"  -->
-            <div class="fc-overlay" >
-              <div class="panel b-solid">
-                <h5 class="text-default-dark mt-0">Paciente: {{vm.event.cliente.paciente}}</h5>
+            <div class="menu-dropdown" uib-dropdown 
+                  style="position:absolute; top:{{vm.event.posY}}px;left:{{vm.event.posX}}px;"
+                  ng-mouseleave="vm.closeMenu();">
                 <div class="my-dropdown">
-                  <ul class="" role="menu">
+                  <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
                     <li role="menuitem" ng-click="changeViewConsulta(false);changeViewFicha(true);">
                       <a ><i class="fa fa-user"></i>Ir al Paciente</a>
                     </li>
@@ -68,7 +68,6 @@
                     </li>
                   </ul>
                 </div>
-              </div>
             </div>
 
             <div class="calendar" ng-model="vm.eventSources" calendar="calendarCitas" ui-calendar="vm.uiConfig.calendar"></div>

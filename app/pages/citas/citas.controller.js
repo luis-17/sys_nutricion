@@ -6,14 +6,8 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices) { 
+  function CitasController ($scope,$uibModal,$controller,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices) { 
     var vm = this;
-
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){
       var datos = {
@@ -47,26 +41,31 @@
     vm.alertOnResize = function(event, delta){ 
       angular.element('.calendar').fullCalendar( 'refetchEvents' );
     };
-
-    vm.overlay = angular.element('.fc-overlay');
-    //vm.tooltipOnMouseOver = function( event, jsEvent){
+    //vm.overlay = angular.element('.fc-overlay');
+    vm.menu = angular.element('.menu-dropdown');
     vm.alertOnClick =function(event, jsEvent, view) {
       vm.event = event;
       //console.log(jsEvent);
-      vm.overlay.removeClass('left right');
+      vm.menu.addClass('open');
+      vm.menu.removeClass('left right');
       var wrap = angular.element(jsEvent.target).closest('.fc-event');
       var cal = wrap.closest('.calendar');
       var left = wrap.offset().left - cal.offset().left;
       var right = cal.width() - (wrap.offset().left - cal.offset().left + wrap.width());
-      if( right > vm.overlay.width() ) {
-        vm.overlay.addClass('left');
-      } else if ( left > vm.overlay.width() ) {
-        vm.overlay.addClass('right');
+      if( right > vm.menu.width() ) {
+        vm.menu.addClass('left');        
+      } else if ( left > vm.menu.width() ) {
+        vm.menu.addClass('right');
       }
-      if (wrap.find('.fc-overlay').length === 0) {
-        wrap.append( vm.overlay );
-      }/**/
+
+      vm.event.posX = jsEvent.pageX - cal.offset().left;
+      vm.event.posY = jsEvent.pageY - cal.offset().top;
     }
+
+    vm.closeMenu = function(){
+      vm.menu.removeClass('open');
+    }
+
     vm.eventsF = function (start, end, timezone, callback) {
       var events = []; 
       CitasServices.sListarCita().then(function (rpta) {
@@ -79,17 +78,14 @@
       });
     } 
     vm.eventSources = [vm.eventsF];
-
     /* Change View */
     vm.changeView = function(view,calendar) {
       angular.element('.calendar').fullCalendar('changeView', view);
     };
-
     vm.today = function() {
       angular.element('.calendar').fullCalendar('changeView', 'agendaWeek');
       angular.element('.calendar').fullCalendar('today');
     };
-
     vm.selectCell = function(date, jsEvent, view) {    
       var typeView = angular.element('.calendar').fullCalendar('getView');      
       //console.log('date.format()',date.format());
@@ -222,6 +218,11 @@
           vm.cancel = function () {
             $uibModalInstance.close();
           };
+
+          vm.callback = function(){
+            vm.fData.cliente = $scope.pacienteAgregado;
+            console.log('vm.fData.cliente',vm.fData.cliente);
+          }
         },
         
       });
@@ -288,9 +289,20 @@
           };
           vm.tp2 = angular.copy(vm.tp1); 
 
-          vm.fData.hora_desde =  new Date(vm.fData.hora_desde);        
-          vm.fData.hora_hasta =  new Date(vm.fData.hora_hasta);       
+          var partes_hora1 = vm.fData.hora_desde_sql.split(':');
+          //console.log(partes_hora1);
+          var d = new Date();
+          d.setHours( parseInt(partes_hora1[0]) );
+          d.setMinutes( parseInt(partes_hora1[1]) );
+          vm.fData.hora_desde = d;
 
+          var partes_hora2= vm.fData.hora_hasta_sql.split(':');
+          //console.log(partes_hora2);
+          var c = new Date();
+          c.setHours( parseInt(partes_hora2[0]) );
+          c.setMinutes( parseInt(partes_hora2[1]) );
+          vm.fData.hora_hasta = c;
+          
           vm.getPacienteAutocomplete = function (value) {
             var params = {};
             params.search= value;
