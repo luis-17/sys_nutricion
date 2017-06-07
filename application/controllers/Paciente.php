@@ -33,7 +33,7 @@ class Paciente extends CI_Controller {
 					'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 					'sexo' => $row['sexo'],
 					'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
-					'estatura' => $row['estatura'],
+					'estatura' => (int)$row['estatura'],
 					'idempresa' => $row['idempresa'],
 					'idtipocliente' => $row['idtipocliente'],
 					'cargo_laboral' => $row['cargo_laboral'],
@@ -168,6 +168,7 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrListado = array();
 		$arrPeso = array();
+		$arrIMC = array();
 		$lista = $this->model_paciente->m_cargar_historial_paciente($allInputs);
 		foreach ($lista as $row) {
 			array_push($arrPeso, array(
@@ -175,9 +176,15 @@ class Paciente extends CI_Controller {
 				'peso'	=> $row['peso']
 				)
 			);
+			array_push($arrIMC, array(
+				'fecha' => $row['fecha_atencion'],
+				'imc'	=> round( (($row['peso'] / pow($row['estatura'],2))*10000),2 ),
+				)
+			);
 		}
 		$arrListado['peso'] = $arrPeso;
-		// var_dump($arrListado['peso'] );exit();
+		$arrListado['imc'] = $arrIMC;
+		// var_dump($arrListado );exit();
 
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
@@ -541,8 +548,7 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function registrar_habito_paciente()
-	{
+	public function registrar_habito_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
@@ -577,8 +583,7 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function anular_paciente()
-	{
+	public function anular_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;

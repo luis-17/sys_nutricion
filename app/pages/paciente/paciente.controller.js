@@ -166,9 +166,11 @@
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
           if( vm.mySelectionGrid[0] ){
             PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
-              vm.mySelectionGrid[0].peso = rpta.datos.peso;
-              if(vm.mySelectionGrid[0].estatura > 50){
-                vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+              if(rpta.flag == 1){
+                vm.mySelectionGrid[0].peso = rpta.datos.peso;
+                if(vm.mySelectionGrid[0].estatura > 50){
+                  vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+                }
               }
             });
           }
@@ -332,9 +334,11 @@
         vm.mySelectionGrid = [row.entity];
         vm.evoRadio = 'Peso';
         PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
-          vm.mySelectionGrid[0].peso = rpta.datos.peso;
-          if(vm.mySelectionGrid[0].estatura > 50){
-            vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+          if(rpta.flag == 1){
+            vm.mySelectionGrid[0].peso = rpta.datos.peso;
+            if(vm.mySelectionGrid[0].estatura > 50){
+              vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+            }
           }
         });
         vm.ficha = {}
@@ -378,17 +382,27 @@
       // CARGAR GRAFICO
         vm.cargarEvolucion = function(row){
           PacienteServices.slistarEvolucion(row).then(function(rpta){
-            console.log('rpta', rpta.datos.peso);
-            vm.dataEvolucion = rpta.datos.peso;
-            // vm.dataEvolucion = [
-            //   { y: "2006", a: 100},
-            //   { y: "2007", a: 75 },
-            //   { y: "2008", a: 50 },
-            //   { y: "2009", a: 75 },
-            //   { y: "2010", a: 50 },
-            //   { y: "2011", a: 75 },
-            //   { y: "2012", a: 100 }
+            // console.log('rpta', rpta.datos.peso);
+            if(rpta.datos.peso.length >= 2){
+              vm.dataPeso = rpta.datos.peso;
+              vm.dataImc = rpta.datos.imc;
+              vm.sinGrafico = false;
+            }else{
+              vm.dataPeso = [];
+              vm.dataImc = [];
+              vm.sinGrafico = true;
+            }
+            // vm.dataPeso = [
+            //   { fecha: "2017-05-01", peso: 75},
+            //   { fecha: "2017-05-06", peso: 30},
+            //   { fecha: "2017-05-11", peso: 20},
+            //   { fecha: "2017-05-16", peso: 30},
+            //   { fecha: "2017-05-21", peso: 75},
+            //   { fecha: "2017-05-26", peso: 60},
+            //   { fecha: "2017-05-31", peso: 50},
+
             // ]
+
           });
         }
       // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP

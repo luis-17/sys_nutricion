@@ -121,6 +121,11 @@ class Consulta extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$row = $this->model_consulta->m_cargar_ultima_atencion($allInputs['idcliente']);
 		// var_dump($row); exit();
+		if(empty($row)){
+			$arrData['flag'] = 0;
+		}else{
+			$arrData['flag'] = 1;
+		}
 		$arrData['datos'] = $row;
 		$this->output
 		    ->set_content_type('application/json')
