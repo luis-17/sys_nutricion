@@ -478,6 +478,7 @@ class Paciente extends CI_Controller {
 		if($this->model_paciente->m_registrar($allInputs)){
 			$arrData['message'] = 'Se registraron los datos correctamente' . date('H:n:s');
     		$arrData['flag'] = 1;
+    		$arrData['idcliente'] = GetLastId('idcliente','cliente');
 		}
 		$this->output
 		    ->set_content_type('application/json')
