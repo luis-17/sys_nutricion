@@ -468,7 +468,13 @@
         eventClick: vm.alertOnClick,
         minTime: '07:00:00',
         maxTime: '23:00:00',
-        displayEventTime: false
+        displayEventTime: false,
+        views: {
+          week: {
+            titleFormat: 'D MMMM YYYY',
+            titleRangeSeparator: ' - ',
+          }
+        },
       }
     };
     //console.log(vm.uiConfig.calendar);
