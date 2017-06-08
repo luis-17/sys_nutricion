@@ -129,7 +129,7 @@
           vm.dp = {};
           vm.dp.today = function() {
             if(start){
-              console.log(start);
+              //console.log('start',start);
               vm.fData.fecha = start.toDate();
             }else{
               vm.fData.fecha = new Date();
@@ -169,9 +169,29 @@
             vm.tp1.ismeridian = ! vm.tp1.ismeridian;
           };
 
-          vm.tp2 = angular.copy(vm.tp1);          
-          vm.fData.hora_desde = new Date();
-          vm.fData.hora_hasta = new Date();
+          vm.tp2 = angular.copy(vm.tp1);  
+          if(start){            
+            var partes_hora1 = start.format('hh:mm').split(':');
+            //console.log(partes_hora1);
+            var d = new Date();
+            d.setHours( parseInt(partes_hora1[0]) );
+            d.setMinutes( parseInt(partes_hora1[1]) );
+            vm.fData.hora_desde = d;
+
+            var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
+            //console.log(partes_hora2);
+            var c = new Date();
+            c.setHours( parseInt(partes_hora2[0]) );
+            c.setMinutes( parseInt(partes_hora2[1]) );
+            vm.fData.hora_hasta = c;
+
+            /*vm.fData.hora_desde = start.toDate();
+            vm.fData.hora_hasta = angular.copy(start.add(30, 'minutes').toDate());*/
+          } else{
+            vm.fData.hora_desde = new Date();
+            vm.fData.hora_hasta = new Date();
+          }       
+          
 
           vm.getPacienteAutocomplete = function (value) {
             var params = {};
