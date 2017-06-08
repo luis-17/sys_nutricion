@@ -327,3 +327,8 @@ section.tile-body{
 .menu-dropdown.right{
     margin-left:10%;
 }
+
+.fc-title{
+    font-size: 10px;
+    letter-spacing: 0px;
+}

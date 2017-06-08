@@ -446,7 +446,8 @@
         eventResize: vm.alertOnResize,
         eventClick: vm.alertOnClick,
         minTime: '07:00:00',
-        maxTime: '23:00:00'
+        maxTime: '23:00:00',
+        displayEventTime: false
       }
     };
     //console.log(vm.uiConfig.calendar);
