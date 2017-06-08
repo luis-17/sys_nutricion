@@ -72,6 +72,7 @@
         angular.forEach(rpta.datos, function(row, key) { 
             //row.start = new Date(row.start);
             row.start =  moment(row.start);
+            row.end =  moment(row.end);
         });
         events = rpta.datos; 
         callback(events); 
