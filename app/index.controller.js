@@ -4,7 +4,27 @@
   angular
     .module('minotaur')
     .controller('MainController', MainController)
-    .service('rootServices', rootServices);
+    .service('rootServices', rootServices)
+    .directive('hcChart', function () {
+      return {
+          restrict: 'E',
+          template: '<div></div>',
+          scope: {
+              options: '='
+          },
+          link: function (scope, element) {
+            // scope.$watch(function () {
+            //   return attrs.chart;
+            // }, function () {
+            //     if (!attrs.chart) return;
+            //     var charts = JSON.parse(attrs.chart);
+            //     $(element[0]).highcharts(charts);
+                Highcharts.chart(element[0], scope.options);
+            // });
+
+          }
+      };
+  });
 
   /** @ngInject */
   function MainController($translate, $scope, rootServices, $location) {

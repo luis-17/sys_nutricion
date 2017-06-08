@@ -12,13 +12,17 @@
 		                </div>
 		            </div>
 					<div class=" col-sm-12" ng-show="pac.evoRadio == 'Peso'">
-					  	<div line-chart line-data='pac.dataPeso'
+					  	<!-- <div line-chart line-data='pac.dataPeso'
 						  line-xkey='fecha'
 						  line-ykeys='["peso"]'
 						  line-labels='["Peso(kg.)"]'
 						  line-colors='["#0B658A"]'
 						  ng-show="!pac.sinGrafico"
 						>
+					  	</div> -->
+					  	<div class="row">
+					  		<hc-chart ng-if="pac.chartOptions" id="chartOptions" style="width: 100%;" options="pac.chartOptions"> GRAFICO XD </hc-chart>
+
 					  	</div>
 					</div>
 				  	<div  class="col-sm-12" ng-show="pac.sinGrafico"
