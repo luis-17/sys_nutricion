@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
 	<section class="tile-body p-0">
-		<form name="outerForm" role="form" novalidate class="form-validation">
+		<form name="formCita" role="form" novalidate class="form-validation">
 			<div class="row">
 	            <div class="form-group col-md-6">
 	              <label for="name" class="control-label minotaur-label" style="width: 100%;">Paciente 
@@ -71,6 +71,11 @@
 	</section>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-click="modalcita.ok()"><i class="fa fa-arrow-right"></i> Aceptar</button>
-  <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="modalcita.cancel()"><i class="fa fa-arrow-left"></i> Cancelar</button>
+  	<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="modalcita.cancel()">
+  		<i class="fa fa-arrow-left"></i> Cancelar
+  	</button>
+  	<button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" 
+  		ng-disabled="formCita.$invalid" ng-click="modalcita.ok();">
+  		<i class="fa fa-arrow-right"></i> Guardar
+  	</button>
 </div>
