@@ -58,8 +58,19 @@
         vm.menu.addClass('right');
       }
 
+      console.log('cal.offset().bottom',cal.offset().bottom);
+      console.log('cal.offset().top',cal.offset().top);
+      console.log('vm.menu.height()',vm.menu.height());
+
       vm.event.posX = jsEvent.pageX - cal.offset().left;
+      if(vm.event.posX < 140){
+        vm.event.posX = 140;
+      }
+
       vm.event.posY = jsEvent.pageY - cal.offset().top;
+      if(vm.event.posY > 620){
+        vm.event.posY = 620;
+      }
     }
 
     vm.closeMenu = function(){
