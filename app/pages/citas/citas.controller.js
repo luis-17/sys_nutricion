@@ -254,8 +254,8 @@
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
         size: 'lg',
-        backdropClass: 'splash splash-2 splash-ef-14',
-        windowClass: 'splash splash-2 splash-ef-14',
+        backdropClass: 'splash splash-ef-14',
+        windowClass: 'splash splash-ef-14',
         controller: function($scope, $uibModalInstance ){
           var vm = this;
           vm.fData = row;
