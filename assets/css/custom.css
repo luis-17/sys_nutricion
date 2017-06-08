@@ -332,3 +332,8 @@ section.tile-body{
     font-size: 10px;
     letter-spacing: 0px;
 }
+
+.fc-agendaWeek-view .fc-body .fc-time-grid-container{
+    overflow-y: visible !important;
+    height: auto !important;
+}
