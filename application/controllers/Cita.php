@@ -111,6 +111,15 @@ class Cita extends CI_Controller {
 		    return;
 		}		
 
+		if(empty($allInputs['hora_desde']) || empty($allInputs['hora_hasta'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar horas validas.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
+
 		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
 			$arrData['flag'] = 0;
 			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
@@ -204,7 +213,16 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 		    return;
-		}		
+		}	
+
+		if(empty($allInputs['hora_desde']) || empty($allInputs['hora_hasta'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar horas validas.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}	
 
 		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
 			$arrData['flag'] = 0;
