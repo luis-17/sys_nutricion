@@ -7,7 +7,9 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
+  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,
+    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
+
     var vm = this;
     vm.modoFicha = false;
     vm.modoEditar = false;
@@ -208,8 +210,7 @@
       }
       vm.getPaginationServerSide();
     // MANTENIMIENTO
-      vm.btnNuevo = function (externo,callback) {
-        var externo = externo || null;
+      vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/paciente/paciente_formview.html',
           controllerAs: 'modalPac',
@@ -222,7 +223,6 @@
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.pacienteRegistrado = arrToModal.pacienteRegistrado;
             vm.modalTitle = 'Registro de pacientes';
             // vm.activeStep = 0;
             vm.corp = false; // solo para tipo de cliente = corporativo sera true
@@ -296,15 +296,11 @@
                   preventDuplicates: false,
                   preventOpenDuplicates: false
                 };
-                if(rpta.flag == 1){                                    
+                if(rpta.flag == 1){
+                  $uibModalInstance.close(vm.fData);
+                  vm.getPaginationServerSide();
                   var title = 'OK';
                   var iconClass = 'success';
-                  if(externo){
-                    vm.pacienteRegistrado(rpta.idcliente, vm.fData.nombre + ' ' + vm.fData.apellidos, callback);                    
-                  }else{
-                    vm.getPaginationServerSide();
-                  }
-                  $uibModalInstance.close(vm.fData);
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
                   var iconClass = 'warning';
@@ -324,7 +320,6 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
-                pacienteRegistrado : vm.pacienteRegistrado,
                 // document: $document,
                 // listaSexos : $scope.listaSexos,
                 // gridComboOptions : $scope.gridComboOptions,
@@ -334,15 +329,6 @@
           }
         });
       }
-
-      vm.pacienteRegistrado = function(id,nombre, callback){
-        vm.pacienteAgregado = {};
-        vm.pacienteAgregado.idcliente = id;
-        vm.pacienteAgregado.paciente = nombre;
-        //console.log(vm.pacienteAgregado);
-        callback(vm.pacienteAgregado);
-      }
-
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.mySelectionGrid = [row.entity];
@@ -369,6 +355,7 @@
         //console.log(event);
         vm.externo = true;
         vm.modoFicha = true;
+        vm.evoRadio = 'Peso';
         PacienteServices.sListarPacientePorId(event.cliente).then(function (rpta) {
           vm.ficha = rpta.datos;
           vm.mySelectionGrid = [];
@@ -397,38 +384,87 @@
         vm.cargarEvolucion = function(row){
           PacienteServices.slistarEvolucion(row).then(function(rpta){
             // console.log('rpta', rpta.datos.peso);
-            if(rpta.datos.peso.length >= 2){
-              vm.dataPeso = rpta.datos.peso;
-              vm.dataImc = rpta.datos.imc;
+
+            if(rpta.datos.peso[0].data.length >= 2){
               vm.sinGrafico = false;
             }else{
-              vm.dataPeso = [];
-              vm.dataImc = [];
               vm.sinGrafico = true;
             }
-            vm.chartOptions = {
+
+            vm.chartOptions1 = {
+              chart: {
+                  type: 'line'
+              },
+              title: {
+                  text: 'Peso'
+              },
+              xAxis: {
+                  categories: []
+              },
+              yAxis: {
                 title: {
-                    text: 'Temperature data'
+                    text: 'Peso en Kg.'
                 },
-                xAxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                },
-
-                series: [{
-                    data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
                 }]
+              },
+              // series: [{
+              //     // data: ['85','80','70','90']
+              //     data: []
+              // }]
             };
-            // vm.dataPeso = [
-            //   { fecha: "2017-05-01", peso: 75},
-            //   { fecha: "2017-05-06", peso: 30},
-            //   { fecha: "2017-05-11", peso: 20},
-            //   { fecha: "2017-05-16", peso: 30},
-            //   { fecha: "2017-05-21", peso: 75},
-            //   { fecha: "2017-05-26", peso: 60},
-            //   { fecha: "2017-05-31", peso: 50},
+            vm.chartOptions1.series = rpta.datos.peso;
+            vm.chartOptions1.xAxis.categories = rpta.datos.xAxis;
+            vm.chartOptions1.chart.events = {
+              load: function () {
+                var thes = this;
+                setTimeout(function () {
+                    thes.setSize($("#chartOptions1").parent().width(), $("#chartOptions1").parent().height());
+                }, 10);
+              }
+            };
 
-            // ]
+
+            vm.chartOptions2 = {
+              chart: {
+                  type: 'line'
+              },
+              title: {
+                  text: 'IMC'
+              },
+              xAxis: {
+                  categories: []
+              },
+              yAxis: {
+                title: {
+                    text: 'IMC.'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+              },
+              // series: [{
+              //     // data: ['85','80','70','90']
+              //     data: []
+              // }]
+            };
+            vm.chartOptions2.series = rpta.datos.imc;
+            vm.chartOptions2.xAxis.categories = rpta.datos.xAxis;
+            vm.chartOptions2.chart.events = {
+              load: function () {
+                var thes = this;
+                setTimeout(function () {
+                    thes.setSize($("#chartOptions2").parent().width(), $("#chartOptions2").parent().height());
+                }, 10);
+              }
+            };
+
+
 
           });
         }

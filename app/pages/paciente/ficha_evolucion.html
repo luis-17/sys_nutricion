@@ -11,20 +11,9 @@
 		                  <button type="button" class="btn btn-default" ng-model="pac.evoRadio" uib-btn-radio="'Otro'">Otro</button>
 		                </div>
 		            </div>
-					<div class=" col-sm-12" ng-show="pac.evoRadio == 'Peso'">
-					  	<!-- <div line-chart line-data='pac.dataPeso'
-						  line-xkey='fecha'
-						  line-ykeys='["peso"]'
-						  line-labels='["Peso(kg.)"]'
-						  line-colors='["#0B658A"]'
-						  ng-show="!pac.sinGrafico"
-						>
-					  	</div> -->
-					  	<div class="row">
-					  		<hc-chart ng-if="pac.chartOptions" id="chartOptions" style="width: 100%;" options="pac.chartOptions"> GRAFICO XD </hc-chart>
 
-					  	</div>
-					</div>
+
+
 				  	<div  class="col-sm-12" ng-show="pac.sinGrafico"
 				  		style="background: url('assets/images/evolucion_des.jpg') no-repeat;
 						min-height: 350px;
@@ -39,15 +28,11 @@
 						font-style: italic;">Para ver el gráfico, debes de generar al menos 2 consultas con las cuales comparar</span>
 				  	</div>
 
-					<div class=" col-sm-12" ng-show="pac.evoRadio == 'IMC'">
-					  	<div line-chart line-data='pac.dataImc'
-						  line-xkey='fecha'
-						  line-ykeys='["imc"]'
-						  line-labels='["IMC"]'
-						  line-colors='["#0B658A"]'
-						  ng-show="!pac.sinGrafico"
-						>
-					  	</div>
+					<div class=" col-sm-12" ng-if="pac.evoRadio == 'Peso' && !pac.sinGrafico">
+					  	<hc-chart ng-if="pac.chartOptions1" id="chartOptions1" style="width: 100%;" options="pac.chartOptions1"> GRAFICO XD </hc-chart>
+					</div>
+					<div class=" col-sm-12" ng-if="pac.evoRadio == 'IMC' && !pac.sinGrafico">
+					  	<hc-chart ng-if="pac.chartOptions2" id="chartOptions2" style="width: 100%;" options="pac.chartOptions2"> GRAFICO XD </hc-chart>
 					</div>
 					<div class=" col-sm-12" ng-show="pac.evoRadio == 'Otro'">
 					  	Diagrama en Processo

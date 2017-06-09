@@ -168,23 +168,26 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrListado = array();
 		$arrPeso = array();
+		$arrFecha = array();
 		$arrIMC = array();
 		$lista = $this->model_paciente->m_cargar_historial_paciente($allInputs);
+
+		$arrPeso[] = array(
+        	'name'=> 'Peso',
+          	'data' => array()
+      	);
+      	$arrIMC[] = array(
+        	'name'=> 'IMC',
+          	'data' => array()
+      	);
 		foreach ($lista as $row) {
-			array_push($arrPeso, array(
-				'fecha' => $row['fecha_atencion'],
-				'peso'	=> $row['peso']
-				)
-			);
-			array_push($arrIMC, array(
-				'fecha' => $row['fecha_atencion'],
-				'imc'	=> round( (($row['peso'] / pow($row['estatura'],2))*10000),2 ),
-				)
-			);
+			$arrPeso[0]['data'][] = (int)$row['peso'];
+			$arrIMC[0]['data'][] = round( (($row['peso'] / pow($row['estatura'],2))*10000),2 );
+			$arrFecha[] = $row['fecha_atencion'];
 		}
 		$arrListado['peso'] = $arrPeso;
 		$arrListado['imc'] = $arrIMC;
-		// var_dump($arrListado );exit();
+		$arrListado['xAxis'] = $arrFecha;
 
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
@@ -448,6 +451,7 @@ class Paciente extends CI_Controller {
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
+			return;
     	}
 
     	$allInputs['nombre'] = $this->input->post('nombre');
@@ -476,7 +480,7 @@ class Paciente extends CI_Controller {
 
     	// INICIA EL REGISTRO
 		if($this->model_paciente->m_registrar($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente' . date('H:n:s');
+			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
     		$arrData['idcliente'] = GetLastId('idcliente','cliente');
 		}
@@ -508,8 +512,23 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
+    	if( empty($allInputs['estatura']) ){
+    		$arrData['message'] = 'Ingrese una estatura válida';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if( !soloNumeros($allInputs['estatura']) ){
+    		$arrData['message'] = 'Ingrese solo números';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
 		if($this->model_paciente->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output
@@ -522,7 +541,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_editar_antecedentes_cliente($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+			$arrData['message'] = 'Se editaron los datos correctamente ';
     		$arrData['flag'] = 1;
     		if( $allInputs['cambiaPatologico'] ){
     			$allInputs['tipo'] = 'P';
@@ -570,12 +589,12 @@ class Paciente extends CI_Controller {
     	// HABITOS GENERALES
     	if( empty($allInputs['idclientehabitogen']) ){ // si no hay id es por que es nuevo
     		if($this->model_paciente->m_registrar_habito_cliente($allInputs)){
-    			$arrData['message'] = 'Se registraron los datos correctamente ' . date('H:n:s');
+    			$arrData['message'] = 'Se registraron los datos correctamente ';
     			$arrData['flag'] = 1;
     		}
     	}else{
     		if($this->model_paciente->m_editar_habito_cliente($allInputs)){
-    			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+    			$arrData['message'] = 'Se editaron los datos correctamente ';
     			$arrData['flag'] = 1;
     		}
     	}
@@ -590,7 +609,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_paciente->m_anular($allInputs)){
-			$arrData['message'] = 'Se anularon los datos correctamente' . date('H:n:s');
+			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output
