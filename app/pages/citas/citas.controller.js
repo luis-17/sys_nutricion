@@ -98,19 +98,19 @@
       angular.element('.calendar').fullCalendar('changeView', 'agendaWeek');
       angular.element('.calendar').fullCalendar('today');
     };
-    vm.selectCell = function(date, jsEvent, view) {    
+    vm.selectCell = function(date, end, jsEvent, view) {    
       var typeView = angular.element('.calendar').fullCalendar('getView');      
-      //console.log('date.format()',date.format());
+      console.log('end.format()',end.format());
       if(typeView.type == 'month'){        
         angular.element('.calendar').fullCalendar( 'gotoDate', date );
         angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
       }else{
-        vm.btnCita(date);
+        vm.btnCita(date, null, end);
       }
     }
 
     /* add custom event*/
-    vm.btnCita = function(start, paciente){
+    vm.btnCita = function(start, paciente, end){
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -189,7 +189,12 @@
             d.setMinutes( parseInt(partes_hora1[1]) );
             vm.fData.hora_desde = d;
 
-            var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
+            if(end){
+              var partes_hora2= end.format('hh:mm').split(':');
+            }else{
+              var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
+            }
+                        
             //console.log('partes_hora2',partes_hora2);
             var c = new Date();
             c.setHours( parseInt(partes_hora2[0]) );
