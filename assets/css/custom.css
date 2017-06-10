@@ -337,3 +337,7 @@ section.tile-body{
     overflow-y: visible !important;
     height: auto !important;
 }
+
+.fc-event .fc-bg{
+    background: transparent !important;
+}
