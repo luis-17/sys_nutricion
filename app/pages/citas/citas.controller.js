@@ -484,6 +484,9 @@
           week: {
             titleFormat: 'D MMMM YYYY',
             titleRangeSeparator: ' - ',
+          },
+          day: {
+            titleFormat: 'ddd DD-MM',
           }
         },
       }
