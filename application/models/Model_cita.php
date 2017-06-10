@@ -52,5 +52,14 @@ class Model_cita extends CI_Model {
 		$this->db->where('ci.idcita =', $idcita);
 		return $this->db->get()->row_array();
 	}
+
+	public function m_act_fecha_cita($datos){
+		$data = array(
+			'fecha' => $datos['fecha'],
+			'updatedat' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idcita', $datos['idcita']);
+		return $this->db->update('cita', $data);
+	}
 }
 ?>

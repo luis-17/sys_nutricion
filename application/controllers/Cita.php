@@ -7,7 +7,7 @@ class Cita extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper'));
-        $this->load->model(array('model_cita'));
+        $this->load->model(array('model_cita','model_consulta'));
     }
 
     public function listar_citas(){
@@ -134,8 +134,8 @@ class Cita extends CI_Controller {
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
-			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
+			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde_str'])),
+			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta_str'])),
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
@@ -156,15 +156,7 @@ class Cita extends CI_Controller {
 		$arrData['message'] = 'Ha ocurrido un error actualizando la cita';
 
 		$cita = $this->model_cita->m_consulta_cita($allInputs['event']['id']);
-		if(!empty($cita['idatencion'])){
-			$arrData['flag'] = 0;
-			$arrData['message'] = 'Solo puede modificar citas sin atenciones.';
-			$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
-		    return;
-		}
-
+		
 		//print_r($allInputs);
 		$nuevaFecha = date('Y-m-d',strtotime($allInputs['event']['start']));
 		$nuevaHora= date('H:i:s',strtotime($allInputs['event']['start']));
@@ -180,12 +172,23 @@ class Cita extends CI_Controller {
 			'fecha' => $nuevaFecha,
 			'updatedat' => date('Y-m-d H:i:s')
 			);
-
+		$this->db->trans_start();
 		if($this->model_cita->m_actualizar($data, $allInputs['event']['id'])){
-			$arrData['flag'] = 1;
-			$arrData['message'] = 'Cita actualizada.';
+			if(!empty($cita['idatencion'])){
+				$datos = array(
+					'fecha' => $nuevaFecha,
+					'idatencion' => $cita['idatencion']
+				);
+				if($this->model_consulta->m_act_fecha_atencion($datos)){
+					$arrData['flag'] = 1;
+					$arrData['message'] = 'Consulta actualizada.';
+				}			
+			}else{
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'Cita actualizada.';
+			}			
 		}	
-		
+		$this->db->trans_complete();	
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -238,8 +241,8 @@ class Cita extends CI_Controller {
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde'])),
-			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta'])),
+			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde_str'])),
+			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta_str'])),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
 

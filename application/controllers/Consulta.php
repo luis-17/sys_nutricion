@@ -7,7 +7,7 @@ class Consulta extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper'));
-        $this->load->model(array('model_consulta'));
+        $this->load->model(array('model_consulta', 'model_cita'));
     }
 
 	public function registrar_consulta(){
@@ -18,10 +18,18 @@ class Consulta extends CI_Controller {
 		/*aqui van las validaciones*/
 
 		/*registro de datos*/
+		$this->db->trans_start();
 		if($this->model_consulta->m_registrar($allInputs)){
-			$arrData['flag'] = 1;
-			$arrData['message'] = 'La consulta ha sido registrada.';
+			$datos = array (
+				'idcita' => $allInputs['cita']['id'],
+				'fecha' => date('Y-m-d', strtotime($allInputs['consulta']['fecha_atencion'])),
+			);
+			if($this->model_cita->m_act_fecha_cita($datos)){
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'La consulta ha sido registrada.';
+			}			
 		}
+		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -33,10 +41,18 @@ class Consulta extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
 
+		$this->db->trans_start();
 		if($this->model_consulta->m_actualizar($allInputs)){
-			$arrData['flag'] = 1;
-			$arrData['message'] = 'La consulta ha sido actualizada.';
+			$datos = array (
+				'idcita' => $allInputs['cita']['id'],
+				'fecha' => date('Y-m-d', strtotime($allInputs['consulta']['fecha_atencion'])),
+			);
+			if($this->model_cita->m_act_fecha_cita($datos)){
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'La consulta ha sido actualizada.';
+			}			
 		}
+		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')

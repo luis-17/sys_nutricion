@@ -128,5 +128,14 @@ class Model_consulta extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+
+	public function m_act_fecha_atencion($datos){
+		$data = array(
+			'fecha_atencion' => $datos['fecha'],
+			'updatedat' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idatencion', $datos['idatencion']);
+		return $this->db->update('atencion', $data);
+	}
 }
 ?>
