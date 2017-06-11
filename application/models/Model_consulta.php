@@ -128,6 +128,7 @@ class Model_consulta extends CI_Model {
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
 	}
+
 	public function m_cargar_atenciones_paciente($idcliente){
 		$this->db->select('at.idatencion, at.idcliente, at.idcita, at.peso, at.porc_masa_grasa, at.porc_masa_libre, at.porc_masa_muscular,
 			at.kg_masa_muscular, at.porc_agua_corporal, at.kg_agua_corporal, at.porc_grasa_visceral, at.kg_grasa_visceral, at.cm_pecho,
@@ -142,6 +143,16 @@ class Model_consulta extends CI_Model {
 		$this->db->order_by('fecha_atencion', 'DESC');
 		// $this->db->limit(1);
 		return $this->db->get()->result_array();
+	}
+
+	public function m_act_fecha_atencion($datos){
+		$data = array(
+			'fecha_atencion' => $datos['fecha'],
+			'updatedat' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idatencion', $datos['idatencion']);
+		return $this->db->update('atencion', $data);
+
 	}
 }
 ?>

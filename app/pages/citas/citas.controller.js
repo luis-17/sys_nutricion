@@ -58,9 +58,9 @@
         vm.menu.addClass('right');
       }
 
-      console.log('cal.offset().bottom',cal.offset().bottom);
+     /* console.log('cal.offset().bottom',cal.offset().bottom);
       console.log('cal.offset().top',cal.offset().top);
-      console.log('vm.menu.height()',vm.menu.height());
+      console.log('vm.menu.height()',vm.menu.height());*/
 
       vm.event.posX = jsEvent.pageX - cal.offset().left;
       if(vm.event.posX < 140){
@@ -98,19 +98,19 @@
       angular.element('.calendar').fullCalendar('changeView', 'agendaWeek');
       angular.element('.calendar').fullCalendar('today');
     };
-    vm.selectCell = function(date, jsEvent, view) {    
+    vm.selectCell = function(date, end, jsEvent, view) {    
       var typeView = angular.element('.calendar').fullCalendar('getView');      
-      //console.log('date.format()',date.format());
+      console.log('end.format()',end.format());
       if(typeView.type == 'month'){        
         angular.element('.calendar').fullCalendar( 'gotoDate', date );
         angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
       }else{
-        vm.btnCita(date);
+        vm.btnCita(date, null, end);
       }
     }
 
     /* add custom event*/
-    vm.btnCita = function(start, paciente){
+    vm.btnCita = function(start, paciente, end){
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -174,7 +174,7 @@
           /*TIMEPICKER*/
           vm.tp1 = {};
           vm.tp1.hstep = 1;
-          vm.tp1.mstep = 15;
+          vm.tp1.mstep = 30;
           vm.tp1.ismeridian = true;
           vm.tp1.toggleMode = function() {
             vm.tp1.ismeridian = ! vm.tp1.ismeridian;
@@ -183,26 +183,27 @@
           vm.tp2 = angular.copy(vm.tp1);  
           if(start){            
             var partes_hora1 = start.format('hh:mm').split(':');
-            //console.log(partes_hora1);
+            //console.log('partes_hora1',partes_hora1);
             var d = new Date();
             d.setHours( parseInt(partes_hora1[0]) );
             d.setMinutes( parseInt(partes_hora1[1]) );
             vm.fData.hora_desde = d;
 
-            var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
-            //console.log(partes_hora2);
+            if(end){
+              var partes_hora2= end.format('hh:mm').split(':');
+            }else{
+              var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
+            }
+                        
+            //console.log('partes_hora2',partes_hora2);
             var c = new Date();
             c.setHours( parseInt(partes_hora2[0]) );
             c.setMinutes( parseInt(partes_hora2[1]) );
             vm.fData.hora_hasta = c;
-
-            /*vm.fData.hora_desde = start.toDate();
-            vm.fData.hora_hasta = angular.copy(start.add(30, 'minutes').toDate());*/
           } else{
             vm.fData.hora_desde = new Date();
             vm.fData.hora_hasta = new Date();
-          }       
-          
+          }  
 
           vm.getPacienteAutocomplete = function (value) {
             var params = {};
@@ -223,6 +224,14 @@
           }          
 
           vm.ok = function () {
+            if(vm.fData.hora_desde){
+              vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
+            }
+
+            if(vm.fData.hora_hasta){
+              vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
+            }
+
             CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {              
               var openedToasts = [];
               vm.options = {
@@ -253,7 +262,7 @@
 
           vm.callback = function(pacienteAgregado){
             vm.fData.cliente = pacienteAgregado;
-            console.log('vm.fData.cliente',vm.fData.cliente);
+            //console.log('vm.fData.cliente',vm.fData.cliente);
           }
         },
         
@@ -354,7 +363,14 @@
           }          
 
           vm.ok = function () {
-            console.log('vm.fData', vm.fData);            
+            //console.log('vm.fData', vm.fData);  
+            if(vm.fData.hora_desde){
+              vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
+            }
+
+            if(vm.fData.hora_hasta){
+              vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
+            }          
             CitasServices.sActualizarCita(vm.fData).then(function (rpta) {
               var openedToasts = [];
               vm.options = {

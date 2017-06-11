@@ -703,7 +703,7 @@
             vm.historial.listaMasaMuscular = rpta.datos.masa_muscular;
 
           }
-          console.log('Peso',vm.listaPeso);
+          // console.log('Peso',vm.listaPeso);
         });
       }
       // BOTONES DE EDICION
