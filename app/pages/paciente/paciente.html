@@ -4,10 +4,12 @@
     <li class="active">Paciente</li>
 
   </ol>
-  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha" 
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
           ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
-  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha" 
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
           ng-if="pac.externo" ng-click="changeViewFicha(false);">REGRESAR</button>
+  <!-- <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
+          ng-click="">NUEVA CONSULTA</button> -->
   <!-- LISTADO -->
   <div class="row" ng-show="!pac.modoFicha">
     <div class="col-lg-12 col-md-12">
