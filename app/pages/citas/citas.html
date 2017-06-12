@@ -9,7 +9,7 @@
 
 <div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" ng-show="viewPlan"
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
-      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new');" > 
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new', vm.callback);" > 
 </div>
 
 <div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'" ng-show="viewFicha"

@@ -8,8 +8,8 @@ class Model_plan_alimentario extends CI_Model {
  	public function m_registrar_dieta_turno($datos){
  		$data = array(
  			'idatencion' => $datos['idatencion'],
- 			'iddia' => $datos['iddia'],
  			'idturno' => $datos['idturno'],
+ 			'iddia' => empty($datos['iddia']) ? NULL : $datos['iddia'],
  			'hora' => $datos['hora'],
  			'indicaciones' => $datos['indicaciones'],
  		);

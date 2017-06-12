@@ -47,6 +47,12 @@
               proteinas: 0,
               carbohidratos:0,
               grasas: 0,
+              fibras: 0,
+              cenizas: 0,
+              calcio: 0,
+              fosforo: 0,
+              zinc: 0,
+              hierro: 0,
             };
           angular.forEach(vm.dias[key].turnos, function(val, ind) {
             vm.dias[key].turnos[ind].hora = vm.horas[0];            
@@ -58,17 +64,45 @@
               proteinas: 0,
               carbohidratos:0,
               grasas: 0,
+              fibras: 0,
+              cenizas: 0,
+              calcio: 0,
+              fosforo: 0,
+              zinc: 0,
+              hierro: 0,
             };            
           });
         });
+        vm.dia = angular.copy(vm.dias[0]);  
+        angular.forEach(vm.dia.turnos, function(val, ind) {
+            vm.dia.turnos[ind].hora = vm.horas[0];            
+            vm.dia.turnos[ind].minuto = vm.minutos[0];            
+            vm.dia.turnos[ind].tiempo = vm.tiempo[0];            
+            vm.dia.turnos[ind].alimentos = [];            
+            vm.dia.turnos[ind].valoresTurno = {
+              calorias: 0,
+              proteinas: 0,
+              carbohidratos:0,
+              grasas: 0,
+              fibras: 0,
+              cenizas: 0,
+              calcio: 0,
+              fosforo: 0,
+              zinc: 0,
+              hierro: 0,
+            };            
+          });      
       });
     }); 
 
-    vm.initPlan = function(origen,tipoVista){
+    vm.initPlan = function(origen,tipoVista,callbackCitas){
       vm.consulta = $scope.consulta;
       vm.origen = origen;
       vm.tipoVista = tipoVista;
-      console.log('vm.consulta',vm.consulta);
+      vm.callbackCitas = callbackCitas;
+      console.log(callbackCitas);
+      //console.log('vm.consulta',vm.consulta);
+      vm.formaPlan = 'dia';
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};
@@ -98,7 +132,9 @@
       var datos = {
         consulta:vm.consulta,
         tipo:vm.tipoPlan,
-        plan:vm.dias,
+        forma:vm.formaPlan,
+        planDias:vm.dias,
+        planGeneral:vm.dia,
       };
       PlanAlimentarioServices.sRegistrarPlan(datos).then(function(rpta){
         var openedToasts = [];
@@ -111,6 +147,11 @@
         if(rpta.flag == 1){ 
           var title = 'OK';
           var iconClass = 'success';
+          $scope.changeViewCita(true);
+          $scope.changeViewOnlyBodyCita(false);
+          $scope.changeViewConsulta(false);
+          $scope.changeViewPlan(false);
+          vm.callbackCitas();
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
