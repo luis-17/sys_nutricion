@@ -15,11 +15,18 @@
       vm.callback = callback;
       vm.tipoVista = tipoVista;
       //console.log('vm.cita',vm.cita);
+
+      if($scope.pestaniaConsulta){
+        vm.changePestania($scope.pestaniaConsulta);
+      }else{
+        vm.changePestania(1);
+      }
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};
         vm.fData.si_embarazo = false;
-        vm.dp.today();
+        vm.fData.fecha_atencion = moment(vm.cita.fecha).toDate();
+        console.log('vm.fData.fecha_atencion',vm.fData.fecha_atencion);
       }else if(vm.tipoVista == 'edit'){
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           vm.fData = rpta.datos;
@@ -71,7 +78,6 @@
       }
     }
 
-    vm.pestania = 1;
     vm.changePestania = function(value){
       vm.pestania = value;
     }
@@ -198,9 +204,10 @@
         if(rpta.flag == 1){                    
           var title = 'OK';
           var iconClass = 'success';
-          /*$scope.changeViewConsulta(false);
-          vm.callback();*/
+          /*$scope.changeViewConsulta(false);*/
+          vm.callback();
           vm.changePestania(3);
+          vm.fData.idatencion = rpta.idatencion;
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
@@ -229,8 +236,8 @@
         if(rpta.flag == 1){                    
           var title = 'OK';
           var iconClass = 'success';
-          /*$scope.changeViewConsulta(false);
-          vm.callback();*/
+          /*$scope.changeViewConsulta(false);*/
+          vm.callback();
           vm.changePestania(3);
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';

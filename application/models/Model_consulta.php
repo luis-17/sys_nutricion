@@ -137,5 +137,14 @@ class Model_consulta extends CI_Model {
 		$this->db->where('idatencion', $datos['idatencion']);
 		return $this->db->update('atencion', $data);
 	}
+
+	public function m_act_idproxcita($idatencion, $idcita){
+		$data = array(
+			'idproxcita' => $idcita,
+			'updatedat' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idatencion', $idatencion);
+		return $this->db->update('atencion',$data);
+	}
 }
 ?>

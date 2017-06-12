@@ -1,6 +1,10 @@
 <ol class="breadcrumb bg-white">
   <li><a ui-sref="dashboard">Inicio</a></li>
-  <li><a ui-sref="citas">Citas</a></li>
+  <li><a ui-sref="citas" ng-click="changeViewCita(true);
+                                    changeViewConsulta(false);
+                                    changeViewOnlyBodyCita(false);
+                                    changeViewPlan(false);cons.callback();">Citas</a>
+  </li>
   <li class="active">Consulta</li>
 </ol>
 
@@ -19,7 +23,7 @@
             </button>
 
             <button type="button" class="btn btn-warning mr-15" 
-              ng-click='changeViewConsulta(false);'>Cancelar
+              ng-click='changeViewCita(true);changeViewConsulta(false);'>Cancelar
             </button>
             <button type="button" class="btn btn-success" ng-if="cons.pestania == '1'"
                     ng-click="cons.changePestania('2');cons.calcularIndicadores();"
@@ -507,10 +511,11 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Proxima Cita</label>
                 <div class="button">
-                  <a ng-click="vm.btnCita(null,cons.cita.cliente);">Agendar la siguiente cita</a>
+                  <a ng-click="changeViewOnlyBodyCita(true,cons.fData);changeViewPlan(false);">Agendar la siguiente cita</a>
                 </div>
               </div>
             </div>
+
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
               <div class="accion-img">
                 <img src="assets/images/dinamic/plan.png">
@@ -518,20 +523,30 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Dieta o Plan alimentario</label>
                 <div class="button">
-                  <a ng-click="cons.btnGeneraPlan();">Generar plan</a>
+                  <a ng-click="changeViewOnlyBodyCita(false);cons.btnGeneraPlan();">Generar plan</a>
                 </div>                
               </div>
             </div>
           </div>          
         </div>
         <div class="col-lg-12 col-md-12 mt-30">
-          <div class="btn-group">
-            
-          </div>
+          
         </div>
         <!-- /right side body -->
       </section>
     </div>    
    </div>
 </div>  
+<style type="text/css" ng-if="viewConsulta && cons.pestania == '3' && (viewOnlyBodyCita || viewPlan)">
+  #pageCitas{
+    padding-top: 0 !important;
+  }
 
+  #pagePlan{
+    padding-top: 0 !important;
+  }
+
+  #pageConsulta{
+    padding-bottom: 0 !important;
+  }
+</style>

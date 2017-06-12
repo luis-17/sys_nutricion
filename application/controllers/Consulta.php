@@ -6,7 +6,7 @@ class Consulta extends CI_Controller {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
-        $this->load->helper(array('fechas_helper'));
+        $this->load->helper(array('fechas_helper','otros_helper'));
         $this->load->model(array('model_consulta', 'model_cita'));
     }
 
@@ -20,6 +20,7 @@ class Consulta extends CI_Controller {
 		/*registro de datos*/
 		$this->db->trans_start();
 		if($this->model_consulta->m_registrar($allInputs)){
+			$idatencion = GetLastId('idatencion', 'atencion');
 			$datos = array (
 				'idcita' => $allInputs['cita']['id'],
 				'fecha' => date('Y-m-d', strtotime($allInputs['consulta']['fecha_atencion'])),
@@ -27,6 +28,7 @@ class Consulta extends CI_Controller {
 			if($this->model_cita->m_act_fecha_cita($datos)){
 				$arrData['flag'] = 1;
 				$arrData['message'] = 'La consulta ha sido registrada.';
+				$arrData['idatencion'] = $idatencion;
 			}			
 		}
 		$this->db->trans_complete();

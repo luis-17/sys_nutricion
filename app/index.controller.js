@@ -83,8 +83,9 @@
     }
     $scope.getValidateSession();
 
-    $scope.changeViewConsulta = function(value){
+    $scope.changeViewConsulta = function(value, pestania){
       $scope.viewConsulta = value;
+      $scope.pestaniaConsulta = pestania;
     }
     $scope.changeViewConsulta(false);
 
@@ -98,6 +99,19 @@
       $scope.consulta = consulta;
     }
     $scope.changeViewPlan(false);
+
+    $scope.changeViewOnlyBodyCita = function(value, consulta){
+      $scope.viewOnlyBodyCita = value;
+      $scope.consultaOrigen = consulta;
+      console.log('llego aqui', $scope.consultaOrigen);
+    }
+    $scope.changeViewOnlyBodyCita(false);
+
+    $scope.changeViewCita = function(value){
+      $scope.viewCita = value;      
+    }
+    $scope.changeViewCita(true); 
+
   }
   function rootServices($http, $q) {
     return({

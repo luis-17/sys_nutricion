@@ -1,5 +1,23 @@
-<div class="page page-ui pull-to-header" id="pageCitas">
-  <ol class="breadcrumb bg-white">
+<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" 
+      ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'new'"
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'new');" > 
+</div>
+<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" 
+      ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'edit'"
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
+</div>
+
+<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" ng-show="viewPlan"
+      ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new');" > 
+</div>
+
+<div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'" ng-show="viewFicha"
+      ng-controller="PacienteController as pac" ng-init="pac.btnExternoVerFicha(vm.event);">
+</div>
+
+<div class="page page-ui pull-to-header" id="pageCitas" ng-show="viewCita || viewOnlyBodyCita">
+  <ol class="breadcrumb bg-white" ng-hide="viewOnlyBodyCita">
     <li><a ui-sref="dashboard">Inicio</a></li>
     <li class="active">Citas</li>
   </ol>
@@ -7,7 +25,6 @@
   <div class="row">
     <div class="col-lg-12 col-md-12">
       <div class="tile" >
-        <!-- tile header -->
         <section class="tile-header">
           <h1 class="heading">Citas</h1> 
           <div class="controls">
@@ -23,9 +40,7 @@
             <minotaur-tile-close></minotaur-tile-close>
           </div>
         </section>
-        <!-- /tile header -->
 
-         <!-- tile body -->
         <section class="tile-body col-lg-12 col-md-12">
           <!-- right side header -->
           <div class="col-lg-12 col-md-12 mb-10">
@@ -44,23 +59,21 @@
                   <button class="btn btn-default btn-sm" ng-click="vm.changeView('agendaWeek', 'calendarCitas')">Semana</button>
                   <button class="btn btn-default btn-sm" ng-click="vm.changeView('month', 'calendarCitas')">Mes</button>
                 </div>
-                <button type="button" class="btn btn-success btn-sm" ng-click='vm.btnCita()'>Nueva Cita</button>              
+                <button type="button" class="btn btn-success btn-sm" ng-click='vm.btnCita(null,null,null,consultaOrigen)'>Nueva Cita</button>              
               </div>
             </div>
           </div>
-          <!-- /right side header -->
-          <!-- right side body -->
           <div class="col-lg-12 col-md-12">
-            <!-- style="top: {{vm.event.posTop}}px;right: {{vm.event.posRight}}px;"  -->
             <div class="menu-dropdown" uib-dropdown 
                   style="position:absolute; top:{{vm.event.posY}}px;left:{{vm.event.posX}}px;"
                   ng-mouseleave="vm.closeMenu();">
                 <div class="my-dropdown">
                   <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
-                    <li role="menuitem" ng-click="changeViewConsulta(false);changeViewFicha(true);">
+                    <li role="menuitem" ng-click="changeViewCita(false);changeViewConsulta(false);changeViewFicha(true);">
                       <a ><i class="fa fa-user"></i>Ir al Paciente</a>
                     </li>
-                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnGenerarConsulta(vm.event)">
+                    <li role="menuitem" ng-if="!vm.event.atencion.idatencion" 
+                        ng-click="vm.btnGenerarConsulta(vm.event); changeViewCita(false);">
                       <a ><i class="fa fa-check-square-o"></i>Generar Consulta</a>
                     </li>
                     <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnEditCita(vm.event)">
@@ -69,7 +82,8 @@
                     <li role="menuitem" ng-if="!vm.event.atencion.idatencion" ng-click="vm.btnAnular(vm.event)">
                       <a ><i class="fa fa-remove"></i>Anular Cita</a>
                     </li>
-                    <li role="menuitem" ng-if="vm.event.atencion.idatencion" ng-click="vm.btnEditarConsulta(vm.event)">
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion" 
+                        ng-click="vm.btnEditarConsulta(vm.event); changeViewCita(false);">
                       <a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a>
                     </li>
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion" ng-click="vm.btnAnularConsulta(vm.event)">
@@ -81,52 +95,13 @@
 
             <div class="calendar" ng-model="vm.eventSources" calendar="calendarCitas" ui-calendar="vm.uiConfig.calendar"></div>
           </div>
-          <!-- /right side body -->
         </section>
       </div>         
-      <!-- /right side -->
     </div>    
   </div> 
 </div>
-<style type="text/css" ng-if="viewConsulta">
-  #pageCitas{
-    display: none;
-  }
-</style>
-<style type="text/css" ng-if="!viewConsulta && !viewFicha">
-  #pageCitas{
-    display: block;
-  }
-</style>
-<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" ng-include="'app/pages/consultas/consulta.html'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'new');" > 
-</div>
-<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" ng-include="'app/pages/consultas/consulta.html'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
-</div>
 
-<style type="text/css" ng-if="viewPlan">
-  #pageConsulta{
-    display: none;
-  }
-</style>
-<style type="text/css" ng-if="!viewPlan">
-  #pageConsulta{
-    display: block;
-  }
-</style>
-<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" 
-      ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
-      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new');" > 
-</div>
-<style type="text/css" ng-if="viewFicha">
-  #pageCitas{
-    display: none;
-  }
-</style>
-<div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'"
-      ng-controller="PacienteController as pac" ng-init="pac.btnExternoVerFicha(vm.event);">
-</div>
+
 
 
 

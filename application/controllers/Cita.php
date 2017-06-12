@@ -6,7 +6,7 @@ class Cita extends CI_Controller {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
-        $this->load->helper(array('fechas_helper'));
+        $this->load->helper(array('fechas_helper', 'otros_helper'));
         $this->load->model(array('model_cita','model_consulta'));
     }
 
@@ -141,8 +141,17 @@ class Cita extends CI_Controller {
 			);
 
 		if($this->model_cita->m_registrar($data)){
-			$arrData['flag'] = 1;
-			$arrData['message'] = 'Cita registrada.';
+			$idcita = GetLastId('idcita', 'cita');
+			if(!empty($allInputs['consultaOrigen']) && !empty($allInputs['consultaOrigen']['idatencion'])){
+				//idproxcita en atencion
+				if($this->model_consulta->m_act_idproxcita($allInputs['consultaOrigen']['idatencion'], $idcita)){
+					$arrData['flag'] = 1;
+					$arrData['message'] = 'Cita registrada.';
+				}
+			}else{
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'Cita registrada.';
+			}
 		}
 	
 		$this->output

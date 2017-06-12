@@ -100,17 +100,16 @@
     };
     vm.selectCell = function(date, end, jsEvent, view) {    
       var typeView = angular.element('.calendar').fullCalendar('getView');      
-      console.log('end.format()',end.format());
       if(typeView.type == 'month'){        
         angular.element('.calendar').fullCalendar( 'gotoDate', date );
         angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
       }else{
-        vm.btnCita(date, null, end);
+        vm.btnCita(date, null, end, $scope.consultaOrigen);
       }
     }
 
     /* add custom event*/
-    vm.btnCita = function(start, paciente, end){
+    vm.btnCita = function(start, paciente, end, consultaOrigen){
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -127,6 +126,10 @@
             vm.type='edit';
             vm.fData.cliente = paciente;
             console.log('vm.fData.paciente',vm.fData.cliente);
+          }
+
+          if(consultaOrigen){
+            console.log('$scope.consultaOrigen', consultaOrigen);
           }
 
           /*lista ubicaciones*/
@@ -194,7 +197,7 @@
             }else{
               var partes_hora2= start.add(30, 'minutes').format('hh:mm').split(':');
             }
-                        
+
             //console.log('partes_hora2',partes_hora2);
             var c = new Date();
             c.setHours( parseInt(partes_hora2[0]) );
@@ -230,6 +233,10 @@
 
             if(vm.fData.hora_hasta){
               vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
+            }
+
+            if(consultaOrigen){
+              vm.fData.consultaOrigen = consultaOrigen;
             }
 
             CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {              

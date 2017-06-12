@@ -1,4 +1,4 @@
-<ol class="breadcrumb bg-white">
+<ol class="breadcrumb bg-white" ng-hide="!plan.seleccionadoTipo">
   <li><a ui-sref="dashboard">Inicio</a></li>
   <li><a ui-sref="paciente">Paciente</a></li>
   <li class="active">Plan Alimentario</li>
@@ -11,9 +11,9 @@
       <section class="tile-header" >
         <h1 class="heading col-lg-8 col-md-8 col-sm-12 mb-10">Selecciona el Tipo de plan</h1>         
         <div class="col-lg-4 col-md-4 mb-10 col-sm-12">
-          <div class="pull-right">
+          <!-- <div class="pull-right">
             <button type="button" class="btn btn-warning" ng-click='changeViewPlan(false);'>Cancelar</button>
-          </div>
+          </div> -->
         </div>        
       </section>
       <!-- /tile header -->
@@ -21,7 +21,7 @@
         <div class="col-lg-12 col-md-12">
           <div class="row">
             <div class="col-sm-6 col-xs-12">
-              <div class="item-plan plan1" ng-click="plan.seleccionaTipo('simple');">
+              <div class="item-plan plan1" ng-click="plan.seleccionaTipo('simple');changeViewConsulta(false);">
                 <label class="control-label minotaur-label">Plan simple</label>
                 <div class="">
                   <img src="">
@@ -32,7 +32,7 @@
               </div>                            
             </div>
             <div class="col-sm-6 col-xs-12">
-              <div class="item-plan plan2" ng-click="plan.seleccionaTipo('compuesto');">
+              <div class="item-plan plan2" ng-click="plan.seleccionaTipo('compuesto');changeViewConsulta(false);">
               <label class="control-label minotaur-label">Plan compuesto</label>
               <div class="">
                 <img src="">
@@ -57,7 +57,9 @@
         <h1 class="heading col-lg-8 col-md-8 col-sm-12 mb-10">Ingrese los alimentos</h1>         
         <div class="col-lg-4 col-md-4 mb-10 col-sm-12">
           <div class="pull-right">
-            <button type="button" class="btn btn-warning" ng-click='changeViewPlan(false);'>Cancelar</button>
+            <button type="button" class="btn btn-warning" 
+                    ng-click='changeViewPlan(false);changeViewConsulta(true,3);'>Cancelar
+            </button>
           </div>
         </div>        
       </section>
