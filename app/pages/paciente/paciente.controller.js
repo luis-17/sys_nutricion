@@ -8,7 +8,10 @@
   /** @ngInject */
 
   function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,
-    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,AntecedenteServices) {
+    PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
+    AntecedenteServices, ConsultasServices
+    )
+  {
 
     var vm = this;
     vm.modoFicha = false;
@@ -446,6 +449,7 @@
         vm.cargarHabitosAlimentarios(row.entity);
         vm.cargarHabitos(row.entity);
         vm.cargarEvolucion(row.entity);
+        vm.cargarConsultas(row.entity);
       }
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
@@ -687,6 +691,22 @@
           vm.listaAntHeredados = angular.copy(vm.ficha.antHeredados);
         }
       }
+      vm.cargarConsultas = function(row){
+        vm.historial = {}
+        ConsultasServices.sCargarConsultasPaciente(row).then(function(rpta){
+          if(rpta.flag == 1){
+            vm.historial.listaCabecera = rpta.cabecera;
+            vm.historial.listaPeso = rpta.datos.peso;
+            vm.historial.listaMasaGrasa = rpta.datos.masa_grasa;
+            vm.historial.listaMasaLibre = rpta.datos.masa_libre;
+            vm.historial.listaAguaCorporal = rpta.datos.agua_corporal;
+            vm.historial.listaMasaMuscular = rpta.datos.masa_muscular;
+
+          }
+          // console.log('Peso',vm.listaPeso);
+        });
+      }
+      // BOTONES DE EDICION
       vm.btnAceptarTab2 = function(datos){//datos personales
         PacienteServices.sEditarPaciente(datos).then(function (rpta) {
           vm.options = {

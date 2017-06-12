@@ -149,5 +149,35 @@ class Consulta extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function listar_consultas_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente']);
+		$arrCabecera = array();
+		$arrListado = array();
+		foreach ($lista as $key => $row) {
+			// array_push($arrListado, array(
+			// 	'idatencion' => $row['idatencion'],
+			// 	'fecha_atencion' => $row['fecha_atencion'],
+			// 	)
+			// );
+			$arrListado['peso'][] = array('id' =>$key ,'valor' => $row['peso']);
+			$arrListado['masa_grasa'][] = array('id' =>$key ,'valor' => $row['porc_masa_grasa']);
+			$arrListado['masa_libre'][] = array('id' =>$key ,'valor' => $row['porc_masa_libre']);
+			$arrListado['agua_corporal'][] = array('id' =>$key ,'valor' => $row['porc_agua_corporal']);
+			$arrListado['masa_muscular'][] = array('id' =>$key ,'valor' => $row['porc_masa_muscular']);
+			$arrCabecera[] = DarFormatoDMY($row['fecha_atencion']);
+		}
+		// var_dump($arrListado); exit();
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}else{
+			$arrData['flag'] = 1;
+		}
+		$arrData['cabecera'] = $arrCabecera;
+		$arrData['datos'] = $arrListado;
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 
 }

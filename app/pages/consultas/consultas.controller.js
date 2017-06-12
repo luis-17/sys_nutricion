@@ -6,8 +6,8 @@
     .service('ConsultasServices', ConsultasServices);
 
   /** @ngInject */
-  function ConsultasController ($scope,$uibModal,alertify,toastr,ConsultasServices) { 
-    var vm = this; 
+  function ConsultasController ($scope,$uibModal,alertify,toastr,ConsultasServices) {
+    var vm = this;
 
     vm.initConsulta = function(cita,origen,callback,tipoVista){
       vm.cita = cita;
@@ -26,14 +26,14 @@
         vm.fData = {};
         vm.fData.si_embarazo = false;
         vm.fData.fecha_atencion = moment(vm.cita.fecha).toDate();
-        console.log('vm.fData.fecha_atencion',vm.fData.fecha_atencion);
+        //console.log('vm.fData.fecha_atencion',vm.fData.fecha_atencion);
       }else if(vm.tipoVista == 'edit'){
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           vm.fData = rpta.datos;
           vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
           vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
           vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
-        });        
+        });
       }
     }
 
@@ -41,8 +41,8 @@
     vm.dp = {};
     vm.dp.today = function() {
       vm.fData.fecha_atencion = new Date();
-    };      
-    
+    };
+
     vm.dp.clear = function() {
       vm.fData.fecha_atencion = null;
     };
@@ -64,7 +64,7 @@
 
     vm.dp.popup = {
       opened: false
-    }; 
+    };
 
     vm.isOpen = false;
     vm.titleToggle = "Ver Pliegues";
@@ -81,7 +81,7 @@
     vm.changePestania = function(value){
       vm.pestania = value;
     }
-    
+
     vm.changeEmbarazo = function(){
       if(vm.fData.si_embarazo){
         vm.fData.si_embarazo  = false;
@@ -113,7 +113,7 @@
           vm.fData.porc_masa_grasa = parseFloat((100 - parseFloat(vm.fData.porc_masa_libre)).toFixed(2));
           vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
           vm.fData.kg_masa_libre = parseFloat((parseFloat(vm.fData.peso) - parseFloat(vm.fData.kg_masa_grasa)).toFixed(2));
-        }        
+        }
 
         if(value == 'porc_masa_muscular'){
           vm.fData.kg_masa_muscular = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_muscular)) / 100).toFixed(2));
@@ -130,7 +130,7 @@
         if(value == 'kg_agua_corporal'){
           vm.fData.porc_agua_corporal = parseFloat(((parseFloat(vm.fData.kg_agua_corporal) * 100) / parseFloat(vm.fData.peso)).toFixed(2));
         }
-        
+
         if(value == 'porc_grasa_visceral'){
           vm.fData.kg_grasa_visceral = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_grasa_visceral)) / 100).toFixed(2));
         }
@@ -146,7 +146,7 @@
       vm.fData.peso = parseFloat((vm.fData.peso * 1).toFixed(2));
       //IMC peso / (estatura en mtr al cuadrado)
       vm.fData.imc = (vm.fData.peso / ((vm.cita.cliente.estatura/100) * (vm.cita.cliente.estatura/100))).toFixed(2);
-      
+
       //Peso Ideal = 0,75 (altura en cm – 150) + 50
       vm.fData.pesoIdeal = ((0.75 * (vm.cita.cliente.estatura - 150)) + 50).toFixed(2);
 
@@ -200,8 +200,8 @@
           extendedTimeout: '1000',
           preventDuplicates: false,
           preventOpenDuplicates: false
-        };       
-        if(rpta.flag == 1){                    
+        };
+        if(rpta.flag == 1){
           var title = 'OK';
           var iconClass = 'success';
           /*$scope.changeViewConsulta(false);*/
@@ -232,8 +232,8 @@
           extendedTimeout: '1000',
           preventDuplicates: false,
           preventOpenDuplicates: false
-        };       
-        if(rpta.flag == 1){                    
+        };
+        if(rpta.flag == 1){
           var title = 'OK';
           var iconClass = 'success';
           /*$scope.changeViewConsulta(false);*/
@@ -261,6 +261,7 @@
         sActualizarConsulta:sActualizarConsulta,
         sAnularConsulta : sAnularConsulta,
         sCargarConsulta: sCargarConsulta,
+        sCargarConsultasPaciente: sCargarConsultasPaciente,
     });
     function sRegistrarConsulta(datos) {
       var request = $http({
@@ -295,7 +296,15 @@
             data : datos
       });
       return (request.then(handleSuccess,handleError));
-    }    
+    }
+    function sCargarConsultasPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Consulta/listar_consultas_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
 
   }
 })();
