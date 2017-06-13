@@ -12,6 +12,7 @@ class Model_cita extends CI_Model {
 		$this->db->select('ub.descripcion_ub, ub.idubicacion',FALSE);
 
 		$this->db->select('at.idatencion, at.fecha_atencion, at.diagnostico_notas',FALSE);
+		$this->db->select('adt.idatenciondietaturno',FALSE);
 
 		$this->db->from('cita ci');
 		$this->db->join('cliente cli', 'cli.idcliente = ci.idcliente AND cli.estado_cl = 1');
@@ -19,6 +20,7 @@ class Model_cita extends CI_Model {
 		$this->db->join('ubicacion ub', 'ub.idubicacion = ci.idubicacion AND ub.estado_ub = 1');
 
 		$this->db->join('atencion at', 'at.idcita = ci.idcita AND at.estado_atencion = 1', 'left');
+		$this->db->join('atencion_dieta_turno adt', 'adt.idatencion = at.idatencion AND adt.estado_dt = 1', 'left');
 		$this->db->where('ci.estado_ci <>', 0);
 		return $this->db->get()->result_array();
 	}

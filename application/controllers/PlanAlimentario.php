@@ -12,6 +12,8 @@ class PlanAlimentario extends CI_Controller {
 
 	public function registrar_plan_alimentario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		print_r($allInputs['planDias']);
+		exit();
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error registrando el plan alimentario.';
 

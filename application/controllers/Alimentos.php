@@ -56,12 +56,20 @@ class Alimentos extends CI_Controller {
 					'idalimento' => $row['idalimento'],
 					'idgrupo1' => $row['idgrupo1'],
 					'idgrupo2' => $row['idgrupo2'],
-					'nombre' => $row['nombre'],
+					'nombre' => $row['nombre'] ,
 					'calorias' => (float)$row['calorias'],
 					'proteinas' => (float)$row['proteinas'],
 					'grasas' => (float)$row['grasas'],
 					'carbohidratos' => (float)$row['carbohidratos'],
 					'estado_ali' => $row['estado_ali'],
+					'medida_casera' => strtoupper($row['medida_casera']),
+					'gramo' => (float)$row['gramo'],
+					'ceniza' => (float)$row['ceniza'],
+					'calcio' => (float)$row['calcio'],
+					'fosforo' =>(float)(float) $row['fosforo'],
+					'zinc' => (float)$row['zinc'],
+					'hierro' => (float)$row['hierro'],
+					'nombre_compuesto' => $row['nombre'] . ' - '. strtoupper($row['medida_casera']),
 				)
 			);
 		}
