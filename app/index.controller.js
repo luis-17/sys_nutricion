@@ -100,10 +100,11 @@
     }
     $scope.changeViewPlan(false);
 
-    $scope.changeViewOnlyBodyCita = function(value, consulta){
+    $scope.changeViewOnlyBodyCita = function(value, consulta, paciente){
       $scope.viewOnlyBodyCita = value;
       $scope.consultaOrigen = consulta;
-      console.log('llego aqui', $scope.consultaOrigen);
+      $scope.pacienteOrigen = paciente;
+      console.log('llego aqui', $scope.pacienteOrigen);
     }
     $scope.changeViewOnlyBodyCita(false);
 

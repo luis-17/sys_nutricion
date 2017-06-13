@@ -433,6 +433,9 @@
                     <button type="button" class="btn btn-default" ng-click="cons.dp.open()"><i class="fa fa-calendar"></i></button>
                   </span>
                 </p>
+                <div class="p-15 text-darkgray" style="padding-top:0 !important; font-weight:bold;">
+                      Si estas cargando una consulta antigua, coloca la fecha real aquí. Si la consulta es de hoy, ignora esta función.
+                </div>
               </div>
                                              
             </div>
@@ -511,7 +514,7 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Proxima Cita</label>
                 <div class="button">
-                  <a ng-click="changeViewOnlyBodyCita(true,cons.fData);changeViewPlan(false);">Agendar la siguiente cita</a>
+                  <a ng-click="changeViewOnlyBodyCita(true,cons.fData, cons.cita.cliente);changeViewPlan(false);">Agendar la siguiente cita</a>
                 </div>
               </div>
             </div>

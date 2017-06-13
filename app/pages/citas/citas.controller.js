@@ -104,7 +104,7 @@
         angular.element('.calendar').fullCalendar( 'gotoDate', date );
         angular.element('.calendar').fullCalendar('changeView', 'agendaDay');
       }else{
-        vm.btnCita(date, null, end, $scope.consultaOrigen);
+        vm.btnCita(date, $scope.pacienteOrigen, end, $scope.consultaOrigen);
       }
     }
 
