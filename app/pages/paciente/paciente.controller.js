@@ -14,6 +14,7 @@
   {
 
     var vm = this;
+    console.log('paciente',$scope.paciente);
     vm.modoFicha = false;
     vm.modoEditar = false;
     vm.fotoCrop = false;
@@ -481,6 +482,7 @@
           vm.cargarEvolucion(vm.ficha);
         });
       }
+
       // CARGAR GRAFICO
         vm.cargarEvolucion = function(row){
           PacienteServices.slistarEvolucion(row).then(function(rpta){
@@ -901,6 +903,12 @@
             ev.preventDefault();
         });
       }
+      if($scope.paciente){
+        var row = {
+          entity:$scope.paciente
+        }
+        vm.btnVerFicha(row);
+      }
   }
 
   function PacienteServices($http, $q) {
@@ -911,6 +919,7 @@
         sListarHabitosPaciente: sListarHabitosPaciente,
         sListarAntecedentesPaciente: sListarAntecedentesPaciente,
         sListarPacientePorId: sListarPacientePorId,
+        sListarPacientePorNombre: sListarPacientePorNombre,
         sListarUltimaConsulta: sListarUltimaConsulta,
         sRegistrarPaciente: sRegistrarPaciente,
         sEditarPaciente: sEditarPaciente,
@@ -965,6 +974,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/listar_paciente_por_id",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarPacientePorNombre(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_paciente_por_nombre",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

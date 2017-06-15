@@ -27,7 +27,7 @@
   });
 
   /** @ngInject */
-  function MainController($translate, $scope, rootServices, $location) {
+  function MainController($translate, $scope, rootServices, PacienteServices,$location) {
     var vm = this;
     // console.log('$translate',$translate);
     vm.changeLanguage = function (langKey) {
@@ -57,6 +57,16 @@
         $scope.listaModulos = {};
         $scope.logOut();
         $scope.goToUrl('/app/pages/login');
+      });
+    };
+    $scope.buscarPaciente = function (paciente) {
+      var paramDatos = {
+        search: paciente
+      }
+      PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) {
+      console.log(rpta.datos);
+      $scope.paciente = rpta.datos;
+      $scope.goToUrl('/app/paciente');
       });
     };
 
@@ -109,9 +119,9 @@
     $scope.changeViewOnlyBodyCita(false);
 
     $scope.changeViewCita = function(value){
-      $scope.viewCita = value;      
+      $scope.viewCita = value;
     }
-    $scope.changeViewCita(true); 
+    $scope.changeViewCita(true);
 
   }
   function rootServices($http, $q) {

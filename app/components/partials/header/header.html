@@ -3,8 +3,8 @@
     <span class="sr-only">Toggle header</span>
     <i class="fa fa-cog"></i>
   </button>
-  <a class="navbar-brand" ui-sref="dashboard"> 
-    <img class="mb" src="assets/images/dinamic/logo.png" alt="Sistema para Nutricionistas"> 
+  <a class="navbar-brand" ui-sref="dashboard">
+    <img class="mb" src="assets/images/dinamic/logo.png" alt="Sistema para Nutricionistas">
     <!-- <span><strong>MIN</strong>OTAUR</span> -->
   </a>
   <button type="button" class="navigation-toggle" id="navigation-toggle">
@@ -14,8 +14,8 @@
 </div>
 <div class="main-search hidden-xs">
   <form>
-    <input type="text" class="form-control" placeholder="Buscar paciente...">
-    <button class="btn">
+    <input type="text" class="form-control" placeholder="Buscar paciente..." ng-model="fBusqueda">
+    <button class="btn" ng-click="buscarPaciente(fBusqueda);">
       <i class="fa fa-search"></i>
     </button>
   </form>
@@ -53,10 +53,10 @@
     </li> -->
     <li>
       <div uib-dropdown>
-        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle> 
-          <!-- <span class="inline"> Profesional: Luis Luna </span> --> 
+        <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle>
+          <!-- <span class="inline"> Profesional: Luis Luna </span> -->
           <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
-          <span class="nav-text"><i class="fa fa-user"></i> Ing. Imrich Kamarel</span>
+          <span class="nav-text"><i class="fa fa-user"></i> Ing. Ruben Guevara</span>
         </button>
         <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
           <div class="media">
@@ -64,8 +64,8 @@
               <img class="media-object img-circle" src="assets/images/ici-avatar.jpg" alt="">
             </div>
             <div class="media-body">
-              <h4 class="text-sm uppercase-bold">Ing. Imrich Kamarel</h4>
-              <a href="javascript:;">ici.kamarel@minotaur.com</a>
+              <h4 class="text-sm uppercase-bold">Ing. Ruben Guevara</h4>
+              <a href="javascript:;">rguevarac@hotmail.es</a>
               <ul class="list-unstyled">
                 <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
                 <li><a href="javascript:;"><i class="fa fa-check"></i> Tasks</a></li>
@@ -81,7 +81,7 @@
       </div>
     </li>
     <!--<li>
-       Single button 
+       Single button
       <div uib-dropdown>
         <button id="language" type="button" class="btn no-bg" uib-dropdown-toggle>
           <img ng-show="main.currentLanguage == 'en'" src="assets/images/flags/United-States-of-America.png" class="img-responsive img-circle hidden-xs" alt="">
@@ -129,6 +129,6 @@
           <span class="nav-text">Toggle Rightbar</span>
         </button>
       </div>
-    </li>--> 
+    </li>-->
   </ul>
 </div>

@@ -57,6 +57,19 @@ class Model_paciente extends CI_Model {
 
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_paciente_por_nombre($datos){
+		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
+			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion, cl.cargo_laboral,
+			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
+			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
+		$this->db->from('cliente cl');
+		$this->db->join('motivo_consulta mc', 'cl.idmotivoconsulta = mc.idmotivoconsulta');
+		$this->db->where('cl.estado_cl', 1);
+		$this->db->where("UPPER(CONCAT(cl.nombre, ' ',cl.apellidos)) LIKE '%". strtoupper_total($datos['search']) . "%'");
+		$this->db->limit(1);
+
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_pacientes_autocomplete($datos){
 		$this->db->select("c.idcliente, c.email");
 		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
