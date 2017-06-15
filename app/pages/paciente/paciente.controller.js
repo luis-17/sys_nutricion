@@ -699,8 +699,36 @@
             vm.historial.listaPeso = rpta.datos.peso;
             vm.historial.listaMasaGrasa = rpta.datos.masa_grasa;
             vm.historial.listaMasaLibre = rpta.datos.masa_libre;
+
+            vm.historial.listaPorcAgua = rpta.datos.porc_agua;
             vm.historial.listaAguaCorporal = rpta.datos.agua_corporal;
+            vm.historial.listaPorcMasa = rpta.datos.porc_masa;
             vm.historial.listaMasaMuscular = rpta.datos.masa_muscular;
+            // vm.historial.listaPorcGrasa = rpta.datos.porc_grasa;
+            vm.historial.listaGrasa = rpta.datos.grasa_visceral;
+            vm.historial.listaCmPecho = rpta.datos.cm_pecho;
+            vm.historial.listaCmAntebrazo = rpta.datos.cm_antebrazo;
+            vm.historial.listaCmCintura = rpta.datos.cm_cintura;
+            vm.historial.listaCmAbdomen = rpta.datos.cm_abdomen;
+            vm.historial.listaCmCadera = rpta.datos.cm_cadera_gluteo;
+            vm.historial.listaCmMuslo = rpta.datos.cm_muslo;
+            vm.historial.listaCmHombros = rpta.datos.cm_hombros;
+            vm.historial.listaCmBicepsRel = rpta.datos.cm_biceps_relajados;
+            vm.historial.listaCmBicepsCon = rpta.datos.cm_biceps_contraidos;
+            vm.historial.listaCmMuneca = rpta.datos.cm_muneca;
+            vm.historial.listaCmRodilla = rpta.datos.cm_rodilla;
+            vm.historial.listaCmGemelos = rpta.datos.cm_gemelos;
+            vm.historial.listaCmTobillo = rpta.datos.cm_tobillo;
+            vm.historial.listaCmTricipital = rpta.datos.cm_tricipital;
+            vm.historial.listaCmBicipital = rpta.datos.cm_bicipital;
+            vm.historial.listaCmSubescapular = rpta.datos.cm_subescapular;
+            vm.historial.listaCmAxilar = rpta.datos.cm_axilar;
+            vm.historial.listaCmPectoral = rpta.datos.cm_pectoral;
+            vm.historial.listaCmSuprailiaco = rpta.datos.cm_suprailiaco;
+            vm.historial.listaCmSupraespinal = rpta.datos.cm_supraespinal;
+            vm.historial.listaCmAbdominal = rpta.datos.cm_abdominal;
+            vm.historial.listaCmPierna = rpta.datos.cm_pierna;
+            vm.historial.listaDiagnostico_notas = rpta.datos.diagnostico_notas;
 
           }
           // console.log('Peso',vm.listaPeso);

@@ -473,7 +473,7 @@ class Paciente extends CI_Controller {
 
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
-    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);
 
     	}
 
@@ -496,7 +496,7 @@ class Paciente extends CI_Controller {
     	if(!empty($allInputs['croppedImage'])){
     		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
 
-    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);
     		if($this->model_paciente->m_editar_foto($allInputs)){
 	    		$arrData['message'] = 'La foto se cambió correctamente';
 	    		$arrData['flag'] = 1;

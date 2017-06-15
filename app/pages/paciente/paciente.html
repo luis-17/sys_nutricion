@@ -7,7 +7,7 @@
   <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
           ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
 
-  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha" 
+  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
           ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
 
   <!-- <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
@@ -49,7 +49,7 @@
             <!-- tile widget -->
             <section class="tile-widget bg-info" style="min-height: 145px;">
               <img class="img-circle profile-avatar" src="assets/images/sin-imagen.png" alt="" ng-if="pac.mySelectionGrid.length < 1">
-              <img class="img-circle profile-avatar" src="assets/images/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-show="pac.mySelectionGrid.length >= 1">
+              <img class="img-circle profile-avatar" src="assets/images/dinamic/pacientes/{{pac.mySelectionGrid[0].nombre_foto}}" alt="" ng-show="pac.mySelectionGrid.length >= 1">
               <div class="row mt-30">
                 <div class="col-md-12 text-center">
                   <h4 class="text-uppercase m-0">{{pac.mySelectionGrid[0].nombre}}</h4>

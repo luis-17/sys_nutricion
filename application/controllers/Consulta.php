@@ -29,7 +29,7 @@ class Consulta extends CI_Controller {
 				$arrData['flag'] = 1;
 				$arrData['message'] = 'La consulta ha sido registrada.';
 				$arrData['idatencion'] = $idatencion;
-			}			
+			}
 		}
 		$this->db->trans_complete();
 
@@ -52,7 +52,7 @@ class Consulta extends CI_Controller {
 			if($this->model_cita->m_act_fecha_cita($datos)){
 				$arrData['flag'] = 1;
 				$arrData['message'] = 'La consulta ha sido actualizada.';
-			}			
+			}
 		}
 		$this->db->trans_complete();
 
@@ -163,8 +163,37 @@ class Consulta extends CI_Controller {
 			$arrListado['peso'][] = array('id' =>$key ,'valor' => $row['peso']);
 			$arrListado['masa_grasa'][] = array('id' =>$key ,'valor' => $row['porc_masa_grasa']);
 			$arrListado['masa_libre'][] = array('id' =>$key ,'valor' => $row['porc_masa_libre']);
-			$arrListado['agua_corporal'][] = array('id' =>$key ,'valor' => $row['porc_agua_corporal']);
-			$arrListado['masa_muscular'][] = array('id' =>$key ,'valor' => $row['porc_masa_muscular']);
+
+			$arrListado['porc_agua'][] = array('id' => $key, 'valor' => $row['porc_agua_corporal']);
+			$arrListado['agua_corporal'][] = array('id' => $key, 'valor' => $row['kg_agua_corporal']);
+			$arrListado['porc_masa'][] = array('id' =>$key ,'valor' => $row['porc_masa_muscular']);
+			$arrListado['masa_muscular'][] = array('id' =>$key ,'valor' => $row['kg_masa_muscular']);
+			$arrListado['porc_grasa'][] = array('id' => $key, 'valor' => $row['porc_grasa_visceral']);
+			$arrListado['grasa_visceral'][] = array('id' => $key, 'valor' => $row['kg_grasa_visceral']);
+			$arrListado['cm_pecho'][] = array('id' => $key, 'valor' => $row['cm_pecho']);
+			$arrListado['cm_antebrazo'][] = array('id' => $key, 'valor' => $row['cm_antebrazo']);
+			$arrListado['cm_cintura'][] = array('id' => $key, 'valor' => $row['cm_cintura']);
+			$arrListado['cm_abdomen'][] = array('id' => $key, 'valor' => $row['cm_abdomen']);
+			$arrListado['cm_cadera_gluteo'][] = array('id' => $key, 'valor' => $row['cm_cadera_gluteo']);
+			$arrListado['cm_muslo'][] = array('id' => $key, 'valor' => $row['cm_muslo']);
+			$arrListado['cm_hombros'][] = array('id' => $key, 'valor' => $row['cm_hombros']);
+			$arrListado['cm_biceps_relajados'][] = array('id' => $key, 'valor' => $row['cm_biceps_relajados']);
+			$arrListado['cm_biceps_contraidos'][] = array('id' => $key, 'valor' => $row['cm_biceps_contraidos']);
+			$arrListado['cm_muneca'][] = array('id' => $key, 'valor' => $row['cm_muneca']);
+			$arrListado['cm_rodilla'][] = array('id' => $key, 'valor' => $row['cm_rodilla']);
+			$arrListado['cm_gemelos'][] = array('id' => $key, 'valor' => $row['cm_gemelos']);
+			$arrListado['cm_tobillo'][] = array('id' => $key, 'valor' => $row['cm_tobillo']);
+			$arrListado['cm_tricipital'][] = array('id' => $key, 'valor' => $row['cm_tricipital']);
+			$arrListado['cm_bicipital'][] = array('id' => $key, 'valor' => $row['cm_bicipital']);
+			$arrListado['cm_subescapular'][] = array('id' => $key, 'valor' => $row['cm_subescapular']);
+			$arrListado['cm_axilar'][] = array('id' => $key, 'valor' => $row['cm_axilar']);
+			$arrListado['cm_pectoral'][] = array('id' => $key, 'valor' => $row['cm_pectoral']);
+			$arrListado['cm_suprailiaco'][] = array('id' => $key, 'valor' => $row['cm_suprailiaco']);
+			$arrListado['cm_supraespinal'][] = array('id' => $key, 'valor' => $row['cm_supraespinal']);
+			$arrListado['cm_abdominal'][] = array('id' => $key, 'valor' => $row['cm_abdominal']);
+			$arrListado['cm_pierna'][] = array('id' => $key, 'valor' => $row['cm_pierna']);
+			$arrListado['diagnostico_notas'][] = array('id' => $key, 'valor' => $row['diagnostico_notas']);
+
 			$arrCabecera[] = DarFormatoDMY($row['fecha_atencion']);
 		}
 		// var_dump($arrListado); exit();

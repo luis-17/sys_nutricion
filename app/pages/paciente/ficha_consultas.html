@@ -24,12 +24,25 @@
             </tr>
             <tr>
               <td>Agua Corporal(%):</td>
+              <td ng-repeat="item in pac.historial.listaPorcAgua">{{item.valor}}</td>
+            </tr>
+            <tr>
+              <td>Agua Corporal(kg):</td>
               <td ng-repeat="item in pac.historial.listaAguaCorporal">{{item.valor}}</td>
             </tr>
             <tr>
+              <td>Grasa Visceral (kg):</td>
+              <td ng-repeat="item in pac.historial.listaGrasa">{{item.valor}}</td>
+            </tr>
+            <tr>
               <td>Masa Muscular(%):</td>
+              <td ng-repeat="item in pac.historial.listaPorcMasa">{{item.valor}}</td>
+            </tr>
+            <tr>
+              <td>Masa Muscular(kg):</td>
               <td ng-repeat="item in pac.historial.listaMasaMuscular">{{item.valor}}</td>
             </tr>
+
 
             </tbody>
           </table>
