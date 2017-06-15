@@ -1,7 +1,13 @@
 <div class="page page-ui pull-to-header">
-  <ol class="breadcrumb bg-white">
+  <ol class="breadcrumb bg-white" ng-if="!pac.modoFicha">
     <li><a ui-sref="dashboard">Inicio</a></li>
     <li class="active">Paciente</li>
+
+  </ol>
+  <ol class="breadcrumb bg-white" ng-if="pac.modoFicha">
+    <li><a ui-sref="dashboard">Inicio</a></li>
+    <li ng-click="pac.btnRegresar();"><a>Paciente</a></li>
+    <li class="active">{{pac.mySelectionGrid[0].nombre}} {{pac.mySelectionGrid[0].apellidos}}</li>
 
   </ol>
   <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
@@ -10,8 +16,8 @@
   <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
           ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
 
-  <!-- <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
-          ng-click="">NUEVA CONSULTA</button> -->
+  <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
+          ng-click="goToUrl('/app/citas');">NUEVA CITA</button>
 
   <!-- LISTADO -->
   <div class="row" ng-show="!pac.modoFicha">
