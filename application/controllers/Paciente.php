@@ -45,7 +45,8 @@ class Paciente extends CI_Controller {
 					'medicamentos' => $row['medicamentos'],
 					'antecedentes_notas' => $row['antecedentes_notas'],
 					'habitos_notas' => $row['habitos_notas'],
-					'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion'])
+					'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
+					'cant_atencion' =>  $row['cant_atencion'],
 
 				)
 			);
