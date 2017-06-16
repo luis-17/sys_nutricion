@@ -15,6 +15,7 @@
       vm.callback = callback;
       vm.tipoVista = tipoVista;
       //console.log('vm.cita',vm.cita);
+      vm.emails = cita.cliente.email;
 
       if($scope.pestaniaConsulta){
         vm.changePestania($scope.pestaniaConsulta);

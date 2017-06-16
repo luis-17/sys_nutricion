@@ -13,9 +13,9 @@
     <div class="tile">
       <!-- tile header -->
       <section class="tile-header" ng-if="cons.pestania != '3'">
-        <h1 class="heading col-lg-8 col-md-8 col-sm-12 mb-10">Datos de la Consulta</h1> 
+        <h1 class="heading col-lg-6 col-md-6 col-sm-12 mb-10">Datos de la Consulta</h1> 
         
-        <div class="col-lg-4 col-md-4 mb-10 col-sm-12">
+        <div class="col-lg-6 col-md-6 mb-10 col-sm-12">
           <div class="pull-right">
             <button type="button" class="btn btn-blue mr-15"
                     ng-if="cons.pestania == '2'" 
@@ -500,10 +500,11 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Reporte Personalizado</label>
                 <div class="button">
-                  <a>Ver reporte creado</a>
+                  <a ng-click="" >Ver reporte creado</a>
                 </div>
                 <div class="button">
-                  <a>Enviar reporte al paciente</a>
+                  <a ng-click="changeViewEnviaReporte(true);changeViewOnlyBodyCita(false);changeViewPlan(false);"
+                     ng-class="{seleccionado:viewEnviaReporte}">Enviar reporte al paciente</a>
                 </div>
               </div>
             </div>
@@ -514,7 +515,8 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Proxima Cita</label>
                 <div class="button">
-                  <a ng-click="changeViewOnlyBodyCita(true,cons.fData, cons.cita.cliente);changeViewPlan(false);">Agendar la siguiente cita</a>
+                  <a ng-click="changeViewOnlyBodyCita(true,cons.fData, cons.cita.cliente);changeViewEnviaReporte(false);changeViewPlan(false);"
+                      ng-class="{seleccionado:viewOnlyBodyCita}">Agendar la siguiente cita</a>
                 </div>
               </div>
             </div>
@@ -526,7 +528,8 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Dieta o Plan alimentario</label>
                 <div class="button">
-                  <a ng-click="changeViewOnlyBodyCita(false);cons.btnGeneraPlan();">Generar plan</a>
+                  <a ng-click="changeViewOnlyBodyCita(false);changeViewEnviaReporte(false);cons.btnGeneraPlan();" 
+                      ng-class="{seleccionado:viewPlan}">Generar plan</a>
                 </div>                
               </div>
             </div>
@@ -539,7 +542,36 @@
       </section>
     </div>    
    </div>
-</div>  
+
+  <div class="col-lg-12 col-md-12" ng-if="viewEnviaReporte" >
+    <div class="tile">
+      <section class="tile-header">
+        <h1 class="heading">Enviar reporte al paciente</h1> 
+      </section>
+
+      <section class="tile-body col-lg-12 col-md-12">
+        <!-- right side header -->
+        <div class="col-lg-12 col-md-12 mb-10">
+          <div class="row">
+            <form name="formEmail" role="form" novalidate class="form-validation">
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label for="name" class="control-label minotaur-label" style="width: 100%;">Emails 
+                  <span class="text-red">*</span>: 
+                </label>
+                <input type="text" ng-model="cons.emails" class="form-control">
+              </div>                  
+            </div>
+          </form>
+          </div>
+        </div>
+
+      </section>
+    </div>         
+  </div>
+</div> 
+
+
 <style type="text/css" ng-if="viewConsulta && cons.pestania == '3' && (viewOnlyBodyCita || viewPlan)">
   #pageCitas{
     padding-top: 0 !important;

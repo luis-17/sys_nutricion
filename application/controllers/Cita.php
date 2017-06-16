@@ -44,6 +44,7 @@ class Cita extends CI_Controller {
 							'nombre' => $row['nombre'],
 							'apellidos' => $row['apellidos'],
 							'sexo' => $row['sexo'],
+							'email' => $row['email'],
 							'estatura' => (float)$row['estatura'],
 							'edad' => (int)devolverEdad($row['fecha_nacimiento']),
 							'paciente' => $row['nombre'] . ' ' . $row['apellidos'],

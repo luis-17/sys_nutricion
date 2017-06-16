@@ -121,7 +121,12 @@
     $scope.changeViewCita = function(value){
       $scope.viewCita = value;
     }
-    $scope.changeViewCita(true);
+    $scope.changeViewCita(true);    
+
+    $scope.changeViewEnviaReporte = function(value){
+      $scope.viewEnviaReporte = value;
+    }
+    $scope.changeViewEnviaReporte(false);
 
   }
   function rootServices($http, $q) {

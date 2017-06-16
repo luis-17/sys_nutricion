@@ -7,7 +7,7 @@ class Model_cita extends CI_Model {
  	// ACCESO AL SISTEMA
 	public function m_cargar_citas(){ 
 		$this->db->select('ci.idcita, ci.idcliente, ci.idprofesional, ci.idubicacion, ci.fecha, ci.hora_desde, ci.hora_hasta, ci.estado_ci',FALSE);
-		$this->db->select('cli.cod_historia_clinica, cli.nombre, cli.apellidos, cli.sexo, cli.estatura, cli.fecha_nacimiento',FALSE);
+		$this->db->select('cli.cod_historia_clinica, cli.nombre, cli.apellidos, cli.sexo, cli.estatura, cli.fecha_nacimiento, cli.email',FALSE);
 		$this->db->select("UPPER(CONCAT(pro.nombre, ' ',pro.apellidos)) AS profesional",FALSE);
 		$this->db->select('ub.descripcion_ub, ub.idubicacion',FALSE);
 

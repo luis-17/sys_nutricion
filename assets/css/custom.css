@@ -347,3 +347,11 @@ section.tile-body{
     left: 0% !important;
     margin-right: 0 !important;
 }
+
+.seleccionado{
+    background: #1199d3;
+    padding: 3px 5px;
+    border-radius: 3px;
+    color: white;
+    font-weight: 900;
+}
