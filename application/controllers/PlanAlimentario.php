@@ -7,13 +7,13 @@ class PlanAlimentario extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper','otros_helper'));
-        $this->load->model(array('model_plan_alimentario'));
+        $this->load->model(array('model_plan_alimentario','model_consulta'));
     }
 
 	public function registrar_plan_alimentario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		print_r($allInputs['planDias']);
-		exit();
+		/*print_r($allInputs);
+		exit();*/
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error registrando el plan alimentario.';
 
@@ -178,13 +178,29 @@ class PlanAlimentario extends CI_Controller {
 				}
 			}
 		}
-		
-		$this->db->trans_complete();
 
-		if(!$errorEnCiclo){
+		$tipo_dieta = '';
+		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'general'){
+			$tipo_dieta = 'SG';
+		}else if($allInputs['tipo']=='simple' && $allInputs['forma']== 'dia'){
+			$tipo_dieta = 'SD';
+		}else if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'general'){
+			$tipo_dieta = 'CG';
+		}else if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'dia'){
+			$tipo_dieta = 'CD';
+		}
+
+		$datos = array(
+			'tipo_dieta' => $tipo_dieta,
+			'indicaciones_dieta' => empty($allInputs['indicaciones']) ? NULL : $allInputs['indicaciones'],
+			'idatencion' => $allInputs['consulta']['idatencion']
+		);
+
+		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Se ha registrado el plan alimentario exitosamente.';
-		}		
+		}	
+		$this->db->trans_complete();	
 
 		$this->output
 		    ->set_content_type('application/json')

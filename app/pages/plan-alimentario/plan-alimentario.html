@@ -54,8 +54,8 @@
   <div class="col-lg-12 col-md-12">
     <div class="tile">
       <section class="tile-header" >
-        <h1 class="heading col-lg-6 col-md-6 col-sm-12 mb-10">Ingrese los alimentos</h1>         
-        <div class="col-lg-6 col-md-6 mb-10 col-sm-12">
+        <h1 class="heading col-lg-5 col-md-5 col-sm-12 mb-10">Ingrese los alimentos</h1>         
+        <div class="col-lg-7 col-md-7 mb-10 col-sm-12">
           <div class="row">
             <button type="button" class="btn btn-success" style="float:right;"
                 ng-click="plan.btnGuardarPlan()"                      
@@ -87,6 +87,10 @@
             <div ng-if="plan.tipoPlan == 'compuesto'" ng-include="'app/pages/plan-alimentario/plan-compuesto-template.html'"></div>
           </uib-tab>
         </uib-tabset>
+        <div class="col-sm-12 mt-10">
+          <label class="control-label minotaur-label pr-0" style="top: 6px;">Indicaciones:</label>
+          <textarea class="form-control input-sm mb-10" ng-model="plan.indicaciones"></textarea>
+        </div>
       </section>
       <section class="tile-footer">
         <div class="mb-20 col-sm-12">

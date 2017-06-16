@@ -135,6 +135,7 @@
         forma:vm.formaPlan,
         planDias:vm.dias,
         planGeneral:vm.dia,
+        indicaciones:vm.indicaciones,
       };
       PlanAlimentarioServices.sRegistrarPlan(datos).then(function(rpta){
         var openedToasts = [];
@@ -210,7 +211,7 @@
         return;
       }
 
-      /*if(vm.dias[indexDia].turnos[indexTurno].temporalCantidad == null ||
+      if(vm.dias[indexDia].turnos[indexTurno].temporalCantidad == null ||
           vm.dias[indexDia].turnos[indexTurno].temporalCantidad == ''
         ){
         var openedToasts = [];
@@ -225,7 +226,7 @@
         var toast = toastr[iconClass]('Debe agregar cantidad.', title, vm.options);
         openedToasts.push(toast);
         return;
-      }*/
+      }
 
       var copy1 = angular.copy(vm.dias[indexDia].turnos[indexTurno].seleccionado);
       var copy2 = angular.copy(vm.dias[indexDia].turnos[indexTurno].seleccionado);
