@@ -25,6 +25,17 @@ class Model_cita extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+	public function m_cuenta_citas($fecha, $hora_desde){
+		$this->db->select('count(*) AS contador');
+		$this->db->from('cita ci');
+		$this->db->where('ci.estado_ci', 1);
+		$this->db->where('ci.fecha', $fecha);
+		$this->db->where('ci.hora_desde', $hora_desde);
+		
+		$fData = $this->db->get()->row_array();
+		return $fData['contador'];
+	}
+
 	public function m_registrar($data){
 		return $this->db->insert('cita', $data);
 	}	

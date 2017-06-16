@@ -341,3 +341,9 @@ section.tile-body{
 .fc-event .fc-bg{
     background: transparent !important;
 }
+
+.fc-event.unico{
+    right: 0% !important;
+    left: 0% !important;
+    margin-right: 0 !important;
+}

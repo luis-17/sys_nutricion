@@ -15,11 +15,20 @@ class Cita extends CI_Controller {
 		$lista = $this->model_cita->m_cargar_citas();
 		$arrListado = array();		
 		foreach ($lista as $row) {
+			$es_unica = ($this->model_cita->m_cuenta_citas($row['fecha'],$row['hora_desde']) == 1) ? TRUE : FALSE;
+
 			if(empty($row['idatencion'])){
-				$className = array('b-l b-2x b-primary');
+				$clases = 'b-l b-2x b-primary';
 			}else{
-				$className = array('b-l b-2x b-success');
+				$clases = 'b-l b-2x b-success';
 			}
+
+			if($es_unica){
+				$clases .= ' unico';
+			}
+
+			$className = array($clases);
+			
 			array_push($arrListado,
 				array(
 					'id' => $row['idcita'],
