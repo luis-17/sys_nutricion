@@ -105,6 +105,13 @@ class Model_paciente extends CI_Model {
 
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_ultimos_antecedentes_paciente($datos){
+		$this->db->select("an.idantecedente, an.nombre as antecedente, an.tipo, clan.texto_otros");
+		$this->db->from('cliente_antecedente clan');
+		$this->db->join('antecedente an', 'clan.idantecedente = an.idantecedente AND clan.idcliente = ' . $datos['idcliente'] . ' AND clan.estado_clan = 1');
+		$this->db->limit(5);
+		return $this->db->get()->result_array();
+	}
 	public function m_cargar_historial_paciente($datos){
 		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.peso, at.fecha_atencion, cl.estatura");
 		$this->db->from('atencion at');

@@ -480,8 +480,6 @@ class Paciente extends CI_Controller {
 	{
 		//$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		// var_dump($_POST);
-		// var_dump($allInputs);
-		//exit();
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// AQUI ESTARAN LAS VALIDACIONES
@@ -510,7 +508,10 @@ class Paciente extends CI_Controller {
     	$allInputs['updatedAt'] = date('Y-m-d H:i:s');
     	$allInputs['Base64Img'] = $this->input->post('myCroppedImage');
     	$allInputs['nombre_foto'] = NULL;
-
+    	$allInputs['fecha_nacimiento'] = date('Y-m-d',strtotime($allInputs['fecha_nacimiento']));
+		var_dump($this->input->post('fecha_nacimiento'));
+		var_dump($allInputs);
+		exit();
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
     		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);

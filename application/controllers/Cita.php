@@ -13,7 +13,7 @@ class Cita extends CI_Controller {
     public function listar_citas(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_cita->m_cargar_citas();
-		$arrListado = array();		
+		$arrListado = array();
 		foreach ($lista as $row) {
 			$es_unica = ($this->model_cita->m_cuenta_citas($row['fecha'],$row['hora_desde']) == 1) ? TRUE : FALSE;
 
@@ -119,7 +119,7 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 		    return;
-		}		
+		}
 
 		if(empty($allInputs['hora_desde']) || empty($allInputs['hora_hasta'])){
 			$arrData['flag'] = 0;
@@ -163,7 +163,7 @@ class Cita extends CI_Controller {
 				$arrData['message'] = 'Cita registrada.';
 			}
 		}
-	
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -175,12 +175,12 @@ class Cita extends CI_Controller {
 		$arrData['message'] = 'Ha ocurrido un error actualizando la cita';
 
 		$cita = $this->model_cita->m_consulta_cita($allInputs['event']['id']);
-		
+
 		//print_r($allInputs);
 		$nuevaFecha = date('Y-m-d',strtotime($allInputs['event']['start']));
 		$nuevaHora= date('H:i:s',strtotime($allInputs['event']['start']));
 		//print_r($nuevaFecha);
-		
+
 		$interval = $allInputs['event']['hora_hasta'] - $allInputs['event']['hora_desde'];
 		$nuevaHoraInicio = strtotime($allInputs['event']['start']);
 		$nuevaHoraFin = $nuevaHoraInicio + $interval;
@@ -201,13 +201,13 @@ class Cita extends CI_Controller {
 				if($this->model_consulta->m_act_fecha_atencion($datos)){
 					$arrData['flag'] = 1;
 					$arrData['message'] = 'Consulta actualizada.';
-				}			
+				}
 			}else{
 				$arrData['flag'] = 1;
 				$arrData['message'] = 'Cita actualizada.';
-			}			
-		}	
-		$this->db->trans_complete();	
+			}
+		}
+		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -235,7 +235,7 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 		    return;
-		}	
+		}
 
 		if(empty($allInputs['hora_desde']) || empty($allInputs['hora_hasta'])){
 			$arrData['flag'] = 0;
@@ -244,7 +244,7 @@ class Cita extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 		    return;
-		}	
+		}
 
 		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
 			$arrData['flag'] = 0;
@@ -269,12 +269,12 @@ class Cita extends CI_Controller {
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Cita actualizada.';
 		}
-	
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	
+
 	public function anular_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
@@ -289,12 +289,12 @@ class Cita extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 		    return;
 		}
-	
+
 		if($this->model_cita->m_anular($allInputs['id'])){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Cita anulada.';
 		}
-	
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

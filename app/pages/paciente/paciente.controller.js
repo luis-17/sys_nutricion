@@ -176,6 +176,7 @@
                 if(vm.mySelectionGrid[0].estatura > 50){
                   vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
                 }
+                vm.listaUltAntecedentes = rpta.antecedentes;
               }
             });
           }
@@ -387,6 +388,7 @@
               }/* no delay here */);
             // BOTONES
             vm.aceptar = function () {
+              console.log(vm.fData.fecha_nacimiento);
               PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
                 var openedToasts = [];
                 vm.options = {
@@ -440,6 +442,7 @@
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
             }
+            vm.listaUltAntecedentes = rpta.antecedentes;
           }
         });
         vm.ficha = {}
@@ -468,6 +471,7 @@
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
             }
+            vm.listaUltAntecedentes = rpta.antecedentes;
           });
           vm.ficha.cambiaPatologico = false;
           vm.ficha.cambiaHeredado = false;
