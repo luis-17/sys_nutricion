@@ -4,11 +4,8 @@
     .module('minotaur')
     .controller('AlimentoController', AlimentoController)
     .service('AlimentoServices', AlimentoServices);
-
   /** @ngInject */
-
-  function AlimentoController($scope,$uibModal,uiGridConstants,alertify,toastr, 
-    AlimentoServices) {
+  function AlimentoController($scope,$uibModal,uiGridConstants,alertify,toastr,AlimentoServices,GrupoAlimentoServices) {
 
     var vm = this;
     // GRILLA PRINCIPAL
@@ -36,10 +33,10 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [ 
-        { field: 'idalimento', name:'idalimento', displayName: 'ID', minWidth: 30, sort: { direction: uiGridConstants.DESC} },
+        { field: 'idalimento', name:'idalimento', displayName: 'ID', minWidth: 50, sort: { direction: uiGridConstants.DESC} },
         { field: 'grupo1', name:'descripcion_gr1', displayName: 'GRUPO 1', minWidth: 160 },
         { field: 'grupo2', name:'descripcion_gr2', displayName: 'GRUPO 2', minWidth: 160 },
-        { field: 'alimento', name:'nombre', displayName: 'ALIMENTO', minWidth: 300 },
+        { field: 'nombre', name:'nombre', displayName: 'ALIMENTO', minWidth: 300 },
         { field: 'calorias', name:'calorias', displayName: 'CALORÍAS', minWidth: 80 },
         { field: 'proteinas', name:'proteinas', displayName: 'PROTEÍNAS', minWidth: 80 },
         { field: 'grasas', name:'grasas', displayName: 'GRASAS', minWidth: 80 },
@@ -100,7 +97,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/alimento/alimento_formview.html',
           controllerAs: 'modalAli',
-          size: 'md',
+          size: 'lg',
           backdropClass: 'splash',
           windowClass: 'splash',
           // controller: 'ModalInstanceController',
@@ -111,50 +108,32 @@
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
             vm.modalTitle = 'Registro de alimentos';
             vm.activeStep = 0;
-            vm.listaSexos = [
-              { id:'', descripcion:'--Seleccione sexo--' },
-              { id:'M', descripcion:'MASCULINO' },
-              { id:'F', descripcion:'FEMENINO' }
-            ];
-            vm.fData.sexo = vm.listaSexos[0].id;
-            // TIPO DE CLIENTE
-            TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
-              vm.listaTiposClientes = angular.copy(rpta.datos);
-              vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idtipocliente == null){
-                vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
-              }
-            });
-            // LISTA DE EMPRESAS
-            EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
-              vm.listaEmpresas = angular.copy(rpta.datos);
-              vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idempresa == null){
-                vm.fData.idempresa = vm.listaEmpresas[0].id;
-              }
-            });
-            // LISTA MOTIVO CONSULTA
-            MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
-              vm.listaMotivos = angular.copy(rpta.datos);
-              vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idmotivoconsulta == null){
-                vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
-              }
-            });
+            // GRUPO ALIMENTO 1
+            GrupoAlimentoServices.sListarGrupoAlimento1().then(function (rpta) {
+              vm.listaGrupo1 = angular.copy(rpta.datos);
+              vm.listaGrupo1.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
+              vm.fData.idgrupo1 = vm.listaGrupo1[0];
+            });    
+
+            vm.cambiogrupo = function(){
+              GrupoAlimentoServices.sListarGrupoAlimento2(vm.fData.idgrupo1.id).then(function (rpta) {
+                vm.listaGrupo2 = angular.copy(rpta.datos);
+                vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
+                vm.fData.idgrupo2 = vm.listaGrupo2[0];
+              });              
+            }        
 
             vm.aceptar = function () {
-              $uibModalInstance.close(vm.fData);
-              AlimentoServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
+              AlimentoServices.sRegistrarAlimento(vm.fData).then(function (rpta) {
                 var openedToasts = [];
                 vm.options = {
                   timeout: '3000',
                   extendedTimeout: '1000',
-                  // closeButton: true,
-                  // closeHtml : '<button>&times;</button>',
                   preventDuplicates: false,
                   preventOpenDuplicates: false
                 };
                 if(rpta.flag == 1){
+                  $uibModalInstance.close(vm.fData);                  
                   vm.getPaginationServerSide();
                   var title = 'OK';
                   var iconClass = 'success';
@@ -177,80 +156,76 @@
             arrToModal: function() {
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
-                // listaSexos : $scope.listaSexos,
-                // gridComboOptions : $scope.gridComboOptions,
-                // mySelectionComboGrid : $scope.mySelectionComboGrid
               }
             }
           }
         });
       }
       vm.btnEditar = function(row){
-
         var modalInstance = $uibModal.open({
-          templateUrl: 'app/pages/paciente/paciente_formview.html',
-          controllerAs: 'modalPac',
+          templateUrl: 'app/pages/alimento/alimento_formview.html',
+          controllerAs: 'modalAli',
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
           windowClass: 'splash splash-2 splash-ef-14',
-          // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
             var openedToasts = [];
             vm.fData = {};
-            vm.fData = arrToModal.seleccion;
+            vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            console.log(vm.fData);
-            vm.modalTitle = 'Edición de pacientes';
+            vm.modalTitle = 'Edición de Alimentos';
             vm.activeStep = 0;
-            vm.listaSexos = [
-              { id:'', descripcion:'--Seleccione sexo--' },
-              { id:'M', descripcion:'MASCULINO' },
-              { id:'F', descripcion:'FEMENINO' }
-            ];
-            //vm.fData.sexo = vm.listaSexos[0].id;
-            // TIPO DE CLIENTE
-            TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
-              vm.listaTiposClientes = angular.copy(rpta.datos);
-              vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-              if(vm.fData.idtipocliente == null){
-                //vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
-              }
-            });
-            // LISTA DE EMPRESAS
-            EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
-              vm.listaEmpresas = angular.copy(rpta.datos);
-              vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            });
-            // LISTA MOTIVO CONSULTA
-            MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
-              vm.listaMotivos = angular.copy(rpta.datos);
-              vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            });
+
+            GrupoAlimentoServices.sListarGrupoAlimento1().then(function (rpta) {
+              vm.listaGrupo1 = {};
+              vm.listaGrupo1 = angular.copy(rpta.datos);
+              vm.listaGrupo1.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
+              angular.forEach(vm.listaGrupo1, function(value, key){
+                if(value.id == vm.fData.idgrupo1){
+                  vm.fData.idgrupo1 = vm.listaGrupo1[key];
+                  GrupoAlimentoServices.sListarGrupoAlimento2(value.id).then(function (rpta) {
+                    vm.listaGrupo2 = {};
+                    vm.listaGrupo2 = angular.copy(rpta.datos);
+                    vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
+                    angular.forEach(vm.listaGrupo2, function(value2, key2){
+                      if(value2.id == vm.fData.idgrupo2){
+                        vm.fData.idgrupo2 = vm.listaGrupo2[key2];
+                      }                      
+                    });
+                  });                  
+                }
+              });
+            });              
+
+            vm.cambiogrupo = function(){
+              GrupoAlimentoServices.sListarGrupoAlimento2(vm.fData.idgrupo1.id).then(function (rpta) {
+                vm.listaGrupo2 = angular.copy(rpta.datos);
+                vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
+                vm.fData.idgrupo2 = vm.listaGrupo2[0];
+              });              
+            }
 
             vm.aceptar = function () {
-              console.log('edicion...', vm.fData);
               $uibModalInstance.close(vm.fData);
-              AlimentoServices.sEditarPaciente(vm.fData).then(function (rpta) {
+              AlimentoServices.sEditarAlimento(vm.fData).then(function (rpta) {
                 vm.options = {
                   timeout: '3000',
                   extendedTimeout: '1000',
-                  // closeButton: true,
-                  // closeHtml : '<button>&times;</button>',
                   progressBar: true,
                   preventDuplicates: false,
                   preventOpenDuplicates: false
                 };
                 if(rpta.flag == 1){
+                  //$uibModalInstance.close(vm.fData); 
+                  $uibModalInstance.dismiss('cancel');                  
                   vm.getPaginationServerSide();
                   var title = 'OK';
                   var iconClass = 'success';
                 }else if( rpta.flag == 0 ){
                   var title = 'Advertencia';
-                  // vm.toast.title = 'Advertencia';
                   var iconClass = 'warning';
-                  // vm.options.iconClass = {name:'warning'}
                 }else{
                   alert('Ocurrió un error');
                 }
@@ -268,9 +243,6 @@
               return {
                 getPaginationServerSide : vm.getPaginationServerSide,
                 seleccion : row.entity
-                // listaSexos : $scope.listaSexos,
-                // gridComboOptions : $scope.gridComboOptions,
-                // mySelectionComboGrid : $scope.mySelectionComboGrid
               }
             }
           }
@@ -279,13 +251,11 @@
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
-          AlimentoServices.sAnularPaciente(row.entity).then(function (rpta) {
+          AlimentoServices.sAnularAlimento(row.entity).then(function (rpta) {
             var openedToasts = [];
             vm.options = {
               timeout: '3000',
               extendedTimeout: '1000',
-              // closeButton: true,
-              // closeHtml : '<button>&times;</button>',
               preventDuplicates: false,
               preventOpenDuplicates: false
             };
@@ -313,9 +283,9 @@
     return({
         sListarAlimentos: sListarAlimentos,
         sListaAlimentosAutocomplete: sListaAlimentosAutocomplete,
-        sRegistrarPaciente: sRegistrarPaciente,
-        sEditarPaciente: sEditarPaciente,
-        sAnularPaciente: sAnularPaciente,
+        sRegistrarAlimento: sRegistrarAlimento,
+        sEditarAlimento: sEditarAlimento,
+        sAnularAlimento: sAnularAlimento,
     });
     function sListarAlimentos(pDatos) {
       var datos = pDatos || {};
@@ -334,26 +304,26 @@
       });
       return (request.then(handleSuccess,handleError));
     }
-    function sRegistrarPaciente(datos) {
+    function sRegistrarAlimento(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Alimentos/registrar_paciente",
+            url : angular.patchURLCI+"Alimentos/registrar_alimento",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
     }
-    function sEditarPaciente(datos) {
+    function sEditarAlimento(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Alimentos/editar_paciente",
+            url : angular.patchURLCI+"Alimentos/editar_alimento",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
     }
-    function sAnularPaciente(datos) {
+    function sAnularAlimento(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"Alimentos/anular_paciente",
+            url : angular.patchURLCI+"Alimentos/anular_alimento",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

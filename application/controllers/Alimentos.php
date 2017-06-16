@@ -24,13 +24,23 @@ class Alimentos extends CI_Controller {
 			array_push($arrListado,
 				array(
 					'idalimento' => $row['idalimento'],
+					'idgrupo1' => $row['idgrupo1'],
+					'idgrupo2' => $row['idgrupo2'],
 					'grupo1' => $row['descripcion_gr1'],
 					'grupo2' => $row['descripcion_gr2'],
-					'alimento' => $row['nombre'],
+					'nombre' => $row['nombre'],
 					'calorias' => $row['calorias'],
 					'proteinas' => $row['proteinas'],
 					'grasas' => $row['grasas'],
-					'carbohidratos' => $row['carbohidratos'] 
+					'carbohidratos' => $row['carbohidratos'],
+					'estado_ali' => $row['estado_ali'],
+					'medida_casera' => strtoupper($row['medida_casera']),
+					'gramo' => $row['gramo'],
+					'ceniza' => $row['ceniza'],
+					'calcio' => $row['calcio'],
+					'fosforo' =>$row['fosforo'],
+					'zinc' => $row['zinc'],
+					'hierro' => $row['hierro']
 				)
 			);
 		}
@@ -84,13 +94,13 @@ class Alimentos extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 	// MANTENIMIENTO
-	public function registrar_paciente()
+	public function registrar_alimento()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-		if($this->model_paciente->m_registrar($allInputs)){
+		if($this->model_alimentos->m_registrar($allInputs)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
@@ -98,13 +108,13 @@ class Alimentos extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function editar_paciente()
+	public function editar_alimento()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-		if($this->model_paciente->m_editar($allInputs)){
+		if($this->model_alimentos->m_editar($allInputs)){
 			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
     		$arrData['flag'] = 1;
 		}
@@ -112,13 +122,13 @@ class Alimentos extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function anular_paciente()
+	public function anular_alimento()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-		if($this->model_paciente->m_anular($allInputs)){
+		if($this->model_alimentos->m_anular($allInputs)){
 			$arrData['message'] = 'Se anularon los datos correctamente';
     		$arrData['flag'] = 1;
 		}

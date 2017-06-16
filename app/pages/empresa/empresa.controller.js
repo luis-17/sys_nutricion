@@ -112,8 +112,10 @@
           templateUrl: 'app/pages/empresa/empresa_formview.html',
           controllerAs: 'mp',
           size: 'lg',
-          backdropClass: 'splash splash-ef-14',
-          windowClass: 'splash splash-ef-14',
+          backdropClass: 'splash splash-2 splash-ef-14',
+          windowClass: 'splash splash-2 splash-ef-14',          
+          /*backdropClass: 'splash splash-ef-14',
+          windowClass: 'splash splash-ef-14',*/
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;

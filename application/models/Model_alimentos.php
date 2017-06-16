@@ -5,8 +5,7 @@ class Model_alimentos extends CI_Model {
 		parent::__construct();
 	}
 	public function m_cargar_alimentos($paramPaginate=FALSE){
-		$this->db->select('al.idalimento, al.nombre, al.calorias, al.proteinas, al.grasas, al.carbohidratos, al.estado_ali, g1.idgrupo1, g1.descripcion_gr1, 
-			g2.idgrupo2, g2.descripcion_gr2'); 
+		$this->db->select('al.idalimento, al.nombre, al.calorias, al.proteinas, al.grasas, al.carbohidratos, al.medida_casera, al.gramo, al.fibra, al.ceniza, al.calcio, al.fosforo, al.zinc, al.hierro, al.estado_ali, g1.idgrupo1, g1.descripcion_gr1, g2.idgrupo2, g2.descripcion_gr2'); 
 		$this->db->from('alimento al');
 		$this->db->join('grupo1 g1','al.idgrupo1 = g1.idgrupo1');
 		$this->db->join('grupo2 g2','al.idgrupo2 = g2.idgrupo2');
@@ -47,22 +46,21 @@ class Model_alimentos extends CI_Model {
 	public function m_registrar($datos)
 	{
 		$data = array(
+			'idgrupo1' => $datos['idgrupo1']['id'],
+			'idgrupo2' => $datos['idgrupo2']['id'],
 			'nombre' => strtoupper($datos['nombre']),
-			'apellidos' => strtoupper($datos['apellidos']),
-			'idtipocliente' => $datos['idtipocliente'],
-			'idempresa' => $datos['idempresa'],
-			'idmotivoconsulta' => $datos['idmotivoconsulta'],
-			'cod_historia_clinica' => empty($datos['cod_historia_clinica'])? 'H001' : $datos['cod_historia_clinica'],
-			'sexo' => $datos['sexo'],
-			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),
-			'email' => $datos['email'],
-			'celular' => $datos['celular'],
-			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
-			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
-			'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
-			'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
-			'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
-			'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
+			'calorias' => empty($datos['calorias']) ? NULL : $datos['calorias'],
+			'proteinas' => empty($datos['proteinas']) ? NULL : $datos['proteinas'],
+			'grasas' => empty($datos['grasas']) ? NULL : $datos['grasas'],
+			'carbohidratos' => empty($datos['carbohidratos']) ? NULL : $datos['carbohidratos'],
+			'medida_casera' => empty($datos['medida_casera']) ? NULL : $datos['medida_casera'],
+			'gramo' => empty($datos['gramo']) ? NULL : $datos['gramo'],
+			'fibra' => empty($datos['fibra']) ? NULL : $datos['fibra'],
+			'ceniza' => empty($datos['ceniza']) ? NULL : $datos['ceniza'],
+			'calcio' => empty($datos['calcio']) ? NULL : $datos['calcio'],
+			'fosforo' => empty($datos['fosforo']) ? NULL : $datos['fosforo'],
+			'zinc' => empty($datos['zinc']) ? NULL : $datos['zinc'],
+			'hierro' => empty($datos['hierro']) ? NULL : $datos['hierro'],
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
@@ -72,33 +70,33 @@ class Model_alimentos extends CI_Model {
 	public function m_editar($datos)
 	{
 		$data = array(
+			'idgrupo1' => $datos['idgrupo1']['id'],
+			'idgrupo2' => $datos['idgrupo2']['id'],
 			'nombre' => strtoupper($datos['nombre']),
-			'apellidos' => strtoupper($datos['apellidos']),
-			'idtipocliente' => $datos['idtipocliente'],
-			'idempresa' => $datos['idempresa'],
-			'idmotivoconsulta' => $datos['idmotivoconsulta'],
-			'sexo' => $datos['sexo'],
-			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),
-			'email' => $datos['email'],
-			'celular' => $datos['celular'],
-			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
-			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
-			'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
-			'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
-			'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
-			'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
+			'calorias' => empty($datos['calorias']) ? NULL : $datos['calorias'],
+			'proteinas' => empty($datos['proteinas']) ? NULL : $datos['proteinas'],
+			'grasas' => empty($datos['grasas']) ? NULL : $datos['grasas'],
+			'carbohidratos' => empty($datos['carbohidratos']) ? NULL : $datos['carbohidratos'],
+			'medida_casera' => empty($datos['medida_casera']) ? NULL : $datos['medida_casera'],
+			'gramo' => empty($datos['gramo']) ? NULL : $datos['gramo'],
+			'fibra' => empty($datos['fibra']) ? NULL : $datos['fibra'],
+			'ceniza' => empty($datos['ceniza']) ? NULL : $datos['ceniza'],
+			'calcio' => empty($datos['calcio']) ? NULL : $datos['calcio'],
+			'fosforo' => empty($datos['fosforo']) ? NULL : $datos['fosforo'],
+			'zinc' => empty($datos['zinc']) ? NULL : $datos['zinc'],
+			'hierro' => empty($datos['hierro']) ? NULL : $datos['hierro'],
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
-		$this->db->where('idcliente',$datos['idcliente']);
+		$this->db->where('idalimento',$datos['idalimento']);
 		return $this->db->update('alimento', $data);
 	}
 	public function m_anular($datos)
 	{
 		$data = array(
-			'estado_cl' => 0,
+			'estado_ali' => 0,
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
-		$this->db->where('idcliente',$datos['idcliente']);
+		$this->db->where('idalimento',$datos['idalimento']);
 		return $this->db->update('alimento', $data);
 	}
 
