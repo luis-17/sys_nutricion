@@ -80,14 +80,10 @@
 		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].peso}} kg.</dd>
 		                <dt style="width: 80px; padding: 3px 0;">IMC: </dt>
 		                <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].imc}}</dd>
-		                <dt style="width: 80px; padding: 3px 0;">Diferencia: </dt>
+		                <dt style="width: 80px; padding: 3px 0;">Objetivo: </dt>
 		              </dl>
 		              <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo2">
-		                <dt style="width: 80px; padding: 3px 0;">Antecedente 1: </dt>
-		                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
-		                <dt style="width: 80px; padding: 3px 0;">Antecedente 2: </dt>
-		                <dd style="margin-left: 90px; padding: 3px 0;">{{}}</dd>
-		                <dt style="width: 80px; padding: 3px 0;">Antecedente 3: </dt>
+		                <dd style="margin-left: 25px; padding: 3px 0;" ng-repeat="item in pac.listaUltAntecedentes">{{item.antecedente}}</dd>
 		              </dl>
 		              <div class="f-24 text-center" ng-if="pac.mySelectionGrid.length < 1">Seleccione un paciente</div>
 		            </section>

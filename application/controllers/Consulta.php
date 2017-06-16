@@ -7,7 +7,7 @@ class Consulta extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper','otros_helper'));
-        $this->load->model(array('model_consulta', 'model_cita'));
+        $this->load->model(array('model_consulta', 'model_cita', 'model_paciente'));
     }
 
 	public function registrar_consulta(){
@@ -138,6 +138,7 @@ class Consulta extends CI_Controller {
 	public function listar_ultima_consulta(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$row = $this->model_consulta->m_cargar_ultima_atencion($allInputs['idcliente']);
+		$antecedentes = $this->model_paciente->m_cargar_ultimos_antecedentes_paciente($allInputs);
 		// var_dump($row); exit();
 		if(empty($row)){
 			$arrData['flag'] = 0;
@@ -145,6 +146,7 @@ class Consulta extends CI_Controller {
 			$arrData['flag'] = 1;
 		}
 		$arrData['datos'] = $row;
+		$arrData['antecedentes'] = $antecedentes;
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
