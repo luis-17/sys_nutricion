@@ -159,7 +159,7 @@
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
-        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false,
+        { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
           cellTemplate:'<label class="btn btn-sm text-green" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </label>'+
           '<label class="btn btn-sm text-red" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </label>'
          },
@@ -170,6 +170,7 @@
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
           if( vm.mySelectionGrid[0] ){
+            vm.listaUltAntecedentes = [];
             PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
               if(rpta.flag == 1){
                 vm.mySelectionGrid[0].peso = rpta.datos.peso;
@@ -445,9 +446,13 @@
       }
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
+        vm.previo0 = true;
+        vm.previo1 = false;
+        vm.previo2 = false;
         vm.mySelectionGrid = [row.entity];
         vm.evoRadio = 'Peso';
         PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
+          vm.listaUltAntecedentes = [];
           if(rpta.flag == 1){
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
@@ -473,12 +478,16 @@
         vm.externo = true;
         vm.modoFicha = true;
         vm.evoRadio = 'Peso';
+        vm.previo0 = true;
+        vm.previo1 = false;
+        vm.previo2 = false;
         PacienteServices.sListarPacientePorId(event.cliente).then(function (rpta) {
           vm.ficha = rpta.datos;
           vm.mySelectionGrid = [];
           vm.mySelectionGrid[0] = vm.ficha;
           PacienteServices.sListarUltimaConsulta(vm.ficha).then(function(rpta){
             console.log(vm.mySelectionGrid);
+            vm.listaUltAntecedentes = [];
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
@@ -872,10 +881,13 @@
            originalImage: '',
            croppedImage: '',
         };
+        vm.previo0 = true;
+        vm.previo1 = false;
+        vm.previo2 = false;
         vm.getPaginationServerSide();
       }
       vm.verPrevio = function(index){
-        console.log('index: ', index);
+        console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
         if(index == 0){
           vm.previo0 = true;
           vm.previo1 = false;
