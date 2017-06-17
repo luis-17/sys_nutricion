@@ -155,7 +155,7 @@
         appScopeProvider: vm
       }
       vm.gridOptions.columnDefs = [
-        { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80, },
+        { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80,  sort: { direction: uiGridConstants.DESC} },
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
@@ -175,6 +175,7 @@
                 vm.mySelectionGrid[0].peso = rpta.datos.peso;
                 if(vm.mySelectionGrid[0].estatura > 50){
                   vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+                  vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
                 }
                 vm.listaUltAntecedentes = rpta.antecedentes;
               }
@@ -183,6 +184,16 @@
         });
         gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
           vm.mySelectionGrid = gridApi.selection.getSelectedRows();
+        });
+        vm.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+          if (sortColumns.length == 0) {
+            paginationOptions.sort = null;
+            paginationOptions.sortName = null;
+          } else {
+            paginationOptions.sort = sortColumns[0].sort.direction;
+            paginationOptions.sortName = sortColumns[0].name;
+          }
+          vm.getPaginationServerSide();
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
@@ -441,6 +452,7 @@
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+              vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
             }
             vm.listaUltAntecedentes = rpta.antecedentes;
           }
@@ -470,6 +482,7 @@
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
+              vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
             }
             vm.listaUltAntecedentes = rpta.antecedentes;
           });
