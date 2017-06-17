@@ -178,13 +178,8 @@
       });
     }
 
-    vm.getSelectedAlimento = function($item, $model, $label, indexDia, indexTurno, indexAlimento){
-      var alternativo = false;
-      if(vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento].alternativo){
-        alternativo = true;
-      }
+    vm.getSelectedAlimento = function($item, $model, $label, indexDia, indexTurno, indexAlimento, indexAlt){
       vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento] = $item;
-      vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento].alternativo = alternativo;
       vm.calcularValoresTurno(indexDia,indexTurno);
     }   
 
@@ -212,7 +207,8 @@
       }
 
       if(vm.dias[indexDia].turnos[indexTurno].temporalCantidad == null ||
-          vm.dias[indexDia].turnos[indexTurno].temporalCantidad == ''
+          vm.dias[indexDia].turnos[indexTurno].temporalCantidad == '' ||
+          vm.dias[indexDia].turnos[indexTurno].temporalCantidad <= 0
         ){
         var openedToasts = [];
         vm.options = {
@@ -228,17 +224,10 @@
         return;
       }
 
-      var copy1 = angular.copy(vm.dias[indexDia].turnos[indexTurno].seleccionado);
-      var copy2 = angular.copy(vm.dias[indexDia].turnos[indexTurno].seleccionado);
-      copy2.alternativo = true;
-      var copy3 = angular.copy(vm.dias[indexDia].turnos[indexTurno].seleccionado);
-      copy3.alternativo = true;
-
-      vm.dias[indexDia].turnos[indexTurno].alimentos.push(copy1);
-      vm.dias[indexDia].turnos[indexTurno].alimentos.push(copy2);
-      vm.dias[indexDia].turnos[indexTurno].alimentos.push(copy3);
-
+      vm.dias[indexDia].turnos[indexTurno].alimentos.push(vm.dias[indexDia].turnos[indexTurno].seleccionado);
+      vm.dias[indexDia].turnos[indexTurno].alimentos[vm.dias[indexDia].turnos[indexTurno].alimentos.length - 1].cantidad = vm.dias[indexDia].turnos[indexTurno].temporalCantidad; 
       vm.dias[indexDia].turnos[indexTurno].seleccionado = null;
+      vm.dias[indexDia].turnos[indexTurno].temporalCantidad = null;
       vm.dias[indexDia].turnos[indexTurno].temporal = null;
       vm.calcularValoresTurno(indexDia, indexTurno);
     }
@@ -248,17 +237,18 @@
       var total_proteinas = 0;
       var total_carbohidratos = 0;
       var total_grasas = 0;
-      angular.forEach(vm.dias[indexDia].turnos[indexTurno].alimentos, function(alimento, ind) {                   
-        total_calorias = total_calorias +alimento.calorias;
-        total_proteinas = total_proteinas + alimento.proteinas;
-        total_carbohidratos = total_carbohidratos +  alimento.carbohidratos;
-        total_grasas = total_grasas + alimento.grasas;           
+      angular.forEach(vm.dias[indexDia].turnos[indexTurno].alimentos, function(alimento, ind) { 
+        var cantidad = parseFloat(alimento.cantidad);                  
+        total_calorias = total_calorias + (cantidad * alimento.calorias);
+        total_proteinas = total_proteinas + (cantidad * alimento.proteinas);
+        total_carbohidratos = total_carbohidratos + (cantidad * alimento.carbohidratos);
+        total_grasas = total_grasas + (cantidad * alimento.grasas);           
       });
 
-      vm.dias[indexDia].turnos[indexTurno].valoresTurno.calorias = total_calorias;
-      vm.dias[indexDia].turnos[indexTurno].valoresTurno.proteinas = total_proteinas;
-      vm.dias[indexDia].turnos[indexTurno].valoresTurno.carbohidratos = total_carbohidratos;
-      vm.dias[indexDia].turnos[indexTurno].valoresTurno.grasas = total_grasas; 
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.calorias = (parseFloat(total_calorias)).toFixed(2);
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.proteinas = (parseFloat(total_proteinas)).toFixed(2);
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.carbohidratos = (parseFloat(total_carbohidratos)).toFixed(2);
+      vm.dias[indexDia].turnos[indexTurno].valoresTurno.grasas = (parseFloat(total_grasas)).toFixed(2);
 
       vm.calcularValoresDia(indexDia , indexTurno);
     }
@@ -275,10 +265,10 @@
         total_grasas = total_grasas + turno.valoresTurno.grasas;           
       });
 
-      vm.dias[indexDia].valoresGlobales.calorias = total_calorias;
-      vm.dias[indexDia].valoresGlobales.proteinas = total_proteinas;
-      vm.dias[indexDia].valoresGlobales.carbohidratos = total_carbohidratos;
-      vm.dias[indexDia].valoresGlobales.grasas = total_grasas; 
+      vm.dias[indexDia].valoresGlobales.calorias = (parseFloat(total_calorias)).toFixed(2);
+      vm.dias[indexDia].valoresGlobales.proteinas = (parseFloat(total_proteinas)).toFixed(2);
+      vm.dias[indexDia].valoresGlobales.carbohidratos = (parseFloat(total_carbohidratos)).toFixed(2);
+      vm.dias[indexDia].valoresGlobales.grasas = (parseFloat(total_grasas)).toFixed(2);
     }
 
     vm.eliminarAlimento = function(indexAlimento,indexTurno,indexDia){
