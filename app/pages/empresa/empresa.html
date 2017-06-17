@@ -27,13 +27,16 @@
         </section>
         <!-- /tile header -->
         <!-- tile body -->
-        <section class="tile-body">
-          <div class="row">
-            <div class="col-md-12 col-sm-12">
-              
-            </div>
+        <!-- PANEL PRINCIPAL -->
+        <section class="tile-body col-sm-12 pr-md pl-md">
+          <div>
+            <ul class="form-group demo-btns list-unstyled">
+              <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='emp.btnNuevo()'>Nuevo</button></li>
+            </ul>
           </div>
-        </section>
+          <div id="grid1" ui-grid="emp.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
+        </section>  
+              
         <!-- /tile body -->
       </div>
       <!-- /tile -->
