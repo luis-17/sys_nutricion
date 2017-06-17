@@ -31,7 +31,7 @@
 			              	<label for="fecha" class="control-label minotaur-label">Fecha Nacimiento <small class="text-red">(*)</small> </label>
 
 			              	<div class="input-group">
-			                  <input type="text" class="form-control" uib-datepicker-popup="{{mp.format}}" ng-model="mp.fData.fecha_nacimiento" is-open="mp.popup1.opened" datepicker-options="mp.dateOptions" ng-required="true" close-text="Cerrar" />
+			                  <input type="text" class="form-control" uib-datepicker-popup="{{mp.format}}" ng-model="mp.fData.fecha_nacimiento" ng-model-options="{timezone: 'UTC'}" is-open="mp.popup1.opened" datepicker-options="mp.dateOptions" ng-required="true" close-text="Cerrar" />
 			                  <span class="input-group-btn">
 			                      <button type="button" class="btn btn-default" ng-click="mp.open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
 			                    </span>

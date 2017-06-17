@@ -509,9 +509,9 @@ class Paciente extends CI_Controller {
     	$allInputs['Base64Img'] = $this->input->post('myCroppedImage');
     	$allInputs['nombre_foto'] = NULL;
     	$allInputs['fecha_nacimiento'] = date('Y-m-d',strtotime($allInputs['fecha_nacimiento']));
-		var_dump($this->input->post('fecha_nacimiento'));
-		var_dump($allInputs);
-		exit();
+		// var_dump($this->input->post('fecha_nacimiento'));
+		// var_dump($allInputs);
+		// exit();
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
     		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);
