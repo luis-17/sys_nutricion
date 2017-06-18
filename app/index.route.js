@@ -54,8 +54,13 @@
         url: '/app/alimento',
         templateUrl: 'app/pages/alimento/alimento.html',
         controller: 'AlimentoController as vm'
+      })
+      //profesionales 
+      .state('profesional', { 
+        url: '/app/profesional',
+        templateUrl: 'app/pages/profesional/profesional.html',
+        controller: 'ProfesionalController as pro'
       });
-
     $urlRouterProvider.otherwise('/app/dashboard');
   }
 
