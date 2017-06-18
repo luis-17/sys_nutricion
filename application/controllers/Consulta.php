@@ -196,7 +196,10 @@ class Consulta extends CI_Controller {
 			$arrListado['cm_pierna'][] = array('id' => $key, 'valor' => $row['cm_pierna']);
 			$arrListado['diagnostico_notas'][] = array('id' => $key, 'valor' => $row['diagnostico_notas']);
 
-			$arrCabecera[] = DarFormatoDMY($row['fecha_atencion']);
+			$arrCabecera[] =array(
+				'id' => $row['idatencion'],
+				'fecha'=> DarFormatoDMY($row['fecha_atencion'])
+			);
 		}
 		// var_dump($arrListado); exit();
 		if(empty($lista)){

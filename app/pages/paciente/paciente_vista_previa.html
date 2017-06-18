@@ -33,7 +33,7 @@
         <dt style="width: 80px; padding: 3px 0;">Nacimiento: </dt>
         <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].fecha_nacimiento_st}}</dd>
       </dl>
-      <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo1">
+      <dl class="dl-horizontal" ng-if="pac.mySelectionGrid.length == 1 && pac.previo1 && pac.mySelectionGrid[0].peso">
         <dt style="width: 80px; padding: 3px 0;">Peso: </dt>
         <dd style="margin-left: 90px; padding: 3px 0;">{{pac.mySelectionGrid[0].peso}} Kg.</dd>
         <dt style="width: 80px; padding: 3px 0;">IMC: </dt>
@@ -46,6 +46,7 @@
 
       </dl>
       <div class="f-24 text-center" ng-if="pac.mySelectionGrid.length < 1">Seleccione un paciente</div>
+      <div class="f-24 text-center mt-20" ng-if="pac.mySelectionGrid.length == 1 && !pac.mySelectionGrid[0].peso && pac.previo1">No se han registrado consultas</div>
       <div class="f-24 text-center" ng-if="pac.mySelectionGrid.length == 1 && pac.listaUltAntecedentes.length < 1 && pac.previo2">No se han registrado antecedentes</div>
     </section>
     <!-- /tile body -->
