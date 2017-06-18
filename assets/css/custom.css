@@ -764,3 +764,7 @@ section.tile-body{
     color: white;
     font-weight: 900;
 }
+
+.fc-event{
+    border: 1px solid #dddddd !important;
+}

@@ -139,13 +139,16 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
+		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
+		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+
 		$data = array(
 			'idcliente' => $allInputs['cliente']['idcliente'],
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde_str'])),
-			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta_str'])),
+			'hora_desde' => Date('H:i:s',strtotime($horadesde)),
+			'hora_hasta' => Date('H:i:s',strtotime($horahasta)),
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
@@ -255,13 +258,16 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
+		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
+		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+
 		$data = array(
 			'idcliente' => $allInputs['cliente']['idcliente'],
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($allInputs['hora_desde_str'])),
-			'hora_hasta' => Date('H:i:s',strtotime($allInputs['hora_hasta_str'])),
+			'hora_desde' => Date('H:i:s',strtotime($horadesde)),
+			'hora_hasta' => Date('H:i:s',strtotime($horahasta)),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
 
