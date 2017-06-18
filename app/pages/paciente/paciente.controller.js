@@ -160,8 +160,8 @@
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
-          cellTemplate:'<label class="btn btn-sm text-green" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </label>'+
-          '<label class="btn btn-sm text-red" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </label>'
+          cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </button>'
          },
 
       ];
