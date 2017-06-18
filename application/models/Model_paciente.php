@@ -121,6 +121,16 @@ class Model_paciente extends CI_Model {
 		$this->db->order_by('at.fecha_atencion','ASC');
 		return $this->db->get()->result_array();
 	}
+	public function m_cargar_planes_paciente($datos){
+		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.fecha_atencion, at.indicaciones_dieta");
+		$this->db->from('atencion at');
+		// $this->db->join('cliente cl','at.idcliente = cl.idcliente');
+		$this->db->where('at.idcliente',$datos['idcliente']);
+		$this->db->where('at.estado_atencion',1);
+		$this->db->where('at.indicaciones_dieta IS NOT NULL');
+		$this->db->order_by('at.fecha_atencion','ASC');
+		return $this->db->get()->result_array();
+	}
 
 	public function m_registrar($datos)
 	{

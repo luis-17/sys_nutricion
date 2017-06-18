@@ -21,6 +21,13 @@ class Paciente extends CI_Controller {
 		$arrListado = array();
 		// var_dump($lista); exit();
 		foreach ($lista as $row) {
+			if ($row['nombre_foto'] == '' ||
+				!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+				$foto = 'sin-imagen.png';
+			}else{
+				$foto = $row['nombre_foto'];
+			}
+
 			array_push($arrListado,
 				array(
 					'idcliente' => $row['idcliente'],
@@ -28,7 +35,7 @@ class Paciente extends CI_Controller {
 					'apellidos' => $row['apellidos'],
 					'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
 					'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
-					'nombre_foto' => $row['nombre_foto'],
+					'nombre_foto' => $foto,
 					'celular' => $row['celular'],
 					'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 					'sexo' => $row['sexo'],
@@ -469,6 +476,29 @@ class Paciente extends CI_Controller {
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
 		if(empty($rowHabitos)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function listar_planes_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrListado = array();
+		$lista = $this->model_paciente->m_cargar_planes_paciente($allInputs);
+		// var_dump($lista); exit();
+		foreach ($lista as $row) {
+			array_push($arrListado, array(
+				'id' => $row['idatencion'],
+				'fecha' => DarFormatoDMY($row['fecha_atencion']),
+				'indicaciones' => $row['indicaciones_dieta']
+				)
+			);
+		}
+		$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
 			$arrData['flag'] = 0;
 		}
 		$this->output

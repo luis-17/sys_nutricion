@@ -160,8 +160,8 @@
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
-          cellTemplate:'<label class="btn btn-sm text-green" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </label>'+
-          '<label class="btn btn-sm text-red" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </label>'
+          cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
+          '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </button>'
          },
 
       ];
@@ -217,6 +217,7 @@
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
+        // blockUI.start('Cargando...');
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -224,6 +225,7 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
+          // blockUI.stop();
         });
       }
       vm.getPaginationServerSide();
@@ -460,6 +462,8 @@
               vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
             }
             vm.listaUltAntecedentes = rpta.antecedentes;
+          }else{
+            vm.mySelectionGrid[0].peso = false;
           }
         });
         vm.ficha = {}
@@ -472,6 +476,7 @@
         vm.cargarHabitos(row.entity);
         vm.cargarEvolucion(row.entity);
         vm.cargarConsultas(row.entity);
+        vm.cargarPlanes(row.entity);
       }
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
@@ -763,6 +768,13 @@
           // console.log('Peso',vm.listaPeso);
         });
       }
+      vm.cargarPlanes = function(row){
+        PacienteServices.sListarPlanesPaciente(row).then(function(rpta){
+          if(rpta.flag == 1){
+            vm.listaPlanes = rpta.datos;
+          }
+        });
+      }
       // BOTONES DE EDICION
       vm.btnAceptarTab2 = function(datos){//datos personales
         PacienteServices.sEditarPaciente(datos).then(function (rpta) {
@@ -938,6 +950,14 @@
         }
         vm.btnVerFicha(row);
       }
+      vm.editarConsulta = function(id){
+        console.log('editar');
+        console.log('idatencion', id);
+      }
+      vm.eliminarConsulta = function(id){
+        console.log('eliminar');
+        console.log('idatencion', id);
+      }
   }
 
   function PacienteServices($http, $q) {
@@ -957,6 +977,7 @@
         sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
         sSubirFoto: sSubirFoto,
         slistarEvolucion: slistarEvolucion,
+        sListarPlanesPaciente: sListarPlanesPaciente,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -1091,6 +1112,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/listar_evolucion_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sListarPlanesPaciente(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/listar_planes_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

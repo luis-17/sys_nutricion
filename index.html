@@ -47,6 +47,7 @@
     <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
+    <link rel="stylesheet" href="assets/plugins/angular-block/angular-block-ui.min.css"/>
 
     <!-- endbower -->
     <!-- endbuild -->
@@ -56,6 +57,7 @@
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/helpers.css">
     <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/ui-grid.css">
     <!-- endinject -->
     <!-- endbuild -->
   </head>
@@ -76,7 +78,7 @@
 
       <minotaur-loading></minotaur-loading>
 
-      <minotaur-customize></minotaur-customize>
+      <minotaur-customize style="height: 52px;top: 80px;"></minotaur-customize>
 
     </div>
 
@@ -232,6 +234,7 @@
     <script src="assets/plugins/highcharts/js/highcharts.js"></script>
     <script src="assets/plugins/highcharts/js/themes/grid-light.js"></script>
     <script src="assets/plugins/highcharts/js/modules/exporting.js"></script>
+    <script src="assets/plugins/angular-block/angular-block-ui.min.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
@@ -303,13 +306,13 @@
     <script src="app/pages/forms-upload/forms-upload.controller.js"></script>
     <script src="app/pages/forms-imagecrop/forms-imagecrop.controller.js"></script>
     <script src="app/pages/forms-common/forms-common.controller.js"></script>
-
     <!-- APLICATIVO -->
     <script src="app/pages/alimento/alimento.controller.js"></script>
     <script src="app/pages/grupoalimento/grupoalimento.controller.js"></script>    
     <script src="app/pages/empresa/empresa.controller.js"></script>
     <script src="app/pages/citas/citas.controller.js"></script>
     <script src="app/pages/paciente/paciente.controller.js"></script>
+    <script src="app/pages/profesional/profesional.controller.js"></script>    
     <script src="app/pages/tipoCliente/tipoCliente.controller.js"></script>
     <script src="app/pages/motivoConsulta/motivoConsulta.controller.js"></script>
     <script src="app/pages/ubicacion/ubicacion.controller.js"></script>
@@ -318,6 +321,9 @@
     <script src="app/pages/plan-alimentario/planAlimentario.controller.js"></script>
     <script src="app/pages/dia/dia.controller.js"></script>
     <script src="app/pages/turno/turno.controller.js"></script>
+    <script src="app/pages/especialidad/especialidad.controller.js"></script>  
+    <script src="app/pages/usuario/usuario.controller.js"></script> 
+    <script src="app/pages/grupo/grupo.controller.js"></script>            
 
     <script src="app/pages/documentation/documentation.controller.js"></script>
     <script src="app/pages/dashboard/dashboard.controller.js"></script>
