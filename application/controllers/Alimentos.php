@@ -40,7 +40,8 @@ class Alimentos extends CI_Controller {
 					'calcio' => $row['calcio'],
 					'fosforo' =>$row['fosforo'],
 					'zinc' => $row['zinc'],
-					'hierro' => $row['hierro']
+					'hierro' => $row['hierro'],
+					'fibra' => $row['fibra'],
 				)
 			);
 		}
@@ -80,6 +81,7 @@ class Alimentos extends CI_Controller {
 					'zinc' => (float)$row['zinc'],
 					'hierro' => (float)$row['hierro'],
 					'nombre_compuesto' => $row['nombre'] . ' - '. strtoupper($row['medida_casera']),
+					'fibra' => (float)$row['fibra'],
 				)
 			);
 		}

@@ -102,7 +102,7 @@ class Model_alimentos extends CI_Model {
 
 	public function m_cargar_alimentos_cbo($datos){
 		$this->db->select("a.idalimento,a.idgrupo1,a.idgrupo2,a.nombre,a.calorias,a.proteinas,a.grasas, a.carbohidratos, 
-			 a.estado_ali, a.medida_casera, a.gramo, a.ceniza, a.calcio, a.fosforo, a.zinc, a.hierro ");
+			 a.estado_ali, a.medida_casera, a.gramo, a.ceniza, a.calcio, a.fosforo, a.zinc, a.hierro, a.fibra ");
 		$this->db->from('alimento a');
 		$this->db->where("a.estado_ali",1);
 		$this->db->where("UPPER(a.nombre) LIKE '%". strtoupper($datos['search']) . "%'");
