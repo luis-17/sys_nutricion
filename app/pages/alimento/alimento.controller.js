@@ -98,8 +98,8 @@
           templateUrl: 'app/pages/alimento/alimento_formview.html',
           controllerAs: 'modalAli',
           size: 'lg',
-          backdropClass: 'splash',
-          windowClass: 'splash',
+          backdropClass: 'splash splash-2 splash-ef-14',
+          windowClass: 'splash splash-2 splash-ef-14',
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
