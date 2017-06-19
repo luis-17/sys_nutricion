@@ -55,19 +55,17 @@
 <fieldset ng-repeat="(indexTurno,turno) in dia.turnos" class="turno compuesto" ng-if="plan.formaPlan == 'dia'">
     <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
-        <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-center">
+        <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-right">
         	<span class="mr-10 text-orange">KCal: {{turno.valoresTurno.calorias}}</span>
         	<span class="mr-10 text-green">Prot: {{turno.valoresTurno.proteinas}}</span>
         	<span class="mr-10 text-dutch">Grasas: {{turno.valoresTurno.grasas}}</span>
         	<span class="mr-10 text-red">HC: {{turno.valoresTurno.carbohidratos}}</span>
-        	<span class="mr-10 text-slategray">Fibras: {{turno.valoresTurno.fibras}}</span>
-        <!-- </label>
-        <label class="col-sm-7 col-xs-12 control-label minotaur-label text-right" style="top: 8px;"> -->
+        	<!-- <span class="mr-10 text-slategray">Fibras: {{turno.valoresTurno.fibras}}</span>        
         	<span class="mr-10 text-orange">Cenizas: {{turno.valoresTurno.cenizas}}</span>
         	<span class="mr-10 text-green">Calcio: {{turno.valoresTurno.calcio}}</span>
         	<span class="mr-10 text-dutch">Fosforo: {{turno.valoresTurno.fosforo}}</span>
         	<span class="mr-10 text-red">Zinc: {{turno.valoresTurno.zinc}}</span>
-        	<span class="text-slategray">Hierro: {{turno.valoresTurno.hierro}}</span>
+        	<span class="text-slategray">Hierro: {{turno.valoresTurno.hierro}}</span> -->
         </label> 
 
         <label class="col-sm-1 col-xs-12 control-label minotaur-label pr-0" style="top: 6px;">Hora:</label>
@@ -131,19 +129,17 @@
 <fieldset ng-repeat="(indexTurno,turno) in plan.dia.turnos" class="turno compuesto" ng-if="plan.formaPlan == 'general'">
     <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
-        <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-center">
+        <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-right">
         	<span class="mr-10 text-orange">KCal: {{turno.valoresTurno.calorias}}</span>
         	<span class="mr-10 text-green">Prot: {{turno.valoresTurno.proteinas}}</span>
         	<span class="mr-10 text-dutch">Grasas: {{turno.valoresTurno.grasas}}</span>
         	<span class="mr-10 text-red">HC: {{turno.valoresTurno.carbohidratos}}</span>
-        	<span class="mr-10 text-slategray">Fibras: {{turno.valoresTurno.fibras}}</span>
-        <!-- </label>
-        <label class="col-sm-7 col-xs-12 control-label minotaur-label text-right" style="top: 8px;"> -->
+        	<!-- <span class="mr-10 text-slategray">Fibras: {{turno.valoresTurno.fibras}}</span>
         	<span class="mr-10 text-orange">Cenizas: {{turno.valoresTurno.cenizas}}</span>
         	<span class="mr-10 text-green">Calcio: {{turno.valoresTurno.calcio}}</span>
         	<span class="mr-10 text-dutch">Fosforo: {{turno.valoresTurno.fosforo}}</span>
         	<span class="mr-10 text-red">Zinc: {{turno.valoresTurno.zinc}}</span>
-        	<span class="text-slategray">Hierro: {{turno.valoresTurno.hierro}}</span>
+        	<span class="text-slategray">Hierro: {{turno.valoresTurno.hierro}}</span> -->
         </label> 
 
         <label class="col-sm-1 col-xs-12 control-label minotaur-label pr-0" style="top: 6px;">Hora:</label>
