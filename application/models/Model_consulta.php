@@ -17,6 +17,8 @@ class Model_consulta extends CI_Model {
 			'porc_agua_corporal' 	=> $datos['consulta']['porc_agua_corporal'],
 			'kg_agua_corporal' 		=> $datos['consulta']['kg_agua_corporal'],
 			'puntaje_grasa_visceral'=> $datos['consulta']['puntaje_grasa_visceral'],
+			'kg_masa_grasa' 		=> $datos['consulta']['kg_masa_grasa'],
+			'kg_masa_libre' 		=> $datos['consulta']['kg_masa_libre'],
 			/*'porc_grasa_visceral' 	=> $datos['consulta']['porc_grasa_visceral'],
 			'kg_grasa_visceral' 	=> $datos['consulta']['kg_grasa_visceral'],*/
 			'cm_pecho' 				=> (empty($datos['consulta']['cm_pecho'])) ? NULL : $datos['consulta']['cm_pecho'],
@@ -60,6 +62,8 @@ class Model_consulta extends CI_Model {
 			'porc_agua_corporal' 	=> $datos['consulta']['porc_agua_corporal'],
 			'kg_agua_corporal' 		=> $datos['consulta']['kg_agua_corporal'],
 			'puntaje_grasa_visceral'=> $datos['consulta']['puntaje_grasa_visceral'],
+			'kg_masa_grasa' 		=> $datos['consulta']['kg_masa_grasa'],
+			'kg_masa_libre' 		=> $datos['consulta']['kg_masa_libre'],
 			/*'porc_grasa_visceral' 	=> $datos['consulta']['porc_grasa_visceral'],
 			'kg_grasa_visceral' 	=> $datos['consulta']['kg_grasa_visceral'],*/
 			'cm_pecho' 				=> (empty($datos['consulta']['cm_pecho'])) ? NULL : $datos['consulta']['cm_pecho'],
@@ -108,7 +112,8 @@ class Model_consulta extends CI_Model {
 			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral');
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral, at.kg_masa_grasa,
+			at.kg_masa_libre');
 
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
