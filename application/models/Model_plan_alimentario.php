@@ -20,12 +20,20 @@ class Model_plan_alimentario extends CI_Model {
  	public function m_registrar_dieta_turno_alimento($datos){
  		$data = array(
  			'idatenciondietaturno' => $datos['idatenciondietaturno'],
- 			'iddia' => $datos['iddia'],
+ 			'iddia' => empty($datos['iddia']) ? NULL : $datos['iddia'],
  			'idalimento' => $datos['idalimento'],
  			'valor' => $datos['valor'],
  		);
 
  		return $this->db->insert('atencion_dieta_alim',$data);
+ 	} 	
+ 	public function m_registrar_dieta_turno_alimento_alt($datos){
+ 		$data = array(
+ 			'idatenciondietaalim' => $datos['idatenciondietaalim'],
+ 			'idalimento' => $datos['idalimento'],
+ 		);
+
+ 		return $this->db->insert('atencion_dieta_alim_alter',$data);
  	}
 }
 ?>

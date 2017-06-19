@@ -84,6 +84,17 @@ class PlanAlimentario extends CI_Controller {
 			}
 		}
 
+		if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'general'){
+			if(!$unTurnoLlenoCompuesto){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}
+
 		/*print_r($allInputs);
 		exit();*/
 
@@ -165,11 +176,23 @@ class PlanAlimentario extends CI_Controller {
 							foreach ($turno['alimentos'] as $alimento) {
 								$datos = array(
 									'idatenciondietaturno' => $idatenciondietaturno,
-									'iddia' => $dia['id'],
 									'idalimento' => $alimento['idalimento'],
 									'valor' => $alimento['cantidad'],
 								);
-								if(!$this->model_plan_alimentario->m_registrar_dieta_turno_alimento($datos)){
+								if($this->model_plan_alimentario->m_registrar_dieta_turno_alimento($datos)){
+									$idalimentomaster = GetLastId('idatenciondietaalim','atencion_dieta_alim');
+									foreach ($alimento['alternativos'] as $alt) {
+										if(!empty($alt['idalimento'])){
+											$data = array(
+												'idatenciondietaalim' => $idalimentomaster,
+												'idalimento' => $alt['idalimento'],
+											);
+											if(!$this->model_plan_alimentario->m_registrar_dieta_turno_alimento_alt($data)){
+												$errorEnCiclo = TRUE;
+											}
+										}
+									}
+								}else{
 									$errorEnCiclo = TRUE;
 								}
 							}
