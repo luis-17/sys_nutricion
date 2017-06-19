@@ -6,10 +6,12 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,$controller,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices) { 
+  function CitasController ($scope,$uibModal,$controller,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading) { 
     var vm = this;
+
     /* alert on Drop */
-    vm.alertOnDrop = function(event, delta){
+    vm.alertOnDrop = function(event, delta){      
+      pageLoading.start('Actualizando calendario...');
       var datos = {
         event: event,
         delta: delta,
@@ -35,6 +37,7 @@
         }
         var toast = toastr[iconClass](rpta.message, title, vm.options);
         openedToasts.push(toast);
+        pageLoading.stop();
       });
     };
     /* alert on Resize */
@@ -110,6 +113,7 @@
 
     /* add custom event*/
     vm.btnCita = function(start, paciente, end, consultaOrigen){
+      pageLoading.start('Cargando formulario...');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -130,14 +134,7 @@
 
           if(consultaOrigen){
             console.log('$scope.consultaOrigen', consultaOrigen);
-          }
-
-          /*lista ubicaciones*/
-          UbicacionServices.sListarUbicacionCbo().then(function(rpta){
-            vm.listaUbicaciones = rpta.datos;
-            vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            vm.fData.ubicacion = vm.listaUbicaciones[0];
-          });
+          }         
 
           /*DATEPICKER*/
           vm.dp = {};
@@ -227,6 +224,7 @@
           }          
 
           vm.ok = function () {
+            pageLoading.start('Registrando cita...');
             if(vm.fData.hora_desde){
               vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
             }
@@ -260,6 +258,7 @@
               }
               var toast = toastr[iconClass](rpta.message, title, vm.options);
               openedToasts.push(toast);
+              pageLoading.stop();
             });
 
           };
@@ -271,12 +270,20 @@
             vm.fData.cliente = pacienteAgregado;
             //console.log('vm.fData.cliente',vm.fData.cliente);
           }
-        },
-        
+
+          /*lista ubicaciones*/
+          UbicacionServices.sListarUbicacionCbo().then(function(rpta){
+            vm.listaUbicaciones = rpta.datos;
+            vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+            vm.fData.ubicacion = vm.listaUbicaciones[0];
+            pageLoading.stop();
+          });          
+        },        
       });
     }
 
     vm.btnEditCita = function(row){
+      pageLoading.start('Cargando formulario...');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/citas/cita_formView.html',        
         controllerAs: 'modalcita',
@@ -287,18 +294,7 @@
           var vm = this;
           vm.fData = row;
           vm.modalTitle = 'Modificacion de Citas';
-          vm.type = 'edit';
-
-          /*lista ubicaciones*/
-          UbicacionServices.sListarUbicacionCbo().then(function(rpta){
-            vm.listaUbicaciones = rpta.datos;
-            vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-            angular.forEach(vm.listaUbicaciones, function(value, key) {
-              if(value.id == vm.fData.ubicacion.id){
-                vm.fData.ubicacion = vm.listaUbicaciones[key];
-              }
-            });            
-          });
+          vm.type = 'edit';          
 
           /*DATEPICKER*/
           vm.dp = {};
@@ -370,6 +366,7 @@
           }          
 
           vm.ok = function () {
+            pageLoading.start('Actualizando Cita...');
             //console.log('vm.fData', vm.fData);  
             if(vm.fData.hora_desde){
               vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
@@ -399,11 +396,24 @@
               }
               var toast = toastr[iconClass](rpta.message, title, vm.options);
               openedToasts.push(toast);
+              pageLoading.stop();
             });
           };
           vm.cancel = function () {
             $uibModalInstance.close();
           };
+
+          /*lista ubicaciones*/
+          UbicacionServices.sListarUbicacionCbo().then(function(rpta){
+            vm.listaUbicaciones = rpta.datos;
+            vm.listaUbicaciones.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+            angular.forEach(vm.listaUbicaciones, function(value, key) {
+              if(value.id == vm.fData.ubicacion.id){
+                vm.fData.ubicacion = vm.listaUbicaciones[key];
+              }
+            });
+            pageLoading.stop();            
+          });          
         }        
       });
     }
@@ -411,6 +421,7 @@
     vm.btnAnular = function(row){
       alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm('¿Realmente desea realizar la acción?', 
         function (ev) {
+        pageLoading.start('Actualizando calendario...');
         ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
           var openedToasts = [];
@@ -432,6 +443,7 @@
           }
           var toast = toastr[iconClass](rpta.message, title, vm.options);
           openedToasts.push(toast);
+          pageLoading.stop();
         });
       });
     }
