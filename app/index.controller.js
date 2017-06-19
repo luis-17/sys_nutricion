@@ -24,7 +24,24 @@
 
           }
       };
-  });
+    })
+    .factory("pageLoading", function(){
+      var pageLoading = {
+        start: function(text){
+            var page = angular.element('#page-loading');
+            var pageText = angular.element('.page-loading-text');
+            page.addClass('visible');
+            pageText.text(text);
+        },
+        stop: function(){
+            var page = angular.element('#page-loading');
+            var pageText = angular.element('.page-loading-text');
+            page.removeClass('visible');
+            pageText.text('');
+        }
+      }
+      return pageLoading;
+    });
 
   /** @ngInject */
   function MainController($translate, $scope, rootServices, PacienteServices,$location) {
@@ -127,7 +144,6 @@
       $scope.viewEnviaReporte = value;
     }
     $scope.changeViewEnviaReporte(false);
-
   }
   function rootServices($http, $q) {
     return({
