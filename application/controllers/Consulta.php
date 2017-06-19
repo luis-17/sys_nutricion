@@ -97,8 +97,9 @@ class Consulta extends CI_Controller {
 					'kg_masa_muscular' 		=> (float)$row['kg_masa_muscular'],
 					'porc_agua_corporal' 	=> (float)$row['porc_agua_corporal'],
 					'kg_agua_corporal' 		=> (float)$row['kg_agua_corporal'],
-					'porc_grasa_visceral' 	=> (float)$row['porc_grasa_visceral'],
-					'kg_grasa_visceral' 	=> (float)$row['kg_grasa_visceral'],
+					'puntaje_grasa_visceral'=> (float)$row['puntaje_grasa_visceral'],
+					/*'porc_grasa_visceral' 	=> (float)$row['porc_grasa_visceral'],
+					'kg_grasa_visceral' 	=> (float)$row['kg_grasa_visceral'],*/
 					'cm_pecho' 				=> (float)$row['cm_pecho'],
 					'cm_antebrazo' 			=> (float)$row['cm_antebrazo'],
 					'cm_cintura' 			=> (float)$row['cm_cintura'],
