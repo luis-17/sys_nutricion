@@ -149,7 +149,7 @@
                   <div class="form-group">
                     <label class="col-sm-5 control-label minotaur-label">Grasa Visceral <span class="text-red">*</span>:</label>
                     <div class="input-group col-sm-3">
-                      <input type="number" step="0.01" required class="form-control" min="1" max="11" ng-model="cons.fData.puntaje_grasa_visceral" />
+                      <input type="number" step="0.01" required class="form-control" min="1" max="20" ng-model="cons.fData.puntaje_grasa_visceral" />
                       <span class="input-group-addon">pts.</span>
                     </div>                    
                   </div>               
@@ -423,6 +423,8 @@
           <div class="mt-10" align="center" ng-include="'app/pages/consultas/graficoIMC_template.html'"></div>
 
           <div class="mt-10 mb-10" align="center" ng-include="'app/pages/consultas/graficoGrasa_template.html'"></div>
+          
+          <div class="mt-10 mb-10" align="center" ng-include="'app/pages/consultas/graficoPuntajeGrasaVisceral_template.html'"></div>
 
           <form name="formDiagnostico" role="form" novalidate class="form-validation">
             <div class="row">

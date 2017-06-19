@@ -186,6 +186,8 @@
       }else{
         vm.fData.porcFlecha2 = parseInt((vm.fData.porc_masa_grasa * 100)/60);
       }
+
+      vm.fData.porcFlecha3 = parseInt((vm.fData.puntaje_grasa_visceral * 100)/20);
     }
 
     vm.btnRegistrarConsulta = function(){
