@@ -56,7 +56,15 @@
 section.tile-body{
 	margin-top: 0;
 }
-
+.waterMarkEmptyData {
+    position: absolute;
+    top : 80px;
+    opacity: 0.40;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
 .page-consulta.tile{
 	min-height: 500px;
 }

@@ -198,6 +198,10 @@ class Consulta extends CI_Controller {
 			$arrListado['cm_abdominal'][] = array('id' => $key, 'valor' => $row['cm_abdominal']);
 			$arrListado['cm_pierna'][] = array('id' => $key, 'valor' => $row['cm_pierna']);
 			$arrListado['diagnostico_notas'][] = array('id' => $key, 'valor' => $row['diagnostico_notas']);
+			$arrListado['imc'][] = array(
+				'id' => $key,
+				'valor' => round($row['peso']*10000/($allInputs['estatura']*$allInputs['estatura']),2)
+			);
 
 			$arrCabecera[] =array(
 				'id' => $row['idatencion'],

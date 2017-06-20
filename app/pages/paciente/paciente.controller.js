@@ -763,6 +763,7 @@
             vm.historial.listaCmAbdominal = rpta.datos.cm_abdominal;
             vm.historial.listaCmPierna = rpta.datos.cm_pierna;
             vm.historial.listaDiagnostico_notas = rpta.datos.diagnostico_notas;
+            vm.historial.imc = rpta.datos.imc;
 
           }
           // console.log('Peso',vm.listaPeso);
