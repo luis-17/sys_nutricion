@@ -16,12 +16,12 @@
         <i class="fa fa-home"></i>
       </a>
     </li>
-    <li ng-class="{'open active':$state.includes('mail')}">
-      <a href="javascript:;">
-        <span class="nav-text">{{ 'Menu.SEGURIDAD' | translate }}</span>
-        <i class="fa fa-envelope-o"></i> 
+    <li ng-class="{'open active':$state.includes('profesional')}">
+      <a ui-sref="profesional">
+        <span class="nav-text">{{ 'Menu.PROFESIONALES' | translate }}</span>
+        <i class="fa fa-user-md"></i>
       </a>
-      <ul>
+      <!-- <ul>
         <li ui-sref-active="active">
           <a ui-sref="profesional">
             <span class="nav-text">{{ 'Menu.PROFESIONALES' | translate }}</span>
@@ -34,13 +34,13 @@
             <i>{{ 'Menu.USUARIOS' | translate | limitTo: 2}}</i>
           </a>
         </li>
-        <!-- <li ui-sref-active="active">
+        <li ui-sref-active="active">
           <a ui-sref="mail.single">
             <span class="nav-text">{{ 'Menu.ROLES' | translate }}</span>
             <i>{{ 'Menu.ROLES' | translate | limitTo: 2}}</i>
           </a>
-        </li> -->
-      </ul>
+        </li> 
+      </ul>-->
     </li>
     <li ng-class="{'active':$state.includes('paciente')}">
       <a ui-sref="paciente">

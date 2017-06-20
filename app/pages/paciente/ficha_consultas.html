@@ -30,6 +30,10 @@
               <td style="text-align: center;" ng-repeat="item in pac.historial.listaPeso">{{item.valor}} kg.</td>
             </tr>
             <tr>
+              <td>IMC:</td>
+              <td style="text-align: center;" ng-repeat="item in pac.historial.imc">{{item.valor}}</td>
+            </tr>
+            <tr>
               <td>Masa Grasa(%):</td>
               <td style="text-align: center;" ng-repeat="item in pac.historial.listaMasaGrasa">{{item.valor}}</td>
             </tr>
@@ -56,10 +60,6 @@
             <tr>
               <td>Masa Muscular(kg):</td>
               <td style="text-align: center;" ng-repeat="item in pac.historial.listaMasaMuscular">{{item.valor}}</td>
-            </tr>
-            <tr>
-              <td>IMC:</td>
-              <td style="text-align: center;" ng-repeat="item in pac.historial.imc">{{item.valor}}</td>
             </tr>
           </tbody>
     </table>
