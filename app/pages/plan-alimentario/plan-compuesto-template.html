@@ -87,7 +87,7 @@
 			<form class="form-inline" style="text-align:left;">
 		        <div class="col-sm-6 col-xs-12 pl-0 pb-10" ng-repeat="(indexAlimento, alimento) in turno.alimentos">
 		            <input type="text" class="form-control input-sm col-sm-7" ng-model="alimento.nombre_compuesto"
-							style="width: 70%;" autocomplete="off" placeholder="Digite el alimento..." 
+							style="width: 65%;" autocomplete="off" placeholder="Digite el alimento..." 
                                   typeahead-loading="loadingLocations" 
                                   uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
                                   typeahead-min-length="2" 
@@ -95,8 +95,11 @@
                                   ng-change="alimento.idalimento = null;"  />
 
 					<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
-							style="width: 20%;" ng-change="plan.calcularValoresTurno(indexDia, indexTurno);" />
+							style="width: 15%;" ng-change="plan.calcularValoresTurno(indexDia, indexTurno);" />
 
+		            <label class="btn btn-sm text-tr-black" ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
+		            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
+		            </label>
 		            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,indexDia); $event.stopPropagation();"> 
 		            	<i class="fa fa-trash" tooltip-placement="left" uib-tooltip="QUITAR!"></i> 
 		            </label>
@@ -171,8 +174,10 @@
 		                                  ng-change="alimento.idalimento = null;"  />
 
 							<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
-									style="width: 20%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
-
+									style="width: 15%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
+							<label class="btn btn-sm text-tr-black" ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
+				            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
+				            </label>
 				            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,null); $event.stopPropagation();"> 
 				            	<i class="fa fa-trash" tooltip-placement="left" uib-tooltip="QUITAR!"></i> 
 				            </label>
@@ -188,8 +193,11 @@
 		                                  ng-change="alimentoAlt.idalimento = null;"  />
 
 							<input type="number" step="0.01" class="form-control input-sm col-sm-4" ng-model="alimentoAlt.cantidad"
-									style="width: 20%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
-
+									style="width: 15%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
+							<label class="btn btn-sm text-tr-black" ng-if="alimentoAlt.idalimento != 0"
+							ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento,indexAlimentoAlt); $event.stopPropagation();"> 
+				            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
+				            </label>
 				            <label class="btn btn-sm text-red" 
 				            		ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,null, indexAlimentoAlt); $event.stopPropagation();"> 
 				            	<i class="fa fa-trash" tooltip-placement="left" uib-tooltip="QUITAR!"></i> 
@@ -207,7 +215,7 @@
                                     />
 
 					<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="turno.temporalCantidad"
-							style="width: 20%;" ng-change="" />
+							style="width: 15%;" ng-change="" />
 
 		            <label class="btn btn-sm text-green" ng-click="plan.agregarAlimento(null, indexTurno); $event.stopPropagation();"> 
 		            	<i class="fa fa-plus" tooltip-placement="left" uib-tooltip="AGREGAR!"></i> 

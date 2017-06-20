@@ -6,7 +6,7 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices) { 
+  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading) { 
     var vm = this;
     vm.horas = [
       {id:0, value:'--'},
@@ -447,6 +447,53 @@
         }
       }
       vm.calcularValoresTurno(indexDia,indexTurno);            
+    }
+
+    vm.ViewDetalle = function(indexDia, indexTurno,indexAlimento, indexAlimentoAlt){
+      if(vm.formaPlan == 'dia'){
+        vm.fDataAlimento = vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento];
+        console.log(vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento]);
+      }else if(vm.formaPlan=='general'){
+        console.log('indexAlimentoAlt',indexAlimentoAlt);
+        if(!isNaN(indexAlimentoAlt) && indexAlimentoAlt != null){
+          vm.fDataAlimento = vm.dia.turnos[indexTurno].alimentos[indexAlimento].alternativos[indexAlimentoAlt];         
+          console.log(vm.dia.turnos[indexTurno].alimentos[indexAlimento].alternativos[indexAlimentoAlt]);         
+        }else{
+          vm.fDataAlimento = vm.dia.turnos[indexTurno].alimentos[indexAlimento];
+          console.log(vm.dia.turnos[indexTurno].alimentos[indexAlimento]);
+        }
+      }
+
+      pageLoading.start('Cargando formulario...');
+      var modalInstance = $uibModal.open({
+        templateUrl:'app/pages/alimento/alimentoViewDetalle_formView.html',        
+        controllerAs: 'modalAli',
+        size: 'lg',
+        backdropClass: 'splash splash-ef-14',
+        windowClass: 'splash splash-ef-14',
+        controller: function($scope, $uibModalInstance, arrToModal){
+          var vm = this;
+          vm.fData = arrToModal.fDataAlimento;
+          vm.modalTitle = 'Informacion Nutricional';
+
+          vm.cancel = function () {
+            $uibModalInstance.close();
+          };
+
+          pageLoading.stop();          
+        },
+        resolve: {
+            arrToModal: function() {
+              return {
+                fDataAlimento : vm.fDataAlimento,
+                // document: $document,
+                // listaSexos : $scope.listaSexos,
+                // gridComboOptions : $scope.gridComboOptions,
+                // mySelectionComboGrid : $scope.mySelectionComboGrid
+              }
+            }
+          }        
+      });
     }
    
   }
