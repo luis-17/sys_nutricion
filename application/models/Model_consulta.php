@@ -45,6 +45,7 @@ class Model_consulta extends CI_Model {
 			'cm_pierna' 			=> (empty($datos['consulta']['cm_pierna'])) ? NULL : $datos['consulta']['cm_pierna'],
 			'si_embarazo' 			=> ($datos['consulta']['si_embarazo']) ? 1 : 2,
 			'diagnostico_notas' 	=> (empty($datos['consulta']['diagnostico_notas'])) ? NULL : $datos['consulta']['diagnostico_notas'],
+			'resultados_laboratorio'=> (empty($datos['consulta']['resultados_laboratorio'])) ? NULL : $datos['consulta']['resultados_laboratorio'],
 			'fecha_atencion' 		=> date('Y-m-d H:i:s', strtotime($datos['consulta']['fecha_atencion'])),
 			'createdat' 			=> date('Y-m-d H:i:s'),
 			'updatedat'				=> date('Y-m-d H:i:s')
@@ -90,6 +91,7 @@ class Model_consulta extends CI_Model {
 			'cm_pierna' 			=> (empty($datos['consulta']['cm_pierna'])) ? NULL : $datos['consulta']['cm_pierna'],
 			'si_embarazo' 			=> ($datos['consulta']['si_embarazo']) ? 1 : 2,
 			'diagnostico_notas' 	=> (empty($datos['consulta']['diagnostico_notas'])) ? NULL : $datos['consulta']['diagnostico_notas'],
+			'resultados_laboratorio'=> (empty($datos['consulta']['resultados_laboratorio'])) ? NULL : $datos['consulta']['resultados_laboratorio'],
 			'fecha_atencion' 		=> date('Y-m-d H:i:s', strtotime($datos['consulta']['fecha_atencion'])),
 			'updatedat'				=> date('Y-m-d H:i:s')
 			);

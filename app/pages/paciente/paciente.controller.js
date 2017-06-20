@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,
+  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,pageLoading,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
@@ -217,7 +217,7 @@
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
-        // blockUI.start('Cargando...');
+        pageLoading.start('Cargando datos...');
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -225,7 +225,7 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
-          // blockUI.stop();
+          pageLoading.stop();
         });
       }
       vm.getPaginationServerSide();
@@ -598,7 +598,41 @@
               }
             };
 
-
+             vm.chartOptions3 = {
+              chart: {
+                  type: 'line'
+              },
+              title: {
+                  text: 'Todos'
+              },
+              xAxis: {
+                  categories: []
+              },
+              yAxis: {
+                title: {
+                    text: 'IMC.'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+              },
+              // series: [{
+              //     // data: ['85','80','70','90']
+              //     data: []
+              // }]
+            };
+            vm.chartOptions3.series = rpta.datos.imc;
+            vm.chartOptions3.xAxis.categories = rpta.datos.xAxis;
+            vm.chartOptions3.chart.events = {
+              load: function () {
+                var thes = this;
+                setTimeout(function () {
+                    thes.setSize($("#chartOptions3").parent().width(), $("#chartOptions3").parent().height());
+                }, 10);
+              }
+            };
 
           });
         }
