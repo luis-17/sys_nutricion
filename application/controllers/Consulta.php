@@ -42,7 +42,10 @@ class Consulta extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
-
+		// var_dump($allInputs); exit();
+		if(empty($allInputs['cita']['id'])){
+			$allInputs['cita']['id'] = $allInputs['consulta']['idcita'];
+		}
 		$this->db->trans_start();
 		if($this->model_consulta->m_actualizar($allInputs)){
 			$datos = array (
@@ -81,7 +84,7 @@ class Consulta extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'No se encontro la atencion.';
-
+		// var_dump($allInputs); exit();
 		$row = $this->model_consulta->m_consultar_atencion($allInputs['atencion']['idatencion']);
 
 		if(!empty($row['idatencion'])){
@@ -123,6 +126,7 @@ class Consulta extends CI_Controller {
 					'cm_abdominal' 			=> (float)$row['cm_abdominal'],
 					'cm_pierna' 			=> (float)$row['cm_pierna'],
 					'diagnostico_notas' 	=> $row['diagnostico_notas'],
+					'resultados_laboratorio'=> $row['resultados_laboratorio'],
 					'fecha_atencion' 		=> $row['fecha_atencion'],
 					'estado_atencion' 		=> $row['estado_atencion'],
 					'kg_masa_grasa' 		=> (float)$row['kg_masa_grasa'],
@@ -204,7 +208,7 @@ class Consulta extends CI_Controller {
 			);
 
 			$arrCabecera[] =array(
-				'id' => $row['idatencion'],
+				'idatencion' => $row['idatencion'],
 				'fecha'=> DarFormatoDMY($row['fecha_atencion'])
 			);
 		}

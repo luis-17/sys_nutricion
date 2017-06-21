@@ -140,6 +140,11 @@
     }
     $scope.changeViewCita(true);
 
+    $scope.changeViewPaciente = function(value){
+      $scope.viewPaciente = value;
+    }
+    $scope.changeViewPaciente(true);
+
     $scope.changeViewEnviaReporte = function(value){
       $scope.viewEnviaReporte = value;
     }

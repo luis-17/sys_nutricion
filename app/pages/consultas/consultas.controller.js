@@ -23,7 +23,7 @@
       }else{
         vm.changePestania(1);
       }
-      
+
       if(vm.tipoVista == 'new'){
         vm.fData = {};
         vm.fData.si_embarazo = false;
@@ -195,7 +195,7 @@
     }
 
     vm.btnRegistrarConsulta = function(){
-      pageLoading.start('Registrando Consulta...');      
+      pageLoading.start('Registrando Consulta...');
       var datos={
         cita:vm.cita,
         consulta:vm.fData

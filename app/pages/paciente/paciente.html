@@ -1,4 +1,9 @@
-<div class="page page-ui pull-to-header">
+<div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && pac.tipoVista == 'edit'"
+      ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && pac.tipoVista == 'edit'"
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(pac.cita,'paciente', pac.callback, 'edit');" >
+</div>
+
+<div class="page page-ui pull-to-header" ng-show="viewPaciente">
   <ol class="breadcrumb bg-white" ng-if="!pac.modoFicha">
     <li><a ui-sref="dashboard">Inicio</a></li>
     <li class="active">Paciente</li>
