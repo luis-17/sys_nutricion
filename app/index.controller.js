@@ -149,6 +149,11 @@
       $scope.viewEnviaReporte = value;
     }
     $scope.changeViewEnviaReporte(false);
+
+    $scope.changeViewSoloPlan = function(value){
+      $scope.viewSoloPlan = value;
+    }
+    $scope.changeViewSoloPlan(false);
   }
   function rootServices($http, $q) {
     return({

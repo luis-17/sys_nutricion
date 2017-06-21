@@ -131,6 +131,8 @@ class Consulta extends CI_Controller {
 					'estado_atencion' 		=> $row['estado_atencion'],
 					'kg_masa_grasa' 		=> (float)$row['kg_masa_grasa'],
 					'kg_masa_libre' 		=> (float)$row['kg_masa_libre'],
+					'indicaciones_dieta' 	=> $row['indicaciones_dieta'],
+					'tipo_dieta' 			=> $row['tipo_dieta'],
 				);
 
 			$arrData['flag'] = 1;

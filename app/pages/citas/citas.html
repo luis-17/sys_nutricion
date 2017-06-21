@@ -9,7 +9,11 @@
 
 <div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" ng-show="viewPlan"
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
-      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan('consulta', 'new', vm.callback);" > 
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(consulta,'consulta', 'new', vm.callback);" > 
+</div>
+<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewSoloPlan" ng-show="viewSoloPlan"
+      ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(vm.event.atencion,'cita', vm.tipoVistaPlan, vm.callback);" > 
 </div>
 
 <div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'" ng-show="viewFicha"
@@ -85,6 +89,14 @@
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion" 
                         ng-click="vm.btnEditarConsulta(vm.event); changeViewCita(false);">
                       <a ><i class="fa fa-pencil-square-o"></i>Ir a Consulta</a>
+                    </li>
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion && !vm.event.atencion.tipo_dieta" 
+                        ng-click="vm.btnAgregarPlan(vm.event); changeViewCita(false);">
+                      <a ><i class="fa fa-pencil-square-o"></i>Agregar Plan Alim.</a>
+                    </li>
+                    <li role="menuitem" ng-if="vm.event.atencion.idatencion && vm.event.atencion.tipo_dieta" 
+                        ng-click="vm.btnEditarPlan(vm.event); changeViewCita(false);">
+                      <a ><i class="fa fa-pencil-square-o"></i>Ir a Plan Alim.</a>
                     </li>
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion" ng-click="vm.btnAnularConsulta(vm.event)">
                       <a ><i class="fa fa-remove"></i>Anular Consulta</a>

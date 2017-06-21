@@ -37,83 +37,80 @@
       {id:'pm', value:'pm'},
     ]; 
 
-    DiaServices.sListarDiasCbo().then(function(rpta){
-      vm.dias = rpta.datos;
-      TurnoServices.sListarTurnosCbo().then(function(rpta){
-        angular.forEach(vm.dias, function(value, key) {
-          vm.dias[key].turnos = angular.copy(rpta.datos);
-          vm.dias[key].valoresGlobales = {
-              calorias: 0,
-              proteinas: 0,
-              carbohidratos:0,
-              grasas: 0,
-              fibras: 0,
-              cenizas: 0,
-              calcio: 0,
-              fosforo: 0,
-              zinc: 0,
-              hierro: 0,
-            };
-          angular.forEach(vm.dias[key].turnos, function(val, ind) {
-            vm.dias[key].turnos[ind].hora = vm.horas[0];            
-            vm.dias[key].turnos[ind].minuto = vm.minutos[0];            
-            vm.dias[key].turnos[ind].tiempo = vm.tiempo[0];            
-            vm.dias[key].turnos[ind].alimentos = [];            
-            vm.dias[key].turnos[ind].valoresTurno = {
-              calorias: 0,
-              proteinas: 0,
-              carbohidratos:0,
-              grasas: 0,
-              fibras: 0,
-              cenizas: 0,
-              calcio: 0,
-              fosforo: 0,
-              zinc: 0,
-              hierro: 0,
-            };            
-          });
-        });
-        vm.dia = angular.copy(vm.dias[0]);  
-        angular.forEach(vm.dia.turnos, function(val, ind) {
-            vm.dia.turnos[ind].hora = vm.horas[0];            
-            vm.dia.turnos[ind].minuto = vm.minutos[0];            
-            vm.dia.turnos[ind].tiempo = vm.tiempo[0];            
-            vm.dia.turnos[ind].alimentos = [];            
-            vm.dia.turnos[ind].valoresTurno = {
-              calorias: 0,
-              proteinas: 0,
-              carbohidratos:0,
-              grasas: 0,
-              fibras: 0,
-              cenizas: 0,
-              calcio: 0,
-              fosforo: 0,
-              zinc: 0,
-              hierro: 0,
-            };            
-          });      
-      });
-    }); 
-
-    vm.initPlan = function(origen,tipoVista,callbackCitas){
-      vm.consulta = $scope.consulta;
+    
+    vm.initPlan = function(consulta,origen,tipoVista,callbackCitas){
+      pageLoading.start('Cargando formulario');
+      vm.consulta = consulta;
       vm.origen = origen;
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
       //console.log(callbackCitas);
-      //console.log('vm.consulta',vm.consulta);
-      vm.formaPlan = 'dia';
+      //console.log('vm.consulta',vm.consulta);      
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};
+        vm.formaPlan = 'dia';
+        DiaServices.sListarDiasCbo().then(function(rpta){
+          vm.dias = rpta.datos;
+          TurnoServices.sListarTurnosCbo().then(function(rpta){
+            angular.forEach(vm.dias, function(value, key) {
+              vm.dias[key].turnos = angular.copy(rpta.datos);
+              vm.dias[key].valoresGlobales = {
+                  calorias: 0,
+                  proteinas: 0,
+                  carbohidratos:0,
+                  grasas: 0,
+                  fibras: 0,
+                  cenizas: 0,
+                  calcio: 0,
+                  fosforo: 0,
+                  zinc: 0,
+                  hierro: 0,
+                };
+              angular.forEach(vm.dias[key].turnos, function(val, ind) {
+                vm.dias[key].turnos[ind].hora = vm.horas[0];            
+                vm.dias[key].turnos[ind].minuto = vm.minutos[0];            
+                vm.dias[key].turnos[ind].tiempo = vm.tiempo[0];            
+                vm.dias[key].turnos[ind].alimentos = [];            
+                vm.dias[key].turnos[ind].valoresTurno = {
+                  calorias: 0,
+                  proteinas: 0,
+                  carbohidratos:0,
+                  grasas: 0,
+                  fibras: 0,
+                  cenizas: 0,
+                  calcio: 0,
+                  fosforo: 0,
+                  zinc: 0,
+                  hierro: 0,
+                };            
+              });
+            });
+            vm.dia = angular.copy(vm.dias[0]);  
+            angular.forEach(vm.dia.turnos, function(val, ind) {
+              vm.dia.turnos[ind].hora = vm.horas[0];            
+              vm.dia.turnos[ind].minuto = vm.minutos[0];            
+              vm.dia.turnos[ind].tiempo = vm.tiempo[0];            
+              vm.dia.turnos[ind].alimentos = [];            
+              vm.dia.turnos[ind].valoresTurno = {
+                calorias: 0,
+                proteinas: 0,
+                carbohidratos:0,
+                grasas: 0,
+                fibras: 0,
+                cenizas: 0,
+                calcio: 0,
+                fosforo: 0,
+                zinc: 0,
+                hierro: 0,
+              };            
+            });      
+            pageLoading.stop();
+          });
+        });
       }else if(vm.tipoVista == 'edit'){
-        /*ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
-          vm.fData = rpta.datos;
-          vm.fData.fecha_atencion = new Date(vm.fData.fecha_atencion);
-          vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
-          vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
-        });*/ 
         //cargar el plan almacenado        
+        pageLoading.stop();
       }
     }
 
@@ -152,6 +149,7 @@
           $scope.changeViewOnlyBodyCita(false);
           $scope.changeViewConsulta(false);
           $scope.changeViewPlan(false);
+          $scope.changeViewSoloPlan(false);
           vm.callbackCitas();
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';

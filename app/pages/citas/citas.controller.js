@@ -8,6 +8,12 @@
   /** @ngInject */
   function CitasController ($scope,$uibModal,$controller,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading) { 
     var vm = this;
+    $scope.changeViewCita(true);
+    $scope.changeViewConsulta(false);
+    $scope.changeViewFicha(false);
+    $scope.changeViewPlan(false);
+    $scope.changeViewOnlyBodyCita(false);
+    $scope.changeViewSoloPlan(false);
 
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){      
@@ -458,6 +464,17 @@
     vm.btnEditarConsulta = function(row){      
       vm.tipoVista = 'edit';
       $scope.changeViewConsulta(true);           
+    }
+
+    vm.tipoVistaPlan = '';
+    vm.btnAgregarPlan = function(row){      
+      vm.tipoVistaPlan = 'new';
+      $scope.changeViewSoloPlan(true);            
+    }
+    
+    vm.btnEditarPlan = function(row){      
+      vm.tipoVistaPlan = 'edit';
+      $scope.changeViewSoloPlan(true);           
     }
 
     vm.callback = function(){

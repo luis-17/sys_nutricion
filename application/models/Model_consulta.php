@@ -115,7 +115,7 @@ class Model_consulta extends CI_Model {
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
 			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral, at.kg_masa_grasa,
-			at.kg_masa_libre, at.resultados_laboratorio');
+			at.kg_masa_libre, at.resultados_laboratorio, at.indicaciones_dieta, at.tipo_dieta');
 
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);

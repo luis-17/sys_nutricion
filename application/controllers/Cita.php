@@ -60,7 +60,9 @@ class Cita extends CI_Controller {
 					'atencion' => array(
 							'idatencion' => (int)$row['idatencion'],
 							'fecha_atencion' => $row['fecha_atencion'],
-							'diagnostico_notas' => $row['diagnostico_notas']
+							'diagnostico_notas' => $row['diagnostico_notas'],
+							'indicaciones_dieta' => $row['indicaciones_dieta'],
+							'tipo_dieta' => $row['tipo_dieta'],
 						),
 					'className' => $className,
 					'start' => $row['fecha'] .' '. $row['hora_desde'],
