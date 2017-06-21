@@ -150,8 +150,9 @@
     }
     $scope.changeViewEnviaReporte(false);
 
-    $scope.changeViewSoloPlan = function(value){
+    $scope.changeViewSoloPlan = function(value,consulta){
       $scope.viewSoloPlan = value;
+      $scope.consulta = consulta;
     }
     $scope.changeViewSoloPlan(false);
   }

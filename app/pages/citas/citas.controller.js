@@ -467,14 +467,14 @@
     }
 
     vm.tipoVistaPlan = '';
-    vm.btnAgregarPlan = function(row){      
+    vm.btnAgregarPlan = function(cita){      
       vm.tipoVistaPlan = 'new';
-      $scope.changeViewSoloPlan(true);            
+      $scope.changeViewSoloPlan(true, cita.atencion);            
     }
     
-    vm.btnEditarPlan = function(row){      
+    vm.btnEditarPlan = function(cita){      
       vm.tipoVistaPlan = 'edit';
-      $scope.changeViewSoloPlan(true);           
+      $scope.changeViewSoloPlan(true, cita.atencion);           
     }
 
     vm.callback = function(){

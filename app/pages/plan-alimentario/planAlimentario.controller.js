@@ -45,7 +45,7 @@
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
       //console.log(callbackCitas);
-      //console.log('vm.consulta',vm.consulta);      
+      console.log('vm.origen',vm.origen);      
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};

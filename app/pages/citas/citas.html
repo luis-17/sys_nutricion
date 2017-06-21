@@ -7,11 +7,11 @@
       ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
 </div>
 
-<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" ng-show="viewPlan"
+<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" 
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
       ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(consulta,'consulta', 'new', vm.callback);" > 
 </div>
-<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewSoloPlan" ng-show="viewSoloPlan"
+<div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewSoloPlan" 
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
       ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(vm.event.atencion,'cita', vm.tipoVistaPlan, vm.callback);" > 
 </div>
