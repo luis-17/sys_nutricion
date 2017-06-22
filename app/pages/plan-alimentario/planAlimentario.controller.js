@@ -109,8 +109,32 @@
           });
         });
       }else if(vm.tipoVista == 'edit'){
-        //cargar el plan almacenado        
-        pageLoading.stop();
+        var tipo;
+        var forma;
+        if(vm.consulta.tipo_dieta == 'SG'){
+          tipo = 'simple';
+          forma = 'general';
+        }else if(vm.consulta.tipo_dieta == 'CG'){
+          tipo = 'compuesto';
+          forma = 'general';
+        }else if(vm.consulta.tipo_dieta == 'SD'){
+          tipo = 'simple';
+          forma = 'dia';
+        }else if(vm.consulta.tipo_dieta == 'CD'){
+          tipo = 'compuesto';
+          forma = 'dia';
+        }
+        vm.formaPlan = forma;
+        vm.seleccionaTipo(tipo);
+
+        PlanAlimentarioServices.sCargarPlan(vm.consulta).then(function(rpta){
+          if(vm.consulta.tipo_dieta == 'SG' || vm.consulta.tipo_dieta == 'CG'){
+            vm.dia = rpta.datos[0];
+          }else if(vm.consulta.tipo_dieta == 'SD' || vm.consulta.tipo_dieta == 'CD'){
+            vm.dias = rpta.datos;
+          }
+          pageLoading.stop();
+        });       
       }
     }
 
@@ -499,11 +523,21 @@
   function PlanAlimentarioServices($http, $q) {
     return({
       sRegistrarPlan:sRegistrarPlan,
+      sCargarPlan:sCargarPlan,
     });
     function sRegistrarPlan(datos) {
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"PlanAlimentario/registrar_plan_alimentario",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }    
+
+    function sCargarPlan(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"PlanAlimentario/cargar_plan_alimentario",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

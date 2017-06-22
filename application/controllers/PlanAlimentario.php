@@ -230,4 +230,89 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
+	public function cargar_plan_alimentario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';
+
+		$lista = $this->model_plan_alimentario->m_cargar_plan_alimentario($allInputs);
+
+		$arrayPlan =array();
+		foreach ($lista as $key => $row) {
+			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
+			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
+
+			/*$hora_string = darFormatoHora($row['hora']);
+			$array = explode(" ", $hora_string);
+			$tiempo_str = $array[1];
+			$array = explode(':', $array[0]);
+			$hora_str = $array[0];
+			$min_str = $array[1];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo_str'] = $tiempo_str;
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora_str'] = $hora_str;
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min_str'] = $min_str;*/
+
+			$alimento = array(
+				'idatenciondietaalim' => $row['idatenciondietaalim'],
+				'cantidad' => $row['valor'],
+				'idalimento' => $row['idalimento'],
+				'nombre' => $row['nombre'],
+				'medida_casera' => $row['medida_casera'],
+				'nombre_compuesto' => $row['nombre'] . ' - '. strtoupper($row['medida_casera']),
+				'calorias' => (float)$row['calorias'],
+				'proteinas' => (float)$row['proteinas'],
+				'grasas' => (float)$row['grasas'],
+				'carbohidratos' => (float)$row['carbohidratos'],
+				'gramo' => (float)$row['gramo'],
+				'ceniza' => (float)$row['ceniza'],
+				'calcio' => (float)$row['calcio'],
+				'fosforo' => (float)$row['fosforo'],
+				'zinc' => (float)$row['zinc'],
+				'hierro' => (float)$row['hierro'],
+				'fibra' => (float)$row['fibra'],				
+			);
+
+			$alternativo = array(
+				'idatenciondietaalimalter' => $row['idatenciondietaalimalter'],
+				'idatenciondietaalim' => $row['idatenciondietaalim'],
+				'cantidad' => $row['valor'],
+				'idalimento' => $row['idalimento_alter'],
+				'nombre' => $row['nombre_alter'],
+				'medida_casera' => $row['medida_casera_alter'],
+				'nombre_compuesto' => $row['nombre_alter'] . ' - '. strtoupper($row['medida_casera_alter']),
+				'calorias' => (float)$row['calorias_alter'],
+				'proteinas' => (float)$row['proteinas_alter'],
+				'grasas' => (float)$row['grasas_alter'],
+				'carbohidratos' => (float)$row['carbohidratos_alter'],
+				'gramo' => (float)$row['gramo_alter'],
+				'ceniza' => (float)$row['ceniza_alter'],
+				'calcio' => (float)$row['calcio_alter'],
+				'fosforo' => (float)$row['fosforo_alter'],
+				'zinc' => (float)$row['zinc_alter'],
+				'hierro' => (float)$row['hierro_alter'],
+				'fibra' => (float)$row['fibra_alter'],				
+			);
+
+			if(!empty($row['idatenciondietaalimalter'])){
+				$alimento['alternativos'][$row['idatenciondietaalimalter']] = $alternativo;
+			}			
+
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'] = array();
+			if(!empty($row['idatenciondietaalim'])){
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']] = $alimento;
+			}			
+		}
+
+		$arrayPlan = array_values($arrayPlan);
+		$arrData['datos'] = $arrayPlan;
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }
