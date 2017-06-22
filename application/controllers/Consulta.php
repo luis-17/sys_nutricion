@@ -68,7 +68,7 @@ class Consulta extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando la consulta.';
-
+		// var_dump($allInputs['atencion']['idatencion']); exit();
 
 		if($this->model_consulta->m_anular($allInputs['atencion']['idatencion'])){
 			$arrData['flag'] = 1;

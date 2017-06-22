@@ -15,7 +15,8 @@
       vm.origen = origen;
       vm.callback = callback;
       vm.tipoVista = tipoVista;
-      //console.log('vm.cita',vm.cita);
+      console.log('cita',cita);
+      console.log('callback',callback);
       vm.emails = cita.cliente.email;
 
       if($scope.pestaniaConsulta){
@@ -247,8 +248,14 @@
           var title = 'OK';
           var iconClass = 'success';
           /*$scope.changeViewConsulta(false);*/
-          vm.callback();
-          vm.changePestania(3);
+          if( vm.origen == 'citas' ){
+            vm.callback();
+            vm.changePestania(3);
+          }else{
+            vm.callback(vm.cita.cliente);
+            $scope.changeViewPaciente(true);
+            $scope.changeViewConsulta(false);
+          }
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';

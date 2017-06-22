@@ -1,11 +1,6 @@
 <style type="text/css">
   th{border: 2px solid #fff;}
 </style>
-<!-- <div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'"
-      ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'edit'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" >
-</div> -->
-
 <form class="form-horizontal" role="form">
 	<div class="tile col-sm-12" style="min-height: 250px">
   	<h4 class="text-info f-16">Historial de consultas</h4>
@@ -20,7 +15,7 @@
               <th style="text-align: center;padding-top: 2px;" ng-repeat="item in pac.historial.listaCabecera">
                 <a href="" tooltip-placement="left" uib-tooltip="Editar" ng-click="pac.btnEditarConsulta(item); changeViewPaciente(false);" style="padding: 5px;"><i class="fa fa-edit"></i></a>
                 <a href="" tooltip-placement="bottom" uib-tooltip="PDF" style="padding: 5px;"><i class="fa fa-file-pdf-o"></i></a>
-                <a href="" tooltip-placement="right" uib-tooltip="Anular" ng-click="pac.eliminarConsulta(item);" style="padding: 5px;"><i class="fa fa-trash-o"></i></a>
+                <a href="" tooltip-placement="right" uib-tooltip="Anular" ng-click="pac.btnAnularConsulta(item);" style="padding: 5px;"><i class="fa fa-trash-o"></i></a>
               </th>
             </tr>
           </thead>
