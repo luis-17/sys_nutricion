@@ -599,7 +599,7 @@
               }
             };
 
-             vm.chartOptions3 = {
+            vm.chartOptions3 = {
               chart: {
                   type: 'line'
               },
@@ -611,7 +611,7 @@
               },
               yAxis: {
                 title: {
-                    text: 'IMC.'
+                    text: 'OTROS'
                 },
                 plotLines: [{
                     value: 0,
@@ -986,20 +986,54 @@
         }
         vm.btnVerFicha(row);
       }
+      vm.callback = function(row){
+        vm.cargarConsultas(row);
+        // console.log(row);
+      }
       vm.btnEditarConsulta = function(row){
         vm.tipoVista = 'edit';
         $scope.changeViewConsulta(true);
         vm.cita = {
           'atencion' : {
             'idatencion': row.idatencion,
-            'fecha_atencion': row.fecha_atncion
+            'fecha_atencion': row.fecha_atencion
           },
           'cliente' : vm.mySelectionGrid[0]
         }
       }
-      vm.eliminarConsulta = function(id){
-        console.log('eliminar');
-        console.log('idatencion', id);
+      vm.btnAnularConsulta = function(row){
+        alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
+          ev.preventDefault();
+          vm.cita = {
+            'atencion' : {
+              'idatencion': row.idatencion,
+              'fecha_atencion': row.fecha_atencion
+            },
+            //'cliente' : vm.mySelectionGrid[0]
+          }
+          ConsultasServices.sAnularConsulta(vm.cita).then(function (rpta) {
+            var openedToasts = [];
+            vm.options = {
+              timeout: '3000',
+              extendedTimeout: '1000',
+              preventDuplicates: false,
+              preventOpenDuplicates: false
+            };
+            if(rpta.flag == 1){
+              vm.cargarConsultas(vm.mySelectionGrid[0]);
+              var title = 'OK';
+              var iconClass = 'success';
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var iconClass = 'warning';
+            }else{
+              alert('Ocurrió un error');
+            }
+            var toast = toastr[iconClass](rpta.message, title, vm.options);
+            openedToasts.push(toast);
+          });
+        });
+        // console.log('anulando...');
       }
   }
 
