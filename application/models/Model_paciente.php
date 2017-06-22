@@ -113,7 +113,7 @@ class Model_paciente extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_historial_paciente($datos){
-		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.peso, at.fecha_atencion, cl.estatura");
+		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.peso, at.fecha_atencion, cl.estatura, at.kg_masa_grasa, at.kg_masa_muscular");
 		$this->db->from('atencion at');
 		$this->db->join('cliente cl','at.idcliente = cl.idcliente');
 		$this->db->where('at.idcliente',$datos['idcliente']);

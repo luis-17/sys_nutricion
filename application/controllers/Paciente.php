@@ -220,6 +220,7 @@ class Paciente extends CI_Controller {
 		$arrPeso = array();
 		$arrFecha = array();
 		$arrIMC = array();
+		$arrTodos = array();
 		$lista = $this->model_paciente->m_cargar_historial_paciente($allInputs);
 
 		$arrPeso[] = array(
@@ -230,15 +231,39 @@ class Paciente extends CI_Controller {
         	'name'=> 'IMC',
           	'data' => array()
       	);
+      	$arrTodos[0] = array(
+        	'name'=> 'Peso',
+          	'data' => array()
+      	);
+      	$arrTodos[1] = array(
+        	'name'=> 'IMC',
+          	'data' => array()
+      	);
+      	$arrTodos[2] = array(
+        	'name'=> 'Masa Grasa',
+          	'data' => array()
+      	);
+      	$arrTodos[3] = array(
+        	'name'=> 'Masa Muscular',
+          	'data' => array()
+      	);
 		foreach ($lista as $row) {
+			$imc = 0;
+
+			$imc = round( (($row['peso'] / pow($row['estatura'],2))*10000),2 );
 			$arrPeso[0]['data'][] = (int)$row['peso'];
-			$arrIMC[0]['data'][] = round( (($row['peso'] / pow($row['estatura'],2))*10000),2 );
+			$arrIMC[0]['data'][] = $imc;
 			$arrFecha[] = $row['fecha_atencion'];
+			$arrTodos[0]['data'][] = (int)$row['peso'];
+			$arrTodos[1]['data'][] = $imc;
+			$arrTodos[2]['data'][] = round($row['kg_masa_grasa'],2);
+			$arrTodos[3]['data'][] = round($row['kg_masa_muscular'],2);
+
 		}
 		$arrListado['peso'] = $arrPeso;
 		$arrListado['imc'] = $arrIMC;
+		$arrListado['todos'] = $arrTodos;
 		$arrListado['xAxis'] = $arrFecha;
-
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;

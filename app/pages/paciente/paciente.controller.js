@@ -619,12 +619,16 @@
                     color: '#808080'
                 }]
               },
-              // series: [{
-              //     // data: ['85','80','70','90']
-              //     data: []
-              // }]
+              // series: [
+              //   {
+              //     data: ['85','80']
+              //   },
+              //   {
+              //     data: ['55','50']
+              //   },
+              // ]
             };
-            vm.chartOptions3.series = rpta.datos.imc;
+            vm.chartOptions3.series = rpta.datos.todos;
             vm.chartOptions3.xAxis.categories = rpta.datos.xAxis;
             vm.chartOptions3.chart.events = {
               load: function () {

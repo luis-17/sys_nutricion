@@ -33,7 +33,7 @@
 					<div class=" col-sm-12" ng-if="pac.evoRadio == 'IMC' && !pac.sinGrafico">
 					  	<hc-chart ng-if="pac.chartOptions2" id="chartOptions2" style="width: 100%;" options="pac.chartOptions2"> GRAFICO XD </hc-chart>
 					</div>
-					<div class=" col-sm-12" ng-show="pac.evoRadio == 'Otro'">
+					<div class=" col-sm-12" ng-if="pac.evoRadio == 'Otro' && !pac.sinGrafico">
 					  	<hc-chart ng-if="pac.chartOptions3" id="chartOptions3" style="width: 100%;" options="pac.chartOptions3"> GRAFICO XD </hc-chart>
 					</div>
 				</div>
