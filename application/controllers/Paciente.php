@@ -40,7 +40,7 @@ class Paciente extends CI_Controller {
 					'celular' => $row['celular'],
 					'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 					'sexo' => $row['sexo'],
-					'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
+					'edad' => devolverEdad($row['fecha_nacimiento']),
 					'estatura' => (int)$row['estatura'],
 					'idempresa' => $row['idempresa'],
 					'idtipocliente' => $row['idtipocliente'],
