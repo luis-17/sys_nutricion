@@ -990,6 +990,9 @@
               ev.preventDefault();
           });
         }
+        vm.btnPdf = function(){
+          alert('En proceso');
+        }
       if($scope.paciente){
         var row = {
           entity:$scope.paciente
