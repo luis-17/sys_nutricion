@@ -9,7 +9,7 @@ class Paciente extends CI_Controller {
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));
         $this->load->model(array('model_paciente'));
-
+        $this->load->library('fpdfext');
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
 	public function listar_pacientes()
@@ -715,4 +715,33 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	/* IMPRIMIR */
+	public function imprimir_ficha(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData = array();
+		$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+    	// var_dump($allInputs); exit();
+    	$this->pdf = new Fpdfext();
+    	$this->pdf->AddPage();
+		$this->pdf->SetFont('Arial','B',16);
+
+		$this->pdf->Cell(40,10,utf8_decode('¡Hola, Mundo!'),1);
+		// if($this->model_paciente->m_anular($allInputs)){
+		// 	$arrData['message'] = 'Se anularon los datos correctamente';
+  		//  $arrData['flag'] = 1;
+		// }
+		$timestamp = date('YmdHis');
+		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+
+		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+	    // $arrData = array(
+	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
+	    // );
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
 }

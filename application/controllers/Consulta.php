@@ -146,13 +146,16 @@ class Consulta extends CI_Controller {
 	}
 	public function listar_ultima_consulta(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['flag1'] = 0;
+		$arrData['flag2'] = 0;
 		$row = $this->model_consulta->m_cargar_ultima_atencion($allInputs['idcliente']);
 		$antecedentes = $this->model_paciente->m_cargar_ultimos_antecedentes_paciente($allInputs);
-		// var_dump($row); exit();
-		if(empty($row)){
-			$arrData['flag'] = 0;
-		}else{
-			$arrData['flag'] = 1;
+		// var_dump($antecedentes); exit();
+		if(!empty($row)){
+			$arrData['flag1'] = 1;
+		}
+		if(!empty($antecedentes)){
+			$arrData['flag2'] = 1;
 		}
 		$arrData['datos'] = $row;
 		$arrData['antecedentes'] = $antecedentes;

@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,pageLoading,
+  function PacienteController($scope,$uibModal,$window,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,pageLoading,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
@@ -172,12 +172,14 @@
           if( vm.mySelectionGrid[0] ){
             vm.listaUltAntecedentes = [];
             PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
-              if(rpta.flag == 1){
+              if(rpta.flag1 == 1){
                 vm.mySelectionGrid[0].peso = rpta.datos.peso;
                 if(vm.mySelectionGrid[0].estatura > 50){
                   vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
                   vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
                 }
+              }
+              if(rpta.flag2 == 1){
                 vm.listaUltAntecedentes = rpta.antecedentes;
               }
             });
@@ -456,15 +458,18 @@
         vm.evoRadio = 'Peso';
         PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
           vm.listaUltAntecedentes = [];
-          if(rpta.flag == 1){
+          if(rpta.flag1 == 1){
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
             if(vm.mySelectionGrid[0].estatura > 50){
               vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
               vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
             }
-            vm.listaUltAntecedentes = rpta.antecedentes;
-          }else{
+          }
+          else{
             vm.mySelectionGrid[0].peso = false;
+          }
+          if(rpta.flag2 == 1){
+            vm.listaUltAntecedentes = rpta.antecedentes;
           }
         });
         vm.ficha = {}
@@ -945,7 +950,8 @@
           vm.getPaginationServerSide();
         }
         vm.verPrevio = function(index){
-          console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
+          // console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
+          // console.log('listaUltAntecedentes.length: ', vm.listaUltAntecedentes.length);
           if(index == 0){
             vm.previo0 = true;
             vm.previo1 = false;
@@ -991,7 +997,13 @@
           });
         }
         vm.btnPdf = function(){
-          alert('En proceso');
+          // alert('En proceso');
+          PacienteServices.sImprimirFicha(vm.ficha).then(function(rpta){
+            if(rpta.flag == 1){
+              console.log('pdf...');
+              $window.open(rpta.urlTempPDF, '_blank');
+            }
+          });
         }
       if($scope.paciente){
         var row = {
@@ -1068,6 +1080,7 @@
         sSubirFoto: sSubirFoto,
         slistarEvolucion: slistarEvolucion,
         sListarPlanesPaciente: sListarPlanesPaciente,
+        sImprimirFicha: sImprimirFicha,
     });
     function sListarPacientes(pDatos) {
       var datos = pDatos || {};
@@ -1210,6 +1223,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/listar_planes_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sImprimirFicha(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/imprimir_ficha",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
