@@ -157,7 +157,7 @@
       vm.gridOptions.columnDefs = [
         { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80,  sort: { direction: uiGridConstants.DESC} },
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
-        { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS' },
+        { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS', minWidth:100 },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
           cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+

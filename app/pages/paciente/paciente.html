@@ -15,14 +15,17 @@
     <li class="active">{{pac.mySelectionGrid[0].nombre}} {{pac.mySelectionGrid[0].apellidos}}</li>
 
   </ol>
-  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
-          ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
+  <div class="row">
+    <button type="button" class="btn btn-xs btn-warning pull-right mb-10 mr-20" ng-show="pac.modoFicha"
+            ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
 
-  <button type="button" class="btn btn-xs btn-warning pull-right mb-10" ng-show="pac.modoFicha"
-          ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
+    <button type="button" class="btn btn-xs btn-warning pull-right mb-10 mr-20" ng-show="pac.modoFicha"
+            ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
 
-  <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
-          ng-click="goToUrl('/app/citas');">NUEVA CITA</button>
+    <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
+            ng-click="goToUrl('/app/citas');">NUEVA CITA</button>
+
+  </div>
 
   <!-- LISTADO -->
   <div class="row" ng-show="!pac.modoFicha">
@@ -45,7 +48,7 @@
           </div>
         </section>
         <!-- PANEL PRINCIPAL -->
-        <section class="tile-body col-sm-8 pr-0">
+        <section class="tile-body col-md-8 col-sm-12 pr-0">
           <div>
             <ul class="form-group demo-btns list-unstyled">
               <li class="pull-right" style="margin-bottom: 10px;"><button type="button" class="btn btn-success" ng-click='pac.btnNuevo()'>Nuevo</button></li>
@@ -54,7 +57,7 @@
           <div id="grid1" ui-grid="pac.gridOptions" ui-grid-selection ui-grid-auto-resize ui-grid-pagination class="grid table-responsive clear"></div>
         </section>
         <!-- PANEL DE VISTA PREVIA - LATERAL DERECHO -->
-        <section class="tile-body col-sm-4" >
+        <section class="tile-body col-md-4 col-sm-12" >
           <div ng-include="'app/pages/paciente/paciente_vista_previa.html'"></div>
         </section>
 
