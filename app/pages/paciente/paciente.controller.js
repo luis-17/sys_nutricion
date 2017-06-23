@@ -851,6 +851,9 @@
         vm.btnCancelarTab2 = function(){
           vm.modoEditar = false;
           vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+          vm.cargarAntecedentes(vm.ficha);
+          vm.cargarHabitosAlimentarios(vm.ficha);
+          vm.cargarHabitos(vm.ficha);
         }
         vm.btnAceptarTab3 = function(){// antecedentes
           console.log('array',vm.listaAntPatologicos);
@@ -889,6 +892,8 @@
           vm.modoEditar = false;
           vm.ficha = angular.copy(vm.mySelectionGrid[0]);
           vm.cargarAntecedentes(vm.ficha);
+          vm.cargarHabitosAlimentarios(vm.ficha);
+          vm.cargarHabitos(vm.ficha);
         }
         vm.btnAceptarTab4 = function(){
           vm.ficha.habitos.idcliente = vm.ficha.idcliente;
@@ -923,6 +928,7 @@
         vm.btnCancelarTab4 = function(){
           vm.modoEditar = false;
           vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+          vm.cargarAntecedentes(vm.ficha);
           vm.cargarHabitosAlimentarios(vm.ficha);
           vm.cargarHabitos(vm.ficha);
         }
