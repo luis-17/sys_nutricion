@@ -70,7 +70,7 @@
         <!-- CABECERA -->
         <section class="tile-header p-0">
           <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true">
-            <uib-tab heading="{{item.tab}}" ng-repeat="item in pac.templates">
+            <uib-tab heading="{{item.tab}}" ng-repeat="item in pac.templates" disable="pac.modoEditar">
               <div ng-include="item.url"></div>
             </uib-tab>
           </uib-tabset>
