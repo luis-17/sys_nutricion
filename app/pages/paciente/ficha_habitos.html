@@ -1,6 +1,11 @@
 <form class="form-horizontal" role="form">
 	<div class="tile-body row">
-		<div class="col-sm-5">
+		<div class="col-sm-12">
+			<button class="pull-right btn btn-input-sm btn-warning mb-0" type="button" ng-if="!pac.modoEditar" ng-click="pac.modoEditar=true">Editar</button>
+				<button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-0" ng-if="pac.modoEditar" ng-click="pac.btnAceptarTab4()"><i class="fa fa-arrow-right"></i> Guardar</button>
+		      	<button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-0" ng-if="pac.modoEditar" ng-click="pac.btnCancelarTab4()" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
+		</div>
+		<div class="col-md-5 col-sm-12">
 			<div class="row">
     			<h4 class="text-info f-16 col-sm-12">Hábitos Alimentarios</h4>
 			</div>
@@ -21,36 +26,33 @@
 		        </div>
     		</div>
 		</div>
-		<div class="col-sm-7">
+		<div class="col-md-7 col-sm-12">
 			<div class="row">
 				<h4 class="text-info f-16 col-sm-6">Hábitos Generales</h4>
-				<button class="pull-right btn btn-input-sm btn-warning mb-20" type="button" ng-if="!pac.modoEditar" ng-click="pac.modoEditar=true">Editar</button>
-				<button class="pull-right btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-20" ng-if="pac.modoEditar" ng-click="pac.btnAceptarTab4()"><i class="fa fa-arrow-right"></i> Guardar</button>
-		      	<button class="pull-right btn btn-lightred btn-ef btn-ef-4 btn-ef-4c mr-10 mb-20" ng-if="pac.modoEditar" ng-click="pac.btnCancelarTab4()" style="padding: 6px 25px"><i class="fa fa-arrow-left"></i> Cancelar</button>
 			</div>
 			<h5>Actividad Física:</h5>
-			<div class="form-group col-sm-12">
+			<div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Actividad Física : </label>
 		        <div class="col-sm-8">
 		          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.actividad_fisica.descripcion}} </p>
 		          <select class="form-control input-sm" ng-if="pac.modoEditar" ng-model="pac.ficha.habitos.actividad_fisica.id" ng-options="item.id as item.descripcion for item in pac.actividadFisica" required > </select>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Frecuencia : </label>
 		        <div class="col-sm-8">
 		          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.frecuencia.descripcion}} </p>
 		          <select class="form-control input-sm" ng-if="pac.modoEditar" ng-model="pac.ficha.habitos.frecuencia.id" ng-options="item.id as item.descripcion for item in pac.frecuencia" required > </select>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label for="detalle_actividad" class="col-sm-4 control-label minotaur-label">Detalles de Actividad física : </label>
 		        <div class="col-sm-8">
 		          <textarea class="form-control input-sm" ng-model="pac.ficha.habitos.detalle_act_fisica" ng-disabled="!pac.modoEditar" id="detalle_actividad"></textarea>
 		        </div>
 		    </div>
 			<h5>Hábitos de Consumo:</h5>
-			<div class="form-group col-sm-12">
+			<div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Consumo de Agua : </label>
 		        <div class="col-sm-8">
 		          	<p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.consumo_agua.descripcion}} </p>
@@ -59,7 +61,7 @@
 	                </div>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Consumo de Gaseosa : </label>
 		        <div class="col-sm-8">
 		          	<p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.consumo_gaseosa.descripcion}} </p>
@@ -68,7 +70,7 @@
 	                </div>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Consumo de Alcohol : </label>
 		        <div class="col-sm-8">
 		          	<p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.consumo_alcohol.descripcion}} </p>
@@ -77,7 +79,7 @@
 	                </div>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Consumo de Tabaco : </label>
 		        <div class="col-sm-8">
 		          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.consumo_tabaco.descripcion}} </p>
@@ -86,7 +88,7 @@
 	                </div>
 		        </div>
 		    </div>
-		    <div class="form-group col-sm-12">
+		    <div class="form-group">
 		        <label class="col-sm-4 control-label minotaur-label">Tiempo de sueño : </label>
 		        <div class="col-sm-8">
 		          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center">{{pac.ficha.habitos.tiempo_suenio.descripcion}} </p>
