@@ -63,7 +63,11 @@
         <div class="col-lg-7 col-md-7 mb-10 col-sm-12">
           
           <button type="button" class="btn btn-success" style="float:right;"
-              ng-click="plan.btnGuardarPlan()"                      
+              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new'"                  
+                  ng-disabled="formDiagnostico.$invalid">Finalizar
+          </button>
+          <button type="button" class="btn btn-success" style="float:right;"
+              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit'"                    
                   ng-disabled="formDiagnostico.$invalid">Finalizar
           </button>
 
@@ -77,8 +81,14 @@
           </button>
           <div class="row">
             <div class="btn-group col-lg-4" style="float:right;">
-              <label class="btn btn-default" ng-model="plan.formaPlan" uib-btn-radio="'dia'">Por dia</label>
-              <label class="btn btn-default" ng-model="plan.formaPlan" uib-btn-radio="'general'">General</label>
+              <label class="btn btn-default" ng-model="plan.formaPlan" 
+                      ng-click="plan.updateEstructura();" uib-btn-radio="'dia'">
+                Por dia
+              </label>
+              <label class="btn btn-default" ng-model="plan.formaPlan" 
+                      ng-click="plan.updateEstructura();" uib-btn-radio="'general'">
+                General
+              </label>
             </div>            
           </div>
         </div>    
@@ -106,7 +116,11 @@
       <section class="tile-footer">
         <div class="mb-20 col-sm-12">
           <button type="button" class="btn btn-success" style="float:right;"
-              ng-click="plan.btnGuardarPlan()"                      
+              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new'"                  
+                  ng-disabled="formDiagnostico.$invalid">Finalizar
+          </button>
+          <button type="button" class="btn btn-success" style="float:right;"
+              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit'"                    
                   ng-disabled="formDiagnostico.$invalid">Finalizar
           </button>
 

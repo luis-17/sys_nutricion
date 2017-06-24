@@ -26,10 +26,10 @@
 
     vm.minutos = [
       {id:0, value:'--'},
-      {id:'01', value:'00'},
-      {id:'02', value:'15'},
-      {id:'03', value:'30'},
-      {id:'04', value:'45'},
+      {id:'00', value:'00'},
+      {id:'15', value:'15'},
+      {id:'30', value:'30'},
+      {id:'45', value:'45'},
     ];
 
     vm.tiempo = [
@@ -129,15 +129,103 @@
         }
         vm.formaPlan = forma;
         vm.seleccionaTipo(tipo);
+        vm.indicaciones = vm.consulta.indicaciones_dieta;
 
         PlanAlimentarioServices.sCargarPlan(vm.consulta).then(function(rpta){
-          if(vm.consulta.tipo_dieta == 'SG' || vm.consulta.tipo_dieta == 'CG'){
-            vm.dia = rpta.datos[0];
-          }else if(vm.consulta.tipo_dieta == 'SD' || vm.consulta.tipo_dieta == 'CD'){
-            vm.dias = rpta.datos;
-          }
+          vm.dia = angular.copy(rpta.datos[0]);
+          vm.dias = angular.copy(rpta.datos);          
+          vm.primeraCargaGeneral = false;
+          vm.primeraCargaDia = false;
+          vm.updateEstructura();
           pageLoading.stop();
         });       
+      }
+    }
+
+    vm.updateEstructura = function(){
+      if(vm.tipoVista == 'edit'){
+        //console.log('paso por aqui...');
+        if(vm.formaPlan == 'general' && !vm.primeraCargaGeneral){
+          vm.primeraCargaGeneral = true;
+          angular.forEach(vm.dia.turnos, function(val, ind) {
+            var objIndex = 0;
+            objIndex = vm.horas.filter(function(obj) {
+              return obj.id == vm.dia.turnos[ind].hora;
+            }).shift();                 
+            vm.dia.turnos[ind].hora = objIndex; 
+            //console.log(objIndex);  
+
+            objIndex = vm.minutos.filter(function(obj) {
+              return obj.id == vm.dia.turnos[ind].min;
+            }).shift(); 
+            vm.dia.turnos[ind].minuto = objIndex; 
+            //console.log(objIndex);
+
+            objIndex = vm.tiempo.filter(function(obj) {
+              return obj.id == vm.dia.turnos[ind].tiempo;
+            }).shift();            
+            vm.dia.turnos[ind].tiempo = objIndex;
+            //console.log(objIndex);
+
+            vm.dia.turnos[ind].valoresTurno = {
+              calorias: 0,
+              proteinas: 0,
+              carbohidratos:0,
+              grasas: 0,
+              fibras: 0,
+              cenizas: 0,
+              calcio: 0,
+              fosforo: 0,
+              zinc: 0,
+              hierro: 0,
+            };  
+
+            if(vm.tipoPlan == 'compuesto'){
+              vm.calcularValoresTurno(null, ind);
+            }            
+          });
+        }else if(vm.formaPlan == 'dia' && !vm.primeraCargaDia){
+          vm.primeraCargaDia = true;
+          angular.forEach(vm.dias, function(dia, key) {
+            angular.forEach(vm.dias[key].turnos, function(val, ind) {
+              var objIndex = 0;
+              objIndex = vm.horas.filter(function(obj) {
+                return obj.id == vm.dias[key].turnos[ind].hora;
+              }).shift();                 
+              vm.dias[key].turnos[ind].hora = objIndex; 
+              //console.log(objIndex);  
+
+              objIndex = vm.minutos.filter(function(obj) {
+                return obj.id == vm.dias[key].turnos[ind].min;
+              }).shift(); 
+              vm.dias[key].turnos[ind].minuto = objIndex; 
+              //console.log(objIndex);
+
+              objIndex = vm.tiempo.filter(function(obj) {
+                return obj.id == vm.dias[key].turnos[ind].tiempo;
+              }).shift();            
+              vm.dias[key].turnos[ind].tiempo = objIndex;
+              //console.log(objIndex);
+
+              vm.dias[key].turnos[ind].valoresTurno = {
+                calorias: 0,
+                proteinas: 0,
+                carbohidratos:0,
+                grasas: 0,
+                fibras: 0,
+                cenizas: 0,
+                calcio: 0,
+                fosforo: 0,
+                zinc: 0,
+                hierro: 0,
+              };  
+
+              if(vm.tipoPlan == 'compuesto'){
+                vm.calcularValoresTurno(key, ind);
+              }            
+            });
+          });
+        }
       }
     }
 
@@ -162,6 +250,44 @@
         indicaciones:vm.indicaciones,
       };
       PlanAlimentarioServices.sRegistrarPlan(datos).then(function(rpta){
+        var openedToasts = [];
+        vm.options = {
+          timeout: '3000',
+          extendedTimeout: '1000',
+          preventDuplicates: false,
+          preventOpenDuplicates: false
+        };       
+        if(rpta.flag == 1){ 
+          var title = 'OK';
+          var iconClass = 'success';
+          $scope.changeViewCita(true);
+          $scope.changeViewOnlyBodyCita(false);
+          $scope.changeViewConsulta(false);
+          $scope.changeViewPlan(false);
+          $scope.changeViewSoloPlan(false);
+          vm.callbackCitas();
+        }else if( rpta.flag == 0 ){
+          var title = 'Advertencia';
+          var iconClass = 'warning';
+        }else{
+          alert('Ocurrió un error');
+        }
+        var toast = toastr[iconClass](rpta.message, title, vm.options);
+        openedToasts.push(toast);
+      });
+    }
+
+    vm.btnActualizarPlan = function(){
+      console.log('vm.dias',vm.dias);
+      var datos = {
+        consulta:vm.consulta,
+        tipo:vm.tipoPlan,
+        forma:vm.formaPlan,
+        planDias:vm.dias,
+        planGeneral:vm.dia,
+        indicaciones:vm.indicaciones,
+      };
+      PlanAlimentarioServices.sActualizarPlan(datos).then(function(rpta){
         var openedToasts = [];
         vm.options = {
           timeout: '3000',
@@ -526,6 +652,7 @@
     return({
       sRegistrarPlan:sRegistrarPlan,
       sCargarPlan:sCargarPlan,
+      sActualizarPlan:sActualizarPlan,
       sGenerarPdfPlan:sGenerarPdfPlan,
     });
     function sRegistrarPlan(datos) {
@@ -536,7 +663,6 @@
       });
       return (request.then(handleSuccess,handleError));
     }    
-
     function sCargarPlan(datos) {
       var request = $http({
             method : "post",
@@ -544,8 +670,15 @@
             data : datos
       });
       return (request.then(handleSuccess,handleError));
+    }    
+    function sActualizarPlan(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"PlanAlimentario/actualizar_plan_alimentario",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
     }
-
     function sGenerarPdfPlan(datos) {
       var request = $http({
             method : "post",

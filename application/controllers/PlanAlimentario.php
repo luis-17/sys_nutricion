@@ -232,8 +232,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	public function cargar_plan_alimentario(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';
 
@@ -248,15 +247,23 @@ class PlanAlimentario extends CI_Controller {
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
 
-			/*$hora_string = darFormatoHora($row['hora']);
-			$array = explode(" ", $hora_string);
-			$tiempo_str = $array[1];
-			$array = explode(':', $array[0]);
-			$hora_str = $array[0];
-			$min_str = $array[1];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo_str'] = $tiempo_str;
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora_str'] = $hora_str;
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min_str'] = $min_str;*/
+			if(! empty($row['hora'])){
+				$hora_string = darFormatoHora($row['hora']);
+				$array = explode(" ", $hora_string);				
+				$tiempo_str = $array[1];
+				
+				$array = explode(':', $array[0]);				
+				$hora_str = $array[0];
+				$min_str = $array[1];
+				
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = $tiempo_str;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = $hora_str;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = $min_str;
+			}else{
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = 'am';
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = 0;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = 0;
+			}
 
 			$alimento = array(
 				'idatenciondietaalim' => $row['idatenciondietaalim'],
@@ -311,10 +318,22 @@ class PlanAlimentario extends CI_Controller {
 
 		$arrayPlan = array_values($arrayPlan);
 		$arrData['datos'] = $arrayPlan;
+		$arrData['flag'] =1;
+		$arrData['message'] = 'Ha sido cargado el plan alimentario.';
 
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+
+	public function actualizar_plan_alimentario(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
+		$arrData['flag'] = 0;
+		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));		
 	}
 
 	public function generar_pdf_plan(){
