@@ -6,7 +6,7 @@
     .service('ConsultasServices', ConsultasServices);
 
   /** @ngInject */
-  function ConsultasController ($scope,$uibModal,alertify,toastr,ConsultasServices,pageLoading) {
+  function ConsultasController ($scope,$uibModal,$window,alertify,toastr,ConsultasServices,pageLoading,PlanAlimentarioServices) {
     var vm = this;
 
     vm.initConsulta = function(cita,origen,callback,tipoVista){
@@ -271,6 +271,16 @@
     vm.btnGeneraPlan = function(){
       vm.fData.cita = vm.cita;
       $scope.changeViewPlan(true,vm.fData);
+    }
+
+    vm.btnPdf = function(){
+      // alert('En proceso');
+      PlanAlimentarioServices.sGenerarPdfPlan().then(function(rpta){
+        if(rpta.flag == 1){
+          console.log('pdf...');
+          $window.open(rpta.urlTempPDF, '_blank');
+        }
+      });
     }
   }
   function ConsultasServices($http, $q) {

@@ -521,11 +521,7 @@
                 <label class="control-label minotaur-label">Reporte Personalizado</label>
                 <div class="button">
                   <a ng-click="" >Ver reporte creado</a>
-                </div>
-                <div class="button">
-                  <a ng-click="changeViewEnviaReporte(true);changeViewOnlyBodyCita(false);changeViewPlan(false);"
-                     ng-class="{seleccionado:viewEnviaReporte}">Enviar reporte al paciente</a>
-                </div>
+                </div>                
               </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -548,8 +544,27 @@
               <div class="accion-texto ml-10">
                 <label class="control-label minotaur-label">Dieta o Plan alimentario</label>
                 <div class="button">
-                  <a ng-click="changeViewOnlyBodyCita(false);changeViewEnviaReporte(false);cons.btnGeneraPlan();"
+                  <a ng-click="changeViewOnlyBodyCita(false);
+                              changeViewEnviaReporte(false);cons.btnGeneraPlan();" 
+                      ng-if="cons.cita.atencion.tipo_dieta == null"
                       ng-class="{seleccionado:viewPlan}">Generar plan</a>
+
+                  <a ng-click="changeViewOnlyBodyCita(false);
+                              changeViewEnviaReporte(false);changeViewConsulta(false);
+                              cons.btnGeneraPlan();" 
+                      ng-if="cons.cita.atencion.tipo_dieta != null"
+                      ng-class="{seleccionado:viewPlan}">Modificar plan</a>
+                </div>
+                <div class="button">
+                  <a ng-click="changeViewOnlyBodyCita(false);
+                              changeViewEnviaReporte(false);cons.btnPdf();" 
+                      ng-if="cons.cita.atencion.tipo_dieta != null"
+                      ng-class="{seleccionado:viewPlan}">Ver Plan</a>
+                </div>
+                <div class="button">
+                  <a ng-click="changeViewEnviaReporte(true);
+                              changeViewOnlyBodyCita(false);changeViewPlan(false);"
+                     ng-class="{seleccionado:viewEnviaReporte}">Enviar plan al paciente</a>
                 </div>
               </div>
             </div>

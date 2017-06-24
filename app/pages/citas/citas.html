@@ -95,11 +95,11 @@
                     </li>
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion && !vm.event.atencion.tipo_dieta" 
                         ng-click="vm.btnAgregarPlan(vm.event); changeViewCita(false);">
-                      <a ><i class="fa fa-pencil-square-o"></i>Agregar Plan Alim.</a>
+                      <a ><i class="fa fa-list-alt"></i>Agregar Plan Alim.</a>
                     </li>
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion && vm.event.atencion.tipo_dieta" 
                         ng-click="vm.btnEditarPlan(vm.event); changeViewCita(false);">
-                      <a ><i class="fa fa-pencil-square-o"></i>Ir a Plan Alim.</a>
+                      <a ><i class="fa fa-list-alt"></i>Ir a Plan Alim.</a>
                     </li>
                     <li role="menuitem" ng-if="vm.event.atencion.idatencion" ng-click="vm.btnAnularConsulta(vm.event)">
                       <a ><i class="fa fa-remove"></i>Anular Consulta</a>

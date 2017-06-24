@@ -45,7 +45,10 @@
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
       //console.log(callbackCitas);
-      console.log('vm.origen',vm.origen);      
+      console.log('vm.origen',vm.origen);
+      if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
+        vm.tipoVista = 'edit';
+      }      
       
       if(vm.tipoVista == 'new'){
         vm.fData = {};
@@ -471,7 +474,7 @@
       vm.calcularValoresTurno(indexDia,indexTurno);            
     }
 
-    vm.ViewDetalle = function(indexDia, indexTurno,indexAlimento, indexAlimentoAlt){
+    vm.viewDetalle = function(indexDia, indexTurno,indexAlimento, indexAlimentoAlt){
       if(vm.formaPlan == 'dia'){
         vm.fDataAlimento = vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento];
         console.log(vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento]);
@@ -516,14 +519,14 @@
             }
           }        
       });
-    }
-   
+    }       
   }
 
   function PlanAlimentarioServices($http, $q) {
     return({
       sRegistrarPlan:sRegistrarPlan,
       sCargarPlan:sCargarPlan,
+      sGenerarPdfPlan:sGenerarPdfPlan,
     });
     function sRegistrarPlan(datos) {
       var request = $http({
@@ -538,6 +541,15 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"PlanAlimentario/cargar_plan_alimentario",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+
+    function sGenerarPdfPlan(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"PlanAlimentario/generar_pdf_plan",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

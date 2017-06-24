@@ -97,7 +97,7 @@
 					<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
 							style="width: 15%;" ng-change="plan.calcularValoresTurno(indexDia, indexTurno);" />
 
-		            <label class="btn btn-sm text-tr-black" ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
+		            <label class="btn btn-sm text-tr-black" ng-click="plan.viewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
 		            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
 		            </label>
 		            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,indexDia); $event.stopPropagation();"> 
@@ -175,7 +175,7 @@
 
 							<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
 									style="width: 15%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
-							<label class="btn btn-sm text-tr-black" ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
+							<label class="btn btn-sm text-tr-black" ng-click="plan.viewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
 				            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
 				            </label>
 				            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,null); $event.stopPropagation();"> 
@@ -195,7 +195,7 @@
 							<input type="number" step="0.01" class="form-control input-sm col-sm-4" ng-model="alimentoAlt.cantidad"
 									style="width: 15%;" ng-change="plan.calcularValoresTurno(null, indexTurno);" />
 							<label class="btn btn-sm text-tr-black" ng-if="alimentoAlt.idalimento != 0"
-							ng-click="plan.ViewDetalle(indexDia, indexTurno,indexAlimento,indexAlimentoAlt); $event.stopPropagation();"> 
+							ng-click="plan.viewDetalle(indexDia, indexTurno,indexAlimento,indexAlimentoAlt); $event.stopPropagation();"> 
 				            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
 				            </label>
 				            <label class="btn btn-sm text-red" 
