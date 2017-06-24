@@ -16,7 +16,7 @@ class Model_cita extends CI_Model {
 
 		$this->db->from('cita ci');
 		$this->db->join('cliente cli', 'cli.idcliente = ci.idcliente AND cli.estado_cl = 1');
-		$this->db->join('profesional pro', 'pro.idprofesional = ci.idprofesional AND pro.estado_pf = 1 AND ci.idprofesional = '.$this->sessionVP['idprofesional']);
+		$this->db->join('profesional pro', 'pro.idprofesional = ci.idprofesional AND pro.estado_pf = 1');
 		$this->db->join('ubicacion ub', 'ub.idubicacion = ci.idubicacion AND ub.estado_ub = 1');
 
 		$this->db->join('atencion at', 'at.idcita = ci.idcita AND at.estado_atencion = 1', 'left');
