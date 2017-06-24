@@ -187,11 +187,17 @@
           };
 
           vm.tp2 = angular.copy(vm.tp1);  
-          if(start){            
+          if(start){   
+            console.log('start.a',start.format('a'));         
             var partes_hora1 = start.format('hh:mm').split(':');
             //console.log('partes_hora1',partes_hora1);
             var d = new Date();
-            d.setHours( parseInt(partes_hora1[0]) );
+            if(start.format('a') == 'pm' && parseInt(partes_hora1[0]) != 12){
+              d.setHours( parseInt(partes_hora1[0]) +12 );
+            }else{
+              d.setHours( parseInt(partes_hora1[0]) );
+            }
+            
             d.setMinutes( parseInt(partes_hora1[1]) );
             vm.fData.hora_desde = d;
 
@@ -202,8 +208,12 @@
             }
 
             //console.log('partes_hora2',partes_hora2);
-            var c = new Date();
-            c.setHours( parseInt(partes_hora2[0]) );
+            var c = new Date();            
+            if(start.format('a') == 'pm' && parseInt(partes_hora2[0]) != 12){
+              c.setHours( parseInt(partes_hora2[0]) + 12 );
+            }else{
+              c.setHours( parseInt(partes_hora2[0]) );
+            }
             c.setMinutes( parseInt(partes_hora2[1]) );
             vm.fData.hora_hasta = c;
           } else{
