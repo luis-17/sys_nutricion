@@ -32,6 +32,7 @@ class Profesional extends CI_Controller {
 					'fecha_nacimiento_for' => darFormatoYMD($row['fecha_nacimiento']),
 					'num_colegiatura' => $row['num_colegiatura'],
 					'idusuario' => $row['idusuario'],
+					'nombre_foto' => $row['nombre_foto'],
 					'usuario' => $row['username']					
 				)
 			);
@@ -75,11 +76,12 @@ class Profesional extends CI_Controller {
 	// MANTENIMIENTO
 	public function registrar_profesional()
 	{
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		//$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al registrar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// AQUI ESTARAN LAS VALIDACIONES
-    	if(empty($allInputs['idusuario'])){
+    	$idusuario = $this->input->post('idusuario');
+    	if(empty($idusuario)){
     		$arrData['message'] = 'los datos del usuario no son correctos.';
 			$arrData['flag'] = 0;
 			$this->output
@@ -87,12 +89,49 @@ class Profesional extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	$allInputs['idusuario'] = $this->input->post('idusuario');
+    	$allInputs['idespecialidad'] = $this->input->post('idespecialidad');
+    	$allInputs['nombre'] = $this->input->post('nombre');
+    	$allInputs['apellidos'] = $this->input->post('apellidos');
+    	$allInputs['correo'] = $this->input->post('correo');
+    	$allInputs['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
+    	$allInputs['num_colegiatura'] = $this->input->post('num_colegiatura');
+    	$allInputs['createdAt'] = date('Y-m-d H:i:s');
+    	$allInputs['updatedAt'] = date('Y-m-d H:i:s');
+    	$allInputs['Base64Img'] = $this->input->post('myCroppedImage');
+    	$allInputs['nombre_foto'] = NULL;
+
+    	if(!empty($allInputs['Base64Img'])){
+    		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
+    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/profesionales/' ,$allInputs['nombre_foto']);
+    	}
+
     	// INICIA EL REGISTRO
 		if($this->model_profesional->m_registrar($allInputs)){
 			$arrData['message'] = 'Se registraron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}	
+	public function subir_foto_profesional(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al subir la foto, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+
+    	if(!empty($allInputs['croppedImage'])){
+    		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
+
+    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/profesionales/' ,$allInputs['nombre_foto']);
+    		if($this->model_profesional->m_editar_foto($allInputs)){
+	    		$arrData['message'] = 'La foto se cambió correctamente';
+	    		$arrData['flag'] = 1;
+	    		$arrData['datos'] = $allInputs['nombre_foto'];
+	    	}
+    	}
+
+    	$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}	

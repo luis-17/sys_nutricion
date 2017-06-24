@@ -55,17 +55,17 @@
       <div uib-dropdown>
         <button id="profile" type="button" class="btn no-bg" uib-dropdown-toggle> 
           <!-- <span class="inline"> Profesional: Luis Luna </span> --> 
-          <img src="assets/images/ici-avatar.jpg" class="img-responsive img-circle hidden-xs" alt="">
+          <img src="assets/images/profesionales/{{fSessionCI.nombre_foto}}" class="img-responsive img-circle hidden-xs" alt="">
           <span class="nav-text"><i class="fa fa-user"></i> Ing. Imrich Kamarel</span>
         </button>
         <div class="dropdown-menu with-arrow animated littleFadeInRight profile" uib-dropdown-menu role="menu" aria-labelledby="profile">
           <div class="media">
             <div class="media-left">
-              <img class="media-object img-circle" src="assets/images/ici-avatar.jpg" alt="">
+              <img class="media-object img-circle" src="assets/images/profesionales/{{fSessionCI.nombre_foto}}" alt="">
             </div>
             <div class="media-body">
-              <h4 class="text-sm uppercase-bold">Ing. Imrich Kamarel</h4>
-              <a href="javascript:;">ici.kamarel@minotaur.com</a>
+              <h4 class="text-sm uppercase-bold">{{fSessionCI.nombre}} {{fSessionCI.apellidos}}</h4>
+              <a href="javascript:;">{{fSessionCI.correo}}</a>
               <ul class="list-unstyled">
                 <li><a href="javascript:;"><i class="fa fa-user"></i> Edit Profile</a></li>
                 <li><a href="javascript:;"><i class="fa fa-check"></i> Tasks</a></li>

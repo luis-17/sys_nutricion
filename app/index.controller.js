@@ -69,6 +69,7 @@
         //console.log(response);
         if(response.flag == 1){
           $scope.fSessionCI = response.datos;
+          console.log("datos login: ",response.datos);
           $scope.logIn();
           if( $location.path() == '/app/pages/login' ){
             $scope.goToUrl('/');

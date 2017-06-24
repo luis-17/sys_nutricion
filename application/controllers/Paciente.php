@@ -476,8 +476,6 @@ class Paciente extends CI_Controller {
     		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/pacientes/' ,$allInputs['nombre_foto']);
 
     	}
-
-
     	// INICIA EL REGISTRO
 		if($this->model_paciente->m_registrar($allInputs)){
 			$arrData['message'] = 'Se registraron los datos correctamente';

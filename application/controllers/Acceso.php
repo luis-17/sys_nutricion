@@ -36,6 +36,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario['correo'] = $perfil['correo'];
 					$arrPerfilUsuario['fecha_nacimiento'] = $perfil['fecha_nacimiento'];
 					$arrPerfilUsuario['num_colegiatura'] = $perfil['num_colegiatura'];
+					$arrPerfilUsuario['nombre_foto'] = empty($perfil['nombre_foto']) ? 'sin-imagen.png' : $perfil['nombre_foto'];
 				    					
 					// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA. 
 					//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);

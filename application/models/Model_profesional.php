@@ -7,7 +7,7 @@ class Model_profesional extends CI_Model {
  	//CARGAR PERFIL
 	public function m_cargar_perfil($idusuario){ 
 		$this->db->select('pro.idprofesional, pro.idusuario, pro.idespecialidad, pro.nombre, pro.apellidos, pro.correo, 
-			pro.fecha_nacimiento, pro.num_colegiatura',FALSE);
+			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto',FALSE);
 		$this->db->select('esp.descripcion_es as especialidad',FALSE);
 		$this->db->from('profesional pro');
 		$this->db->join('especialidad esp', 'esp.idespecialidad = pro.idespecialidad');
@@ -18,7 +18,7 @@ class Model_profesional extends CI_Model {
 	}
 
 	public function m_cargar_profesional($paramPaginate=FALSE){
-		$this->db->select('p.idprofesional, p.idusuario , u.username , e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura');
+		$this->db->select('p.idprofesional, p.idusuario , u.username , e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto');
 		$this->db->from('profesional p');
 		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left');
 		$this->db->join('usuario u', 'p.idusuario = u.idusuario AND u.estado_us = 1','left');				
@@ -64,21 +64,30 @@ class Model_profesional extends CI_Model {
 	{
 		$data = array(
 			'idusuario' => $datos['idusuario'],
-			'idespecialidad' => $datos['idespecialidad']['id'],
+			'idespecialidad' => $datos['idespecialidad'],
 			'nombre' => strtoupper_total($datos['nombre']),
 			'apellidos' => strtoupper_total($datos['apellidos']),
 			'correo' => empty($datos['correo'])? NULL : $datos['correo'],	
 			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),	
-			'num_colegiatura' => empty($datos['num_colegiatura'])? NULL : $datos['num_colegiatura'],								
+			'num_colegiatura' => empty($datos['num_colegiatura'])? NULL : $datos['num_colegiatura'],
+			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],											
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		return $this->db->insert('profesional', $data);
 	}	
+	public function m_editar_foto($datos){
+		$data = array(
+			'nombre_foto' => $datos['nombre_foto'],
+			'updatedAt' => date('Y-m-d H:i:s')
+		);
+		$this->db->where('idprofesional',$datos['idprofesional']);
+		return $this->db->update('profesional', $data);
+	}	
 	public function m_editar($datos){
 		$data = array(
 			'idusuario' => $datos['idusuario'],
-			'idespecialidad' => $datos['idespecialidad']['id'],
+			'idespecialidad' => $datos['idespecialidad'],
 			'nombre' => strtoupper_total($datos['nombre']),
 			'apellidos' => strtoupper_total($datos['apellidos']),
 			'correo' => empty($datos['correo'])? NULL : $datos['correo'],	
