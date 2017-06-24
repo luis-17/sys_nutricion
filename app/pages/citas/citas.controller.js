@@ -477,8 +477,14 @@
       $scope.changeViewSoloPlan(true, cita.atencion);           
     }
 
-    vm.callback = function(){
+    vm.callback = function(block){
+      if(block){
+        pageLoading.start('Actualizando calendario...');
+      }
       angular.element('.calendar').fullCalendar( 'refetchEvents' );
+      if(block){
+        pageLoading.stop();
+      }
     }
 
     vm.btnAnularConsulta = function(row){

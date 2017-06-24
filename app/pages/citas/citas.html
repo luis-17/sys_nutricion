@@ -63,7 +63,10 @@
                   <button class="btn btn-default btn-sm" ng-click="vm.changeView('agendaWeek', 'calendarCitas')">Semana</button>
                   <button class="btn btn-default btn-sm" ng-click="vm.changeView('month', 'calendarCitas')">Mes</button>
                 </div>
-                <button type="button" class="btn btn-success btn-sm" ng-click='vm.btnCita(null,pacienteOrigen,null,consultaOrigen)'>Nueva Cita</button>              
+                <button type="button" class="btn btn-success btn-sm" ng-click='vm.btnCita(null,pacienteOrigen,null,consultaOrigen)'>Nueva Cita</button>
+                <button type="button" class="btn btn-info btn-sm" ng-click='vm.callback(true);'>
+                  <i class="fa fa-refresh"></i>
+                </button>              
               </div>
             </div>
           </div>
