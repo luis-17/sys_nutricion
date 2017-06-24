@@ -141,8 +141,21 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
+		$hora_inicio_calendar = strtotime('07:00:00');
+		$hora_fin_calendar = strtotime('23:00:00');		
+
 		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
 		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+
+		if(strtotime($horadesde) < $hora_inicio_calendar || strtotime($horadesde) > $hora_fin_calendar || 
+			strtotime($horahasta) < $hora_inicio_calendar || strtotime($horahasta) > $hora_fin_calendar){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
 
 		$data = array(
 			'idcliente' => $allInputs['cliente']['idcliente'],
@@ -260,8 +273,21 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
+		$hora_inicio_calendar = strtotime('07:00:00');
+		$hora_fin_calendar = strtotime('23:00:00');		
+
 		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
 		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+
+		if(strtotime($horadesde) < $hora_inicio_calendar || strtotime($horadesde) > $hora_fin_calendar || 
+			strtotime($horahasta) < $hora_inicio_calendar || strtotime($horahasta) > $hora_fin_calendar){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+		    return;
+		}
 
 		$data = array(
 			'idcliente' => $allInputs['cliente']['idcliente'],
