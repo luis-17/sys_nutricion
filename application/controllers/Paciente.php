@@ -665,6 +665,7 @@ class Paciente extends CI_Controller {
 		    	$this->model_paciente->m_anular_antecedentes_paciente($allInputs);
 				foreach ($allInputs['antHeredados'] as $row) {
 					if($row['check'] == 1 ){
+						$row['texto_otros'] = $allInputs['texto_otros'];
 						$row['idcliente'] = $allInputs['idcliente'];
 						$this->model_paciente->m_registrar_antecedente($row);
 					}

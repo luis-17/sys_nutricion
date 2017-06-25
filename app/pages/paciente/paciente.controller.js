@@ -455,6 +455,7 @@
       }
       vm.btnVerFicha = function(row){
         vm.modoFicha = true;
+        vm.checkOtro = false;
         vm.previo0 = true;
         vm.previo1 = false;
         vm.previo2 = false;
@@ -741,6 +742,15 @@
           vm.listaAntHeredados = rpta.datos.heredados;
           vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
           vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
+          angular.forEach(vm.ficha.antHeredados, function(value, key) {
+            if(value.id == '18' && value.check == 1){
+              vm.checkOtro = true;
+              vm.ficha.texto_otros = value.texto_otros;
+            }else{
+              vm.checkOtro = false;
+              vm.ficha.texto_otros = null;
+            }
+          });
         });
       }
       vm.cargarHabitosAlimentarios = function(row){
@@ -776,6 +786,12 @@
                 vm.ficha.antHeredados[index].check = 0;
               else
                 vm.ficha.antHeredados[index].check = 1;
+            }
+            if(value.id == '18' && value.check == 1){
+              vm.checkOtro = true;
+            }else{
+              vm.checkOtro = false;
+              vm.ficha.texto_otros = null;
             }
           });
           vm.listaAntHeredados = angular.copy(vm.ficha.antHeredados);

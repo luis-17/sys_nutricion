@@ -47,7 +47,7 @@
 	  <div class="row">
 	  	<div class="col-sm-12">
 		  	<label>Otros : </label>
-		  	<textarea class="form-control input-sm" ng-disabled="!pac.modoEditar"></textarea>
+		  	<textarea class="form-control input-sm" ng-disabled="!pac.modoEditar || !pac.checkOtro" ng-model="pac.ficha.texto_otros"></textarea>
 	  	</div>
 
 	  </div>

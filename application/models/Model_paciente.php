@@ -207,7 +207,7 @@ class Model_paciente extends CI_Model {
 		$data = array(
 			'idcliente' => $datos['idcliente'],
 			'idantecedente' => $datos['id'],
-			// 'texto_otros' => empty($datos['texto_otros'])? NULL : $datos['texto_otros'],
+			'texto_otros' => empty($datos['texto_otros'])? NULL : $datos['texto_otros'],
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
