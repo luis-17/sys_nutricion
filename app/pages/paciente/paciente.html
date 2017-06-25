@@ -17,13 +17,19 @@
   </ol>
   <div class="row">
     <button type="button" class="btn btn-xs btn-warning pull-right mb-10 mr-20" ng-show="pac.modoFicha"
-            ng-if="!pac.externo" ng-click="pac.btnRegresar();">REGRESAR</button>
-
+            ng-if="!pac.externo" ng-click="pac.btnRegresar();"><i class="fa fa-arrow-left"></i> REGRESAR
+    </button>
     <button type="button" class="btn btn-xs btn-warning pull-right mb-10 mr-20" ng-show="pac.modoFicha"
-            ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);">REGRESAR</button>
+            ng-if="pac.externo" ng-click="changeViewCita(true);changeViewFicha(false);"><i class="fa fa-arrow-left"></i> REGRESAR</button>
+    <button type="button" class="btn btn-xs btn-info pull-right mb-10 mr-20" ng-show="pac.modoFicha"
+            ng-if="!pac.externo" ng-click="pac.btnActualizarFicha(pac.mySelectionGrid[0]);">
+            <i class="fa fa-refresh"></i> ACTUALIZAR
+    </button>
+
+
 
     <button type="button" class="btn btn-xs btn-success pull-right mb-10 mr-5" ng-show="pac.modoFicha"
-            ng-click="goToUrl('/app/citas');">NUEVA CITA</button>
+            ng-click="goToUrl('/app/citas');"><i class="fa fa-list-alt"></i> NUEVA CITA</button>
 
   </div>
 

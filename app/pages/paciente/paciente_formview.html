@@ -105,10 +105,13 @@
 		    	</div>
 		    	<div class="form-group col-md-3">
 					<label for="nombre" class="control-label minotaur-label">Foto </label>
-					<!-- <input type="file" name="file" file-model="mp.fData.fotoPaciente" /> -->
-			        <div class="row">
+					<div class="text-center" ng-if="!mp.fotoCrop">
+				        <img ng-src="assets/images/sin-imagen.png" style="width: 100%">
+				    </div>
+			        <div class="row" ng-show="mp.fotoCrop">
 				        <div class="col-md-12">
 						    <div class="p-10 bg-white b-a b-solid" style="height:180px">
+
 				              <img-crop
 				                image="mp.fData.myImage"
 				                result-image="mp.fData.myCroppedImage"
@@ -126,7 +129,7 @@
 					<input type="file" class="filestyle" filestyle="{
 			            buttonText: 'Select image',
 			            iconName: 'fa fa-file-image-o'
-			          }" id="fileInput" >
+			          }" id="fileInput" ng-click="mp.cargarImagen();" >
 
 		    	</div>
 

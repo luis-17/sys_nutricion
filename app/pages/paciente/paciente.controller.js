@@ -160,7 +160,7 @@
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS', minWidth:100 },
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
-          cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
+          cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row.entity);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
           '<button class="btn btn-default btn-sm text-red btn-action" ng-click="grid.appScope.btnAnular(row);$event.stopPropagation();"> <i class="fa fa-trash" tooltip-placement="left" uib-tooltip="ELIMINAR!"></i> </button>'
          },
 
@@ -248,6 +248,7 @@
             vm.modalTitle = 'Registro de pacientes';
             // vm.activeStep = 0;
             vm.corp = false; // solo para tipo de cliente = corporativo sera true
+            vm.fotoCrop = false;
             vm.listaSexos = [
               { id:'', descripcion:'--Seleccione sexo--' },
               { id:'M', descripcion:'MASCULINO' },
@@ -383,10 +384,11 @@
                 return '';
               }
             // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+            vm.cargarImagen = function(){
               vm.fData.myImage='';
               vm.fData.myCroppedImage='';
-              vm.cropType='square';
-
+              vm.cropType='circle';
+              vm.fotoCrop = true;
               var handleFileSelect=function(evt) {
                 var file = evt.currentTarget.files[0];
                 var reader = new FileReader();
@@ -394,6 +396,8 @@
                   /* eslint-disable */
                   $scope.$apply(function(){
                     vm.fData.myImage=evt.target.result;
+                    console.log("foto", vm.fData.myImage);
+                    console.log("foto crop", vm.fData.myCroppedImage);
                   });
                   /* eslint-enable */
                 };
@@ -402,6 +406,7 @@
               $timeout(function() { // lo pongo dentro de un timeout sino no funciona
                 angular.element($document[0].querySelector('#fileInput')).on('change',handleFileSelect);
               }/* no delay here */);
+            }
             // BOTONES
             vm.aceptar = function () {
               console.log(vm.fData.fecha_nacimiento);
@@ -453,10 +458,10 @@
         vm.previo0 = true;
         vm.previo1 = false;
         vm.previo2 = false;
-
-        vm.mySelectionGrid = [row.entity];
+        console.log(row);
+        vm.mySelectionGrid = [row];
         vm.evoRadio = 'Peso';
-        PacienteServices.sListarUltimaConsulta(row.entity).then(function(rpta){
+        PacienteServices.sListarUltimaConsulta(row).then(function(rpta){
           vm.listaUltAntecedentes = [];
           if(rpta.flag1 == 1){
             vm.mySelectionGrid[0].peso = rpta.datos.peso;
@@ -473,16 +478,16 @@
           }
         });
         vm.ficha = {}
-        vm.ficha = angular.copy(row.entity);
+        vm.ficha = angular.copy(row);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
 
-        vm.cargarAntecedentes(row.entity);
-        vm.cargarHabitosAlimentarios(row.entity);
-        vm.cargarHabitos(row.entity);
-        vm.cargarEvolucion(row.entity);
-        vm.cargarConsultas(row.entity);
-        vm.cargarPlanes(row.entity);
+        vm.cargarAntecedentes(row);
+        vm.cargarHabitosAlimentarios(row);
+        vm.cargarHabitos(row);
+        vm.cargarEvolucion(row);
+        vm.cargarConsultas(row);
+        vm.cargarPlanes(row);
       }
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
@@ -519,7 +524,14 @@
           vm.cargarEvolucion(vm.ficha);
         });
       }
-
+      vm.btnActualizarFicha = function(row){
+        PacienteServices.sListarPacientePorId(row).then(function(rpta){
+          if(rpta.flag == 1){
+            console.log('refresh');
+            vm.btnVerFicha(rpta.datos);
+          }
+        });
+      }
       // CARGAR GRAFICO
         vm.cargarEvolucion = function(row){
           PacienteServices.slistarEvolucion(row).then(function(rpta){
@@ -835,10 +847,12 @@
             if(rpta.flag == 1){
               vm.modoEditar = false;
               // vm.getPaginationServerSide();
-              PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-                vm.ficha = rpta.datos;
-                vm.mySelectionGrid = [rpta.datos];
-              });
+              // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+
+              //   vm.ficha = rpta.datos;
+              //   vm.mySelectionGrid = [rpta.datos];
+              // });
+              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
               var title = 'OK';
               var iconClass = 'success';
             }else if( rpta.flag == 0 ){
@@ -855,10 +869,11 @@
         }
         vm.btnCancelarTab2 = function(){
           vm.modoEditar = false;
-          vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          vm.cargarAntecedentes(vm.ficha);
-          vm.cargarHabitosAlimentarios(vm.ficha);
-          vm.cargarHabitos(vm.ficha);
+          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+          // vm.cargarAntecedentes(vm.ficha);
+          // vm.cargarHabitosAlimentarios(vm.ficha);
+          // vm.cargarHabitos(vm.ficha);
         }
         vm.btnAceptarTab3 = function(){// antecedentes
           console.log('array',vm.listaAntPatologicos);
@@ -879,6 +894,7 @@
               //   vm.ficha = rpta.datos;
               //   vm.mySelectionGrid = [rpta.datos];
               // });
+              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
               var title = 'OK';
               var iconClass = 'success';
             }else if( rpta.flag == 0 ){
@@ -895,10 +911,11 @@
         }
         vm.btnCancelarTab3 = function(){
           vm.modoEditar = false;
-          vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          vm.cargarAntecedentes(vm.ficha);
-          vm.cargarHabitosAlimentarios(vm.ficha);
-          vm.cargarHabitos(vm.ficha);
+          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+          // vm.cargarAntecedentes(vm.ficha);
+          // vm.cargarHabitosAlimentarios(vm.ficha);
+          // vm.cargarHabitos(vm.ficha);
         }
         vm.btnAceptarTab4 = function(){
           vm.ficha.habitos.idcliente = vm.ficha.idcliente;
@@ -915,8 +932,9 @@
             };
             if(rpta.flag == 1){
               vm.modoEditar = false;
-              vm.cargarHabitos(vm.ficha);
-              vm.cargarHabitosAlimentarios(vm.ficha);
+              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+              // vm.cargarHabitos(vm.ficha);
+              // vm.cargarHabitosAlimentarios(vm.ficha);
               var title = 'OK',
                   iconClass = 'success';
             }else if( rpta.flag == 0 ){
@@ -932,10 +950,11 @@
         }
         vm.btnCancelarTab4 = function(){
           vm.modoEditar = false;
-          vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          vm.cargarAntecedentes(vm.ficha);
-          vm.cargarHabitosAlimentarios(vm.ficha);
-          vm.cargarHabitos(vm.ficha);
+          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+          // vm.cargarAntecedentes(vm.ficha);
+          // vm.cargarHabitosAlimentarios(vm.ficha);
+          // vm.cargarHabitos(vm.ficha);
         }
         vm.btnRegresar = function(){
           vm.modoFicha = false;

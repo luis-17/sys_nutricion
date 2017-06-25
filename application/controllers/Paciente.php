@@ -75,6 +75,12 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		// var_dump($allInputs); exit();
 		$row = $this->model_paciente->m_cargar_paciente_por_id($allInputs);
+		if ($row['nombre_foto'] == '' ||
+			!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+			$foto = 'sin-imagen.png';
+		}else{
+			$foto = $row['nombre_foto'];
+		}
 		$arrListado = array(
 			'idcliente' => $row['idcliente'],
 			'nombre' => $row['nombre'],
@@ -82,12 +88,12 @@ class Paciente extends CI_Controller {
 			'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 			'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
 			'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
-			'nombre_foto' => $row['nombre_foto'],
+			'nombre_foto' => $foto,
 			'celular' => $row['celular'],
 			'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 			'sexo' => $row['sexo'],
 			'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
-			'estatura' => $row['estatura'],
+			'estatura' => (int)$row['estatura'],
 			'idempresa' => $row['idempresa'],
 			'idtipocliente' => $row['idtipocliente'],
 			'cargo_laboral' => $row['cargo_laboral'],
@@ -99,12 +105,14 @@ class Paciente extends CI_Controller {
 			'medicamentos' => $row['medicamentos'],
 			'antecedentes_notas' => $row['antecedentes_notas'],
 			'habitos_notas' => $row['habitos_notas'],
+			'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
+			'cant_atencion' =>  $row['cant_atencion'],
 			);
 
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
-		if(empty($lista)){
+		if(empty($row)){
 			$arrData['flag'] = 0;
 		}
 		$this->output
