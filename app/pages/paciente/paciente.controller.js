@@ -307,6 +307,9 @@
                 // dateDisabled: disabled,
                 dateDisabled: false,
                 // formatYear: 'y',
+                // showDropdowns: true,
+                // changeMonth: true,
+                // changeYear: true,
                 maxDate: new Date(),
                 minDate: new Date(),
                 startingDay: 1,
@@ -789,7 +792,7 @@
             }
             if(value.id == '18' && value.check == 1){
               vm.checkOtro = true;
-            }else{
+            }else if(value.id == '18' && value.check == 0){
               vm.checkOtro = false;
               vm.ficha.texto_otros = null;
             }
@@ -974,6 +977,7 @@
         }
         vm.btnRegresar = function(){
           vm.modoFicha = false;
+          vm.modoEditar = false;
           vm.fotoCrop = false;
           vm.image = {
              originalImage: '',
