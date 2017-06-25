@@ -682,7 +682,7 @@ class Paciente extends CI_Controller {
     	// var_dump($allInputs); exit();
     	//HABITOS ALIMENTARIOS
     	foreach ($allInputs['alimentarios'] as $row) {
-    		if( !empty($row['texto_alimentos']) ){
+    		if( !empty($row['texto_alimentos']) && $row['hora'] != '--' && $row['minuto'] != '--' ){
 	    		$row['idcliente'] = $allInputs['idcliente'];
 	    		$hora = $row['hora'].':'.$row['minuto'].' '.$row['periodo'];
 	    		$row['hora'] = darFormatoHora2($hora);
