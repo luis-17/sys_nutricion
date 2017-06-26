@@ -244,73 +244,15 @@
 
     <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/app.js -->
     <!-- inject:js -->
+    <script src="app/config.js"></script>
     <script src="app/index.module.js"></script>
     <script src="app/components/partials/rightbar/rightbar.directive.js"></script>
     <script src="app/components/partials/navigation/navigation.directive.js"></script>
     <script src="app/components/partials/header/header.directive.js"></script>
     <script src="app/components/partials/customize/minotaur-customize.directive.js"></script>
-    <script src="app/pages/ui-widgets/ui-widgets.controller.js"></script>
-    <script src="app/pages/ui-typography/ui-typography.controller.js"></script>
-    <script src="app/pages/ui-tree/ui-tree.controller.js"></script>
-    <script src="app/pages/ui-tiles/ui-tiles.controller.js"></script>
-    <script src="app/pages/ui-portlets/ui-portlets.controller.js"></script>
-    <script src="app/pages/ui-navs/ui-navs.controller.js"></script>
-    <script src="app/pages/ui-modals/ui-modals.controller.js"></script>
-    <script src="app/pages/ui-masonry/ui-masonry.controller.js"></script>
-    <script src="app/pages/ui-lists/ui-lists.controller.js"></script>
-    <script src="app/pages/ui-grid/ui-grid.controller.js"></script>
-    <script src="app/pages/ui-elements/ui-elements.controller.js"></script>
-    <script src="app/pages/ui-dragula/ui-dragula.controller.js"></script>
-    <script src="app/pages/ui-buttons/ui-buttons.controller.js"></script>
-    <script src="app/pages/ui-alerts/ui-alerts.controller.js"></script>
-    <script src="app/pages/tables-ui-grid/tables-ui-grid.controller.js"></script>
-    <script src="app/pages/tables-smart-table/tables-smart-table.services.js"></script>
-    <script src="app/pages/tables-smart-table/tables-smart-table.controller.js"></script>
-    <script src="app/pages/tables-ngtable/tables-ngtable.directive.js"></script>
-    <script src="app/pages/tables-ngtable/tables-ngtable.controller.js"></script>
-    <script src="app/pages/tables-footable/tables-footable.controller.js"></script>
-    <script src="app/pages/tables-datatables/tables-datatables.controller.js"></script>
-    <script src="app/pages/tables-bootstrap/tables-bootstrap.controller.js"></script>
-    <script src="app/pages/shop-single-product/shop-single-product.controller.js"></script>
-    <script src="app/pages/shop-single-order/shop-single-order.controller.js"></script>
-    <script src="app/pages/shop-products/shop-products.controller.js"></script>
-    <script src="app/pages/shop-single-invoice/shop-single-invoice.controller.js"></script>
-    <script src="app/pages/shop-orders/shop-orders.controller.js"></script>
-    <script src="app/pages/shop-invoices/shop-invoices.controller.js"></script>
-    <script src="app/pages/pages-timeline/pages-timeline.controller.js"></script>
-    <script src="app/pages/pages-signup/pages-signup.controller.js"></script>
-    <script src="app/pages/pages-search-results/pages-search-results.controller.js"></script>
-    <script src="app/pages/pages-profile/pages-profile.controller.js"></script>
-    <script src="app/pages/pages-offline/pages-offline.controller.js"></script>
+
     <script src="app/pages/pages-login/pages-login.controller.js"></script>
-    <script src="app/pages/pages-locked/pages-locked.controller.js"></script>
-    <script src="app/pages/pages-intro/pages-intro.controller.js"></script>
-    <script src="app/pages/pages-gallery/pages-gallery.controller.js"></script>
-    <script src="app/pages/pages-forgotpass/pages-forgotpass.controller.js"></script>
-    <script src="app/pages/pages-chat/pages-chat.controller.js"></script>
-    <script src="app/pages/pages-500/pages-500.controller.js"></script>
-    <script src="app/pages/pages-404/pages-404.controller.js"></script>
-    <script src="app/pages/maps-vector/maps-vector.controller.js"></script>
-    <script src="app/pages/maps-leaflet/maps-leaflet.controller.js"></script>
-    <script src="app/pages/mail-single/mail-single.controller.js"></script>
-    <script src="app/pages/maps-google/maps-google.controller.js"></script>
-    <script src="app/pages/mail-inbox/mail-inbox.controller.js"></script>
-    <script src="app/pages/mail-compose/mail-compose.controller.js"></script>
-    <script src="app/pages/mail/mail.js"></script>
-    <script src="app/pages/layout-rtl/layout-rtl.controller.js"></script>
-    <script src="app/pages/layout-non-fixed-sidebar/layout-non-fixed-sidebar.controller.js"></script>
-    <script src="app/pages/layout-non-fixed-header/layout-non-fixed-header.controller.js"></script>
-    <script src="app/pages/layout-hz-menu/layout-hz-menu.controller.js"></script>
-    <script src="app/pages/layout-header-with-content/layout-header-with-content.controller.js"></script>
-    <script src="app/pages/layout-header-sm/layout-header-sm.controller.js"></script>
-    <script src="app/pages/layout-expanded/layout-expanded.controller.js"></script>
-    <script src="app/pages/layout-boxed/layout-boxed.controller.js"></script>
-    <script src="app/pages/layout-base/layout-base.controller.js"></script>
-    <script src="app/pages/forms-wizard/forms-wizard.controller.js"></script>
-    <script src="app/pages/forms-validation/forms-validation.controller.js"></script>
-    <script src="app/pages/forms-upload/forms-upload.controller.js"></script>
-    <script src="app/pages/forms-imagecrop/forms-imagecrop.controller.js"></script>
-    <script src="app/pages/forms-common/forms-common.controller.js"></script>
+    <script src="app/pages/dashboard/dashboard.controller.js"></script>
     <!-- APLICATIVO -->
     <script src="app/pages/alimento/alimento.controller.js"></script>
     <script src="app/pages/grupoalimento/grupoalimento.controller.js"></script>
@@ -329,12 +271,6 @@
     <script src="app/pages/especialidad/especialidad.controller.js"></script>
     <script src="app/pages/usuario/usuario.controller.js"></script>
     <script src="app/pages/grupo/grupo.controller.js"></script>
-
-    <script src="app/pages/documentation/documentation.controller.js"></script>
-    <script src="app/pages/dashboard/dashboard.controller.js"></script>
-    <script src="app/pages/charts/charts.controller.js"></script>
-    <script src="app/pages/calendar/calendar.controller.js"></script>
-
 
     <script src="app/components/directives/vector-map.directive.js"></script>
     <script src="app/components/directives/validate-on-submit.directive.js"></script>

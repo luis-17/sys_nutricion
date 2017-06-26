@@ -8,8 +8,8 @@ class Paciente extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));
-        $this->load->model(array('model_paciente'));
-        $this->load->library('fpdfext');
+        $this->load->model(array('model_paciente','model_consulta'));
+        $this->load->library('Fpdfext');
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
 	public function listar_pacientes()
@@ -55,6 +55,7 @@ class Paciente extends CI_Controller {
 					'habitos_notas' => $row['habitos_notas'],
 					'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
 					'cant_atencion' =>  $row['cant_atencion'],
+					'fecha_alta' =>  darFormatoDMY2($row['fecha_alta']),
 
 				)
 			);
@@ -107,6 +108,7 @@ class Paciente extends CI_Controller {
 			'habitos_notas' => $row['habitos_notas'],
 			'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
 			'cant_atencion' =>  $row['cant_atencion'],
+			'fecha_alta' =>  darFormatoDMY2($row['fecha_alta']),
 			);
 
     	$arrData['datos'] = $arrListado;
@@ -731,15 +733,148 @@ class Paciente extends CI_Controller {
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;
     	// var_dump($allInputs); exit();
+    	// DATOS
+    	$consultas = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente']);
+
+    	// CREACION PDF
+    	$paciente = ucwords(strtolower_total($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
     	$this->pdf = new Fpdfext();
-    	$this->pdf->AddPage();
+    	$this->pdf->AddPage('P','A4');
 		$this->pdf->SetFont('Arial','B',16);
 
-		$this->pdf->Cell(40,10,utf8_decode('¡Hola, Mundo!'),1);
-		// if($this->model_paciente->m_anular($allInputs)){
-		// 	$arrData['message'] = 'Se anularon los datos correctamente';
-  		//  $arrData['flag'] = 1;
-		// }
+		$this->pdf->Cell(0,11,'',0,15);
+		$this->pdf->Cell(0,7,utf8_decode('Expediente clínico'),0,7,'R');
+		$this->pdf->Cell(0,7,utf8_decode($paciente),0,1,'R');
+		$this->pdf->Ln(4);
+
+		$this->pdf->SetFont('Arial','B',10);
+		$this->pdf->SetTextColor(151,151,151);
+		$this->pdf->Cell(0,6,utf8_decode('Código: '. $allInputs['idcliente']),0,7,'R');
+		$this->pdf->Cell(0,6,utf8_decode('Fecha de alta: '. $allInputs['fecha_alta']),0,7,'R');
+		$this->pdf->Ln();
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos Personales'),0,7,'L',TRUE);
+		$this->pdf->SetLineWidth(.1);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		$this->pdf->Line($x, $y, $x+190, $y);
+
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Nombre: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['nombre']))));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Apellidos: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['apellidos']))));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Fecha de Nac: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode($allInputs['fecha_nacimiento_st']));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Género: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode($allInputs['sexo_desc']));
+		$this->pdf->Ln();
+		$this->pdf->Ln();
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos de Contacto'),0,7,'L',TRUE);
+		// $this->pdf->SetLineWidth(.1);
+		// $this->pdf->SetDrawColor(38,147,193);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		$this->pdf->Line($x, $y, $x+190, $y);
+
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Celular: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,$allInputs['celular']);
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Email: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,strtolower_total($allInputs['email']));
+
+		$this->pdf->Ln();
+		$this->pdf->Ln();
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->Cell(45,6,'   ' . utf8_decode('Más información'),0,7,'L',TRUE);
+		// $this->pdf->SetLineWidth(.1);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		// $this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Line($x, $y, $x+190, $y);
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Clasificación: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode($allInputs['clasificacion']));
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Estatura: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(30,6,utf8_decode($allInputs['estatura']) . ' cm.');
+
+		$this->pdf->Ln();
+		$this->pdf->Ln();
+		/* SECCION */
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(255,255,255);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->Cell(55,6,'   ' . utf8_decode('Historial de Consultas'),0,7,'L',TRUE);
+		// $this->pdf->SetLineWidth(.1);
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		// $this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Line($x, $y, $x+190, $y);
+		$this->pdf->Ln();
+
+		$this->pdf->SetFont('Arial','',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(30,6,utf8_decode('Cita Nº: '));
+		$this->pdf->Cell(65,6,utf8_decode('Fecha: '));
+		$this->pdf->Cell(30,6,utf8_decode('Cita Nº: '));
+		$this->pdf->Cell(65,6,utf8_decode('Fecha: '));
+
+		$this->pdf->Ln();
+		$x=$this->pdf->GetX();
+    	$y=$this->pdf->GetY();
+		// $this->pdf->SetDrawColor(38,147,193);
+		$this->pdf->Line($x, $y, $x+190, $y);
+
+		$this->pdf->Ln();
+		$contador = 1;
+		foreach ($consultas as $row) {
+			$this->pdf->Cell(30,6,$row['idcita']);
+			$this->pdf->Cell(65,6,darFormatoDMY2($row['fecha_atencion']));
+			if($contador%2 == 0){
+				$this->pdf->Ln();
+			}
+			$contador++;
+		}
+
+
+
 		$timestamp = date('YmdHis');
 		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
 
