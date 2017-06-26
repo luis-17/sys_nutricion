@@ -1,7 +1,6 @@
 (function() {
   'use strict';
-
-  var directoryApp = 'sys_nutricion';
+  
   if (!window.location.origin) {
     window.location.origin = window.location.protocol+"//"+window.location.host;
   }
