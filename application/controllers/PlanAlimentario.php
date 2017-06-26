@@ -462,7 +462,7 @@ class PlanAlimentario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;    	
-    	$this->pdf = new Fpdfext();
+    	$this->pdf = new fpdfext();
 		$this->pdf->AddPage();
     	$this->pdf->SetMargins(0, 10, 10);  
     	$this->pdf->SetAutoPageBreak(false);

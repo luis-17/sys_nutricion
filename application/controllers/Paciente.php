@@ -738,7 +738,7 @@ class Paciente extends CI_Controller {
 
     	// CREACION PDF
     	$paciente = ucwords(strtolower_total($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
-    	$this->pdf = new Fpdfext();
+    	$this->pdf = new fpdfext();
     	$this->pdf->AddPage('P','A4');
 		$this->pdf->SetFont('Arial','B',16);
 
