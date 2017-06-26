@@ -76,10 +76,10 @@
 	}
 	function get_fecha_inicio_y_fin($anio,$mes)
 	{
-		$arrFechas['inicio'] = $anio.'-'.$mes.'-01'; 
-		$numeroDias = cal_days_in_month(CAL_GREGORIAN, $mes, $anio); 
-		$arrFechas['fin'] = $anio.'-'.$mes.'-'.$numeroDias; 
-		return $arrFechas; 
+		$arrFechas['inicio'] = $anio.'-'.$mes.'-01';
+		$numeroDias = cal_days_in_month(CAL_GREGORIAN, $mes, $anio);
+		$arrFechas['fin'] = $anio.'-'.$mes.'-'.$numeroDias;
+		return $arrFechas;
 	}
 	function get_dias_transcurridos($start, $end) {
 		//var_dump($start,$end); exit();
@@ -177,6 +177,19 @@
 		// var_dump("<pre>",$fecha,$result);
 		return $result;
 	}
+	function darFormatoDMY2($fecha)
+	{
+		if(empty($fecha)){
+			return null;
+		}
+
+		$fechaUT = strtotime($fecha); // obtengo una fecha UNIX ( integer )
+		$d	= date('d', $fechaUT);
+		$m	= date('m', $fechaUT);
+		$y	= date('Y', $fechaUT);
+		$result = $d."/".$m."/".$y; // 01/02/1980
+		return $result;
+	}
 	function darFormatoHora($hora)
 	{
 		if(empty($hora)){
@@ -238,7 +251,7 @@
 		$longMonthArray = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
 		$shortMonthArray = array("","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
 		$shortDayArray = array("","Lun","Mar","Mie","Jue","Vie","Sab","Dom");
-		if ($fechaSQL == 0) return ""; 
+		if ($fechaSQL == 0) return "";
 		$fechaUT = strtotime($fechaSQL); // obtengo una fecha UNIX ( integer )
 		$d	= date('d', $fechaUT); //obtiene los dias en formato 1 - 31
 		$m	= (int)date('m', $fechaUT);
@@ -284,7 +297,7 @@
 		if(empty($fechaSQL) || $fechaSQL == 0){
 			return null;
 		}
-		
+
 		$fechaUT = strtotime($fechaSQL); // obtengo una fecha UNIX ( integer )
 		$d	= date('d', $fechaUT);
 		$m	= date('m', $fechaUT);
@@ -295,9 +308,9 @@
 		$result = $d."/".$m."/".$y." ". $hr.":".$min;
 		return $result; // 24/08/2016 18:30
 	}
-	function devolverEdad($fechaNacimiento){ 
+	function devolverEdad($fechaNacimiento){
 		$edad = NULL;
-		if( !empty($fechaNacimiento) ){ 
+		if( !empty($fechaNacimiento) ){
 			$startDate = $fechaNacimiento;
 			$endDate = date('Y-m-d');
 			list($year, $month, $day) = explode('-', $startDate);
@@ -305,7 +318,7 @@
 			list($year, $month, $day) = explode('-', $endDate);
 			$endDate = mktime(0, 0, 0, $month, $day, $year);
 			$edad = (int)(($endDate - $startDate)/(60 * 60 * 24 * 365));
-		} 
+		}
 		return $edad;
 	}
 	function devolverEdadDetalle($fechaNacimiento)
@@ -450,7 +463,7 @@
 		$day = $shortDayArray[$d];
 		//$month = $shortMonthArray[$m];
 		$result = $day." ".$D;
-		return $result; // Jueves 04 
+		return $result; // Jueves 04
 	}
 	function darFormatoDiaFecha($fechaSQL){
 		$longMonthArray = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
