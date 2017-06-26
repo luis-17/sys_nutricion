@@ -15,8 +15,8 @@
       vm.origen = origen;
       vm.callback = callback;
       vm.tipoVista = tipoVista;
-      console.log('cita',cita);
-      console.log('callback',callback);
+      //console.log('cita',cita);
+      //console.log('callback',callback);
       vm.emails = cita.cliente.email;
 
       if($scope.pestaniaConsulta){

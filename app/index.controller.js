@@ -131,7 +131,7 @@
       $scope.viewOnlyBodyCita = value;
       $scope.consultaOrigen = consulta;
       $scope.pacienteOrigen = paciente;
-      console.log('llego aqui', $scope.pacienteOrigen);
+      //console.log('llego aqui', $scope.pacienteOrigen);
     }
     $scope.changeViewOnlyBodyCita(false);
 
