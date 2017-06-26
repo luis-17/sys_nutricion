@@ -18,6 +18,17 @@ class PlanAlimentario extends CI_Controller {
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error registrando el plan alimentario.';
 
+		/*validacion duplicado*/
+		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+		if(!empty($consulta['tipo_dieta'])){
+			$arrData['flag'] = 0;
+			$arrData['message'] = 'Ya existe un plan alimentario registrado.Intente editarlo.';
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+		}
+
 		/*validaciones dia*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
