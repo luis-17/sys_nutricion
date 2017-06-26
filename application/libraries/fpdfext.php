@@ -3,7 +3,7 @@
     require_once APPPATH."/third_party/fpdf/fpdf.php";
 
     //Extendemos la clase Pdf de la clase fpdf para que herede todas sus variables y funciones
-    class Fpdfext extends FPDF {
+    class fpdfext extends FPDF {
       public function __construct() {
         parent::__construct();
       }
