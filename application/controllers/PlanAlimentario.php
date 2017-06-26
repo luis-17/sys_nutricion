@@ -163,7 +163,7 @@ class PlanAlimentario extends CI_Controller {
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
 				if(
 					($allInputs['tipo'] == 'simple' && $turno['hora']['value']!=0  && $turno['minuto']['value'] != 0 && !empty($turno['indicaciones']))
-					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!=0  && $turno['minuto']['value'] != 0 && count($turno['alimentos'])>0)
+					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count($turno['alimentos'])>0)
 				){
 					if($turno['tiempo']['value']=='pm'){
 						$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
@@ -185,6 +185,7 @@ class PlanAlimentario extends CI_Controller {
 						if($allInputs['tipo'] == 'compuesto'){
 							$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
 							//inserto detalle de alimentos
+							print_r($turno['alimentos']);
 							foreach ($turno['alimentos'] as $alimento) {
 								$datos = array(
 									'idatenciondietaturno' => $idatenciondietaturno,
@@ -551,9 +552,9 @@ class PlanAlimentario extends CI_Controller {
 				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
-				    				$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
 				    			}else{
-				    				$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($alm_nombre))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($alm_nombre))),0,1,'L',true);
 				    			}
 				    		}
 			    		}		    		
