@@ -737,7 +737,7 @@ class Paciente extends CI_Controller {
     	$consultas = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente']);
 
     	// CREACION PDF
-    	$paciente = ucwords(strtolower($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
+    	$paciente = ucwords(strtolower_total($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
     	$this->pdf = new Fpdfext();
     	$this->pdf->AddPage('P','A4');
 		$this->pdf->SetFont('Arial','B',16);
@@ -755,8 +755,8 @@ class Paciente extends CI_Controller {
 		/* SECCION */
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(255,255,255);
-		$this->pdf->SetFillColor(038,147,193);
-		$this->pdf->SetDrawColor(038,147,193);
+		$this->pdf->SetFillColor(38,147,193);
+		$this->pdf->SetDrawColor(38,147,193);
 		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos Personales'),0,7,'L',TRUE);
 		$this->pdf->SetLineWidth(.1);
 		$x=$this->pdf->GetX();
@@ -768,12 +768,12 @@ class Paciente extends CI_Controller {
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->Cell(30,6,utf8_decode('Nombre: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower($allInputs['nombre']))));
+		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['nombre']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->Cell(30,6,utf8_decode('Apellidos: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower($allInputs['apellidos']))));
+		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['apellidos']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->Cell(30,6,utf8_decode('Fecha de Nac: '));
@@ -789,10 +789,10 @@ class Paciente extends CI_Controller {
 		/* SECCION */
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(255,255,255);
-		$this->pdf->SetFillColor(038,147,193);
+		$this->pdf->SetFillColor(38,147,193);
 		$this->pdf->Cell(45,6,'   ' . utf8_decode('Datos de Contacto'),0,7,'L',TRUE);
 		// $this->pdf->SetLineWidth(.1);
-		// $this->pdf->SetDrawColor(038,147,193);
+		// $this->pdf->SetDrawColor(38,147,193);
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x+190, $y);
@@ -808,19 +808,19 @@ class Paciente extends CI_Controller {
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->Cell(30,6,utf8_decode('Email: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,strtolower($allInputs['email']));
+		$this->pdf->Cell(30,6,strtolower_total($allInputs['email']));
 
 		$this->pdf->Ln();
 		$this->pdf->Ln();
 		/* SECCION */
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(255,255,255);
-		$this->pdf->SetFillColor(038,147,193);
+		$this->pdf->SetFillColor(38,147,193);
 		$this->pdf->Cell(45,6,'   ' . utf8_decode('Más información'),0,7,'L',TRUE);
 		// $this->pdf->SetLineWidth(.1);
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
-		// $this->pdf->SetDrawColor(038,147,193);
+		// $this->pdf->SetDrawColor(38,147,193);
 		$this->pdf->Line($x, $y, $x+190, $y);
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
@@ -840,12 +840,12 @@ class Paciente extends CI_Controller {
 		/* SECCION */
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(255,255,255);
-		$this->pdf->SetFillColor(038,147,193);
+		$this->pdf->SetFillColor(38,147,193);
 		$this->pdf->Cell(55,6,'   ' . utf8_decode('Historial de Consultas'),0,7,'L',TRUE);
 		// $this->pdf->SetLineWidth(.1);
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
-		// $this->pdf->SetDrawColor(038,147,193);
+		// $this->pdf->SetDrawColor(38,147,193);
 		$this->pdf->Line($x, $y, $x+190, $y);
 		$this->pdf->Ln();
 
@@ -859,7 +859,7 @@ class Paciente extends CI_Controller {
 		$this->pdf->Ln();
 		$x=$this->pdf->GetX();
     	$y=$this->pdf->GetY();
-		// $this->pdf->SetDrawColor(038,147,193);
+		// $this->pdf->SetDrawColor(38,147,193);
 		$this->pdf->Line($x, $y, $x+190, $y);
 
 		$this->pdf->Ln();
