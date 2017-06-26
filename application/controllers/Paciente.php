@@ -9,7 +9,7 @@ class Paciente extends CI_Controller {
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));
         $this->load->model(array('model_paciente','model_consulta'));
-        $this->load->library('fpdfext');
+        $this->load->library('Fpdfext');
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
 	public function listar_pacientes()
@@ -738,7 +738,7 @@ class Paciente extends CI_Controller {
 
     	// CREACION PDF
     	$paciente = ucwords(strtolower_total($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
-    	$this->pdf = new fpdfext();
+    	$this->pdf = new Fpdfext();
     	$this->pdf->AddPage('P','A4');
 		$this->pdf->SetFont('Arial','B',16);
 

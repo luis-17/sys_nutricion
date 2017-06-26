@@ -8,7 +8,7 @@ class PlanAlimentario extends CI_Controller {
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper','otros_helper'));
         $this->load->model(array('model_plan_alimentario','model_consulta'));
-        $this->load->library('fpdfext');
+        $this->load->library('Fpdfext');
     }
 
 	public function registrar_plan_alimentario(){
@@ -462,7 +462,7 @@ class PlanAlimentario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;    	
-    	$this->pdf = new fpdfext();
+    	$this->pdf = new Fpdfext();
 		$this->pdf->AddPage();
     	$this->pdf->SetMargins(0, 10, 10);  
     	$this->pdf->SetAutoPageBreak(false);
