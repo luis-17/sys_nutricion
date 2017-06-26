@@ -116,8 +116,10 @@ class Model_consulta extends CI_Model {
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
 			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral, at.kg_masa_grasa,
 			at.kg_masa_libre, at.resultados_laboratorio, at.indicaciones_dieta, at.tipo_dieta');
+		$this->db->select('at.idproxcita, c.fecha as prox_cita');
 
 		$this->db->from('atencion at');
+		$this->db->join('cita c', 'c.idcita = at.idproxcita', 'left');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idatencion', (int)$idatencion);
 		return $this->db->get()->row_array();

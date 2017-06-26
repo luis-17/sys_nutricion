@@ -275,10 +275,16 @@
 
     vm.btnPdf = function(){
       // alert('En proceso');
-      PlanAlimentarioServices.sGenerarPdfPlan().then(function(rpta){
+      //pageLoading.start('Cargando reporte...');
+      var datos={
+        cita:vm.cita,
+        consulta:vm.fData
+      };
+      PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
         if(rpta.flag == 1){
           console.log('pdf...');
           $window.open(rpta.urlTempPDF, '_blank');
+          //pageLoading.stop();
         }
       });
     }

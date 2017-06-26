@@ -238,6 +238,95 @@ class PlanAlimentario extends CI_Controller {
 
 		$lista = $this->model_plan_alimentario->m_cargar_plan_alimentario($allInputs);
 
+		$arrayPlan = $this->genera_estructura_plan($lista);
+		/*foreach ($lista as $key => $row) {
+			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
+			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
+
+			if(! empty($row['hora'])){
+				$hora_string = darFormatoHora($row['hora']);
+				$array = explode(" ", $hora_string);				
+				$tiempo_str = $array[1];
+				
+				$array = explode(':', $array[0]);				
+				$hora_str = $array[0];
+				$min_str = $array[1];
+				
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = $tiempo_str;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = $hora_str;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = $min_str;
+			}else{
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = 'am';
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = 0;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = 0;
+			}
+
+			$alimento = array(
+				'idatenciondietaalim' => $row['idatenciondietaalim'],
+				'cantidad' => $row['valor'],
+				'idalimento' => $row['idalimento'],
+				'nombre' => $row['nombre'],
+				'medida_casera' => $row['medida_casera'],
+				'nombre_compuesto' => $row['nombre'] . ' - '. strtoupper($row['medida_casera']),
+				'calorias' => (float)$row['calorias'],
+				'proteinas' => (float)$row['proteinas'],
+				'grasas' => (float)$row['grasas'],
+				'carbohidratos' => (float)$row['carbohidratos'],
+				'gramo' => (float)$row['gramo'],
+				'ceniza' => (float)$row['ceniza'],
+				'calcio' => (float)$row['calcio'],
+				'fosforo' => (float)$row['fosforo'],
+				'zinc' => (float)$row['zinc'],
+				'hierro' => (float)$row['hierro'],
+				'fibra' => (float)$row['fibra'],				
+			);
+
+			$alternativo = array(
+				'idatenciondietaalimalter' => $row['idatenciondietaalimalter'],
+				'idatenciondietaalim' => $row['idatenciondietaalim'],
+				'cantidad' => $row['valor'],
+				'idalimento' => $row['idalimento_alter'],
+				'nombre' => $row['nombre_alter'],
+				'medida_casera' => $row['medida_casera_alter'],
+				'nombre_compuesto' => $row['nombre_alter'] . ' - '. strtoupper($row['medida_casera_alter']),
+				'calorias' => (float)$row['calorias_alter'],
+				'proteinas' => (float)$row['proteinas_alter'],
+				'grasas' => (float)$row['grasas_alter'],
+				'carbohidratos' => (float)$row['carbohidratos_alter'],
+				'gramo' => (float)$row['gramo_alter'],
+				'ceniza' => (float)$row['ceniza_alter'],
+				'calcio' => (float)$row['calcio_alter'],
+				'fosforo' => (float)$row['fosforo_alter'],
+				'zinc' => (float)$row['zinc_alter'],
+				'hierro' => (float)$row['hierro_alter'],
+				'fibra' => (float)$row['fibra_alter'],				
+			);
+
+			if(!empty($row['idatenciondietaalimalter'])){
+				$alimento['alternativos'][$row['idatenciondietaalimalter']] = $alternativo;
+			}			
+
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'] = array();
+			if(!empty($row['idatenciondietaalim'])){
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']] = $alimento;
+			}			
+		}*/
+
+		$arrayPlan = array_values($arrayPlan);
+		$arrData['datos'] = $arrayPlan;
+		$arrData['flag'] =1;
+		$arrData['message'] = 'Ha sido cargado el plan alimentario.';
+
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+
+	private function genera_estructura_plan($lista){
 		$arrayPlan =array();
 		foreach ($lista as $key => $row) {
 			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
@@ -315,15 +404,7 @@ class PlanAlimentario extends CI_Controller {
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']] = $alimento;
 			}			
 		}
-
-		$arrayPlan = array_values($arrayPlan);
-		$arrData['datos'] = $arrayPlan;
-		$arrData['flag'] =1;
-		$arrData['message'] = 'Ha sido cargado el plan alimentario.';
-
-		$this->output
-		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));
+		return $arrayPlan;
 	}
 
 	public function actualizar_plan_alimentario(){
@@ -336,21 +417,114 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));		
 	}
 
+	private function headerPlan($allInputs){
+		$this->pdf->Image('assets/images/dinamic/logo.png',8,8,50);
+		$this->pdf->SetFont('Arial','',14);
+	    
+	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower($allInputs['cita']['cliente']['paciente'])),0,1,'R');
+	    $this->pdf->Ln(0);
+    	
+    	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
+	    $this->pdf->Cell(0,5,'Fecha: '.$fecha,0,1,'R');
+	    $this->pdf->Ln(10);
+	}
+
+	private function footerPlan($consulta){
+		$this->pdf->SetLeftMargin(0);
+		$this->pdf->SetRightMargin(0);
+		$this->pdf->SetY(-25);
+
+	    $this->pdf->SetTextColor(83,83,83);
+		$this->pdf->SetFillColor(204,211,211);
+		$this->pdf->SetFont('Arial','I',11);
+		$y = $this->pdf->GetY();
+		$this->pdf->Rect(0, $y, $this->pdf->GetPageWidth(), 25, 'F');
+		$texto = '* Recomendaciones: ' . ucfirst(strtolower($consulta['indicaciones_dieta']));
+
+		$this->pdf->SetLeftMargin(10);
+		$this->pdf->SetRightMargin(65);
+		$this->pdf->SetXY(10,$y+1);
+		$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);			    	
+		//$this->pdf->Write(25, utf8_decode($texto . $texto));			    	
+
+		$this->pdf->SetRightMargin(10);
+		$this->pdf->SetFont('Arial','',17);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->SetXY(155,$y+1);
+		$this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);	
+
+		$fecha = empty($consulta['prox_cita']) ? '' : date('d/m/Y',strtotime($consulta['prox_cita']));		
+		$this->pdf->SetXY(163,$y+8);
+		$this->pdf->Cell(60, 12, utf8_decode($fecha), 0, 'C', false);	
+	}
+
 	public function generar_pdf_plan(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$arrData = array();
 		$arrData['message'] = '';
-    	$arrData['flag'] = 1;
-    	// var_dump($allInputs); exit();
+    	$arrData['flag'] = 1;    	
     	$this->pdf = new Fpdfext();
-    	$this->pdf->AddPage();
-		$this->pdf->SetFont('Arial','B',16);
+		$this->pdf->AddPage();
+    	$this->pdf->SetMargins(0, 10, 10);  
+    	$this->pdf->SetAutoPageBreak(false);
 
-		$this->pdf->Cell(40,10,utf8_decode('¡Hola, Mundo!'),1);
-		// if($this->model_paciente->m_anular($allInputs)){
-		// 	$arrData['message'] = 'Se anularon los datos correctamente';
-  		//  $arrData['flag'] = 1;
-		// }
+    	//header
+    	$this->headerPlan($allInputs);			    
+
+	    //body 
+	    $lista = $this->model_plan_alimentario->m_cargar_plan_alimentario($allInputs['consulta']);
+		$arrayPlan = $this->genera_estructura_plan($lista);
+		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+
+		/*print_r($arrayPlan);
+		exit();*/
+
+		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
+			$plan = $arrayPlan[1];
+
+			foreach ($plan['turnos'] as $key => $turno) {
+				if($turno['id'] % 2 != 0){
+					$this->pdf->SetTextColor(255,255,255);
+					if($turno['id']==1){
+						$this->pdf->SetFillColor(0,156,222);				    		
+					}
+
+					if($turno['id']==3){
+						$this->pdf->SetFillColor(106,220,0);	
+					}
+					
+					if($turno['id']==5){
+						$this->pdf->SetFillColor(255,0,100);	
+					}
+					$this->pdf->SetFont('Arial','B',14);
+			    	$this->pdf->Cell(50,6,utf8_decode('       ' . ucwords(strtolower($turno['descripcion']))),0,1,'L',true);
+			    	$this->pdf->Ln(1);
+			    	$this->pdf->SetTextColor(83,83,83);
+			    	$this->pdf->SetFillColor(255,255,255);
+			    	$this->pdf->SetFont('Arial','',12);
+					$this->pdf->SetLeftMargin(10);
+			    	if($consulta['tipo_dieta'] == 'SG'){
+			    		$this->pdf->Cell(0,6,utf8_decode('* '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);			    		
+			    	}
+			    	$this->pdf->SetLeftMargin(0);
+			    	$this->pdf->Ln(1);
+				}else{
+			    	$this->pdf->SetLeftMargin(10);
+			    	$this->pdf->SetTextColor(83,83,83);
+			    	$this->pdf->SetFillColor(255,255,255);
+			    	
+			    	if($consulta['tipo_dieta'] == 'SG'){
+			    		$this->pdf->MultiCell(0, 10, utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($turno['indicaciones']))));		    		
+			    	}
+
+			    	$this->pdf->Ln(1);
+			    	$this->pdf->SetLeftMargin(0);
+			    	$this->pdf->Ln(5);
+				}
+			}
+		}	    
+
+    	$this->footerPlan($consulta);
+
 		$timestamp = date('YmdHis');
 		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
 
