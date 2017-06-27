@@ -8,12 +8,11 @@ class Paciente extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));
-        $this->load->model(array('model_paciente','model_consulta'));
+        $this->load->model(array('model_paciente','model_consulta','model_tipoCliente'));
         $this->load->library('Fpdfext');
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
-	public function listar_pacientes()
-	{
+	public function listar_pacientes(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$paramPaginate = $allInputs['paginate'];
 		$lista = $this->model_paciente->m_cargar_pacientes($paramPaginate);
@@ -556,6 +555,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// AQUI ESTARAN LAS VALIDACIONES
     	$estatura = $this->input->post('estatura');
+    	$idtipocliente = $this->input->post('idtipocliente');
     	if( !soloNumeros($estatura) ){
     		$arrData['message'] = 'Ingrese solo números';
     		$this->output
@@ -563,13 +563,22 @@ class Paciente extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	$tipo_cliente = $this->model_tipoCliente->m_cargar_prefijo_tipo_cliente($idtipocliente);
+    	$row = $this->model_paciente->m_cargar_ultimo_codigo_historia_clinica($tipo_cliente);
+    	if(empty($row)){
+    		$correlativo = 1;
+    	}else{
+    		$correlativo = substr($row['cod_historia_clinica'], 2);
+    		$correlativo = (int)$correlativo + 1;
+    	}
+    	$cod_historia_clinica = $tipo_cliente['prefijo'] . str_pad($correlativo, 5, '0', STR_PAD_LEFT);
 
     	$allInputs['nombre'] = $this->input->post('nombre');
     	$allInputs['apellidos'] = $this->input->post('apellidos');
-    	$allInputs['idtipocliente'] = $this->input->post('idtipocliente');
+    	$allInputs['idtipocliente'] = $idtipocliente;
     	$allInputs['idempresa'] = $this->input->post('idempresa');
     	$allInputs['idmotivoconsulta'] = $this->input->post('idmotivoconsulta');
-    	$allInputs['cod_historia_clinica'] = $this->input->post('cod_historia_clinica');
+    	$allInputs['cod_historia_clinica'] = $cod_historia_clinica;
     	$allInputs['sexo'] = $this->input->post('sexo');
     	$allInputs['estatura'] = $estatura;
     	$allInputs['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
@@ -753,7 +762,7 @@ class Paciente extends CI_Controller {
 
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->SetTextColor(151,151,151);
-		$this->pdf->Cell(0,6,utf8_decode('Código: '. $allInputs['idcliente']),0,7,'R');
+		$this->pdf->Cell(0,6,utf8_decode('Código: '. $allInputs['cod_historia_clinica']),0,7,'R');
 		$this->pdf->Cell(0,6,utf8_decode('Fecha de alta: '. $allInputs['fecha_alta']),0,7,'R');
 		$this->pdf->Ln();
 		/* SECCION */

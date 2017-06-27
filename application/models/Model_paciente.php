@@ -76,6 +76,15 @@ class Model_paciente extends CI_Model {
 
 		return $this->db->get()->row_array();
 	}
+	public function m_cargar_ultimo_codigo_historia_clinica($datos){
+		$this->db->select('cl.idcliente, cl.cod_historia_clinica');
+		$this->db->from('cliente cl');
+		$this->db->where('cl.idtipocliente',$datos['idtipocliente']);
+		$this->db->where("cl.cod_historia_clinica LIKE '" . $datos['prefijo'] . "%'");
+		$this->db->order_by('cl.idcliente', 'DESC');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
 	public function m_cargar_pacientes_autocomplete($datos){
 		$this->db->select("c.idcliente, c.email");
 		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
