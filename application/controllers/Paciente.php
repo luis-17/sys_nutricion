@@ -43,7 +43,9 @@ class Paciente extends CI_Controller {
 					'edad' => devolverEdad($row['fecha_nacimiento']),
 					'estatura' => (int)$row['estatura'],
 					'idempresa' => $row['idempresa'],
+					'empresa' => $row['nombre_comercial'],
 					'idtipocliente' => $row['idtipocliente'],
+					'tipo_cliente' => $row['descripcion_tc'],
 					'cargo_laboral' => $row['cargo_laboral'],
 					'email' => $row['email'],
 					'idmotivoconsulta' => $row['idmotivoconsulta'],
@@ -96,7 +98,9 @@ class Paciente extends CI_Controller {
 			'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
 			'estatura' => (int)$row['estatura'],
 			'idempresa' => $row['idempresa'],
+			'empresa' => $row['nombre_comercial'],
 			'idtipocliente' => $row['idtipocliente'],
+			'tipo_cliente' => $row['descripcion_tc'],
 			'cargo_laboral' => $row['cargo_laboral'],
 			'email' => $row['email'],
 			'idmotivoconsulta' => $row['idmotivoconsulta'],
@@ -766,24 +770,29 @@ class Paciente extends CI_Controller {
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Nombre: '));
+		$this->pdf->Cell(35,6,utf8_decode('Nombre: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['nombre']))));
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['nombre']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Apellidos: '));
+		$this->pdf->Cell(35,6,utf8_decode('Apellidos: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode(ucwords(strtolower_total($allInputs['apellidos']))));
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['apellidos']))));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Fecha de Nac: '));
+		$this->pdf->Cell(35,6,utf8_decode('Fecha de Nac: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode($allInputs['fecha_nacimiento_st']));
+		$this->pdf->Cell(70,6,utf8_decode($allInputs['fecha_nacimiento_st']));
 		$this->pdf->Ln();
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Género: '));
+		$this->pdf->Cell(35,6,utf8_decode('Género: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode($allInputs['sexo_desc']));
+		$this->pdf->Cell(70,6,utf8_decode($allInputs['sexo_desc']));
+		$this->pdf->Ln();
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(35,6,utf8_decode('Tipo de cliente: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode($allInputs['tipo_cliente']));
 		$this->pdf->Ln();
 		$this->pdf->Ln();
 		/* SECCION */
@@ -800,15 +809,27 @@ class Paciente extends CI_Controller {
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Celular: '));
+		$this->pdf->Cell(35,6,utf8_decode('Celular: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,$allInputs['celular']);
+		$this->pdf->Cell(70,6,$allInputs['celular']);
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Email: '));
+		$this->pdf->Cell(35,6,utf8_decode('Email: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,strtolower_total($allInputs['email']));
+		$this->pdf->Cell(70,6,strtolower_total($allInputs['email']));
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(35,6,utf8_decode('Empresa: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['empresa']))));
+		$this->pdf->Ln();
+		$this->pdf->SetFont('Arial','B',12);
+		$this->pdf->SetTextColor(0,0,0);
+		$this->pdf->Cell(35,6,utf8_decode('Cargo Lab.: '));
+		$this->pdf->SetTextColor(100,100,100);
+		$this->pdf->Cell(70,6,utf8_decode(ucwords(strtolower_total($allInputs['cargo_laboral']))));
 
 		$this->pdf->Ln();
 		$this->pdf->Ln();
@@ -825,15 +846,15 @@ class Paciente extends CI_Controller {
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Clasificación: '));
+		$this->pdf->Cell(35,6,utf8_decode('Clasificación: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode($allInputs['clasificacion']));
+		$this->pdf->Cell(70,6,utf8_decode($allInputs['clasificacion']));
 		$this->pdf->Ln();
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->Cell(30,6,utf8_decode('Estatura: '));
+		$this->pdf->Cell(35,6,utf8_decode('Estatura: '));
 		$this->pdf->SetTextColor(100,100,100);
-		$this->pdf->Cell(30,6,utf8_decode($allInputs['estatura']) . ' cm.');
+		$this->pdf->Cell(70,6,utf8_decode($allInputs['estatura']) . ' cm.');
 
 		$this->pdf->Ln();
 		$this->pdf->Ln();
@@ -853,8 +874,7 @@ class Paciente extends CI_Controller {
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->Cell(30,6,utf8_decode('Cita Nº: '));
 		$this->pdf->Cell(65,6,utf8_decode('Fecha: '));
-		$this->pdf->Cell(30,6,utf8_decode('Cita Nº: '));
-		$this->pdf->Cell(65,6,utf8_decode('Fecha: '));
+		$this->pdf->Cell(95,6,utf8_decode('Indicaciones: '));
 
 		$this->pdf->Ln();
 		$x=$this->pdf->GetX();
@@ -863,14 +883,12 @@ class Paciente extends CI_Controller {
 		$this->pdf->Line($x, $y, $x+190, $y);
 
 		$this->pdf->Ln();
-		$contador = 1;
+
 		foreach ($consultas as $row) {
 			$this->pdf->Cell(30,6,$row['idcita']);
 			$this->pdf->Cell(65,6,darFormatoDMY2($row['fecha_atencion']));
-			if($contador%2 == 0){
-				$this->pdf->Ln();
-			}
-			$contador++;
+			$this->pdf->Cell(65,6,$row['diagnostico_notas']);
+			$this->pdf->Ln();
 		}
 
 
