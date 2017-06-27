@@ -738,7 +738,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 1;
     	// var_dump($allInputs); exit();
     	// DATOS
-    	$consultas = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente']);
+    	$consultas = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente'],TRUE);
 
     	// CREACION PDF
     	$paciente = ucwords(strtolower_total($allInputs['nombre'] . ' ' . $allInputs['apellidos']));
