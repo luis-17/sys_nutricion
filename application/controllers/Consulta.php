@@ -165,7 +165,7 @@ class Consulta extends CI_Controller {
 	}
 	public function listar_consultas_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente']);
+		$lista = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente'],TRUE);
 		$arrCabecera = array();
 		$arrListado = array();
 		foreach ($lista as $key => $row) {
