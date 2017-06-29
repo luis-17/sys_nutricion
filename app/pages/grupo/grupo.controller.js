@@ -17,7 +17,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "grupo/listar_grupo",
+            url :  angular.patchURLCI + "Grupo/listar_grupo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

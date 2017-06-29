@@ -608,7 +608,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "profesional/listar_profesional",
+            url :  angular.patchURLCI + "Profesional/listar_profesional",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -617,7 +617,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "profesional/listar_profesional_cbo",
+            url :  angular.patchURLCI + "Profesional/listar_profesional_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -626,7 +626,7 @@
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/registrar_profesional",
+            url : angular.patchURLCI + "Profesional/registrar_profesional",
             data : datos,
             headers: {'Content-Type': undefined},
             transformRequest: function (data) {
@@ -643,7 +643,7 @@
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/editar_profesional",
+            url : angular.patchURLCI + "Profesional/editar_profesional",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
@@ -652,7 +652,7 @@
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/anular_profesional",
+            url : angular.patchURLCI + "Profesional/anular_profesional",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

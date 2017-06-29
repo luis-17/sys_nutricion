@@ -21,7 +21,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "usuario/listar_usuario",
+            url :  angular.patchURLCI + "Usuario/listar_usuario",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -29,7 +29,7 @@
     function sRegistrarUsuario(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"usuario/registrar_usuario",
+            url : angular.patchURLCI+"Usuario/registrar_usuario",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
@@ -37,7 +37,7 @@
     function sEditarUsuario(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"usuario/editar_usuario",
+            url : angular.patchURLCI+"Usuario/editar_usuario",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
@@ -45,7 +45,7 @@
     function sAnularUsuario(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"usuario/anular_usuario",
+            url : angular.patchURLCI+"Usuario/anular_usuario",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
@@ -53,7 +53,7 @@
     function sListaUsuarioAutocomplete(datos) {
       var request = $http({
             method : "post",
-            url : angular.patchURLCI+"usuario/lista_usuario_autocomplete",
+            url : angular.patchURLCI+"Usuario/lista_usuario_autocomplete",
             data : datos
       });
       return (request.then(handleSuccess,handleError));

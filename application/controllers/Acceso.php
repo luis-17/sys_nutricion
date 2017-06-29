@@ -24,7 +24,7 @@ class Acceso extends CI_Controller {
 					$arrPerfilUsuario = array();
 					$arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
 					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
-					$arrPerfilUsuario['username'] = $loggedUser['username'];
+					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$perfil = $this->model_profesional->m_cargar_perfil($arrPerfilUsuario['idusuario']);
 
 					$arrPerfilUsuario['idprofesional'] = $perfil['idprofesional'];
