@@ -34,7 +34,7 @@ class Paciente extends CI_Controller {
 					'apellidos' => $row['apellidos'],
 					'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 					'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
-					'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
+					'fecha_nacimiento' => darFormatoDMY2($row['fecha_nacimiento']),
 					'nombre_foto' => $foto,
 					'celular' => $row['celular'],
 					'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
@@ -89,12 +89,12 @@ class Paciente extends CI_Controller {
 			'apellidos' => $row['apellidos'],
 			'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 			'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
-			'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
+			'fecha_nacimiento' => darFormatoDMY2($row['fecha_nacimiento']),
 			'nombre_foto' => $foto,
 			'celular' => $row['celular'],
 			'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 			'sexo' => $row['sexo'],
-			'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
+			'edad' => devolverEdad($row['fecha_nacimiento']),
 			'estatura' => (int)$row['estatura'],
 			'idempresa' => $row['idempresa'],
 			'empresa' => $row['nombre_comercial'],
@@ -134,12 +134,12 @@ class Paciente extends CI_Controller {
 			'apellidos' => $row['apellidos'],
 			'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 			'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
-			'fecha_nacimiento' => DarFormatoDMY($row['fecha_nacimiento']),
+			'fecha_nacimiento' => darFormatoDMY2($row['fecha_nacimiento']),
 			'nombre_foto' => $row['nombre_foto'],
 			'celular' => $row['celular'],
 			'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 			'sexo' => $row['sexo'],
-			'edad' => devolverEdad($row['fecha_nacimiento']) . ' años',
+			'edad' => devolverEdad($row['fecha_nacimiento']),
 			'estatura' => $row['estatura'],
 			'idempresa' => $row['idempresa'],
 			'idtipocliente' => $row['idtipocliente'],
@@ -555,6 +555,7 @@ class Paciente extends CI_Controller {
     	$arrData['flag'] = 0;
     	// AQUI ESTARAN LAS VALIDACIONES
     	$estatura = $this->input->post('estatura');
+    	$fecha_nacimiento = $this->input->post('fecha_nacimiento');
     	$idtipocliente = $this->input->post('idtipocliente');
     	if( !soloNumeros($estatura) ){
     		$arrData['message'] = 'Ingrese solo números';
@@ -563,6 +564,14 @@ class Paciente extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	if($fecha_nacimiento == '' || $fecha_nacimiento == null){
+    		$arrData['message'] = 'Ingrese una fecha válida';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
     	$tipo_cliente = $this->model_tipoCliente->m_cargar_prefijo_tipo_cliente($idtipocliente);
     	$row = $this->model_paciente->m_cargar_ultimo_codigo_historia_clinica($tipo_cliente);
     	if(empty($row)){
@@ -581,7 +590,7 @@ class Paciente extends CI_Controller {
     	$allInputs['cod_historia_clinica'] = $cod_historia_clinica;
     	$allInputs['sexo'] = $this->input->post('sexo');
     	$allInputs['estatura'] = $estatura;
-    	$allInputs['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
+    	$allInputs['fecha_nacimiento'] = $fecha_nacimiento;
     	$allInputs['email'] = $this->input->post('email');
     	$allInputs['celular'] = $this->input->post('celular');
     	$allInputs['cargo_laboral'] = $this->input->post('cargo_laboral');
@@ -589,10 +598,11 @@ class Paciente extends CI_Controller {
     	$allInputs['updatedAt'] = date('Y-m-d H:i:s');
     	$allInputs['Base64Img'] = $this->input->post('myCroppedImage');
     	$allInputs['nombre_foto'] = NULL;
+
     	$allInputs['fecha_nacimiento'] = date('Y-m-d',strtotime($allInputs['fecha_nacimiento']));
-		// var_dump($this->input->post('fecha_nacimiento'));
 		// var_dump($allInputs);
 		// exit();
+		// var_dump($this->input->post('fecha_nacimiento'));
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
     		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);

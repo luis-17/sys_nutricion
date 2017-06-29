@@ -18,7 +18,7 @@
     vm.modoFicha = false;
     vm.modoEditar = false;
     vm.fotoCrop = false;
-    vm.pFecha = /^\d{2}-\d{2}-\d{4}$/;
+    vm.pFecha = /^\d{2}\/\d{2}\/\d{4}$/;
     vm.ficha = {}
     vm.previo0 = true;
     vm.previo1 = false;
@@ -250,7 +250,7 @@
             // vm.activeStep = 0;
             vm.corp = false; // solo para tipo de cliente = corporativo sera true
             vm.fotoCrop = false;
-            vm.pFecha = /^\d{2}-\d{2}-\d{4}$/;
+            vm.pFecha = /^\d{2}\/\d{2}\/\d{4}$/;
             vm.listaSexos = [
               { id:'', descripcion:'--Seleccione sexo--' },
               { id:'M', descripcion:'MASCULINO' },
@@ -487,7 +487,7 @@
         vm.ficha = angular.copy(row);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
-        vm.ficha.fecha_nacimiento = $filter('date')(row.fecha_nacimiento,'dd/MM/yyyy');
+        //vm.ficha.fecha_nacimiento = $filter('date')(row.fecha_nacimiento,'dd/MM/yyyy');
 
         vm.cargarAntecedentes(row);
         vm.cargarHabitosAlimentarios(row);
