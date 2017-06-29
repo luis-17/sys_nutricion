@@ -638,6 +638,27 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	public function eliminar_foto_paciente(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al eliminar la foto, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+		if( file_exists("./assets/images/dinamic/pacientes/" . trim($allInputs['nombre_foto'])) ){
+			unlink("./assets/images/dinamic/pacientes/" . trim($allInputs['nombre_foto']));
+		}
+
+		$allInputs['nombre_foto'] = NULL;
+		if($this->model_paciente->m_editar_foto($allInputs)){
+    		$arrData['message'] = 'La foto se eliminó correctamente';
+    		$arrData['flag'] = 1;
+    		$arrData['datos'] = 'sin-imagen.png';
+    	}
+
+
+    	$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function editar_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';

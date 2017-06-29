@@ -742,6 +742,34 @@
              croppedImage: '',
           };
         }
+        vm.eliminarFoto = function(){
+          alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
+            ev.preventDefault();
+            PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
+              if(rpta.flag == 1){
+                var title = 'OK';
+                var iconClass = 'success';
+                vm.ficha.nombre_foto = rpta.datos;
+                vm.fotoCrop = false;
+                vm.image = {
+                   originalImage: '',
+                   croppedImage: '',
+                };
+
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                // vm.toast.title = 'Advertencia';
+                var iconClass = 'warning';
+                // vm.options.iconClass = {name:'warning'}
+              }else{
+                alert('Ocurrió un error');
+              }
+              var toast = toastr[iconClass](rpta.message, title, vm.options);
+              openedToasts.push(toast);
+            });
+          });
+
+        }
       vm.cargarAntecedentes = function(row){
         PacienteServices.sListarAntecedentesPaciente(row).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
@@ -1120,6 +1148,7 @@
         sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
         sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
         sSubirFoto: sSubirFoto,
+        sEliminarFoto: sEliminarFoto,
         slistarEvolucion: slistarEvolucion,
         sListarPlanesPaciente: sListarPlanesPaciente,
         sImprimirFicha: sImprimirFicha,
@@ -1249,6 +1278,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/subir_foto_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sEliminarFoto(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/eliminar_foto_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
