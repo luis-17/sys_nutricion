@@ -18,7 +18,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "grupoalimento/listar_grupo_alimento_1",
+            url :  angular.patchURLCI + "GrupoAlimento/listar_grupo_alimento_1",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -27,7 +27,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "grupoalimento/listar_grupo_alimento_2",
+            url :  angular.patchURLCI + "GrupoAlimento/listar_grupo_alimento_2",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));

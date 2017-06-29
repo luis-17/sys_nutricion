@@ -13,6 +13,7 @@
     vm.selectedItem = {};
     vm.options = {};
     vm.fDemo = {};
+    vm.fotoCrop = false;
 
     vm.remove = function(scope) {
       scope.remove();
@@ -108,7 +109,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/profesional/profesional_formview.html',
           controllerAs: 'mp',
-          size: 'md',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
           windowClass: 'splash splash-2 splash-ef-14',          
           controller: function($scope, $uibModalInstance, arrToModal ){
@@ -120,7 +121,7 @@
 
             EspecialidadServices.sListarEspecialidad().then(function (rpta) {
               vm.listaEspecialidades = angular.copy(rpta.datos);
-              vm.fData.idespecialidad = vm.listaEspecialidades[0];
+              vm.fData.especialidad = vm.listaEspecialidades[0];
             });
 
             // DATEPICKER
@@ -251,10 +252,31 @@
               });              
             }
 
-            /*------------  FIN REGISTRO USUARIO  ------------*/            
+            /*------------  FIN REGISTRO USUARIO  ------------*/   
+            // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+            vm.fData.myImage='';
+            vm.fData.myCroppedImage='';
+            vm.cropType='circle';
+
+            var handleFileSelect=function(evt) {
+              var file = evt.currentTarget.files[0];
+              var reader = new FileReader();
+              reader.onload = function (evt) {
+                /* eslint-disable */
+                $scope.$apply(function(){
+                  vm.fData.myImage=evt.target.result;
+                });
+                /* eslint-enable */
+              };
+              reader.readAsDataURL(file);
+            };
+            $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+              angular.element($document[0].querySelector('#fileInput')).on('change',handleFileSelect);
+            }/* no delay here */);                     
             // BOTONES
             vm.aceptar = function () {
               vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
+              vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sRegistrarProfesional(vm.fData).then(function (rpta) {
                 var openedToasts = [];
                 vm.options = {
@@ -298,7 +320,7 @@
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/profesional/profesional_formview.html',
           controllerAs: 'mp',
-          size: 'md',
+          size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
           windowClass: 'splash splash-2 splash-ef-14',
           // controller: 'ModalInstanceController',
@@ -314,7 +336,7 @@
             vm.modalTitle = 'Edición de Profesional';
             EspecialidadServices.sListarEspecialidad().then(function (rpta) {
               vm.listaEspecialidades = angular.copy(rpta.datos);
-              vm.fData.idespecialidad = vm.listaEspecialidades[0];
+              vm.fData.especialidad = vm.listaEspecialidades[0];
             });
 
             // DATEPICKER
@@ -377,7 +399,7 @@
             vm.getSelectedUsuario = function($item, $model, $label){
               vm.fData.usuario = $item;
               vm.fData.idusuario = $model.idusuario;
-            }             
+            }  
             /*------------  REGISTRO USUARIO  -----------------*/
             vm.user = function(){
               var modalInstance = $uibModal.open({
@@ -435,16 +457,75 @@
                   arrToModal: function() {
                     return {
                       getPaginationServerSide : vm.getPaginationServerSide,
-                      
-
                     }
                   }
                 }
               });              
             }
-            /*------------  FIN REGISTRO USUARIO  ------------*/                        
+            /*------------  FIN REGISTRO USUARIO  ------------*/ 
+            // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
+            vm.cargarImagen = function(){
+              vm.fotoCrop = true;
+              vm.image = {
+                 originalImage: '',
+                 croppedImage: '',
+              };             
+              vm.cropType='circle';
+
+              var handleFileSelect2=function(evt) {
+                var file = evt.currentTarget.files[0];
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                  /* eslint-disable */
+                  $scope.$apply(function($scope){
+                    vm.image.originalImage=evt.target.result;
+                  });                 
+                  /* eslint-enable */
+                };
+                reader.readAsDataURL(file);
+              };
+              $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+                angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
+              });
+            }
+            vm.subirFoto = function(){
+              vm.image.nombre_foto = vm.fData.nombre_foto;
+              vm.image.idprofesional = vm.fData.idprofesional;
+              vm.image.nombre = vm.fData.nombre;
+              ProfesionalServices.sSubirFoto(vm.image).then(function(rpta){
+                if(rpta.flag == 1){
+                  var title = 'OK';
+                  var iconClass = 'success';
+                  vm.fData.nombre_foto = rpta.datos;
+                  arrToModal.seleccion.nombre_foto = rpta.datos;
+                  vm.fotoCrop = false;
+                  vm.image = {
+                     originalImage: '',
+                     croppedImage: '',
+                  };
+
+                }else if( rpta.flag == 0 ){
+                  var title = 'Advertencia';
+                  // vm.toast.title = 'Advertencia';
+                  var iconClass = 'warning';
+                  // vm.options.iconClass = {name:'warning'}
+                }else{
+                  alert('Ocurrió un error');
+                }
+                var toast = toastr[iconClass](rpta.message, title, vm.options);
+                openedToasts.push(toast);
+              });
+            }
+            vm.cancelarFoto = function(){
+              vm.fotoCrop = false;
+              vm.image = {
+                 originalImage: '',
+                 croppedImage: '',
+              };
+            }                                   
             vm.aceptar = function () {
               vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
+              vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sEditarProfesional(vm.fData).then(function (rpta) {
                 vm.options = {
                   timeout: '3000',
@@ -521,12 +602,13 @@
         sRegistrarProfesional: sRegistrarProfesional,
         sEditarProfesional: sEditarProfesional,
         sAnularProfesional: sAnularProfesional,
+        sSubirFoto: sSubirFoto,
     });
     function sListarProfesional(pDatos) {
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "profesional/listar_profesional",
+            url :  angular.patchURLCI + "Profesional/listar_profesional",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -535,7 +617,7 @@
       var datos = pDatos || {};
       var request = $http({
             method : "post",
-            url :  angular.patchURLCI + "profesional/listar_profesional_cbo",
+            url :  angular.patchURLCI + "Profesional/listar_profesional_cbo",
             data : datos
       });
       return (request.then( handleSuccess,handleError ));
@@ -544,16 +626,24 @@
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/registrar_profesional",
-            data : datos
+            url : angular.patchURLCI + "Profesional/registrar_profesional",
+            data : datos,
+            headers: {'Content-Type': undefined},
+            transformRequest: function (data) {
+                var formData = new FormData();
+                angular.forEach(data, function (value, key) {
+                    formData.append(key, value);
+                });
+                return formData;
+            }            
       });
       return (request.then(handleSuccess,handleError));
-    }   
+    }      
     function sEditarProfesional(pDatos) {
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/editar_profesional",
+            url : angular.patchURLCI + "Profesional/editar_profesional",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
@@ -562,10 +652,18 @@
       var datos = pDatos || {};      
       var request = $http({
             method : "post",
-            url : angular.patchURLCI + "profesional/anular_profesional",
+            url : angular.patchURLCI + "Profesional/anular_profesional",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
-    }         
+    }
+    function sSubirFoto(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Profesional/subir_foto_profesional",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }             
   }
 })();

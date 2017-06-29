@@ -66,7 +66,7 @@
 	<section class="tile-body p-0">
 		<form name="formProfesional" role="form" novalidate class="form-validation">
 		    <div class="row">
-		    	<div class="form-group col-md-12">
+		    	<div class="form-group col-md-9">
 					<div class="row">
 
 			            <div class="form-group col-md-6">
@@ -115,7 +115,7 @@
 			            </div>	
 						<div class="form-group col-md-6">
 			                <label for="especialidad" class="control-label minotaur-label"> Especialidad  </label>
-			                <select class="form-control" id="especialidad" ng-model="mp.fData.idespecialidad" ng-options="item as item.descripcion for item in mp.listaEspecialidades" ng-disabled="true" > 
+			                <select class="form-control" id="especialidad" ng-model="mp.fData.especialidad" ng-options="item as item.descripcion for item in mp.listaEspecialidades" ng-disabled="true" > 
 			                </select>
 			                <div ng-messages="formProfesional.especialidad.$error" ng-if="formProfesional.especialidad.$dirty" role="alert" class="help-block text-red">
 			                 	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
@@ -143,6 +143,58 @@
 					</div>
 		    	</div>
 
+		    	<div class="form-group col-md-3" ng-if="!mp.modoEdicion">
+					<label for="nombre" class="control-label minotaur-label">Foto </label>					
+					<!-- <input type="file" name="file" file-model="mp.fData.fotoPaciente" /> -->
+			        <div class="row">
+				        <div class="col-md-12">
+						    <div class="p-10 bg-white b-a b-solid" style="height:180px">
+				              <img-crop
+				                image="mp.fData.myImage"
+				                result-image="mp.fData.myCroppedImage"
+				                result-image-size="160"
+				                area-type="{{mp.cropType}}"
+				              ></img-crop>
+				            </div>
+				        </div>
+			            <div class="col-md-12" ng-show="false">
+				            <div class="p-15 bg-white b-a b-solid inline-block">
+				              <img ng-src="{{mp.fData.myCroppedImage}}" />
+				            </div>
+			          	</div>
+			        </div>
+					<input type="file" class="filestyle" data-button-text="Cargar Foto" data-button-name="btn-primary" data-icon-name="glyphicon glyphicon-inbox" data-size="sm" data-button-before="true" data-placeholder="sin foto" id="fileInput" ng-click="mp.cargarImagen();">
+		    	</div>	
+
+			    <div class="form-group col-md-3" ng-if="mp.modoEdicion">
+			      	<h4 class="text-info f-14 col-sm-12">Foto</h4>
+				    <div class="text-center" ng-if="!mp.fotoCrop">
+				        <img ng-src="assets/images/dinamic/profesionales/{{mp.fData.nombre_foto}}" ng-click="mp.cargarImagen();" style="width: 100%">
+				    </div>
+				    <div class="row" ng-show="mp.fotoCrop">
+				        <div class="col-md-12">
+				          	<div class="p-10 bg-white b-a b-solid" style="height:180px">
+				            	<img-crop
+				              	image="mp.image.originalImage"
+				              	result-image="mp.image.croppedImage"
+				              	result-image-size="160"
+				              	area-type="{{mp.cropType}}"
+				            	></img-crop>
+				          	</div>
+				        </div>
+				        <div class="col-md-12" ng-show="false">
+				          	<div class="p-15 bg-white b-a b-solid inline-block">
+				            	<img ng-src="{{mp.image.croppedImage}}" />
+				          	</div>
+				        </div>
+				    </div>
+			      	<input type="file" class="filestyle" data-button-text="Cambiar Foto" data-button-name="btn-primary" data-icon-name="glyphicon glyphicon-inbox" data-size="sm" data-button-before="true" placeholder="{{mp.fData.nombre_foto}}" id="fileInput2" ng-click="mp.cargarImagen();" >
+
+			      	<div class="text-center mt-10" ng-show="mp.fotoCrop" >
+			        	<button class="btn btn-sm btn-danger" ng-click="mp.cancelarFoto();">Cancelar</button>
+			        	<button class="btn btn-sm btn-success" ng-click="mp.subirFoto();">Guardar Foto</button>
+			      	</div>
+			    </div>
 		    </div>
 
 		</form>
