@@ -103,7 +103,7 @@ class Profesional extends CI_Controller {
 
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
-    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/profesionales/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/profesionales/' ,$allInputs['nombre_foto']);
     	}
 
     	// INICIA EL REGISTRO
@@ -123,7 +123,7 @@ class Profesional extends CI_Controller {
     	if(!empty($allInputs['croppedImage'])){
     		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
 
-    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/profesionales/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/dinamic/profesionales/' ,$allInputs['nombre_foto']);
     		if($this->model_profesional->m_editar_foto($allInputs)){
 	    		$arrData['message'] = 'La foto se cambió correctamente';
 	    		$arrData['flag'] = 1;
