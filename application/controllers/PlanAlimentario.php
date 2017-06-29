@@ -35,11 +35,11 @@ class PlanAlimentario extends CI_Controller {
 		if($allInputs['forma']== 'dia'){
 			foreach ($allInputs['planDias'] as $key => $dia) {
 				foreach ($dia['turnos'] as $turno) {
-					if($turno['hora']['id']!=0  && $turno['minuto']['id'] != 0 && !empty($turno['indicaciones'])){
+					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
 						$unTurnoLleno = TRUE;
 					}
 
-					if($turno['hora']['id']!=0  && $turno['minuto']['id'] != 0 && count($turno['alimentos'])>0){
+					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
 						$unTurnoLlenoCompuesto = TRUE;
 					}
 				}
@@ -74,11 +74,11 @@ class PlanAlimentario extends CI_Controller {
 		$unTurnoLlenoCompuesto = FALSE;
 		if($allInputs['forma'] == 'general'){
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
-				if($turno['hora']['id']!=0  && $turno['minuto']['id'] != 0 && !empty($turno['indicaciones'])){
+				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
 					$unTurnoLleno = TRUE;
 				}
 
-				if($turno['hora']['id']!=0  && $turno['minuto']['id'] != 0 && count($turno['alimentos'])>0){
+				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
 				}
 				
@@ -118,8 +118,8 @@ class PlanAlimentario extends CI_Controller {
 			foreach ($allInputs['planDias'] as $key => $dia) {
 				foreach ($dia['turnos'] as $turno) {
 					if(
-						($allInputs['tipo'] == 'simple' && $turno['hora']['value']!=0  && $turno['minuto']['value'] != 0 && !empty($turno['indicaciones']))
-						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!=0  && $turno['minuto']['value'] != 0 && count($turno['alimentos'])>0)
+						($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
+						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count($turno['alimentos'])>0)
 					){
 						if($turno['tiempo']['value']=='pm'){
 							$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
@@ -162,7 +162,7 @@ class PlanAlimentario extends CI_Controller {
 		if($allInputs['forma'] == 'general'){
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
 				if(
-					($allInputs['tipo'] == 'simple' && $turno['hora']['value']!=0  && $turno['minuto']['value'] != 0 && !empty($turno['indicaciones']))
+					($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
 					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count($turno['alimentos'])>0)
 				){
 					if($turno['tiempo']['value']=='pm'){
@@ -247,83 +247,7 @@ class PlanAlimentario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';		
-		$arrayPlan = $this->genera_estructura_plan($allInputs);
-		/*foreach ($lista as $key => $row) {
-			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
-			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
-
-			if(! empty($row['hora'])){
-				$hora_string = darFormatoHora($row['hora']);
-				$array = explode(" ", $hora_string);				
-				$tiempo_str = $array[1];
-				
-				$array = explode(':', $array[0]);				
-				$hora_str = $array[0];
-				$min_str = $array[1];
-				
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = $tiempo_str;
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = $hora_str;
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = $min_str;
-			}else{
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = 'am';
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = 0;
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = 0;
-			}
-
-			$alimento = array(
-				'idatenciondietaalim' => $row['idatenciondietaalim'],
-				'cantidad' => $row['valor'],
-				'idalimento' => $row['idalimento'],
-				'nombre' => $row['nombre'],
-				'medida_casera' => $row['medida_casera'],
-				'nombre_compuesto' => $row['nombre'] . ' - '. strtoupper($row['medida_casera']),
-				'calorias' => (float)$row['calorias'],
-				'proteinas' => (float)$row['proteinas'],
-				'grasas' => (float)$row['grasas'],
-				'carbohidratos' => (float)$row['carbohidratos'],
-				'gramo' => (float)$row['gramo'],
-				'ceniza' => (float)$row['ceniza'],
-				'calcio' => (float)$row['calcio'],
-				'fosforo' => (float)$row['fosforo'],
-				'zinc' => (float)$row['zinc'],
-				'hierro' => (float)$row['hierro'],
-				'fibra' => (float)$row['fibra'],				
-			);
-
-			$alternativo = array(
-				'idatenciondietaalimalter' => $row['idatenciondietaalimalter'],
-				'idatenciondietaalim' => $row['idatenciondietaalim'],
-				'cantidad' => $row['valor'],
-				'idalimento' => $row['idalimento_alter'],
-				'nombre' => $row['nombre_alter'],
-				'medida_casera' => $row['medida_casera_alter'],
-				'nombre_compuesto' => $row['nombre_alter'] . ' - '. strtoupper($row['medida_casera_alter']),
-				'calorias' => (float)$row['calorias_alter'],
-				'proteinas' => (float)$row['proteinas_alter'],
-				'grasas' => (float)$row['grasas_alter'],
-				'carbohidratos' => (float)$row['carbohidratos_alter'],
-				'gramo' => (float)$row['gramo_alter'],
-				'ceniza' => (float)$row['ceniza_alter'],
-				'calcio' => (float)$row['calcio_alter'],
-				'fosforo' => (float)$row['fosforo_alter'],
-				'zinc' => (float)$row['zinc_alter'],
-				'hierro' => (float)$row['hierro_alter'],
-				'fibra' => (float)$row['fibra_alter'],				
-			);
-
-			if(!empty($row['idatenciondietaalimalter'])){
-				$alimento['alternativos'][$row['idatenciondietaalimalter']] = $alternativo;
-			}			
-
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'] = array();
-			if(!empty($row['idatenciondietaalim'])){
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']] = $alimento;
-			}			
-		}*/		
+		$arrayPlan = $this->genera_estructura_plan($allInputs);	
 		$arrData['datos'] = $arrayPlan;
 		$arrData['flag'] =1;
 		$arrData['message'] = 'Ha sido cargado el plan alimentario.';
@@ -362,8 +286,8 @@ class PlanAlimentario extends CI_Controller {
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = $min_str;
 			}else{
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = 'am';
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = 0;
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = 0;
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = '--';
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = '--';
 			}
 
 			if(!empty($row['idatenciondietaalim'])){
@@ -424,7 +348,7 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));		
 	}
 
-	private function headerPlan($allInputs){
+	private function headerPlan($allInputs, $consulta){
 		$this->pdf->Image('assets/images/dinamic/logo.png',8,8,50);
 		$this->pdf->SetFont('Arial','',14);
 	    
@@ -433,6 +357,12 @@ class PlanAlimentario extends CI_Controller {
     	
     	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
 	    $this->pdf->Cell(0,5,'Fecha: '.$fecha,0,1,'R');
+
+	    if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
+	    	$this->pdf->SetFont('Arial','B',14);
+	    	$this->pdf->Cell(0,5,'DIETA SEMANAL',0,1,'C');
+	    }
+
 	    $this->pdf->Ln(10);
 	}
 
@@ -473,21 +403,21 @@ class PlanAlimentario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;    	
+
+    	$arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
+		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+
     	$this->pdf = new Fpdfext();
 		$this->pdf->AddPage();
     	$this->pdf->SetMargins(0, 10, 10);  
     	$this->pdf->SetAutoPageBreak(false);
 
     	//header
-    	$this->headerPlan($allInputs);			    
+    	$this->headerPlan($allInputs, $consulta);			    
 
 	    //body 
-	    $arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
-		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
-		
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
 			$plan = $arrayPlan[1];
-
 			foreach ($plan['turnos'] as $key => $turno) {
 				if($turno['id'] % 2 != 0){
 					$this->pdf->SetTextColor(255,255,255);
@@ -565,7 +495,11 @@ class PlanAlimentario extends CI_Controller {
 			    	$this->pdf->Ln(5);
 				}
 			}
-		}	    
+		}	
+
+		if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
+
+		}    
 
 		//footer
     	$this->footerPlan($consulta);

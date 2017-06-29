@@ -9,7 +9,7 @@
   function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading) { 
     var vm = this;
     vm.horas = [
-      {id:0, value:'--'},
+      {id: '--', value:'--'},
       {id:'01', value:'01'},
       {id:'02', value:'02'},
       {id:'03', value:'03'},
@@ -25,7 +25,7 @@
     ];
 
     vm.minutos = [
-      {id:0, value:'--'},
+      {id: '--', value:'--'},
       {id:'00', value:'00'},
       {id:'15', value:'15'},
       {id:'30', value:'30'},
@@ -45,7 +45,8 @@
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
       //console.log(callbackCitas);
-      console.log('vm.origen',vm.origen);
+      //console.log('vm.origen',vm.origen);
+      console.log('consulta', consulta);
       if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
         vm.tipoVista = 'edit';
       }      

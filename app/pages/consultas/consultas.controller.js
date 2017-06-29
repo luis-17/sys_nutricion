@@ -213,10 +213,12 @@
         if(rpta.flag == 1){
           var title = 'OK';
           var iconClass = 'success';
+          vm.fData.idatencion = rpta.idatencion;
+          console.log('registro atencion', vm.fData);
           /*$scope.changeViewConsulta(false);*/
           vm.callback();
           vm.changePestania(3);
-          vm.fData.idatencion = rpta.idatencion;
+
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
