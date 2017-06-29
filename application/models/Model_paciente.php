@@ -35,6 +35,7 @@ class Model_paciente extends CI_Model {
 	public function m_count_pacientes($paramPaginate=FALSE){
 		$this->db->select('count(*) AS contador');
 		$this->db->from('cliente cl');
+		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');
 		$this->db->where('estado_cl', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
