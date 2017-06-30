@@ -880,6 +880,26 @@ class PlanAlimentario extends CI_Controller {
 		    			
 		    			$this->pdf->MultiCell($anchoBloque,4,$text,0,'L',FALSE);
 		    		}
+
+		    		if($consulta['tipo_dieta'] == 'CD'){
+		    			$text = '';
+		    			if(!empty($turno['alimentos'])){			    			
+				    		foreach ($turno['alimentos'] as $ind => $alm) {
+				    			$text .= $alm['cantidad'] . ' ' . $alm['medida_casera'] . ' ' . $alm['nombre'];
+				    			if(!empty($alm['alternativos'])){
+				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
+				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
+				    				}
+				    			}
+				    			$text .= ' + ';				    			
+				    		}
+			    		}
+
+			    		$result = (strlen($text)>0) ? substr($text,0,-3) : '' ;
+		    			$text_final = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion'] .': ' . $result)));
+		    			
+		    			$this->pdf->MultiCell($anchoBloque,4,$text_final,0,'L',FALSE);
+		    		}
 		    		$this->pdf->Ln(3);
 		    		$colorTurno++;
 		    	}
