@@ -9,7 +9,7 @@
   function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading) { 
     var vm = this;
     vm.horas = [
-      {id:0, value:'--'},
+      {id: '--', value:'--'},
       {id:'01', value:'01'},
       {id:'02', value:'02'},
       {id:'03', value:'03'},
@@ -25,7 +25,7 @@
     ];
 
     vm.minutos = [
-      {id:0, value:'--'},
+      {id: '--', value:'--'},
       {id:'00', value:'00'},
       {id:'15', value:'15'},
       {id:'30', value:'30'},
@@ -45,7 +45,8 @@
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
       //console.log(callbackCitas);
-      console.log('vm.origen',vm.origen);
+      //console.log('vm.origen',vm.origen);
+      console.log('consulta', consulta);
       if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
         vm.tipoVista = 'edit';
       }      
@@ -142,9 +143,13 @@
       }
     }
 
-    vm.updateEstructura = function(){
-      if(vm.tipoVista == 'edit'){
+    vm.updateEstructura = function(load){
         //console.log('paso por aqui...');
+      if(vm.tipoVista == 'edit'){
+        if(load){
+          pageLoading.start('Recargando plan alimentario...');
+        }
+        
         if(vm.formaPlan == 'general' && !vm.primeraCargaGeneral){
           vm.primeraCargaGeneral = true;
           angular.forEach(vm.dia.turnos, function(val, ind) {
@@ -181,6 +186,25 @@
             };  
 
             if(vm.tipoPlan == 'compuesto'){
+              if(!vm.dia.turnos[ind].alimentos){
+                vm.dia.turnos[ind].alimentos = [];
+              }else{
+                vm.dia.turnos[ind].alimentos = Object.values(vm.dia.turnos[ind].alimentos); 
+              }  
+
+              angular.forEach(vm.dia.turnos[ind].alimentos, function(alimento, indAli){                               
+                if(!vm.dia.turnos[ind].alimentos[indAli].alternativos){ 
+                  vm.dia.turnos[ind].alimentos[indAli].alternativos = [
+                                                          {nombre_compuesto:'', idalimento:0, cantidad:null},
+                                                          {nombre_compuesto:'', idalimento:0, cantidad:null}
+                                                          ];
+                }else{
+                  vm.dia.turnos[ind].alimentos[indAli].alternativos = Object.values(vm.dia.turnos[ind].alimentos[indAli].alternativos); 
+                  if(vm.dia.turnos[ind].alimentos[indAli].alternativos.length == 1){
+                    vm.dia.turnos[ind].alimentos[indAli].alternativos.push({nombre_compuesto:'', idalimento:0, cantidad:null});
+                  }                  
+                }
+              });
               vm.calcularValoresTurno(null, ind);
             }            
           });
@@ -218,14 +242,36 @@
                 fosforo: 0,
                 zinc: 0,
                 hierro: 0,
-              };  
+              };              
 
               if(vm.tipoPlan == 'compuesto'){
+                if(!vm.dias[key].turnos[ind].alimentos){
+                  vm.dias[key].turnos[ind].alimentos = [];
+                }else{
+                  vm.dias[key].turnos[ind].alimentos = Object.values(vm.dias[key].turnos[ind].alimentos); 
+                }  
+
+                angular.forEach(vm.dias[key].turnos[ind].alimentos, function(alimento, indAli){                               
+                  if(!vm.dias[key].turnos[ind].alimentos[indAli].alternativos){ 
+                    vm.dias[key].turnos[ind].alimentos[indAli].alternativos = [
+                                                            {nombre_compuesto:'', idalimento:0, cantidad:null},
+                                                            {nombre_compuesto:'', idalimento:0, cantidad:null}
+                                                            ];
+                  }else{
+                    vm.dias[key].turnos[ind].alimentos[indAli].alternativos = Object.values(vm.dias[key].turnos[ind].alimentos[indAli].alternativos); 
+                    if(vm.dias[key].turnos[ind].alimentos[indAli].alternativos.length == 1){
+                      vm.dias[key].turnos[ind].alimentos[indAli].alternativos.push({nombre_compuesto:'', idalimento:0, cantidad:null});
+                    }                  
+                  }
+                });
                 vm.calcularValoresTurno(key, ind);
               }            
             });
           });
         }
+        if(load){
+          pageLoading.stop();
+        }        
       }
     }
 
