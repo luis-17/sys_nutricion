@@ -14,7 +14,7 @@
               <th style="padding-top: 2px;">Datos de consulta</th>
               <th style="text-align: center;padding-top: 2px;" ng-repeat="item in pac.historial.listaCabecera">
                 <a href="" tooltip-placement="left" uib-tooltip="Editar" ng-click="pac.btnEditarConsulta(item); changeViewPaciente(false);" style="padding: 5px;"><i class="fa fa-edit"></i></a>
-                <a href="" tooltip-placement="bottom" uib-tooltip="PDF" style="padding: 5px;"><i class="fa fa-file-pdf-o"></i></a>
+                <a href="" tooltip-placement="bottom" uib-tooltip="PDF" ng-click="pac.btnImprimirConsulta(item);" style="padding: 5px;"><i class="fa fa-file-pdf-o"></i></a>
                 <a href="" tooltip-placement="right" uib-tooltip="Anular" ng-click="pac.btnAnularConsulta(item);" style="padding: 5px;"><i class="fa fa-trash-o"></i></a>
               </th>
             </tr>

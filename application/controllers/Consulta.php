@@ -8,6 +8,7 @@ class Consulta extends CI_Controller {
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper','otros_helper'));
         $this->load->model(array('model_consulta', 'model_cita', 'model_paciente'));
+        $this->load->library('Fpdfext');
     }
 
 	public function registrar_consulta(){
@@ -225,6 +226,35 @@ class Consulta extends CI_Controller {
 		}
 		$arrData['cabecera'] = $arrCabecera;
 		$arrData['datos'] = $arrListado;
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function Imprimir_consulta()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData = array();
+		$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+    	// DATOS
+    	$consulta = $this->model_consulta->m_consultar_atencion($allInputs['resultado']['idatencion']);
+    	//var_dump($consulta); exit();
+
+    	$this->pdf = new Fpdfext();
+    	$this->pdf->AddPage('P','A4');
+		$this->pdf->SetFont('Arial','B',16);
+
+		$this->pdf->Cell(0,11,'',0,15);
+		$this->pdf->Cell(0,7,utf8_decode('CITA Nº ' . $consulta['idcita']),0,7,'R');
+
+		$timestamp = date('YmdHis');
+		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+
+		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+	    // $arrData = array(
+	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
+	    // );
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

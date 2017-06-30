@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document, alertify,toastr,pageLoading,
+  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document, alertify,toastr,pageLoading,ModalReporteFactory,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
@@ -159,6 +159,8 @@
         { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80,  sort: { direction: uiGridConstants.DESC} },
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS', minWidth:100 },
+        { field: 'empresa', name:'empresa', displayName: 'EMPRESA', minWidth:100 },
+
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
           cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row.entity);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
@@ -197,13 +199,13 @@
             paginationOptions.sort = sortColumns[0].sort.direction;
             paginationOptions.sortName = sortColumns[0].name;
           }
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(false);
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
           paginationOptions.pageSize = pageSize;
           paginationOptions.firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(false);
         });
         vm.gridApi.core.on.filterChanged( $scope, function(grid, searchColumns) {
           var grid = this.grid;
@@ -212,15 +214,19 @@
             'cl.idcliente' : grid.columns[1].filters[0].term,
             'nombre' : grid.columns[2].filters[0].term,
             'apellidos' : grid.columns[3].filters[0].term,
+            'nombre_comercial' : grid.columns[4].filters[0].term,
           }
           // console.log('columnas',paginationOptions.searchColumn);
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(false);
         });
       }
 
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
-        pageLoading.start('Cargando datos...');
+      var carga = false;
+      vm.getPaginationServerSide = function(carga=false) {
+        if(carga){
+          pageLoading.start('Cargando datos...');
+        }
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -228,10 +234,12 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
-          pageLoading.stop();
+          if(carga){
+            pageLoading.stop();
+          }
         });
       }
-      vm.getPaginationServerSide();
+      vm.getPaginationServerSide(true);
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
@@ -427,7 +435,7 @@
                 };
                 if(rpta.flag == 1){
                   $uibModalInstance.close(vm.fData);
-                  vm.getPaginationServerSide();
+                  vm.getPaginationServerSide(true);
                   var title = 'OK';
                   var iconClass = 'success';
                 }else if( rpta.flag == 0 ){
@@ -742,6 +750,34 @@
              croppedImage: '',
           };
         }
+        vm.eliminarFoto = function(){
+          alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
+            ev.preventDefault();
+            PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
+              if(rpta.flag == 1){
+                var title = 'OK';
+                var iconClass = 'success';
+                vm.ficha.nombre_foto = rpta.datos;
+                vm.fotoCrop = false;
+                vm.image = {
+                   originalImage: '',
+                   croppedImage: '',
+                };
+
+              }else if( rpta.flag == 0 ){
+                var title = 'Advertencia';
+                // vm.toast.title = 'Advertencia';
+                var iconClass = 'warning';
+                // vm.options.iconClass = {name:'warning'}
+              }else{
+                alert('Ocurrió un error');
+              }
+              var toast = toastr[iconClass](rpta.message, title, vm.options);
+              openedToasts.push(toast);
+            });
+          });
+
+        }
       vm.cargarAntecedentes = function(row){
         PacienteServices.sListarAntecedentesPaciente(row).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
@@ -989,7 +1025,7 @@
           vm.previo0 = true;
           vm.previo1 = false;
           vm.previo2 = false;
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(true);
         }
         vm.verPrevio = function(index){
           // console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
@@ -1022,7 +1058,7 @@
                 preventOpenDuplicates: false
               };
               if(rpta.flag == 1){
-                vm.getPaginationServerSide();
+                vm.getPaginationServerSide(true);
                 var title = 'OK';
                 var iconClass = 'success';
               }else if( rpta.flag == 0 ){
@@ -1046,6 +1082,20 @@
               $window.open(rpta.urlTempPDF, '_blank');
             }
           });
+        }
+        vm.btnImprimirConsulta = function(item){
+          var arrParams = {
+              titulo: 'CONSULTA',
+              datos:{
+                resultado: item,
+                salida: 'pdf',
+                tituloAbv: 'Consulta',
+                titulo: 'Consulta'
+              },
+              metodo: 'php',
+              url: angular.patchURLCI + "Consulta/Imprimir_consulta"
+            }
+            ModalReporteFactory.getPopupReporte(arrParams);
         }
       if($scope.paciente){
         var row = {
@@ -1120,6 +1170,7 @@
         sRegistrarAntecedentePaciente: sRegistrarAntecedentePaciente,
         sRegistrarHabitoPaciente: sRegistrarHabitoPaciente,
         sSubirFoto: sSubirFoto,
+        sEliminarFoto: sEliminarFoto,
         slistarEvolucion: slistarEvolucion,
         sListarPlanesPaciente: sListarPlanesPaciente,
         sImprimirFicha: sImprimirFicha,
@@ -1249,6 +1300,14 @@
       var request = $http({
             method : "post",
             url : angular.patchURLCI+"Paciente/subir_foto_paciente",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }
+    function sEliminarFoto(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Paciente/eliminar_foto_paciente",
             data : datos
       });
       return (request.then(handleSuccess,handleError));
