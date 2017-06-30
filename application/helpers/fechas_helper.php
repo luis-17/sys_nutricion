@@ -566,4 +566,13 @@
 	        return $s_referencia>=$s_inicio || $s_referencia<=$s_fin;
 	    }
 	}
+
+	function formatoSoloMes($fechaSQL){
+		$longMonthArray = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
+		if ($fechaSQL == 0) return "";
+		$fechaUT = strtotime($fechaSQL); // obtengo una fecha UNIX ( integer )
+		$m	= (int)date('m', $fechaUT);
+		$month = $longMonthArray[$m];
+		return $month; // Jue 4 Jun 2016 05:00 pm
+	}
 ?>

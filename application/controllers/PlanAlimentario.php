@@ -678,8 +678,8 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));		
 	}
 
-	private function headerPlan($allInputs, $consulta){
-		$this->pdf->Image('assets/images/dinamic/logo.png',8,8,50);
+	private function headerPlan($allInputs, $consulta, $configuracion){
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
 		$this->pdf->SetFont('Arial','',14);
 	    
 	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower($allInputs['cita']['cliente']['paciente'])),0,1,'R');
@@ -732,8 +732,10 @@ class PlanAlimentario extends CI_Controller {
 	public function generar_pdf_plan(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
-    	$arrData['flag'] = 1;    	
+    	$arrData['flag'] = 1;  
 
+    	$configuracion = GetConfiguracion();  	
+		
     	$arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
 
@@ -743,7 +745,7 @@ class PlanAlimentario extends CI_Controller {
     	$this->pdf->SetAutoPageBreak(false);
 
     	//header
-    	$this->headerPlan($allInputs, $consulta);			    
+    	$this->headerPlan($allInputs, $consulta, $configuracion);			    
 
 	    //body 
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
@@ -825,14 +827,124 @@ class PlanAlimentario extends CI_Controller {
 			    	$this->pdf->Ln(5);
 				}
 			}
+
+			//footer
+    		$this->footerPlan($consulta);
 		}	
 
 		if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
+			$anchoBloque =  $this->pdf->GetPageWidth() / 3;
+			$altoBloque =  ($this->pdf->GetPageHeight() - (25+21)) / 3;
+			$yInicial = $this->pdf->GetY();
+			$this->pdf->SetLeftMargin(0); 
+			$this->pdf->SetRightMargin(0); 
+			$posX = 0;
+			foreach ($arrayPlan as $indDia => $dia) {
+				$this->pdf->SetTextColor(255,255,255);
+				if($dia['id']==1 || $dia['id']==2 || $dia['id']==3){					
+					$this->pdf->SetFillColor(0,156,222);
+					$posY = $yInicial;
+					$this->pdf->SetXY($posX, $posY);																	    		
+				}
 
-		}    
+				if($dia['id']==4 || $dia['id']==5 || $dia['id']==6){
+					$this->pdf->SetFillColor(106,220,0);
+					$posY = $yInicial + $altoBloque;
+					$this->pdf->SetXY($posX, $posY);	
+				}
+				
+				if($dia['id']==7){
+					$this->pdf->SetFillColor(255,0,100);
+					$posY = $yInicial + ($altoBloque*2);
+					$this->pdf->SetXY($posX, $posY);
+				}
+				$this->pdf->SetFont('Arial','B',15);
+								
+		    	$this->pdf->Cell($anchoBloque,7,ucwords(strtolower_total(utf8_decode($dia['nombre_dia']))),0,1,'C',true);
+		    	$this->pdf->Ln(3);
+		    	$this->pdf->SetX($posX+3);		    				
 
-		//footer
-    	$this->footerPlan($consulta);
+		    	$this->pdf->SetLeftMargin($posX + 3); 
+				$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);	
+				$this->pdf->SetFont('Arial','',10);
+				$colorTurno = 0;
+		    	foreach ($dia['turnos'] as $indTurno => $turno) {
+		    		if($colorTurno % 2 == 0){
+		    			$this->pdf->SetTextColor(0,0,0);
+		    		}else{
+		    			$this->pdf->SetTextColor(83,83,83);
+		    		}
+		    			
+		    		if($consulta['tipo_dieta'] == 'SD'){
+		    			$text = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion']))) .': ' . $turno['indicaciones'];
+		    			
+		    			$this->pdf->MultiCell($anchoBloque,4,$text,0,'L',FALSE);
+		    		}
+		    		$this->pdf->Ln(3);
+		    		$colorTurno++;
+		    	}
+
+		    	$posX += $anchoBloque;
+		    	if($dia['id'] % 3 == 0){
+		    		$posX = 0;
+		    	}
+
+		    	if($dia['id']==7){
+					/*recomendaciones*/
+					$this->pdf->SetTextColor(255,255,255);
+					$this->pdf->SetXY($posX,$yInicial + ($altoBloque*2));
+					$this->pdf->SetFont('Arial','I',13);
+					$this->pdf->Cell($anchoBloque,7,'* Recomendaciones',0,1,'C',true);
+					$this->pdf->Ln(5);
+					$this->pdf->SetX($posX);
+					$this->pdf->SetLeftMargin($posX + 3); 
+					$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);
+					$this->pdf->SetTextColor(0,0,0);
+					$indicaciones = ucfirst(strtolower_total(utf8_decode($consulta['indicaciones_dieta'])));
+					$this->pdf->MultiCell($anchoBloque,4,$indicaciones,0,'L',FALSE);
+
+					$this->pdf->SetY(-20);
+					$this->pdf->SetFont('Arial','',14);
+					$profesional = 'Lic. ' . ucwords(strtolower_total(utf8_decode($consulta['nombre'] . ' ' . $consulta['apellidos'] )));
+					$this->pdf->MultiCell($anchoBloque,7,$profesional,0,'L',FALSE);
+					$this->pdf->Cell($anchoBloque,7,'CNP: ' . $consulta['num_colegiatura'],0,1,'L',FALSE);
+
+					/*otros datos*/
+					$posX += $anchoBloque;
+					$this->pdf->SetXY($posX,$yInicial + ($altoBloque*2));
+					$this->pdf->Cell($anchoBloque,7,'',0,1,'C',true);	
+					$this->pdf->Ln(5);
+					$this->pdf->SetX($posX);
+					$this->pdf->SetTextColor(0,0,0);
+					$this->pdf->SetFont('Arial','',20);
+					$this->pdf->Cell($anchoBloque, 12, utf8_decode('PRÓXIMA CITA:'), 0, 1, 'C', false);	
+					$this->pdf->SetX($posX);
+					$this->pdf->Image('assets/images/icons/calendario.png',$posX+10,null,$anchoBloque-20);
+
+					if(!empty($consulta['prox_cita'])){						
+						$this->pdf->SetXY($posX, $this->pdf->GetY() - 28);
+						$this->pdf->SetFont('Arial','B',55);
+						$dia_fecha = date('d', strtotime($consulta['prox_cita']));
+						$this->pdf->Cell($anchoBloque, 12, $dia_fecha, 0, 1, 'C', false);
+						$this->pdf->SetX($posX);
+						$this->pdf->SetFont('Arial','',16);
+						$this->pdf->Cell($anchoBloque, 12, formatoSoloMes($consulta['prox_cita']), 0, 1, 'C', false);				
+					}else{
+						$this->pdf->SetXY($posX, $this->pdf->GetY() - 25);
+						$this->pdf->SetFont('Arial','B',20);
+						$this->pdf->Cell($anchoBloque, 12, 'NO TIENE', 0, 1, 'C', false);
+					}
+
+					$this->pdf->SetFont('Arial','',13);
+					$this->pdf->SetXY($posX,-20);	
+					$this->pdf->Cell($anchoBloque,6,$configuracion['pagina_web'],0,1,'C',FALSE);
+					$this->pdf->SetX($posX);
+					$this->pdf->Cell($anchoBloque,6,'cel.: ' . $configuracion['celular'],0,1,'C',FALSE);
+					$this->pdf->SetX($posX);
+					$this->pdf->Cell($anchoBloque,6,$configuracion['correo'],0,1,'C',FALSE);
+				}
+			}
+		}	
 
     	//salida
 		$timestamp = date('YmdHis');
