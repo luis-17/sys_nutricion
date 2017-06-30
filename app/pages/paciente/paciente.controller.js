@@ -293,106 +293,40 @@
               }else{
                 vm.corp = false;
               }
-            }
-            // DATEPICKER
-              vm.today = function() {
-                vm.fData.fecha_nacimiento = new Date();
-              };
-              //vm.today();
+            } 
 
-              vm.clear = function() {
-                vm.fData.fecha_nacimiento = null;
-              };
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var afterTomorrow = new Date();
+            afterTomorrow.setDate(tomorrow.getDate() + 1);
+            vm.events = [
+              {
+                date: tomorrow,
+                status: 'full'
+              },
+              {
+                date: afterTomorrow,
+                status: 'partially'
+              }
+            ];
 
-              vm.inlineOptions = {
-                customClass: getDayClass,
-                minDate: new Date(),
-                showWeeks: false
-              };
+            function getDayClass(data) {
+              var date = data.date,
+                mode = data.mode;
+              if (mode === 'day') {
+                var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-              vm.dateOptions = {
-                // dateDisabled: disabled,
-                dateDisabled: false,
-                // formatYear: 'y',
-                // showDropdowns: true,
-                // changeMonth: true,
-                // changeYear: true,
-                maxDate: new Date(),
-                minDate: new Date(),
-                startingDay: 1,
-                showWeeks: false
-              };
+                for (var i = 0; i < vm.events.length; i++) {
+                  var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
 
-              // Disable weekend selection
-              // function disabled(data) {
-              //   var date = data.date,
-              //     mode = data.mode;
-              //   return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-              // }
-
-              vm.toggleMin = function() {
-                vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
-                vm.dateOptions.minDate = vm.inlineOptions.minDate;
-              };
-
-              vm.toggleMin();
-
-              vm.open1 = function() {
-                vm.popup1.opened = true;
-              };
-
-              vm.open2 = function() {
-                vm.popup2.opened = true;
-              };
-
-              vm.setDate = function(year, month, day) {
-                vm.fData.fecha_nacimiento = new Date(year, month, day);
-              };
-
-              vm.formats = ['dd-MM-yyyy','dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-              vm.format = vm.formats[0];
-              vm.altInputFormats = ['d!/M!/yyyy'];
-
-              vm.popup1 = {
-                opened: false
-              };
-
-              vm.popup2 = {
-                opened: false
-              };
-
-              var tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              var afterTomorrow = new Date();
-              afterTomorrow.setDate(tomorrow.getDate() + 1);
-              vm.events = [
-                {
-                  date: tomorrow,
-                  status: 'full'
-                },
-                {
-                  date: afterTomorrow,
-                  status: 'partially'
-                }
-              ];
-
-              function getDayClass(data) {
-                var date = data.date,
-                  mode = data.mode;
-                if (mode === 'day') {
-                  var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-                  for (var i = 0; i < vm.events.length; i++) {
-                    var currentDay = new Date(vm.events[i].date).setHours(0,0,0,0);
-
-                    if (dayToCheck === currentDay) {
-                      return vm.events[i].status;
-                    }
+                  if (dayToCheck === currentDay) {
+                    return vm.events[i].status;
                   }
                 }
-
-                return '';
               }
+
+              return '';
+            }
             // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
             vm.cargarImagen = function(){
               vm.fData.myImage='';
