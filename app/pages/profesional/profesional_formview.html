@@ -57,7 +57,6 @@
 		<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="us.cancel()"><i class="fa fa-arrow-left"></i> Cancelar</button>
 		<button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formUsuario.$invalid" ng-click="us.aceptar()"><i class="fa fa-arrow-right"></i> Guardar</button>		
 	</div>
-	
 </script>
 <div class="modal-header">
   <h4 class="modal-title">{{mp.modalTitle}}</h4>
@@ -89,16 +88,12 @@
 					<div class="row">
 			            <div class="form-group col-md-6">
 			              	<label for="fechanacimiento" class="control-label minotaur-label">Fecha Nacimiento <small class="text-red">(*)</small></label>
-			              	<div class="input-group">
-			                  <input type="text" class="form-control" uib-datepicker-popup="{{mp.format}}" ng-model="mp.fData.fecha_nacimiento" is-open="mp.popup1.opened" datepicker-options="mp.dateOptions" ng-required="true" close-text="Cerrar" />
-			                  <span class="input-group-btn">
-			                      <button type="button" class="btn btn-default" ng-click="mp.open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-			                    </span>
-			                </div>
+			              	<input type="text" class="form-control  text-center" id="fecha_nac" ng-model="mp.fData.fecha_nacimiento" 
+			              		input-mask mask-options="{alias: 'date'}" ng-pattern="pac.pFecha" placeholder="dd/mm/yyyy"> 
 			            </div>
 			            <div class="form-group col-md-6">
 			              	<label for="correo" class="control-label minotaur-label">Correo </label>
-			              	<input type="text" name="correo" id="correo" class="form-control" ng-model="mp.fData.correo" placeholder="Registra correo" >
+			              	<input type="email" name="correo" id="correo" class="form-control" ng-model="mp.fData.correo" placeholder="Registra correo" >
 			              	<div ng-messages="formProfesional.correo.$error" ng-if="formProfesional.correo.$dirty" role="alert" class="help-block text-red">
 			                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 			              	</div>
@@ -113,7 +108,7 @@
 			                	<div ng-messages-include="app/components/templates/messages_tmpl.html"></div>
 			              	</div>
 			            </div>	
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-6" style="display:none;">
 			                <label for="especialidad" class="control-label minotaur-label"> Especialidad  </label>
 			                <select class="form-control" id="especialidad" ng-model="mp.fData.especialidad" ng-options="item as item.descripcion for item in mp.listaEspecialidades" ng-disabled="true" > 
 			                </select>
@@ -127,7 +122,7 @@
 			              	<label for="usuario" class="control-label minotaur-label">Usuario <small class="text-red">(*)</small> </label>
 			              	<div class="input-group">
 			                  <!--<input type="text" class="form-control" ng-model="mp.fData.usuario" placeholder="usuario" required />-->
-			                  <input type="text" ng-model="mp.fData.usuario" class="form-control " autocomplete="off"
+			                  <input type="text" ng-model="mp.fData.usuario" class="form-control " autocomplete="off" ng-disabled="true"
                              	  placeholder="Digite el usuario ..." 
                                   typeahead-loading="loadingLocations" 
                                   uib-typeahead="item as item.username for item in mp.getUsuarioAutocomplete($viewValue)" 

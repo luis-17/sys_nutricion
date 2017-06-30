@@ -19,28 +19,4 @@
       return $http.post(arrParams.url, arrParams.datos).then(handleSuccess, handleError('Recurso no encontrado'));
     } 
   }
-  // function rootServices($http, $q) {
-  //   return({
-  //       sLogoutSessionCI: sLogoutSessionCI,
-  //       sGetSessionCI: sGetSessionCI,
-  //   });
-  //   function sLogoutSessionCI(pDatos) {
-  //     var datos = pDatos || {};
-  //     var request = $http({
-  //           method : "post",
-  //           url :  angular.patchURLCI + "Acceso/logoutSessionCI",
-  //           data : datos
-  //     });
-  //     return (request.then( handleSuccess,handleError ));
-  //   }
-  //   function sGetSessionCI(pDatos) {
-  //     var datos = pDatos || {};
-  //     var request = $http({
-  //           method : "post",
-  //           url :  angular.patchURLCI + "Acceso/getSessionCI",
-  //           data : datos
-  //     });
-  //     return (request.then( handleSuccess,handleError ));
-  //   }
-  // }
 })();

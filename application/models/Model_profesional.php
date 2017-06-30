@@ -7,10 +7,12 @@ class Model_profesional extends CI_Model {
  	//CARGAR PERFIL
 	public function m_cargar_perfil($idusuario){ 
 		$this->db->select('pro.idprofesional, pro.idusuario, pro.idespecialidad, pro.nombre, pro.apellidos, pro.correo, 
-			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto',FALSE);
+			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto, us.username, us.idusuario, gr.idgrupo, gr.nombre_gr, gr.key_grupo',FALSE);
 		$this->db->select('esp.descripcion_es as especialidad',FALSE);
 		$this->db->from('profesional pro');
 		$this->db->join('especialidad esp', 'esp.idespecialidad = pro.idespecialidad');
+		$this->db->join('usuario us', 'pro.idusuario = us.idusuario');
+		$this->db->join('grupo gr', 'us.idgrupo = gr.idgrupo');
 		$this->db->where('pro.idusuario', $idusuario);
 		$this->db->where('pro.estado_pf', 1);
 		$this->db->limit(1);

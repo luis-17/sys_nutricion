@@ -197,13 +197,13 @@
             paginationOptions.sort = sortColumns[0].sort.direction;
             paginationOptions.sortName = sortColumns[0].name;
           }
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(true);
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
           paginationOptions.pageSize = pageSize;
           paginationOptions.firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
-          vm.getPaginationServerSide();
+          vm.getPaginationServerSide(true);
         });
         vm.gridApi.core.on.filterChanged( $scope, function(grid, searchColumns) {
           var grid = this.grid;
@@ -218,9 +218,13 @@
         });
       }
 
-      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
-      vm.getPaginationServerSide = function() {
-        pageLoading.start('Cargando datos...');
+      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name; 
+
+      vm.getPaginationServerSide = function(loader) { 
+        if(loader){
+          pageLoading.start('Cargando datos...');
+        }
+        
         vm.datosGrid = {
           paginate : paginationOptions
         };
@@ -228,10 +232,12 @@
           vm.gridOptions.data = rpta.datos;
           vm.gridOptions.totalItems = rpta.paginate.totalRows;
           vm.mySelectionGrid = [];
-          pageLoading.stop();
+          if(loader){
+            pageLoading.stop();
+          }
         });
       }
-      vm.getPaginationServerSide();
+      vm.getPaginationServerSide(true);
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
@@ -246,7 +252,7 @@
             vm.fData = {};
             vm.modoEdicion = false;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-            vm.modalTitle = 'Registro de pacientes';
+            vm.modalTitle = 'Registro de Pacientes';
             // vm.activeStep = 0;
             vm.corp = false; // solo para tipo de cliente = corporativo sera true
             vm.fotoCrop = false;
