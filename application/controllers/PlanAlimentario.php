@@ -145,7 +145,6 @@ class PlanAlimentario extends CI_Controller {
 								foreach ($turno['alimentos'] as $alimento) {
 									$datos = array(
 										'idatenciondietaturno' => $idatenciondietaturno,
-										'iddia' => $dia['id'],
 										'idalimento' => $alimento['idalimento'],
 										'valor' => $alimento['cantidad'],
 									);
@@ -185,7 +184,6 @@ class PlanAlimentario extends CI_Controller {
 						if($allInputs['tipo'] == 'compuesto'){
 							$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
 							//inserto detalle de alimentos
-							print_r($turno['alimentos']);
 							foreach ($turno['alimentos'] as $alimento) {
 								$datos = array(
 									'idatenciondietaturno' => $idatenciondietaturno,
@@ -268,9 +266,14 @@ class PlanAlimentario extends CI_Controller {
 			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['valoresTurno'] = array();
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];			
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
+
+			if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = NULL;
+			}else{
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = $row['idatenciondietaturno'];
+			}
 
 			if(! empty($row['hora'])){
 				$hora_string = darFormatoHora($row['hora']);
@@ -291,7 +294,12 @@ class PlanAlimentario extends CI_Controller {
 			}
 
 			if(!empty($row['idatenciondietaalim'])){
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['idatenciondietaalim'] = $row['idatenciondietaalim'];
+				if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
+					$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['idatenciondietaalim'] = NULL;
+				}else{
+					$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['idatenciondietaalim'] = $row['idatenciondietaalim'];
+				}
+
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['cantidad'] = (float)$row['valor'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['idalimento'] = $row['idalimento'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['nombre'] = $row['nombre'];
@@ -312,7 +320,7 @@ class PlanAlimentario extends CI_Controller {
 
 			if(!empty($row['idatenciondietaalimalter'])){
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['alternativos'][$row['idatenciondietaalimalter']] = array(
-					'idatenciondietaalimalter' => $row['idatenciondietaalimalter'],
+					'idatenciondietaalimalter' => ($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'SD' )) ? NULL : $row['idatenciondietaalimalter'],
 					'idatenciondietaalim' => $row['idatenciondietaalim'],
 					'cantidad' => (float)$row['valor'],
 					'idalimento' => $row['idalimento_alter'],
@@ -341,7 +349,329 @@ class PlanAlimentario extends CI_Controller {
 	public function actualizar_plan_alimentario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
 		$arrData['flag'] = 0;
-		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';
+		$arrData['message'] = 'Ha ocurrido un error actualizando el plan alimentario.';
+
+		$unTurnoLleno = FALSE;
+		$unTurnoLlenoCompuesto = FALSE;
+		if($allInputs['forma']== 'dia'){
+			foreach ($allInputs['planDias'] as $key => $dia) {
+				foreach ($dia['turnos'] as $turno) {
+					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
+						$unTurnoLleno = TRUE;
+					}
+
+					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0){
+						$unTurnoLlenoCompuesto = TRUE;
+					}
+				}
+			}
+		}		
+
+		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'dia'){
+			if(!$unTurnoLleno){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}
+
+		if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'dia'){
+			if(!$unTurnoLlenoCompuesto){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}		
+		
+		/*validaciones general*/
+		$unTurnoLleno = FALSE;
+		$unTurnoLlenoCompuesto = FALSE;
+		if($allInputs['forma'] == 'general'){
+			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
+				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
+					$unTurnoLleno = TRUE;
+				}
+
+				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0){
+					$unTurnoLlenoCompuesto = TRUE;
+				}
+				
+			}
+		}
+
+		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'general'){
+			if(!$unTurnoLleno){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}
+
+		if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'general'){
+			if(!$unTurnoLlenoCompuesto){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+		}
+
+		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+
+		/*actualizacion de datos*/
+		$errorEnCiclo = FALSE;
+		$this->db->trans_start();
+
+
+		$this->model_plan_alimentario->m_anular_todo_dieta_turno($allInputs['consulta']);
+		if($allInputs['forma'] == 'dia'){
+			foreach ($allInputs['planDias'] as $key => $dia) {				
+				foreach ($dia['turnos'] as $turno) {
+					if(
+						($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
+						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0)
+					){
+						
+						if($consulta['tipo_dieta'] == 'CD' || $consulta['tipo_dieta'] == 'CG'){
+							if(!empty($turno['idatenciondietaturno'])){
+								$this->model_plan_alimentario->m_anular_todo_dieta_alimento($turno);
+							}
+						}							
+
+						if($turno['tiempo']['value']=='pm'){
+							$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
+						}else{
+							$hora = $turno['hora']['value'].':'.$turno['minuto']['value'].':00';
+						}
+
+						if(empty($turno['idatenciondietaturno'])){
+							$datos = array(
+								'idatencion' => $allInputs['consulta']['idatencion'],
+								'iddia' => $dia['id'],
+								'idturno' => $turno['id'],
+								'indicaciones' => empty($turno['indicaciones'])? null : $turno['indicaciones'],
+								'hora' => $hora,
+							);
+
+							if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
+								$errorEnCiclo = TRUE;						
+							}
+
+							$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
+						}else{
+							$datos = array(
+								'idatenciondietaturno' => $turno['idatenciondietaturno'],
+								'idatencion' => $allInputs['consulta']['idatencion'],
+								'iddia' => $dia['id'],
+								'idturno' => $turno['id'],
+								'indicaciones' => empty($turno['indicaciones'])? null : $turno['indicaciones'],
+								'hora' => $hora,
+							);
+
+							if(!$this->model_plan_alimentario->m_actualizar_dieta_turno($datos)){
+								$errorEnCiclo = TRUE;						
+							}
+
+							$idatenciondietaturno = $turno['idatenciondietaturno'];
+						}
+						
+						if(!$errorEnCiclo){
+							if($allInputs['tipo'] == 'compuesto'){
+								//inserto detalle de alimentos
+								$datosTurno = array(
+									'idatenciondietaturno' => $idatenciondietaturno
+								);
+
+								if(!empty($turno['idatenciondietaturno'])){
+									$this->model_plan_alimentario->m_anular_todo_dieta_alimento($datosTurno);
+								}
+								
+								foreach ($turno['alimentos'] as $alimento) {
+									if(!empty($alimento['idatenciondietaalim']))
+										$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento); 
+
+									if(empty($alimento['idatenciondietaalim'])){
+										$datos = array(
+											'idatenciondietaturno' => $idatenciondietaturno,
+											'idalimento' => $alimento['idalimento'],
+											'valor' => $alimento['cantidad'],
+										);
+										if(!$this->model_plan_alimentario->m_registrar_dieta_turno_alimento($datos)){
+											$errorEnCiclo = TRUE;
+										}
+									}else{
+										$datos = array(
+											'idatenciondietaalim' => $alimento['idatenciondietaalim'],
+											'idatenciondietaturno' => $idatenciondietaturno,
+											'idalimento' => $alimento['idalimento'],
+											'valor' => $alimento['cantidad'],
+										);
+										if(!$this->model_plan_alimentario->m_actualizar_dieta_alimento($datos)){
+											$errorEnCiclo = TRUE;
+										}
+									}									
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if($allInputs['forma'] == 'general'){
+			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
+				if(
+					($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
+					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0)
+				){
+					if($consulta['tipo_dieta'] == 'CD' || $consulta['tipo_dieta'] == 'CG'){
+						if(!empty($turno['idatenciondietaturno'])){
+							$this->model_plan_alimentario->m_anular_todo_dieta_alimento($turno);
+						}
+					}							
+
+					if($turno['tiempo']['value']=='pm'){
+						$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
+					}else{
+						$hora = $turno['hora']['value'].':'.$turno['minuto']['value'].':00';
+					}
+
+					if(empty($turno['idatenciondietaturno'])){
+
+						$datos = array(
+							'idatencion' => $allInputs['consulta']['idatencion'],
+							'idturno' => $turno['id'],
+							'indicaciones' => empty($turno['indicaciones'])? null : $turno['indicaciones'],
+							'hora' => $hora,
+						);
+
+						if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
+							$errorEnCiclo = TRUE;						
+						}
+
+						$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
+					}else{
+						$datos = array(
+							'idatenciondietaturno' => $turno['idatenciondietaturno'],
+							'idatencion' => $allInputs['consulta']['idatencion'],
+							'idturno' => $turno['id'],
+							'indicaciones' => empty($turno['indicaciones'])? null : $turno['indicaciones'],
+							'hora' => $hora,
+						);
+
+						if(!$this->model_plan_alimentario->m_actualizar_dieta_turno($datos)){
+							$errorEnCiclo = TRUE;						
+						}
+
+						$idatenciondietaturno = $turno['idatenciondietaturno'];
+					}
+					
+					if(!$errorEnCiclo){
+						if($allInputs['tipo'] == 'compuesto'){
+							//inserto detalle de alimentos
+							$datosTurno = array(
+								'idatenciondietaturno' => $idatenciondietaturno
+							);
+
+							if(!empty($turno['idatenciondietaturno'])){
+								$this->model_plan_alimentario->m_anular_todo_dieta_alimento($datosTurno);
+							}
+
+							foreach ($turno['alimentos'] as $alimento) {
+								if(!empty($alimento['idatenciondietaalim']))
+									$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento); 
+
+								if(empty($alimento['idatenciondietaalim'])){
+									$datos = array(
+										'idatenciondietaturno' => $idatenciondietaturno,
+										'idalimento' => $alimento['idalimento'],
+										'valor' => $alimento['cantidad'],
+									);
+									if($this->model_plan_alimentario->m_registrar_dieta_turno_alimento($datos)){
+										$idalimentomaster = GetLastId('idatenciondietaalim','atencion_dieta_alim');
+										
+									}else{
+										$errorEnCiclo = TRUE;
+									}
+								}else{
+									$datos = array(
+										'idatenciondietaalim' => $alimento['idatenciondietaalim'],
+										'idatenciondietaturno' => $idatenciondietaturno,
+										'idalimento' => $alimento['idalimento'],
+										'valor' => $alimento['cantidad'],
+									);
+									if($this->model_plan_alimentario->m_actualizar_dieta_alimento($datos)){
+										$idalimentomaster = $alimento['idatenciondietaalim'];
+										
+									}else{
+										$errorEnCiclo = TRUE;
+									}
+								}
+
+								if(!$errorEnCiclo){
+									foreach ($alimento['alternativos'] as $alt) {
+										if(!empty($alt['idalimento'])){
+											if(empty($alt['idatenciondietaalimalter'])){
+												$data = array(
+													'idatenciondietaalim' => $idalimentomaster,
+													'idalimento' => $alt['idalimento'],
+												);
+												if(!$this->model_plan_alimentario->m_registrar_dieta_turno_alimento_alt($data)){
+													$errorEnCiclo = TRUE;
+												}
+											}else{
+												$data = array(
+													'idatenciondietaalimalter' => $alt['idatenciondietaalimalter'],
+													'idatenciondietaalim' => $idalimentomaster,
+													'idalimento' => $alt['idalimento'],
+												);
+												if(!$this->model_plan_alimentario->m_actualizar_dieta_turno_alimento_alter($data)){
+													$errorEnCiclo = TRUE;
+												}
+											}												
+										}
+									}
+								}									
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$tipo_dieta = '';
+		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'general'){
+			$tipo_dieta = 'SG';
+		}else if($allInputs['tipo']=='simple' && $allInputs['forma']== 'dia'){
+			$tipo_dieta = 'SD';
+		}else if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'general'){
+			$tipo_dieta = 'CG';
+		}else if($allInputs['tipo']=='compuesto' && $allInputs['forma']== 'dia'){
+			$tipo_dieta = 'CD';
+		}
+
+		$datos = array(
+			'tipo_dieta' => $tipo_dieta,
+			'indicaciones_dieta' => empty($allInputs['indicaciones']) ? NULL : $allInputs['indicaciones'],
+			'idatencion' => $allInputs['consulta']['idatencion']
+		);
+
+		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
+			$arrData['flag'] = 1;
+			$arrData['message'] = 'Se ha actualizado el plan alimentario exitosamente.';
+		}	
+		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')
