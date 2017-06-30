@@ -7,7 +7,7 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document, alertify,toastr,pageLoading,
+  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document, alertify,toastr,pageLoading,ModalReporteFactory,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
@@ -1082,6 +1082,20 @@
               $window.open(rpta.urlTempPDF, '_blank');
             }
           });
+        }
+        vm.btnImprimirConsulta = function(item){
+          var arrParams = {
+              titulo: 'CONSULTA',
+              datos:{
+                resultado: item,
+                salida: 'pdf',
+                tituloAbv: 'Consulta',
+                titulo: 'Consulta'
+              },
+              metodo: 'php',
+              url: angular.patchURLCI + "Consulta/Imprimir_consulta"
+            }
+            ModalReporteFactory.getPopupReporte(arrParams);
         }
       if($scope.paciente){
         var row = {
