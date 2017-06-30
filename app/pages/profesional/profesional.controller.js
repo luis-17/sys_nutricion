@@ -7,7 +7,8 @@
     .service('ProfesionalServices', ProfesionalServices);
 
   /** @ngInject */
-  function ProfesionalController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,toastr,ProfesionalServices,EspecialidadServices,GrupoServices,UsuarioServices) {
+  function ProfesionalController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,toastr,ProfesionalServices,
+      EspecialidadServices,GrupoServices,UsuarioServices, pinesNotifications) {
 
     var vm = this;
     vm.selectedItem = {};
@@ -124,50 +125,6 @@
               vm.fData.especialidad = vm.listaEspecialidades[0];
             });
 
-            // DATEPICKER
-            vm.today = function() {
-              vm.fData.fecha_nacimiento = new Date();
-            };
-
-            vm.clear = function() {
-              vm.fData.fecha_nacimiento = null;
-            };
-            vm.today();
-            vm.inlineOptions = {
-              minDate: new Date(),
-              showWeeks: false
-            };
-
-            vm.dateOptions = {
-              maxDate: new Date(2020, 5, 22),
-              minDate: new Date(),
-              startingDay: 1,
-              showWeeks: false
-            };
-
-            vm.toggleMin = function() {
-              vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
-              vm.dateOptions.minDate = vm.inlineOptions.minDate;
-            };
-
-            vm.toggleMin();
-
-            vm.open1 = function() {
-              vm.popup1.opened = true;
-            };
-
-            vm.setDate = function(year, month, day) {
-              vm.fData.fecha_nacimiento = new Date(year, month, day);
-            };
-
-            vm.formats = ['dd-MM-yyyy','dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-            vm.format = vm.formats[0];
-            vm.altInputFormats = ['d!/M!/yyyy'];
-
-            vm.popup1 = {
-              opened: false
-            };
-            // FIN DATAPICKER
             vm.getUsuarioAutocomplete = function (value) {
               var params = {};
               params.search= value;
@@ -200,8 +157,7 @@
                   vm.fData = {};
                   vm.modoEdicion = false;
                   vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-                  vm.modalTitle = 'Registro de Usuario';
-
+                  vm.modalTitle = 'Registro de Usuario'; 
                   GrupoServices.sListarGrupo().then(function (rpta) {
                     vm.listaGrupo = angular.copy(rpta.datos);
                     vm.fData.idgrupo = vm.listaGrupo[0];
@@ -209,31 +165,20 @@
                   // BOTONES
                   vm.aceptar = function () {
                     UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
-                      var openedToasts = [];
-                      vm.options = {
-                        timeout: '3000',
-                        extendedTimeout: '1000',
-                        preventDuplicates: false,
-                        preventOpenDuplicates: false
-                      };
-                      if(rpta.flag == 1){
-                        //$uibModalInstance.close(vm.fData);
+                      if(rpta.flag == 1){ 
                         data.usuario = vm.fData.username;
                         data.idusuario = rpta.datos;
-                        $uibModalInstance.close();                        
-                        //vm.getPaginationServerSide();
-                        var title = 'OK';
-                        var iconClass = 'success';
+                        $uibModalInstance.close();          
+                        var pTitle = 'OK!';
+                        var pType = 'success';
                       }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var iconClass = 'warning';
+                        var pTitle = 'Advertencia!';
+                        var pType = 'warning';  
                       }else{
                         alert('Ocurrió un error');
                       }
-                      var toast = toastr[iconClass](rpta.message, title, vm.options);
-                      openedToasts.push(toast);
+                      pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
                     });
-
                   };
                   vm.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
@@ -243,9 +188,7 @@
                   data : function() { return vm.fData},
                   arrToModal: function() {
                     return {
-                      getPaginationServerSide : vm.getPaginationServerSide,
-                      
-
+                      getPaginationServerSide : vm.getPaginationServerSide 
                     }
                   }
                 }
@@ -278,26 +221,19 @@
               vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
               vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sRegistrarProfesional(vm.fData).then(function (rpta) {
-                var openedToasts = [];
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
-                if(rpta.flag == 1){
+                // var openedToasts = [];
+                if(rpta.flag == 1){ 
                   $uibModalInstance.close(vm.fData);
-                  vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
+                  vm.getPaginationServerSide();        
+                  var pTitle = 'OK!';
+                  var pType = 'success';
                 }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               });
 
             };
@@ -326,10 +262,10 @@
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            var openedToasts = [];
+            // var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
-            console.log("row",vm.fData);
+            // console.log("row",vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
 
@@ -421,30 +357,20 @@
                   });
                   // BOTONES
                   vm.aceptar = function () {
-                    UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) {
-                      var openedToasts = [];
-                      vm.options = {
-                        timeout: '3000',
-                        extendedTimeout: '1000',
-                        preventDuplicates: false,
-                        preventOpenDuplicates: false
-                      };
-                      if(rpta.flag == 1){
-                        //$uibModalInstance.close(vm.fData);
+                    UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) { 
+                      if(rpta.flag == 1){ 
                         data.usuario = vm.fData.username;
                         data.idusuario = rpta.datos;
-                        $uibModalInstance.close();                        
-                        //vm.getPaginationServerSide();
-                        var title = 'OK';
-                        var iconClass = 'success';
+                        $uibModalInstance.close();          
+                        var pTitle = 'OK!';
+                        var pType = 'success';
                       }else if( rpta.flag == 0 ){
-                        var title = 'Advertencia';
-                        var iconClass = 'warning';
+                        var pTitle = 'Advertencia!';
+                        var pType = 'warning';  
                       }else{
                         alert('Ocurrió un error');
                       }
-                      var toast = toastr[iconClass](rpta.message, title, vm.options);
-                      openedToasts.push(toast);
+                      pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
                     });
 
                   };
@@ -493,27 +419,24 @@
               vm.image.idprofesional = vm.fData.idprofesional;
               vm.image.nombre = vm.fData.nombre;
               ProfesionalServices.sSubirFoto(vm.image).then(function(rpta){
-                if(rpta.flag == 1){
-                  var title = 'OK';
-                  var iconClass = 'success';
+
+                if(rpta.flag == 1){ 
                   vm.fData.nombre_foto = rpta.datos;
                   arrToModal.seleccion.nombre_foto = rpta.datos;
                   vm.fotoCrop = false;
                   vm.image = {
                      originalImage: '',
                      croppedImage: '',
-                  };
-
+                  };       
+                  var pTitle = 'OK!';
+                  var pType = 'success';
                 }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  // vm.toast.title = 'Advertencia';
-                  var iconClass = 'warning';
-                  // vm.options.iconClass = {name:'warning'}
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
               });
             }
             vm.cancelarFoto = function(){
@@ -527,26 +450,18 @@
               vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
               vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sEditarProfesional(vm.fData).then(function (rpta) {
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  progressBar: true,
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
-                if(rpta.flag == 1){
+                if(rpta.flag == 1){ 
                   vm.getPaginationServerSide();
-                  $uibModalInstance.close();
-                  var title = 'OK';
-                  var iconClass = 'success';
+                  $uibModalInstance.close();         
+                  var pTitle = 'OK!';
+                  var pType = 'success';
                 }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               });
 
             };
@@ -568,26 +483,18 @@
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
-          ProfesionalServices.sAnularProfesional(row.entity).then(function (rpta) {
-            var openedToasts = [];
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
-            if(rpta.flag == 1){
-              vm.getPaginationServerSide();
-              var title = 'OK';
-              var iconClass = 'success';
+          ProfesionalServices.sAnularProfesional(row.entity).then(function (rpta) { 
+            if(rpta.flag == 1){ 
+              vm.getPaginationServerSide();       
+              var pTitle = 'OK!';
+              var pType = 'success';
             }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
+              var pTitle = 'Advertencia!';
+              var pType = 'warning';  
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
           });
         }, function(ev) {
             ev.preventDefault();

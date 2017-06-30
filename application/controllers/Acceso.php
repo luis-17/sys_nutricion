@@ -22,21 +22,21 @@ class Acceso extends CI_Controller {
     			if($loggedUser['estado_us'] == 1){
 					$arrData['flag'] = 1;
 					$arrPerfilUsuario = array();
-					$arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
-					$arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
-					$arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
-					$perfil = $this->model_profesional->m_cargar_perfil($arrPerfilUsuario['idusuario']);
-
-					$arrPerfilUsuario['idprofesional'] = $perfil['idprofesional'];
-					$arrPerfilUsuario['idusuario'] = $perfil['idusuario'];
-					$arrPerfilUsuario['idespecialidad'] = $perfil['idespecialidad'];
-					$arrPerfilUsuario['especialidad'] = $perfil['especialidad'];
-					$arrPerfilUsuario['nombre'] = $perfil['nombre'];
-					$arrPerfilUsuario['apellidos'] = $perfil['apellidos'];
-					$arrPerfilUsuario['correo'] = $perfil['correo'];
-					$arrPerfilUsuario['fecha_nacimiento'] = $perfil['fecha_nacimiento'];
-					$arrPerfilUsuario['num_colegiatura'] = $perfil['num_colegiatura'];
-					$arrPerfilUsuario['nombre_foto'] = empty($perfil['nombre_foto']) ? 'sin-imagen.png' : $perfil['nombre_foto'];
+					// $arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
+					// $arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
+					// $arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
+					$arrPerfilUsuario = $this->model_profesional->m_cargar_perfil($loggedUser['idusuario']);
+					$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
+					// $arrPerfilUsuario['idprofesional'] = $perfil['idprofesional'];
+					// $arrPerfilUsuario['idusuario'] = $perfil['idusuario'];
+					// $arrPerfilUsuario['idespecialidad'] = $perfil['idespecialidad'];
+					// $arrPerfilUsuario['especialidad'] = $perfil['especialidad'];
+					// $arrPerfilUsuario['nombre'] = $perfil['nombre'];
+					// $arrPerfilUsuario['apellidos'] = $perfil['apellidos'];
+					// $arrPerfilUsuario['correo'] = $perfil['correo'];
+					// $arrPerfilUsuario['fecha_nacimiento'] = $perfil['fecha_nacimiento'];
+					// $arrPerfilUsuario['num_colegiatura'] = $perfil['num_colegiatura'];
+					
 				    					
 					// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA. 
 					//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);

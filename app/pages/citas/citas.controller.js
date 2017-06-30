@@ -6,7 +6,7 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,$controller,alertify,toastr,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading) { 
+  function CitasController ($scope,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications) { 
     var vm = this;
     $scope.changeViewCita(true);
     $scope.changeViewConsulta(false);
@@ -25,24 +25,16 @@
 
       CitasServices.sDropCita(datos).then(function(rpta){        
         angular.element('.calendar').fullCalendar( 'refetchEvents' );
-        var openedToasts = [];
-        vm.options = {
-          timeout: '3000',
-          extendedTimeout: '1000',
-          preventDuplicates: false,
-          preventOpenDuplicates: false
-        };       
-        if(rpta.flag == 1){ 
-          var title = 'OK';
-          var iconClass = 'success';
+        if(rpta.flag == 1){         
+          var pTitle = 'OK!';
+          var pType = 'success';
         }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';  
         }else{
           alert('Ocurrió un error');
         }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
       });
     };
@@ -88,6 +80,7 @@
 
     vm.eventsF = function (start, end, timezone, callback) {
       var events = []; 
+      pageLoading.start('Actualizando calendario...');
       CitasServices.sListarCita().then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) { 
             //row.start = new Date(row.start);
@@ -96,6 +89,7 @@
         });
         events = rpta.datos; 
         callback(events); 
+        pageLoading.stop();
       });
     } 
     vm.eventSources = [vm.eventsF];
@@ -240,7 +234,7 @@
           }          
 
           vm.ok = function () {
-            pageLoading.start('Registrando cita...');
+            
             if(vm.fData.hora_desde){
               vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
             }
@@ -252,28 +246,20 @@
             if(consultaOrigen){
               vm.fData.consultaOrigen = consultaOrigen;
             }
-
-            CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {              
-              var openedToasts = [];
-              vm.options = {
-                timeout: '3000',
-                extendedTimeout: '1000',
-                preventDuplicates: false,
-                preventOpenDuplicates: false
-              };       
+            pageLoading.start('Registrando cita...');
+            CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {                
               if(rpta.flag == 1){ 
                 $uibModalInstance.close(vm.fData);
                 angular.element('.calendar').fullCalendar( 'refetchEvents' );            
-                var title = 'OK';
-                var iconClass = 'success';
+                var pTitle = 'OK!';
+                var pType = 'success';
               }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var iconClass = 'warning';
+                var pTitle = 'Advertencia!';
+                var pType = 'danger';  
               }else{
                 alert('Ocurrió un error');
               }
-              var toast = toastr[iconClass](rpta.message, title, vm.options);
-              openedToasts.push(toast);
+              pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               pageLoading.stop();
             });
 
@@ -392,26 +378,20 @@
               vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
             }          
             CitasServices.sActualizarCita(vm.fData).then(function (rpta) {
-              var openedToasts = [];
-              vm.options = {
-                timeout: '3000',
-                extendedTimeout: '1000',
-                preventDuplicates: false,
-                preventOpenDuplicates: false
-              };       
+              // var openedToasts = [];
+
               if(rpta.flag == 1){ 
-                angular.element('.calendar').fullCalendar( 'refetchEvents' );            
+                angular.element('.calendar').fullCalendar( 'refetchEvents' );
                 $uibModalInstance.close();
-                var title = 'OK';
-                var iconClass = 'success';
+                var pTitle = 'OK!';
+                var pType = 'success';
               }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var iconClass = 'warning';
+                var pTitle = 'Advertencia!';
+                var pType = 'warning';  
               }else{
                 alert('Ocurrió un error');
               }
-              var toast = toastr[iconClass](rpta.message, title, vm.options);
-              openedToasts.push(toast);
+              pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               pageLoading.stop();
             });
           };
@@ -440,25 +420,18 @@
         pageLoading.start('Actualizando calendario...');
         ev.preventDefault();        
         CitasServices.sAnularCita(row).then(function (rpta) {              
-          var openedToasts = [];
-          vm.options = {
-            timeout: '3000',
-            extendedTimeout: '1000',
-            preventDuplicates: false,
-            preventOpenDuplicates: false
-          };       
-          if(rpta.flag == 1){
-            angular.element('.calendar').fullCalendar( 'refetchEvents' ); 
-            var title = 'OK';
-            var iconClass = 'success';
+          // var openedToasts = [];
+          if(rpta.flag == 1){ 
+            angular.element('.calendar').fullCalendar( 'refetchEvents' );            
+            var pTitle = 'OK!';
+            var pType = 'success';
           }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            var iconClass = 'warning';
+            var pTitle = 'Advertencia!';
+            var pType = 'danger';  
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
           pageLoading.stop();
         });
       });
@@ -487,39 +460,34 @@
       $scope.changeViewSoloPlan(true, cita.atencion);           
     }
 
-    vm.callback = function(block){
-      if(block){
+    vm.actualizarCalendario = function(block){
+      // if(block){
         pageLoading.start('Actualizando calendario...');
-      }
+      // }
       angular.element('.calendar').fullCalendar( 'refetchEvents' );
-      if(block){
+      // if(block){
         pageLoading.stop();
-      }
+      // }
     }
 
     vm.btnAnularConsulta = function(row){
       alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
-        ev.preventDefault();        
+        ev.preventDefault();
+        pageLoading.start('Procesando información...');
         ConsultasServices.sAnularConsulta(row).then(function (rpta) {              
-          var openedToasts = [];
-          vm.options = {
-            timeout: '3000',
-            extendedTimeout: '1000',
-            preventDuplicates: false,
-            preventOpenDuplicates: false
-          };       
-          if(rpta.flag == 1){
+          // var openedToasts = [];
+          if(rpta.flag == 1){ 
             angular.element('.calendar').fullCalendar( 'refetchEvents' ); 
-            var title = 'OK';
-            var iconClass = 'success';
+            var pTitle = 'OK!';
+            var pType = 'success';
           }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            var iconClass = 'warning';
+            var pTitle = 'Advertencia!';
+            var pType = 'warning';  
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+          pageLoading.stop();
         });
       });
     }

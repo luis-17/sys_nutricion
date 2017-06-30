@@ -41,7 +41,7 @@
         url: '/app/paciente',
         templateUrl: 'app/pages/paciente/paciente.html',
         controller: 'PacienteController',
-        controllerAs: 'pac'
+        controllerAs: 'pac' 
       })
       //citas
       .state('citas', {
@@ -61,7 +61,9 @@
         templateUrl: 'app/pages/profesional/profesional.html',
         controller: 'ProfesionalController as pro'
       });
-    $urlRouterProvider.otherwise('/app/dashboard');
+    $urlRouterProvider.otherwise('/app/dashboard'); 
+
+    
   }
 
 })();

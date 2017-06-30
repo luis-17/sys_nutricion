@@ -9,9 +9,7 @@
   /** @ngInject */
 
   /* Esta factoria ya no la uso, no lo tomen en cuenta para el Calendar por ahora. */
-  function CalendarData($http/*,rootServices*/) {
-
-
+  function CalendarData($http/*,rootServices*/) { 
     var interfazCalendarData = {};
     interfazCalendarData.getDataCalendarCitas = getDataCalendarCitas;
     return interfazCalendarData;
@@ -20,30 +18,6 @@
       return $http.post(arrParams.url, arrParams.datos).then(handleSuccess, handleError('Recurso no encontrado'));
     }
   }
-  // function rootServices($http, $q) {
-  //   return({
-  //       sLogoutSessionCI: sLogoutSessionCI,
-  //       sGetSessionCI: sGetSessionCI,
-  //   });
-  //   function sLogoutSessionCI(pDatos) {
-  //     var datos = pDatos || {};
-  //     var request = $http({
-  //           method : "post",
-  //           url :  angular.patchURLCI + "Acceso/logoutSessionCI",
-  //           data : datos
-  //     });
-  //     return (request.then( handleSuccess,handleError ));
-  //   }
-  //   function sGetSessionCI(pDatos) {
-  //     var datos = pDatos || {};
-  //     var request = $http({
-  //           method : "post",
-  //           url :  angular.patchURLCI + "Acceso/getSessionCI",
-  //           data : datos
-  //     });
-  //     return (request.then( handleSuccess,handleError ));
-  //   }
-  // }
   function ModalReporteFactory($uibModal,$http,$q,rootServices){
     var interfazReporte = {
       getPopupReporte: function(arrParams){ //console.log(arrParams.datos.salida,' as');
@@ -60,13 +34,13 @@
               var deferred = $q.defer();
               $http.post(arrParams.url, arrParams.datos).then(
                 function(res) {
-                    console.log('succes !', res.data);
+                    // console.log('succes !', res.data);
                     $('#frameReporte').attr("src", res.data.urlTempPDF);
 
                     deferred.resolve(res.data);
                 },
                 function(err) {
-                    console.log('error...', err);
+                    // console.log('error...', err);
                     deferred.resolve(err);
                 }
               );

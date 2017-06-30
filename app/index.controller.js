@@ -41,11 +41,29 @@
         }
       }
       return pageLoading;
-    });
+    })
+    .factory('pinesNotifications', ['$window', function ($window) {
+      'use strict';
+      return {
+        notify: function (args) {
+          args.styling = 'fontawesome';
+          args.mouse_reset = false;
+          var notification = new $window.PNotify(args);
+          notification.notify = notification.update;
+          return notification;
+        },
+      };
+    }]);
 
   /** @ngInject */
   function MainController($translate, $scope, rootServices, PacienteServices,$location) {
-    var vm = this;
+    var vm = this; 
+
+    // var currentPageTemplate = $route.current.templateUrl;
+    // console.log(currentPageTemplate,'currentPageTemplate aaaaaaaaaaaaaa');
+    // $templateCache.remove(currentPageTemplate);
+    // $route.reload();
+
     // console.log('$translate',$translate);
     vm.changeLanguage = function (langKey) {
       // console.log('langKey',langKey);langKey

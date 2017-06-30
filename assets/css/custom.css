@@ -391,3 +391,16 @@ section.tile-body{
 #page-loading.visible{
     visibility: visible;
 }
+
+/* PNOTIFY */
+.ui-pnotify .alert.ui-pnotify-container{
+    padding: .8em; 
+    font-size: 12px;
+}
+.ui-pnotify .alert.ui-pnotify-container .ui-pnotify-icon, .ui-pnotify .alert.ui-pnotify-container h4 {
+    font-size: 15px;
+}
+.ui-pnotify .ui-pnotify-closer, .ui-pnotify-sticker {
+    float: right;
+    margin-left: .6em;
+}
