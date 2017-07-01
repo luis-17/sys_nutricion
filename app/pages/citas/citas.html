@@ -1,19 +1,19 @@
 <div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" 
       ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'new'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'new');" > 
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'new');" > 
 </div>
 <div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" 
       ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'edit'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.callback, 'edit');" > 
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'edit');" > 
 </div>
 
 <div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" 
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
-      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(consulta,'consulta', 'new', vm.callback);" > 
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(consulta,'consulta', 'new', vm.actualizarCalendario);" > 
 </div>
 <div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewSoloPlan" 
       ng-include="'app/pages/plan-alimentario/plan-alimentario.html'"
-      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(vm.event.atencion,'cita', vm.tipoVistaPlan, vm.callback);" > 
+      ng-controller="PlanAlimentarioController as plan" ng-init="plan.initPlan(vm.event.atencion,'cita', vm.tipoVistaPlan, vm.actualizarCalendario);" > 
 </div>
 
 <div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'" ng-show="viewFicha"
