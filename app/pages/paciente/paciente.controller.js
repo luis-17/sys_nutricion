@@ -219,8 +219,8 @@
           vm.getPaginationServerSide(false);
         });
       }
-      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name; 
-      vm.getPaginationServerSide = function(loader) { 
+      paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
+      vm.getPaginationServerSide = function(loader) {
         if(loader){
           pageLoading.start('Cargando datos...');
         }
@@ -293,7 +293,7 @@
               }else{
                 vm.corp = false;
               }
-            } 
+            }
 
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -945,6 +945,7 @@
           // vm.cargarHabitosAlimentarios(vm.ficha);
           // vm.cargarHabitos(vm.ficha);
         }
+      // OTROS BOTONES
         vm.btnRegresar = function(){
           vm.modoFicha = false;
           vm.modoEditar = false;
@@ -1025,6 +1026,21 @@
               },
               metodo: 'php',
               url: angular.patchURLCI + "Consulta/Imprimir_consulta"
+            }
+            ModalReporteFactory.getPopupReporte(arrParams);
+        }
+        vm.btnImprimirPlan = function(item){
+          var arrParams = {
+              titulo: 'PLAN ALIMENTARIO',
+              datos:{
+                consulta: item,
+                cita: {cliente: {paciente:vm.ficha.paciente}},
+                salida: 'pdf',
+                tituloAbv: 'PLAN',
+                titulo: 'PLAN ALIMENTARIO'
+              },
+              metodo: 'php',
+              url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
             }
             ModalReporteFactory.getPopupReporte(arrParams);
         }

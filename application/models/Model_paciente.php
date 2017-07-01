@@ -138,7 +138,7 @@ class Model_paciente extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 	public function m_cargar_planes_paciente($datos){
-		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.fecha_atencion, at.indicaciones_dieta");
+		$this->db->select("at.idatencion, at.idcita, at.idcliente, at.fecha_atencion, at.indicaciones_dieta, tipo_dieta");
 		$this->db->from('atencion at');
 		// $this->db->join('cliente cl','at.idcliente = cl.idcliente');
 		$this->db->where('at.idcliente',$datos['idcliente']);
