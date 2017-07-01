@@ -20,7 +20,8 @@ class Model_profesional extends CI_Model {
 	}
 
 	public function m_cargar_profesional($paramPaginate=FALSE){
-		$this->db->select('p.idprofesional, p.idusuario , u.username , e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto');
+		$this->db->select('p.idprofesional, p.idusuario, u.username , e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, 
+			p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto');
 		$this->db->from('profesional p');
 		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left');
 		$this->db->join('usuario u', 'p.idusuario = u.idusuario AND u.estado_us = 1','left');				
@@ -97,6 +98,7 @@ class Model_profesional extends CI_Model {
 			'num_colegiatura' => empty($datos['num_colegiatura'])? NULL : $datos['num_colegiatura'],	
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
+		// var_dump($datos['fecha_nacimiento'],darFormatoYMD($datos['fecha_nacimiento'])); exit();
 		$this->db->where('idprofesional',$datos['idprofesional']);
 		return $this->db->update('profesional', $data);
 	}

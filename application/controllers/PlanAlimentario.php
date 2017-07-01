@@ -45,7 +45,7 @@ class PlanAlimentario extends CI_Controller {
 				}
 			}
 		}
-		
+
 
 		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'dia'){
 			if(!$unTurnoLleno){
@@ -67,8 +67,8 @@ class PlanAlimentario extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 			}
-		}		
-		
+		}
+
 		/*validaciones general*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
@@ -81,7 +81,7 @@ class PlanAlimentario extends CI_Controller {
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
 				}
-				
+
 			}
 		}
 
@@ -136,7 +136,7 @@ class PlanAlimentario extends CI_Controller {
 						);
 
 						if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
-							$errorEnCiclo = TRUE;						
+							$errorEnCiclo = TRUE;
 						}
 						if(!$errorEnCiclo){
 							if($allInputs['tipo'] == 'compuesto'){
@@ -178,7 +178,7 @@ class PlanAlimentario extends CI_Controller {
 					);
 
 					if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
-						$errorEnCiclo = TRUE;						
+						$errorEnCiclo = TRUE;
 					}
 					if(!$errorEnCiclo){
 						if($allInputs['tipo'] == 'compuesto'){
@@ -233,8 +233,8 @@ class PlanAlimentario extends CI_Controller {
 		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Se ha registrado el plan alimentario exitosamente.';
-		}	
-		$this->db->trans_complete();	
+		}
+		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')
@@ -242,10 +242,10 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	public function cargar_plan_alimentario(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
-		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';		
-		$arrayPlan = $this->genera_estructura_plan($allInputs);	
+		$arrData['message'] = 'Ha ocurrido un error consultando el plan alimentario.';
+		$arrayPlan = $this->genera_estructura_plan($allInputs);
 		$arrData['datos'] = $arrayPlan;
 		$arrData['flag'] =1;
 		$arrData['message'] = 'Ha sido cargado el plan alimentario.';
@@ -266,7 +266,7 @@ class PlanAlimentario extends CI_Controller {
 			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['valoresTurno'] = array();
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];			
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
 
 			if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
@@ -277,13 +277,13 @@ class PlanAlimentario extends CI_Controller {
 
 			if(! empty($row['hora'])){
 				$hora_string = darFormatoHora($row['hora']);
-				$array = explode(" ", $hora_string);				
+				$array = explode(" ", $hora_string);
 				$tiempo_str = $array[1];
-				
-				$array = explode(':', $array[0]);				
+
+				$array = explode(':', $array[0]);
 				$hora_str = $array[0];
 				$min_str = $array[1];
-				
+
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['tiempo'] = $tiempo_str;
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['hora'] = $hora_str;
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['min'] = $min_str;
@@ -315,7 +315,7 @@ class PlanAlimentario extends CI_Controller {
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['fosforo'] = (float)$row['fosforo'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['zinc'] = (float)$row['zinc'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['hierro'] = (float)$row['hierro'];
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['fibra'] = (float)$row['fibra'];		
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['fibra'] = (float)$row['fibra'];
 			}
 
 			if(!empty($row['idatenciondietaalimalter'])){
@@ -337,9 +337,9 @@ class PlanAlimentario extends CI_Controller {
 					'fosforo' => (float)$row['fosforo_alter'],
 					'zinc' => (float)$row['zinc_alter'],
 					'hierro' => (float)$row['hierro_alter'],
-					'fibra' => (float)$row['fibra_alter'],				
+					'fibra' => (float)$row['fibra_alter'],
 				);
-			}					
+			}
 		}
 
 		$arrayPlan = array_values($arrayPlan);
@@ -347,7 +347,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	public function actualizar_plan_alimentario(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);		
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error actualizando el plan alimentario.';
 
@@ -365,7 +365,7 @@ class PlanAlimentario extends CI_Controller {
 					}
 				}
 			}
-		}		
+		}
 
 		if($allInputs['tipo']=='simple' && $allInputs['forma']== 'dia'){
 			if(!$unTurnoLleno){
@@ -387,8 +387,8 @@ class PlanAlimentario extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 			}
-		}		
-		
+		}
+
 		/*validaciones general*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
@@ -401,7 +401,7 @@ class PlanAlimentario extends CI_Controller {
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
 				}
-				
+
 			}
 		}
 
@@ -436,18 +436,18 @@ class PlanAlimentario extends CI_Controller {
 
 		$this->model_plan_alimentario->m_anular_todo_dieta_turno($allInputs['consulta']);
 		if($allInputs['forma'] == 'dia'){
-			foreach ($allInputs['planDias'] as $key => $dia) {				
+			foreach ($allInputs['planDias'] as $key => $dia) {
 				foreach ($dia['turnos'] as $turno) {
 					if(
 						($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
 						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0)
 					){
-						
+
 						if($consulta['tipo_dieta'] == 'CD' || $consulta['tipo_dieta'] == 'CG'){
 							if(!empty($turno['idatenciondietaturno'])){
 								$this->model_plan_alimentario->m_anular_todo_dieta_alimento($turno);
 							}
-						}							
+						}
 
 						if($turno['tiempo']['value']=='pm'){
 							$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
@@ -465,7 +465,7 @@ class PlanAlimentario extends CI_Controller {
 							);
 
 							if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
-								$errorEnCiclo = TRUE;						
+								$errorEnCiclo = TRUE;
 							}
 
 							$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
@@ -480,12 +480,12 @@ class PlanAlimentario extends CI_Controller {
 							);
 
 							if(!$this->model_plan_alimentario->m_actualizar_dieta_turno($datos)){
-								$errorEnCiclo = TRUE;						
+								$errorEnCiclo = TRUE;
 							}
 
 							$idatenciondietaturno = $turno['idatenciondietaturno'];
 						}
-						
+
 						if(!$errorEnCiclo){
 							if($allInputs['tipo'] == 'compuesto'){
 								//inserto detalle de alimentos
@@ -496,10 +496,10 @@ class PlanAlimentario extends CI_Controller {
 								if(!empty($turno['idatenciondietaturno'])){
 									$this->model_plan_alimentario->m_anular_todo_dieta_alimento($datosTurno);
 								}
-								
+
 								foreach ($turno['alimentos'] as $alimento) {
 									if(!empty($alimento['idatenciondietaalim']))
-										$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento); 
+										$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento);
 
 									if(empty($alimento['idatenciondietaalim'])){
 										$datos = array(
@@ -520,7 +520,7 @@ class PlanAlimentario extends CI_Controller {
 										if(!$this->model_plan_alimentario->m_actualizar_dieta_alimento($datos)){
 											$errorEnCiclo = TRUE;
 										}
-									}									
+									}
 								}
 							}
 						}
@@ -539,7 +539,7 @@ class PlanAlimentario extends CI_Controller {
 						if(!empty($turno['idatenciondietaturno'])){
 							$this->model_plan_alimentario->m_anular_todo_dieta_alimento($turno);
 						}
-					}							
+					}
 
 					if($turno['tiempo']['value']=='pm'){
 						$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
@@ -557,7 +557,7 @@ class PlanAlimentario extends CI_Controller {
 						);
 
 						if(!$this->model_plan_alimentario->m_registrar_dieta_turno($datos)){
-							$errorEnCiclo = TRUE;						
+							$errorEnCiclo = TRUE;
 						}
 
 						$idatenciondietaturno = GetLastId('idatenciondietaturno','atencion_dieta_turno');
@@ -571,12 +571,12 @@ class PlanAlimentario extends CI_Controller {
 						);
 
 						if(!$this->model_plan_alimentario->m_actualizar_dieta_turno($datos)){
-							$errorEnCiclo = TRUE;						
+							$errorEnCiclo = TRUE;
 						}
 
 						$idatenciondietaturno = $turno['idatenciondietaturno'];
 					}
-					
+
 					if(!$errorEnCiclo){
 						if($allInputs['tipo'] == 'compuesto'){
 							//inserto detalle de alimentos
@@ -590,7 +590,7 @@ class PlanAlimentario extends CI_Controller {
 
 							foreach ($turno['alimentos'] as $alimento) {
 								if(!empty($alimento['idatenciondietaalim']))
-									$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento); 
+									$this->model_plan_alimentario->m_anular_todo_dieta_alimento_alter($alimento);
 
 								if(empty($alimento['idatenciondietaalim'])){
 									$datos = array(
@@ -600,7 +600,7 @@ class PlanAlimentario extends CI_Controller {
 									);
 									if($this->model_plan_alimentario->m_registrar_dieta_turno_alimento($datos)){
 										$idalimentomaster = GetLastId('idatenciondietaalim','atencion_dieta_alim');
-										
+
 									}else{
 										$errorEnCiclo = TRUE;
 									}
@@ -613,7 +613,7 @@ class PlanAlimentario extends CI_Controller {
 									);
 									if($this->model_plan_alimentario->m_actualizar_dieta_alimento($datos)){
 										$idalimentomaster = $alimento['idatenciondietaalim'];
-										
+
 									}else{
 										$errorEnCiclo = TRUE;
 									}
@@ -639,10 +639,10 @@ class PlanAlimentario extends CI_Controller {
 												if(!$this->model_plan_alimentario->m_actualizar_dieta_turno_alimento_alter($data)){
 													$errorEnCiclo = TRUE;
 												}
-											}												
+											}
 										}
 									}
-								}									
+								}
 							}
 						}
 					}
@@ -670,21 +670,21 @@ class PlanAlimentario extends CI_Controller {
 		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Se ha actualizado el plan alimentario exitosamente.';
-		}	
+		}
 		$this->db->trans_complete();
 
 		$this->output
 		    ->set_content_type('application/json')
-		    ->set_output(json_encode($arrData));		
+		    ->set_output(json_encode($arrData));
 	}
 
 	private function headerPlan($allInputs, $consulta, $configuracion){
 		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
 		$this->pdf->SetFont('Arial','',14);
-	    
+
 	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower($allInputs['cita']['cliente']['paciente'])),0,1,'R');
 	    $this->pdf->Ln(0);
-    	
+
     	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
 	    $this->pdf->Cell(0,5,'Fecha: '.$fecha,0,1,'R');
 
@@ -711,14 +711,14 @@ class PlanAlimentario extends CI_Controller {
 		$this->pdf->SetLeftMargin(10);
 		$this->pdf->SetRightMargin(70);
 		$this->pdf->SetXY(10,$y+3);
-		//$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);			    	
-		$this->pdf->Write(5, utf8_decode($texto));			    	
+		//$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);
+		$this->pdf->Write(5, utf8_decode($texto));
 
 		$this->pdf->SetRightMargin(10);
 		$this->pdf->SetFont('Arial','',17);
 		$this->pdf->SetTextColor(0,0,0);
 		$this->pdf->SetXY(155,$y+1);
-		$this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);	
+		$this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);
 
 		if(empty($consulta['prox_cita'])){
 			$this->pdf->SetXY(167,$y+8);
@@ -726,43 +726,43 @@ class PlanAlimentario extends CI_Controller {
 		}else{
 			$this->pdf->SetXY(163,$y+8);
 			$this->pdf->Cell(60, 12, utf8_decode(date('d/m/Y',strtotime($consulta['prox_cita']))), 0, 'C', false);
-		}		
+		}
 	}
 
 	public function generar_pdf_plan(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
-    	$arrData['flag'] = 1;  
+    	$arrData['flag'] = 1;
 
-    	$configuracion = GetConfiguracion();  	
-		
+    	$configuracion = GetConfiguracion();
+		// var_dump($allInputs); exit();
     	$arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
 
     	$this->pdf = new Fpdfext();
 		$this->pdf->AddPage();
-    	$this->pdf->SetMargins(0, 10, 10);  
+    	$this->pdf->SetMargins(0, 10, 10);
     	$this->pdf->SetAutoPageBreak(false);
 
     	//header
-    	$this->headerPlan($allInputs, $consulta, $configuracion);			    
+    	$this->headerPlan($allInputs, $consulta, $configuracion);
 
-	    //body 
+	    //body
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
 			$plan = $arrayPlan[1];
 			foreach ($plan['turnos'] as $key => $turno) {
 				if($turno['id'] % 2 != 0){
 					$this->pdf->SetTextColor(255,255,255);
 					if($turno['id']==1){
-						$this->pdf->SetFillColor(0,156,222);				    		
+						$this->pdf->SetFillColor(0,156,222);
 					}
 
 					if($turno['id']==3){
-						$this->pdf->SetFillColor(106,220,0);	
+						$this->pdf->SetFillColor(106,220,0);
 					}
-					
+
 					if($turno['id']==5){
-						$this->pdf->SetFillColor(255,0,100);	
+						$this->pdf->SetFillColor(255,0,100);
 					}
 					$this->pdf->SetFont('Arial','B',14);
 			    	$this->pdf->Cell(50,6,utf8_decode('       ' . ucwords(strtolower($turno['descripcion']))),0,1,'L',true);
@@ -773,12 +773,12 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->SetLeftMargin(10);
 			    	if($consulta['tipo_dieta'] == 'SG'){
 			    		if(!empty($turno['indicaciones'])){
-			    			$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);	
-			    		}			    					    		
+			    			$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);
+			    		}
 			    	}
 
 			    	if($consulta['tipo_dieta'] == 'CG'){
-			    		if(!empty($turno['alimentos'])){			    			
+			    		if(!empty($turno['alimentos'])){
 				    		foreach ($turno['alimentos'] as $ind => $alm) {
 				    			$alm_nombre = $alm['medida_casera'] . ' ' . $alm['nombre'];
 				    			if(!empty($alm['alternativos'])){
@@ -800,13 +800,13 @@ class PlanAlimentario extends CI_Controller {
 			    	$this->pdf->SetLeftMargin(10);
 			    	$this->pdf->SetTextColor(83,83,83);
 			    	$this->pdf->SetFillColor(255,255,255);
-			    	
+
 			    	if($consulta['tipo_dieta'] == 'SG'){
-			    		$this->pdf->MultiCell(0, 5, utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($turno['indicaciones']))));		    		
+			    		$this->pdf->MultiCell(0, 5, utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($turno['indicaciones']))));
 			    	}
 
 			    	if($consulta['tipo_dieta'] == 'CG'){
-			    		if(!empty($turno['alimentos'])){			    			
+			    		if(!empty($turno['alimentos'])){
 				    		foreach ($turno['alimentos'] as $ind => $alm) {
 				    			$alm_nombre = $alm['medida_casera'] . ' ' . $alm['nombre'];
 				    			if(!empty($alm['alternativos'])){
@@ -819,7 +819,7 @@ class PlanAlimentario extends CI_Controller {
 				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($alm_nombre))),0,1,'L',true);
 				    			}
 				    		}
-			    		}		    		
+			    		}
 			    	}
 
 			    	$this->pdf->Ln(1);
@@ -830,42 +830,42 @@ class PlanAlimentario extends CI_Controller {
 
 			//footer
     		$this->footerPlan($consulta);
-		}	
+		}
 
 		if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
 			$anchoBloque =  $this->pdf->GetPageWidth() / 3;
 			$altoBloque =  ($this->pdf->GetPageHeight() - (25+21)) / 3;
 			$yInicial = $this->pdf->GetY();
-			$this->pdf->SetLeftMargin(0); 
-			$this->pdf->SetRightMargin(0); 
+			$this->pdf->SetLeftMargin(0);
+			$this->pdf->SetRightMargin(0);
 			$posX = 0;
 			foreach ($arrayPlan as $indDia => $dia) {
 				$this->pdf->SetTextColor(255,255,255);
-				if($dia['id']==1 || $dia['id']==2 || $dia['id']==3){					
+				if($dia['id']==1 || $dia['id']==2 || $dia['id']==3){
 					$this->pdf->SetFillColor(0,156,222);
 					$posY = $yInicial;
-					$this->pdf->SetXY($posX, $posY);																	    		
+					$this->pdf->SetXY($posX, $posY);
 				}
 
 				if($dia['id']==4 || $dia['id']==5 || $dia['id']==6){
 					$this->pdf->SetFillColor(106,220,0);
 					$posY = $yInicial + $altoBloque;
-					$this->pdf->SetXY($posX, $posY);	
+					$this->pdf->SetXY($posX, $posY);
 				}
-				
+
 				if($dia['id']==7){
 					$this->pdf->SetFillColor(255,0,100);
 					$posY = $yInicial + ($altoBloque*2);
 					$this->pdf->SetXY($posX, $posY);
 				}
 				$this->pdf->SetFont('Arial','B',15);
-								
+
 		    	$this->pdf->Cell($anchoBloque,7,ucwords(strtolower_total(utf8_decode($dia['nombre_dia']))),0,1,'C',true);
 		    	$this->pdf->Ln(3);
-		    	$this->pdf->SetX($posX+3);		    				
+		    	$this->pdf->SetX($posX+3);
 
-		    	$this->pdf->SetLeftMargin($posX + 3); 
-				$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);	
+		    	$this->pdf->SetLeftMargin($posX + 3);
+				$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);
 				$this->pdf->SetFont('Arial','',10);
 				$colorTurno = 0;
 		    	foreach ($dia['turnos'] as $indTurno => $turno) {
@@ -874,16 +874,16 @@ class PlanAlimentario extends CI_Controller {
 		    		}else{
 		    			$this->pdf->SetTextColor(83,83,83);
 		    		}
-		    			
+
 		    		if($consulta['tipo_dieta'] == 'SD'){
 		    			$text = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion']))) .': ' . $turno['indicaciones'];
-		    			
+
 		    			$this->pdf->MultiCell($anchoBloque,4,$text,0,'L',FALSE);
 		    		}
 
 		    		if($consulta['tipo_dieta'] == 'CD'){
 		    			$text = '';
-		    			if(!empty($turno['alimentos'])){			    			
+		    			if(!empty($turno['alimentos'])){
 				    		foreach ($turno['alimentos'] as $ind => $alm) {
 				    			$text .= $alm['cantidad'] . ' ' . $alm['medida_casera'] . ' ' . $alm['nombre'];
 				    			if(!empty($alm['alternativos'])){
@@ -891,13 +891,13 @@ class PlanAlimentario extends CI_Controller {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
 				    			}
-				    			$text .= ' + ';				    			
+				    			$text .= ' + ';
 				    		}
 			    		}
 
 			    		$result = (strlen($text)>0) ? substr($text,0,-3) : '' ;
 		    			$text_final = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion'] .': ' . $result)));
-		    			
+
 		    			$this->pdf->MultiCell($anchoBloque,4,$text_final,0,'L',FALSE);
 		    		}
 		    		$this->pdf->Ln(3);
@@ -917,7 +917,7 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->Cell($anchoBloque,7,'* Recomendaciones',0,1,'C',true);
 					$this->pdf->Ln(5);
 					$this->pdf->SetX($posX);
-					$this->pdf->SetLeftMargin($posX + 3); 
+					$this->pdf->SetLeftMargin($posX + 3);
 					$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);
 					$this->pdf->SetTextColor(0,0,0);
 					$indicaciones = ucfirst(strtolower_total(utf8_decode($consulta['indicaciones_dieta'])));
@@ -932,23 +932,23 @@ class PlanAlimentario extends CI_Controller {
 					/*otros datos*/
 					$posX += $anchoBloque;
 					$this->pdf->SetXY($posX,$yInicial + ($altoBloque*2));
-					$this->pdf->Cell($anchoBloque,7,'',0,1,'C',true);	
+					$this->pdf->Cell($anchoBloque,7,'',0,1,'C',true);
 					$this->pdf->Ln(5);
 					$this->pdf->SetX($posX);
 					$this->pdf->SetTextColor(0,0,0);
 					$this->pdf->SetFont('Arial','',20);
-					$this->pdf->Cell($anchoBloque, 12, utf8_decode('PRÓXIMA CITA:'), 0, 1, 'C', false);	
+					$this->pdf->Cell($anchoBloque, 12, utf8_decode('PRÓXIMA CITA:'), 0, 1, 'C', false);
 					$this->pdf->SetX($posX);
 					$this->pdf->Image('assets/images/icons/calendario.png',$posX+10,null,$anchoBloque-20);
 
-					if(!empty($consulta['prox_cita'])){						
+					if(!empty($consulta['prox_cita'])){
 						$this->pdf->SetXY($posX, $this->pdf->GetY() - 28);
 						$this->pdf->SetFont('Arial','B',55);
 						$dia_fecha = date('d', strtotime($consulta['prox_cita']));
 						$this->pdf->Cell($anchoBloque, 12, $dia_fecha, 0, 1, 'C', false);
 						$this->pdf->SetX($posX);
 						$this->pdf->SetFont('Arial','',16);
-						$this->pdf->Cell($anchoBloque, 12, formatoSoloMes($consulta['prox_cita']), 0, 1, 'C', false);				
+						$this->pdf->Cell($anchoBloque, 12, formatoSoloMes($consulta['prox_cita']), 0, 1, 'C', false);
 					}else{
 						$this->pdf->SetXY($posX, $this->pdf->GetY() - 25);
 						$this->pdf->SetFont('Arial','B',20);
@@ -956,7 +956,7 @@ class PlanAlimentario extends CI_Controller {
 					}
 
 					$this->pdf->SetFont('Arial','',13);
-					$this->pdf->SetXY($posX,-20);	
+					$this->pdf->SetXY($posX,-20);
 					$this->pdf->Cell($anchoBloque,6,$configuracion['pagina_web'],0,1,'C',FALSE);
 					$this->pdf->SetX($posX);
 					$this->pdf->Cell($anchoBloque,6,'cel.: ' . $configuracion['celular'],0,1,'C',FALSE);
@@ -964,7 +964,7 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->Cell($anchoBloque,6,$configuracion['correo'],0,1,'C',FALSE);
 				}
 			}
-		}	
+		}
 
     	//salida
 		$timestamp = date('YmdHis');

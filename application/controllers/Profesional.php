@@ -36,6 +36,7 @@ class Profesional extends CI_Controller {
 					'usuario' => $row['username']					
 				)
 			);
+			// var_dump($row['fecha_nacimiento'], darFormatoDMY($row['fecha_nacimiento'])); exit(); 
 		}
 
     	$arrData['datos'] = $arrListado;
@@ -50,7 +51,7 @@ class Profesional extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	 public function listar_profesional_cbo(){
+	public function listar_profesional_cbo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_profesional->m_cargar_profesional_cbo();
 		$arrListado = array();
@@ -108,7 +109,7 @@ class Profesional extends CI_Controller {
 
     	// INICIA EL REGISTRO
 		if($this->model_profesional->m_registrar($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente';
+			$arrData['message'] = 'Se registraron los datos del profesional correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output
@@ -150,7 +151,7 @@ class Profesional extends CI_Controller {
     	}    	
 
 		if($this->model_profesional->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ';
+			$arrData['message'] = 'Se editaron los datos del profesional correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output

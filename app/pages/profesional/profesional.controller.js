@@ -218,7 +218,7 @@
             }/* no delay here */);                     
             // BOTONES
             vm.aceptar = function () {
-              vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
+              // vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
               vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sRegistrarProfesional(vm.fData).then(function (rpta) {
                 // var openedToasts = [];
@@ -274,51 +274,6 @@
               vm.listaEspecialidades = angular.copy(rpta.datos);
               vm.fData.especialidad = vm.listaEspecialidades[0];
             });
-
-            // DATEPICKER
-            vm.today = function() {             
-              vm.fData.fecha_nacimiento = new Date(vm.fData.fecha_nacimiento_for+'T23:00:00');
-            };
-
-            vm.clear = function() {
-              vm.fData.fecha_nacimiento = null;
-            };
-            vm.today();
-            vm.inlineOptions = {
-              minDate: new Date(),
-              showWeeks: false
-            };
-
-            vm.dateOptions = {
-              maxDate: new Date(2020, 5, 22),
-              minDate: new Date(),
-              startingDay: 1,
-              showWeeks: false
-            };
-
-            vm.toggleMin = function() {
-              vm.inlineOptions.minDate = vm.inlineOptions.minDate ? null : new Date();
-              vm.dateOptions.minDate = vm.inlineOptions.minDate;
-            };
-
-            vm.toggleMin();
-
-            vm.open1 = function() {
-              vm.popup1.opened = true;
-            };
-
-            vm.setDate = function(year, month, day) {
-              vm.fData.fecha_nacimiento = new Date(year, month, day);
-            };
-
-            vm.formats = ['dd-MM-yyyy','dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-            vm.format = vm.formats[0];
-            vm.altInputFormats = ['d!/M!/yyyy'];
-
-            vm.popup1 = {
-              opened: false
-            };
-            // FIN DATAPICKER
             vm.getUsuarioAutocomplete = function (value) {
               var params = {};
               params.search= value;
@@ -447,7 +402,7 @@
               };
             }                                   
             vm.aceptar = function () {
-              vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
+              // vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
               vm.fData.idespecialidad = vm.fData.especialidad.id;
               ProfesionalServices.sEditarProfesional(vm.fData).then(function (rpta) {
                 if(rpta.flag == 1){ 

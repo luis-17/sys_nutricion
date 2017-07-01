@@ -6,7 +6,7 @@
     .service('ConsultasServices', ConsultasServices);
 
   /** @ngInject */
-  function ConsultasController ($scope,$uibModal,$window,alertify,toastr,ConsultasServices,pageLoading,PlanAlimentarioServices) {
+  function ConsultasController ($scope,$uibModal,$window,alertify,ConsultasServices,pageLoading,PlanAlimentarioServices, pinesNotifications) { 
     var vm = this;
 
     vm.initConsulta = function(cita,origen,callback,tipoVista){
@@ -203,30 +203,20 @@
       };
 
       ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){
-        var openedToasts = [];
-        vm.options = {
-          timeout: '3000',
-          extendedTimeout: '1000',
-          preventDuplicates: false,
-          preventOpenDuplicates: false
-        };
-        if(rpta.flag == 1){
-          var title = 'OK';
-          var iconClass = 'success';
+        // var openedToasts = [];
+        if(rpta.flag == 1){ 
           vm.fData.idatencion = rpta.idatencion;
-          console.log('registro atencion', vm.fData);
-          /*$scope.changeViewConsulta(false);*/
           vm.callback();
-          vm.changePestania(3);
-
+          vm.changePestania(3);      
+          var pTitle = 'OK!';
+          var pType = 'success';
         }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';  
         }else{
           alert('Ocurrió un error');
         }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         pageLoading.stop();
       });
     }
@@ -239,17 +229,8 @@
       };
 
       ConsultasServices.sActualizarConsulta(datos).then(function(rpta){
-        var openedToasts = [];
-        vm.options = {
-          timeout: '3000',
-          extendedTimeout: '1000',
-          preventDuplicates: false,
-          preventOpenDuplicates: false
-        };
-        if(rpta.flag == 1){
-          var title = 'OK';
-          var iconClass = 'success';
-          /*$scope.changeViewConsulta(false);*/
+        // var openedToasts = [];
+        if(rpta.flag == 1){ 
           if( vm.origen == 'citas' ){
             vm.callback();
             vm.changePestania(3);
@@ -257,15 +238,16 @@
             vm.callback(vm.cita.cliente);
             $scope.changeViewPaciente(true);
             $scope.changeViewConsulta(false);
-          }
+          }       
+          var pTitle = 'OK!';
+          var pType = 'success';
         }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';  
         }else{
           alert('Ocurrió un error');
         }
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
       });
     }

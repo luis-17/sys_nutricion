@@ -69,7 +69,7 @@ class Usuario extends CI_Controller {
 
     	// INICIA EL REGISTRO
 		if($this->model_usuario->m_registrar($allInputs)){
-			$arrData['message'] = 'Se registraron los datos correctamente';
+			$arrData['message'] = 'Se registraron los datos del usuario correctamente';
 			$arrData['datos'] = GetLastId('idusuario','usuario');
     		$arrData['flag'] = 1;
 		}
@@ -83,7 +83,7 @@ class Usuario extends CI_Controller {
     	$arrData['flag'] = 0;
 
 		if($this->model_usuario->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ';
+			$arrData['message'] = 'Se editaron los datos del usuario correctamente ';
     		$arrData['flag'] = 1;
 		}
 		$this->output
