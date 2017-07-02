@@ -230,23 +230,176 @@ class Consulta extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-	public function Imprimir_consulta()
+	public function imprimir_consulta()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData = array();
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;
     	// DATOS
-    	$consulta = $this->model_consulta->m_consultar_atencion($allInputs['resultado']['idatencion']);
+    	$configuracion = GetConfiguracion();
+		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
     	//var_dump($consulta); exit();
 
     	$this->pdf = new Fpdfext();
     	$this->pdf->AddPage('P','A4');
-		$this->pdf->SetFont('Arial','B',16);
+    	$this->pdf->SetMargins(8, 8, 8);
+    	$this->pdf->SetAutoPageBreak(false);
+		$this->pdf->SetFont('Arial','',13);		
 
-		$this->pdf->Cell(0,11,'',0,15);
-		$this->pdf->Cell(0,7,utf8_decode('CITA Nº ' . $consulta['idcita']),0,7,'R');
+		/*header*/
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,60);
+		$this->pdf->Cell(0,6,utf8_decode('ID: ' . str_pad($consulta['idcita'], 5, "0", STR_PAD_LEFT)),0,1,'R');
+		$this->pdf->Cell(0,6,utf8_decode('Fecha: ' . date('d/m/Y',strtotime($consulta['fecha_atencion']))) ,0,1,'R');
+		
+		/*paciente*/
+		$this->pdf->Ln(5);
+		$paciente = $this->model_paciente->m_cargar_paciente_por_id($allInputs['consulta']);
+		$nombre = ucwords(strtolower_total($paciente['nombre'] . ' ' . $paciente['apellidos']));
+		$this->pdf->Cell(0,6,utf8_decode('Nombre: ' . $nombre ) ,0,1,'L');
+		$sexo = ($paciente['sexo'] == 'F') ? 'Femenino' : 'Masculino';
+		$this->pdf->Cell(0,6,utf8_decode('Sexo: ' . $sexo ) ,0,1,'L');
+		$this->pdf->Cell(0,6,utf8_decode('Edad: ' . devolverEdad($paciente['fecha_nacimiento']) ) ,0,1,'L');
+		$this->pdf->Cell(0,6,utf8_decode('Talla: ' . $paciente['estatura'] . ' cm.' ) ,0,1,'L');
 
+		$this->pdf->Ln(8);
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->Cell(17,6,utf8_decode('PESO: '  ) ,0,0,'L');
+		$this->pdf->SetFont('Arial','BU',15);
+		$this->pdf->Cell(10,6,utf8_decode($consulta['peso'] . 'KG.') ,0,0,'L');
+
+		/*composicion corporal*/
+		$this->pdf->Ln(10);
+		$this->pdf->SetFont('Arial','B',11);
+		$posYCuadro = $this->pdf->GetY();
+		$this->pdf->Cell(10,6,utf8_decode('COMPOSICION CORPORAL') ,0,0,'L');
+		$this->pdf->Image('assets/images/icons/composicion-cuerpo.jpg',8,$posYCuadro+6);
+		$this->pdf->SetFont('Arial','',11);
+		$posXporc = 0;
+		$anchoPorc = ($this->pdf->GetPageWidth() - 16) / 2;
+		$this->pdf->Ln(12);
+		$this->pdf->SetX($posXporc);
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('GRASA: '  . $consulta['porc_masa_grasa'] . ' %') ,0,0,'C');
+		$this->pdf->Ln(15);
+		$this->pdf->SetX($posXporc);
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('PROTEINA: '  . $consulta['porc_masa_libre'] . ' %') ,0,0,'C');
+		$this->pdf->Ln(15);
+		$this->pdf->SetX($posXporc);
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('AGUA: '  . $consulta['porc_agua_corporal'] . ' %') ,0,0,'C');
+
+		/*progreso*/
+		$this->pdf->Ln(10);
+		$this->pdf->SetX(8);
+		$anchoProgreso = (($this->pdf->GetPageWidth() - 16) / 2)+ 22;
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso:') ,0,1,'L');
+		$this->pdf->SetFont('Arial','',11);
+		$posYprogreso = $this->pdf->GetY();
+		$this->pdf->Image('assets/images/icons/star.png',9, null, 4);
+		$this->pdf->SetXY(13, $posYprogreso);
+		$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso 1...') ,0,0,'L');
+		$posYprogreso+=6;
+		$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
+		$this->pdf->SetXY(13, $posYprogreso);
+		$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso 2...') ,0,0,'L');
+		$posYprogreso+=6;
+		$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
+		$this->pdf->SetXY(13, $posYprogreso);
+		$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso 3...') ,0,0,'L');
+
+		/*detalle peso*/
+		$posXCuadro = (($this->pdf->GetPageWidth() - 16) / 2)+ 25;
+		$anchoCuadro =(($this->pdf->GetPageWidth() - 16) / 2) -20;
+		$anchoSubCuadro = $anchoCuadro -30;
+		$this->pdf->SetFillColor(234,235,237);
+		$this->pdf->SetDrawColor(150,155,165);
+		$this->pdf->SetXY($posXCuadro , $posYCuadro);
+		$posY = $posYCuadro;
+		$this->pdf->SetFont('Arial','B',11);
+		$this->pdf->Cell($anchoCuadro,11,utf8_decode('DETALLE DEL PESO') ,1,0,'C', TRUE);
+		$this->pdf->SetFont('Arial','',11);
+		$posY += 11;
+		$this->pdf->SetXY($posXCuadro,$posY);
+		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   PESO IDEAL') ,1,0,'L', FALSE);
+		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);
+		$pesoIdeal = round((0.75 * ((float)$paciente['estatura'] - 150)) + 50);
+		$this->pdf->Cell(30,9,utf8_decode($pesoIdeal . ' kg.') ,1,0,'C', FALSE);
+
+		$posY += 9;
+		$this->pdf->SetXY($posXCuadro, $posY);
+		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   OBJETIVO') ,1,0,'L', FALSE);
+		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);
+		$objetivo = round($pesoIdeal - (float)$consulta['peso']);
+		$this->pdf->Cell(30,9,utf8_decode($objetivo . ' kg.') ,1,0,'C', FALSE);
+
+		$posY += 9;
+		$this->pdf->SetFillColor(252,184,185);
+		$this->pdf->SetXY($posXCuadro, $posY);
+		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   GRASA') ,1,0,'L', TRUE);
+		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
+		$this->pdf->Cell(30,9,utf8_decode(' kg.') ,1,0,'C', TRUE);
+
+		$posY += 9;
+		$this->pdf->SetXY($posXCuadro, $posY);
+		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   MASA MUSCULAR') ,1,0,'L', TRUE);
+		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
+		$this->pdf->Cell(30,9,utf8_decode(' kg.') ,1,0,'C', TRUE);
+
+		/*tipo cuerpo*/
+		$posY += 12;
+		$this->pdf->SetXY(($posXCuadro), $posY);
+		$this->pdf->Cell($anchoCuadro,8,utf8_decode('TIPO DE CUERPO') ,0,0,'C', FALSE);
+		$posY += 8;
+		$this->pdf->Image('assets/images/icons/tipo-cuerpo.jpg',$posXCuadro+10,$posY);
+
+		/*barras*/
+		$anchoTotalBarras = $this->pdf->GetPageWidth() - 32;
+		$posYprogreso+=6;
+		$this->pdf->SetXY(8,$posYprogreso);
+		//BARRA IMC
+		$this->pdf->Ln(8);
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->Cell(17,6,utf8_decode('IMC: '  ) ,0,0,'L');
+		$anchoColor = $anchoTotalBarras / 6;
+		$this->pdf->Ln(8);
+		$this->pdf->SetFont('Arial','',10);
+		$this->pdf->SetX(16);
+		$this->pdf->SetFillColor(58,111,255);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Bajo peso') ,0,0,'C',TRUE);
+
+		$this->pdf->SetFillColor(73,196,91);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Bajo normal') ,0,0,'C',TRUE);
+
+		$this->pdf->SetFillColor(255,253,67);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Sobrepeso') ,0,0,'C',TRUE);
+
+		$this->pdf->SetFillColor(255,152,91);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Obesidad 1º') ,0,0,'C',TRUE);
+
+		$this->pdf->SetFillColor(255,71,71);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Obesidad 2º') ,0,0,'C',TRUE);
+
+		$this->pdf->SetFillColor(214,50,53);
+		$this->pdf->Cell($anchoColor,11,utf8_decode('Obesidad 3º') ,0,0,'C',TRUE);
+		$this->pdf->Ln();
+		$this->pdf->SetX(16);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('< 18.5') ,0,0,'C',FALSE);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('18.5 a 24.9') ,0,0,'C',FALSE);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('25 a 29.9') ,0,0,'C',FALSE);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('30 a 34.9') ,0,0,'C',FALSE);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('35 a 39.9') ,0,0,'C',FALSE);
+		$this->pdf->Cell($anchoColor,5,utf8_decode('> 40') ,0,0,'C',FALSE);
+
+		$this->pdf->Ln(8);
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->Cell(17,6,utf8_decode('GRASA: '  ) ,0,0,'L');
+
+		$this->pdf->Ln(8);
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->Cell(17,6,utf8_decode('GRASA VISCERAL: '  ) ,0,0,'L');
+
+
+		/*output*/
 		$timestamp = date('YmdHis');
 		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
 

@@ -1019,13 +1019,13 @@
           var arrParams = {
               titulo: 'CONSULTA',
               datos:{
-                resultado: item,
+                consulta: item,
                 salida: 'pdf',
                 tituloAbv: 'Consulta',
                 titulo: 'Consulta'
               },
               metodo: 'php',
-              url: angular.patchURLCI + "Consulta/Imprimir_consulta"
+              url: angular.patchURLCI + "Consulta/imprimir_consulta"
             }
             ModalReporteFactory.getPopupReporte(arrParams);
         }

@@ -142,6 +142,39 @@ class Model_consulta extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 
+	public function m_cargar_atencion_anterior($idcliente, $fecha_atencion){
+		$this->db->select('at.idatencion, at.idcliente, at.idcita, at.peso, at.porc_masa_grasa, at.porc_masa_libre, at.porc_masa_muscular,
+			at.kg_masa_muscular, at.porc_agua_corporal, at.kg_agua_corporal, at.porc_grasa_visceral, at.kg_grasa_visceral, at.cm_pecho,
+			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
+			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
+			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion');
+
+		$this->db->from('atencion at');
+		$this->db->where('at.estado_atencion', 1);
+		$this->db->where('at.idcliente', $idcliente);
+		$this->db->where('fecha_atencion <', $fecha_atencion);
+		$this->db->order_by('fecha_atencion', 'DESC');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
+
+	public function m_cargar_primera_atencion($idcliente, $fecha_atencion){
+		$this->db->select('at.idatencion, at.idcliente, at.idcita, at.peso, at.porc_masa_grasa, at.porc_masa_libre, at.porc_masa_muscular,
+			at.kg_masa_muscular, at.porc_agua_corporal, at.kg_agua_corporal, at.porc_grasa_visceral, at.kg_grasa_visceral, at.cm_pecho,
+			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
+			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
+			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion');
+
+		$this->db->from('atencion at');
+		$this->db->where('at.estado_atencion', 1);
+		$this->db->where('at.idcliente', $idcliente);
+		$this->db->order_by('fecha_atencion', 'ASC');
+		$this->db->limit(1);
+		return $this->db->get()->row_array();
+	}
+
 	public function m_cargar_atenciones_paciente($idcliente, $todas = FALSE){
 		$this->db->select('at.idatencion, at.idcliente, at.idcita, at.fecha_atencion,
 			at.peso, at.porc_masa_grasa, at.porc_masa_libre,

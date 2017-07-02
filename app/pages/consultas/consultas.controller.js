@@ -6,7 +6,7 @@
     .service('ConsultasServices', ConsultasServices);
 
   /** @ngInject */
-  function ConsultasController ($scope,$uibModal,$window,alertify,ConsultasServices,pageLoading,PlanAlimentarioServices, pinesNotifications) { 
+  function ConsultasController ($scope,$uibModal,$window,alertify,ConsultasServices,pageLoading,PlanAlimentarioServices, pinesNotifications, ModalReporteFactory) { 
     var vm = this;
 
     vm.initConsulta = function(cita,origen,callback,tipoVista){
@@ -255,6 +255,21 @@
     vm.btnGeneraPlan = function(){
       vm.fData.cita = vm.cita;
       $scope.changeViewPlan(true,vm.fData);
+    }
+
+    vm.btnImprimirConsulta = function(){
+      var arrParams = {
+          titulo: 'CONSULTA',
+          datos:{
+            consulta: vm.fData,
+            salida: 'pdf',
+            tituloAbv: 'Consulta',
+            titulo: 'Consulta'
+          },
+          metodo: 'php',
+          url: angular.patchURLCI + "Consulta/imprimir_consulta"
+        }
+        ModalReporteFactory.getPopupReporte(arrParams);
     }
 
     vm.btnPdf = function(){
