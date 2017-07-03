@@ -286,16 +286,29 @@
         url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
       }
       ModalReporteFactory.getPopupReporte(arrParams);
-      // alert('En proceso');
-      //pageLoading.start('Cargando reporte...');
-      
-     /* PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
-        if(rpta.flag == 1){
-          console.log('pdf...');
-          $window.open(rpta.urlTempPDF, '_blank');
-          //pageLoading.stop();
+    }
+
+    vm.btnEnviarPlan = function(){
+      pageLoading.start('Enviando Plan Alimentario...');
+      var datos = {
+        cita:vm.cita,
+        consulta:vm.fData,
+        salida: 'correo',
+        emails: vm.emails,
+      }
+      PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
+        if(rpta.flag == 1){      
+          var pTitle = 'OK!';
+          var pType = 'success';
+        }else if( rpta.flag == 0 ){
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';  
+        }else{
+          alert('Ocurrió un error');
         }
-      });*/
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
+        pageLoading.stop();
+      });
     }
   }
   function ConsultasServices($http, $q) {

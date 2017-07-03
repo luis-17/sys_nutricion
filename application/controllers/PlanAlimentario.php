@@ -733,11 +733,44 @@ class PlanAlimentario extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;
+    	$enviarCorreo = FALSE; 
+    	$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+
+    	if(!empty($allInputs['salida']) && $allInputs['salida']=='correo'){
+    		if(empty($allInputs['emails'])){
+    			$arrData['flag'] = 0;
+    			$arrData['message'] = 'Debe ingresar correos validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+    		}
+
+    		$arrayMails = explode(',', $allInputs['emails']);
+    		$hayError = false;
+    		foreach ($arrayMails as $key => $mail) {
+    			if(!comprobar_email($mail)){
+    				$hayError = TRUE;
+    			}
+    		}
+
+    		if($hayError){
+    			$arrData['flag'] = 0;
+    			$arrData['message'] = 'Debe ingresar correos validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));		
+				return;
+    		}
+
+    		if(!$hayError){
+    			$enviarCorreo = TRUE;
+    		}
+    	}
 
     	$configuracion = GetConfiguracion();
 		// var_dump($allInputs); exit();
     	$arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
-		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
 
     	$this->pdf = new Fpdfext();
 		$this->pdf->AddPage();
@@ -968,11 +1001,53 @@ class PlanAlimentario extends CI_Controller {
 
     	//salida
 		$timestamp = date('YmdHis');
-		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+		$nombreArchivo = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$result = $this->pdf->Output( 'F', $nombreArchivo);
 
-		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$arrData['urlTempPDF'] = $nombreArchivo;
+
+		if($enviarCorreo){
+			$nombrePaciente = ucwords(strtolower_total($allInputs['cita']['cliente']['paciente']));
+			if(!$this->enviar_correo_pdf_plan($configuracion,$nombrePaciente,$nombreArchivo,$arrayMails)){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Ha ocurrido un error enviando el Plan Alimentario';
+			}
+		}
+
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
+	}
+
+	private function enviar_correo_pdf_plan($configuracion, $paciente, $nombreArchivo, $listaCorreos){
+		$cuerpo = ':)';
+		$asunto = $paciente . ', DESCARGA TU PLAN ALIMENTARIO AQUI.'; 
+		$setFromAleas = $configuracion['empresa'];
+		$this->load->library('My_PHPMailer');
+		date_default_timezone_set('UTC');
+
+		$mail = new PHPMailer();
+		$mail->IsSMTP(true);
+		//$mail->SMTPDebug = 1;
+		$mail->SMTPAuth = ($configuracion['smtp_auth'] == 1) ? TRUE : FALSE;
+		$mail->SMTPSecure = $configuracion['smtp_secure'];
+		$mail->Host = $configuracion['smtp_host'];
+		$mail->Port = $configuracion['smtp_port'];
+		$mail->Username =  $configuracion['smtp_username'];
+		$mail->Password = $configuracion['smtp_password'];
+		$mail->SetFrom($configuracion['smtp_username'],$setFromAleas);
+		$mail->AddReplyTo($configuracion['smtp_username'],$setFromAleas);
+		$mail->Subject = $asunto;
+		$mail->IsHTML(true);
+		$mail->AltBody = $cuerpo;
+		$mail->MsgHTML($cuerpo);
+		$mail->CharSet = 'UTF-8';
+		$mail->addStringAttachment(file_get_contents($nombreArchivo), 'PlanAlimentario.pdf');
+
+		foreach ($listaCorreos as $key => $email) {
+			$mail->addAddress($email);						
+		} 
+
+		return $mail->Send();
 	}
 }

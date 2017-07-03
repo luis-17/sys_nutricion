@@ -75,6 +75,7 @@ function comprobar_email($email){
 function GetConfiguracion(){
     $ci2 =& get_instance();
     $ci2->db->select('c.empresa, c.pagina_web, c.celular, c.logo_imagen, c.correo');
+    $ci2->db->select('c.smtp_port, c.smtp_host, c.smtp_username, c.smtp_password, c.smtp_secure, c.smtp_auth');
     $ci2->db->from('configuracion c');
     return $ci2->db->get()->row_array();
 }
