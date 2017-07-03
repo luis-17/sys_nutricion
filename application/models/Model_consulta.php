@@ -121,7 +121,8 @@ class Model_consulta extends CI_Model {
 
 		$this->db->from('atencion at');
 		$this->db->join('cita c', 'c.idcita = at.idproxcita', 'left');
-		$this->db->join('profesional pr', 'c.idprofesional = pr.idprofesional', 'left');
+		$this->db->join('cita cc', 'cc.idcita = at.idcita');
+		$this->db->join('profesional pr', 'cc.idprofesional = pr.idprofesional', 'left');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idatencion', (int)$idatencion);
 		return $this->db->get()->row_array();
