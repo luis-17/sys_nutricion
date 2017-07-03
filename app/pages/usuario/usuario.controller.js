@@ -15,7 +15,8 @@
         sRegistrarUsuario: sRegistrarUsuario,
         sEditarUsuario: sEditarUsuario,
         sAnularUsuario: sAnularUsuario,
-        sListaUsuarioAutocomplete: sListaUsuarioAutocomplete,            
+        sListaUsuarioAutocomplete: sListaUsuarioAutocomplete, 
+        sMostrarUsuarioID: sMostrarUsuarioID           
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -58,5 +59,13 @@
       });
       return (request.then(handleSuccess,handleError));
     }
+    function sMostrarUsuarioID(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Usuario/mostrar_usuario_id",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }    
   }
 })();

@@ -265,7 +265,7 @@
             // var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
-            console.log("row",vm.fData);
+            vm.fData.afterUsuario = vm.fData.usuario;
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
 
@@ -354,23 +354,29 @@
                 controller: function($scope, $uibModalInstance, data ,modoEdit,arrToModal ){
                   var vm = this;
                   vm.fData = {};
-                  //vm.modoEdicion = false;
+                  //vm.fData.username = data.usuario;
+                  //vm.fData.idusuario = data.idusuario;
                   vm.modoEdit = modoEdit;
-                  vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
-                  vm.modalTitle = 'Edición de Usuario';
-                  console.log("data: ",data);
-                  console.log("modo: ",modoEdit);                  
+                  vm.modalTitle = 'Edición de Usuario'; 
 
-                  GrupoServices.sListarGrupo().then(function (rpta) {
-                    vm.listaGrupo = angular.copy(rpta.datos);
-                    vm.fData.idgrupo = vm.listaGrupo[0];
-                  });
+                  UsuarioServices.sMostrarUsuarioID(data).then(function(rptaUsu){
+                    vm.fData.username = rptaUsu.datos[0]['username'];
+                    vm.fData.idusuario = data.idusuario;                    
+                    GrupoServices.sListarGrupo().then(function (rpta) {
+                      vm.listaGrupo = angular.copy(rpta.datos);
+                      angular.forEach(vm.listaGrupo, function(value, key){
+                        if(value.id == rptaUsu.datos[0]['idgrupo']){
+                          vm.fData.idgrupo = vm.listaGrupo[key];
+                        }                      
+                      });
+                      
+                    });                    
+                  });          
                   // BOTONES
                   vm.aceptar = function () {
-                    UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) { 
+                    UsuarioServices.sEditarUsuario(vm.fData).then(function (rpta) { 
                       if(rpta.flag == 1){ 
                         data.usuario = vm.fData.username;
-                        data.idusuario = rpta.datos;
                         $uibModalInstance.close();          
                         var pTitle = 'OK!';
                         var pType = 'success';
@@ -478,6 +484,9 @@
 
             };
             vm.cancel = function () {
+              if(vm.fData.afterUsuario != vm.fData.usuario && vm.modoEdicion ){
+                vm.getPaginationServerSide();
+              }
               $uibModalInstance.dismiss('cancel');
             };
           },

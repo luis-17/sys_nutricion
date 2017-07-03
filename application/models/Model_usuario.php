@@ -25,6 +25,13 @@ class Model_usuario extends CI_Model {
 		$this->db->limit(10);
 		return $this->db->get()->result_array();
 	}	
+	public function m_cargar_usuario_id($datos){
+		$this->db->select('idusuario,username,idgrupo',FALSE);
+		$this->db->from('usuario');		
+		$this->db->where('idusuario',$datos['idusuario']);
+		$this->db->where('estado_us',1);		
+		return $this->db->get()->result_array();
+	}	
 	public function m_registrar($datos)
 	{
 		$data = array(

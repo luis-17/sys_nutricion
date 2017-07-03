@@ -33,7 +33,8 @@ class Profesional extends CI_Controller {
 					'num_colegiatura' => $row['num_colegiatura'],
 					'idusuario' => $row['idusuario'],
 					'nombre_foto' => $row['nombre_foto'],
-					'usuario' => $row['username']					
+					'usuario' => $row['username'],
+					'idgrupo' => $row['idgrupo']					
 				)
 			);
 			// var_dump($row['fecha_nacimiento'], darFormatoDMY($row['fecha_nacimiento'])); exit(); 
