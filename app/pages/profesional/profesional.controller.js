@@ -265,7 +265,7 @@
             // var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
-            // console.log("row",vm.fData);
+            console.log("row",vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
 
@@ -343,6 +343,63 @@
                 }
               });              
             }
+            /* --------- Editar datos del usuario -------*/
+            vm.Edituser = function(){
+              var modalInstance = $uibModal.open({
+                templateUrl: 'user.html',
+                controllerAs: 'us',
+                size: 'md',
+                backdropClass: 'splash',
+                windowClass: 'splash',          
+                controller: function($scope, $uibModalInstance, data ,modoEdit,arrToModal ){
+                  var vm = this;
+                  vm.fData = {};
+                  //vm.modoEdicion = false;
+                  vm.modoEdit = modoEdit;
+                  vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
+                  vm.modalTitle = 'Edición de Usuario';
+                  console.log("data: ",data);
+                  console.log("modo: ",modoEdit);                  
+
+                  GrupoServices.sListarGrupo().then(function (rpta) {
+                    vm.listaGrupo = angular.copy(rpta.datos);
+                    vm.fData.idgrupo = vm.listaGrupo[0];
+                  });
+                  // BOTONES
+                  vm.aceptar = function () {
+                    UsuarioServices.sRegistrarUsuario(vm.fData).then(function (rpta) { 
+                      if(rpta.flag == 1){ 
+                        data.usuario = vm.fData.username;
+                        data.idusuario = rpta.datos;
+                        $uibModalInstance.close();          
+                        var pTitle = 'OK!';
+                        var pType = 'success';
+                      }else if( rpta.flag == 0 ){
+                        var pTitle = 'Advertencia!';
+                        var pType = 'warning';  
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                      pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+                    });
+
+                  };
+                  vm.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                  };
+                },
+                resolve: {
+                  data : function() { return vm.fData},
+                  modoEdit : function() { return vm.modoEdicion},
+                  arrToModal: function() {
+                    return {
+                      getPaginationServerSide : vm.getPaginationServerSide,
+                    }
+                  }
+                }
+              });              
+            }
+
             /*------------  FIN REGISTRO USUARIO  ------------*/ 
             // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
             vm.cargarImagen = function(){
