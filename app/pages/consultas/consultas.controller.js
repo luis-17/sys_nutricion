@@ -259,33 +259,43 @@
 
     vm.btnImprimirConsulta = function(){
       var arrParams = {
-          titulo: 'CONSULTA',
-          datos:{
-            consulta: vm.fData,
-            salida: 'pdf',
-            tituloAbv: 'Consulta',
-            titulo: 'Consulta'
-          },
-          metodo: 'php',
-          url: angular.patchURLCI + "Consulta/imprimir_consulta"
-        }
-        ModalReporteFactory.getPopupReporte(arrParams);
+        titulo: 'CONSULTA',
+        datos:{
+          consulta: vm.fData,
+          salida: 'pdf',
+          tituloAbv: 'Consulta',
+          titulo: 'Consulta'
+        },
+        metodo: 'php',
+        url: angular.patchURLCI + "Consulta/imprimir_consulta"
+      }
+      ModalReporteFactory.getPopupReporte(arrParams);
     }
 
-    vm.btnPdf = function(){
+    vm.btnImprimirPlan = function(){
+      var arrParams = {
+        titulo: 'PLAN ALIMENTARIO',
+        datos:{
+          cita:vm.cita,
+          consulta:vm.fData,
+          salida: 'pdf',
+          tituloAbv: 'Plan Alimentario',
+          titulo: 'Plan Alimentario'
+        },
+        metodo: 'php',
+        url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
+      }
+      ModalReporteFactory.getPopupReporte(arrParams);
       // alert('En proceso');
       //pageLoading.start('Cargando reporte...');
-      var datos={
-        cita:vm.cita,
-        consulta:vm.fData
-      };
-      PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
+      
+     /* PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
         if(rpta.flag == 1){
           console.log('pdf...');
           $window.open(rpta.urlTempPDF, '_blank');
           //pageLoading.stop();
         }
-      });
+      });*/
     }
   }
   function ConsultasServices($http, $q) {

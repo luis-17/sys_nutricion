@@ -682,7 +682,7 @@ class PlanAlimentario extends CI_Controller {
 		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
 		$this->pdf->SetFont('Arial','',14);
 
-	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower($allInputs['cita']['cliente']['paciente'])),0,1,'R');
+	    $this->pdf->Cell(0,5,utf8_decode('Nombre: ' . ucwords(strtolower_total($allInputs['cita']['cliente']['paciente']))),0,1,'R');
 	    $this->pdf->Ln(0);
 
     	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
