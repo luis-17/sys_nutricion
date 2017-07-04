@@ -42,7 +42,7 @@
     vm.alertOnResize = function(event, delta){ 
       angular.element('.calendar').fullCalendar( 'refetchEvents' );
     };
-    //vm.overlay = angular.element('.fc-overlay');
+   
     vm.menu = angular.element('.menu-dropdown');
     vm.alertOnClick =function(event, jsEvent, view) {
       vm.event = event;
@@ -513,6 +513,26 @@
         eventDrop: vm.alertOnDrop,
         eventResize: vm.alertOnResize,
         eventClick: vm.alertOnClick,
+        eventMouseover: function (data, event, view) {
+          //console.log(event);
+          var tooltip = '<div class="tooltip-event"' +
+                        'style="">' 
+                          + 'Paciente: ' + data.cliente.paciente 
+                  + '</div>';
+            $("body").append(tooltip);
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $('.tooltip-event').fadeIn('500');
+                $('.tooltip-event').fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $('.tooltip-event').css('top', e.pageY + 10);
+                $('.tooltip-event').css('left', e.pageX + 20);
+            });
+        },
+        eventMouseout: function (data, event, view) {
+          $(this).css('z-index', 8);
+          $('.tooltip-event').remove();
+        },
         minTime: '07:00:00',
         maxTime: '23:00:00',
         displayEventTime: false,

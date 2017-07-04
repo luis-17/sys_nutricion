@@ -404,3 +404,14 @@ section.tile-body{
     float: right;
     margin-left: .6em;
 }
+
+.tooltip-event{
+    width:auto;
+    height:auto;
+    background:#000;
+    color:#fff;
+    position:absolute;
+    z-index:10001;
+    padding:10px; 
+    border-radius: 8px; 
+}
