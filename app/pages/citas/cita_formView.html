@@ -42,6 +42,7 @@
 	              	</label>
 	              	<div uib-timepicker required 
 		              	ng-model="modalcita.fData.hora_desde" 
+		              	ng-change="modalcita.updateHoraFin();"
 		              	hour-step="modalcita.tp1.hstep" 
 		              	minute-step="modalcita.tp1.mstep" 
 		              	show-meridian="modalcita.tp1.ismeridian">

@@ -231,7 +231,12 @@
 
           vm.getSelectedPaciente = function($item, $model, $label){
             vm.fData.cliente = $item;
-          }          
+          }     
+
+          vm.updateHoraFin = function(){
+            //console.log(vm.fData.hora_desde);
+            vm.fData.hora_hasta = moment(vm.fData.hora_desde).add(30,'m').toDate();
+          }     
 
           vm.ok = function () {
             
@@ -365,7 +370,12 @@
 
           vm.getSelectedPaciente = function($item, $model, $label){
             vm.fData.paciente = $item;
-          }          
+          } 
+
+          vm.updateHoraFin = function(){
+            //console.log(vm.fData.hora_desde);
+            vm.fData.hora_hasta = moment(vm.fData.hora_desde).add(30,'m').toDate();
+          }         
 
           vm.ok = function () {
             pageLoading.start('Actualizando Cita...');
