@@ -154,6 +154,7 @@
           $scope.fSessionCI = response.datos;
           console.log("datos login: ",response.datos);
           $scope.logIn();
+          $scope.CargaMenu();
           if( $location.path() == '/app/pages/login' ){
             $scope.goToUrl('/');
           }
@@ -166,6 +167,19 @@
 
     }
     $scope.getValidateSession();
+
+    $scope.CargaMenu = function() {
+      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opEstadisticas','opInformes'];
+      if($scope.fSessionCI.idgrupo == 1){
+        $scope.valores = [true,true,true,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 2){
+        $scope.valores = [true,true,true,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 3){
+        $scope.valores = [true,false,true,true,false,false,false,false];
+      }
+    }
 
     $scope.changeViewConsulta = function(value, pestania){
       $scope.viewConsulta = value;
