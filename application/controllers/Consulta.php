@@ -289,7 +289,7 @@ class Consulta extends CI_Controller {
     	$this->pdf->SetAutoPageBreak(false);
 		
 		/*graficos*/
-		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, TRUE);
+		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, TRUE, $consulta['fecha_atencion']);
 		$arrayFechas = array();
 		$arrayPeso = array();
 		$arrayImc = array();
@@ -347,10 +347,10 @@ class Consulta extends CI_Controller {
 		$this->pdf->Ln(10);
 		$this->pdf->SetFont('Arial','B',11);		
 		$this->pdf->Cell(10,6,utf8_decode('COMPOSICION CORPORAL') ,0,0,'L');
-		$this->pdf->Image('assets/images/icons/composicion-cuerpo.jpg',8,$posYCuadro+16);
+		$this->pdf->Image('assets/images/icons/cuerpo.png',8,$posYCuadro+16);
 		$this->pdf->SetFont('Arial','',11);
-		$posXporc = 0;
-		$anchoPorc = ($this->pdf->GetPageWidth() - 16) / 2;
+		$posXporc = 32;
+		$anchoPorc = (($this->pdf->GetPageWidth() - 8) / 2)-$posXporc;
 		$this->pdf->Ln(12);
 		$this->pdf->SetX($posXporc);
 		$this->pdf->Cell($anchoPorc,6,utf8_decode('GRASA: '  . $consulta['porc_masa_grasa'] . ' %') ,0,0,'C');
@@ -392,58 +392,67 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetXY($posXCuadro, $posY);
 		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   GRASA') ,1,0,'L', TRUE);
 		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
-		$this->pdf->Cell(30,9,utf8_decode(' kg.') ,1,0,'C', TRUE);
+		$this->pdf->Cell(30,9,utf8_decode(' ') ,1,0,'C', TRUE);
 
 		$posY += 9;
 		$this->pdf->SetXY($posXCuadro, $posY);
 		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   MASA MUSCULAR') ,1,0,'L', TRUE);
 		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
-		$this->pdf->Cell(30,9,utf8_decode(' kg.') ,1,0,'C', TRUE);
+		$this->pdf->Cell(30,9,utf8_decode(' ') ,1,0,'C', TRUE);
 
 		/*tipo cuerpo*/
 		$posY += 12;
 		$this->pdf->SetXY(($posXCuadro), $posY);
 		$this->pdf->Cell($anchoCuadro,8,utf8_decode('TIPO DE CUERPO') ,0,0,'C', FALSE);
-		$posY += 8;
-		$this->pdf->Image('assets/images/icons/tipo-cuerpo.jpg',$posXCuadro+12,$posY);
-		$posYCheck = $posY+7;
+		$anchoImagen = $anchoCuadro;
+		$anchoCuadro = $anchoCuadro - 33;
+		$posY += 10;
+		$posXCuadro += 5;
+		$this->pdf->Image('assets/images/icons/manzana.png',$posXCuadro+6,$posY, $anchoCuadro/3);
+		$this->pdf->Image('assets/images/icons/normal.png',$posXCuadro + ($anchoCuadro/3) + 12,$posY, $anchoCuadro/3);
+		$this->pdf->Image('assets/images/icons/pera.png',$posXCuadro + ($anchoCuadro/3) + ($anchoCuadro/3) + 18,$posY-2, $anchoCuadro/3);
+		$posYCheck = $posY+4;
 		$this->pdf->Ln(30);
-		$anchoImagen = $anchoCuadro - 17;
-		$this->pdf->SetX($posXCuadro+10);
+		$this->pdf->SetX($posXCuadro);
 		$this->pdf->SetFont('Arial','',10);
 		$this->pdf->Cell($anchoImagen/3,5,utf8_decode('MANZANA') ,0,0,'C',FALSE);
+		$this->pdf->SetX($this->pdf->GetX()-4);
 		$this->pdf->Cell($anchoImagen/3,5,utf8_decode('NORMAL') ,0,0,'C',FALSE);
+		$this->pdf->SetX($this->pdf->GetX()-5);
 		$this->pdf->Cell($anchoImagen/3,5,utf8_decode('PERA') ,0,0,'C',FALSE);
 		$this->pdf->Ln();				
 		$posY = $this->pdf->GetY();
 
-		$icc = (float)$consulta['cm_cintura'] / (float)$consulta['cm_cadera_gluteo'];
-		if($paciente['sexo'] == 'F'){
-			if($icc == 0.8){
-				$tipoCuerpo = 2;
-			}else if($icc < 0.8){
-				$tipoCuerpo = 1;
-			}else{
-				$tipoCuerpo = 3;
+		if(!empty($consulta['cm_cadera_gluteo'])){
+			$icc = (float)$consulta['cm_cintura'] / (float)$consulta['cm_cadera_gluteo'];			
+			if($paciente['sexo'] == 'F'){
+				if($icc == 0.8){
+					$tipoCuerpo = 2;
+				}else if($icc < 0.8){
+					$tipoCuerpo = 1;
+				}else{
+					$tipoCuerpo = 3;
+				}
+			}else if($paciente['sexo']=='M'){
+				if($icc == 1){
+					$tipoCuerpo = 2;
+				}else if($icc < 1){
+					$tipoCuerpo = 1;
+				}else{
+					$tipoCuerpo = 3;
+				}
 			}
-		}else if($paciente['sexo']=='M'){
-			if($icc == 1){
-				$tipoCuerpo = 2;
-			}else if($icc < 1){
-				$tipoCuerpo = 1;
-			}else{
-				$tipoCuerpo = 3;
-			}
-		}
 
-		if($tipoCuerpo == 1){
-			$posXCheck = $posXCuadro+17;
-		}else if($tipoCuerpo == 2){
-			$posXCheck = $posXCuadro+17 + ($anchoImagen/3);
-		}else if($tipoCuerpo == 3){
-			$posXCheck = $posXCuadro+17 + ($anchoImagen/3*2);
+			if($tipoCuerpo == 1){
+				$posXCheck = $posXCuadro+11;
+			}else if($tipoCuerpo == 2){
+				$posXCheck = $posXCuadro + 6 +($anchoImagen/3);
+			}else if($tipoCuerpo == 3){
+				$posXCheck = $posXCuadro + ($anchoImagen/3*2);
+			}
+			$this->pdf->Image('assets/images/icons/check.png',$posXCheck, $posYCheck,6);
 		}
-		$this->pdf->Image('assets/images/icons/check.png',$posXCheck, $posYCheck,6);
+		
 		$this->pdf->SetY($posY);
 	}
 

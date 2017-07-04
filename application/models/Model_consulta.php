@@ -176,7 +176,7 @@ class Model_consulta extends CI_Model {
 		return $this->db->get()->row_array();
 	}
 
-	public function m_cargar_atenciones_paciente($idcliente, $todas = FALSE, $ordenAsc = FALSE){
+	public function m_cargar_atenciones_paciente($idcliente, $todas = FALSE, $ordenAsc = FALSE, $fecha_maxima  = FALSE){
 		$this->db->select('at.idatencion, at.idcliente, at.idcita, at.fecha_atencion,
 			at.peso, at.porc_masa_grasa, at.porc_masa_libre,
 			at.porc_masa_muscular, at.kg_masa_muscular,
@@ -192,6 +192,10 @@ class Model_consulta extends CI_Model {
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idcliente', $idcliente);
+
+		if($fecha_maxima){
+			$this->db->where('at.fecha_atencion <=',$fecha_maxima);
+		}
 
 		if($ordenAsc){
 			$this->db->order_by('fecha_atencion', 'ASC');
