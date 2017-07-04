@@ -61,6 +61,20 @@ class Model_usuario extends CI_Model {
 		);
 		$this->db->where('idusuario',$datos['idusuario']);
 		return $this->db->update('usuario', $data);
+	}
+	public function m_cambiar_clave($datos){
+		$data = array(
+			'pass' => do_hash($datos['pass'],'md5')
+		);
+		$this->db->where('idusuario',$datos['idusuario']);
+		return $this->db->update('usuario', $data);
+	}		
+	public function m_verificar_clave($datos){
+		$this->db->select('idusuario,username',FALSE);
+		$this->db->from('usuario');		
+		$this->db->where("idusuario",$datos['idusuario']);
+		$this->db->where("pass",do_hash($datos['passAnt'],'md5'));		
+		return $this->db->get()->result_array();		
 	}			
 	
 }

@@ -56,7 +56,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($translate, $scope, rootServices, PacienteServices,$location) {
+  function MainController($translate, $scope, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
     var vm = this; 
 
     // var currentPageTemplate = $route.current.templateUrl;
@@ -93,6 +93,44 @@
         $scope.logOut();
         $scope.goToUrl('/app/pages/login');
       });
+    };
+    $scope.btnChangePassword = function() {
+      var modalInstance = $uibModal.open({
+        templateUrl: 'password.html',
+        controllerAs: 'ps',
+        size: 'sm',
+        scope: $scope,
+        backdropClass: 'splash',
+        windowClass: 'splash',          
+        controller: function($scope, $uibModalInstance){
+          var vm = this;
+          vm.fData = {};
+          vm.modalTitle = 'Cambio de Clave';  
+          vm.fData.idusuario = $scope.fSessionCI.idusuario;
+          //console.log("sesion: ",$scope.fSessionCI.idusuario);     
+          // BOTONES
+          vm.aceptar = function () {
+            UsuarioServices.sCambiarClave(vm.fData).then(function (rpta) { 
+              if(rpta.flag == 1){ 
+                //data.usuario = vm.fData.username;
+                $uibModalInstance.close();          
+                var pTitle = 'OK!';
+                var pType = 'success';
+              }else if( rpta.flag == 0 ){
+                var pTitle = 'Advertencia!';
+                var pType = 'warning';  
+              }else{
+                alert('Ocurrió un error');
+              }
+              pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+            });
+
+          };
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }
+      }); 
     };
     $scope.buscarPaciente = function (paciente) {
       var paramDatos = {
