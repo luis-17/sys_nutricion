@@ -596,10 +596,13 @@ class Consulta extends CI_Controller {
 		}
 	}
 
+	function YAxisFormat($Value) { return(round($Value,2)); } 
+
 	private function imprimir_grafico_peso($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
-		$myData->addPoints($dataY);//valores de peso
+		$myData->addPoints($dataY,"Values");
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -630,7 +633,8 @@ class Consulta extends CI_Controller {
 	private function imprimir_grafico_imc($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
-		$myData->addPoints($dataY);//valores de peso
+		$myData->addPoints($dataY,"Values");
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -644,7 +648,10 @@ class Consulta extends CI_Controller {
 		);	
 		$myPicture->setGraphArea(60,40,580,370);
 		$myPicture->drawRectangle(11,1,587,399,array("R"=>150,"G"=>155,"B"=>165));
-		$myPicture->drawScale();
+		$scaleProperties = array( array(	"Min"=>16, 
+											"Max"=>50)
+									);
+		$myPicture->drawScale(array("Mode" => SCALE_MODE_MANUAL, "ManualScale"=>$scaleProperties));
 		$myPicture->drawSplineChart();
 		$timestamp = date('YmdHis');
 		$nombre = "assets/images/dinamic/pdfTemporales/imageImc". $timestamp .".png";
@@ -661,7 +668,8 @@ class Consulta extends CI_Controller {
 	private function imprimir_grafico_grasa_corporal($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
-		$myData->addPoints($dataY);//valores de peso
+		$myData->addPoints($dataY,"Values");
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -693,7 +701,8 @@ class Consulta extends CI_Controller {
 	private function imprimir_grafico_masa_muscular($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
-		$myData->addPoints($dataY);//valores de peso
+		$myData->addPoints($dataY,"Values");
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
