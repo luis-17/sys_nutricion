@@ -412,6 +412,7 @@ section.tile-body{
     color:#fff;
     position:absolute;
     z-index:10001;
-    padding:10px; 
+    padding:4px; 
     border-radius: 8px; 
+    font-size: 11px;
 }
