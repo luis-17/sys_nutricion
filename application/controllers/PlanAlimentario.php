@@ -682,7 +682,7 @@ class PlanAlimentario extends CI_Controller {
 		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
 		$this->pdf->SetFont('Arial','',14);
 
-	    $this->pdf->Cell(0,5,utf8_decode('Nombre: ' . ucwords(strtolower_total($allInputs['cita']['cliente']['paciente']))),0,1,'R');
+	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower_total(utf8_decode($allInputs['cita']['cliente']['paciente']))),0,1,'R');
 	    $this->pdf->Ln(0);
 
     	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
@@ -897,23 +897,28 @@ class PlanAlimentario extends CI_Controller {
 
 		    	$this->pdf->Cell($anchoBloque,7,ucwords(strtolower_total(utf8_decode($dia['nombre_dia']))),0,1,'C',true);
 		    	$this->pdf->Ln(3);
-		    	$this->pdf->SetX($posX+6);
-
-		    	$this->pdf->SetLeftMargin($posX + 6);
-				$this->pdf->SetRightMargin( $posX + $anchoBloque-6);
+		    	if($dia['id']==1 || $dia['id']==4 || $dia['id']==7){
+		    		$this->pdf->SetX($posX+8);
+		    	}else{
+		    		$this->pdf->SetX($posX+4);
+		    	}
+		    	
 				$this->pdf->SetFont('Arial','',9);
 				$colorTurno = 0;
+				$xInicial = $this->pdf->GetX();
 		    	foreach ($dia['turnos'] as $indTurno => $turno) {
+		    		$this->pdf->SetX($xInicial);
 		    		if($colorTurno % 2 == 0){
 		    			$this->pdf->SetTextColor(0,0,0);
 		    		}else{
 		    			$this->pdf->SetTextColor(83,83,83);
 		    		}
 
-		    		if($consulta['tipo_dieta'] == 'SD'){
-		    			$text = ucwords(strtolower_total( '* '. utf8_decode($turno['descripcion']) .': ' . utf8_decode($turno['indicaciones'])));
-
-		    			$this->pdf->MultiCell($anchoCeldaBloque-3,4,$text,0,'L',FALSE);
+		    		
+		    		if($consulta['tipo_dieta'] == 'SD'){		    			
+		    			$this->pdf->cell(2,4,'* ',0,0,'L',FALSE);
+		    			$text = ucwords(strtolower_total(utf8_decode($turno['descripcion']) .': ' . utf8_decode($turno['indicaciones'])));
+		    			$this->pdf->MultiCell($anchoCeldaBloque-5,4,$text,0,'L',FALSE);
 		    		}
 
 		    		if($consulta['tipo_dieta'] == 'CD'){
@@ -930,10 +935,10 @@ class PlanAlimentario extends CI_Controller {
 				    		}
 			    		}
 
+			    		$this->pdf->cell(2,4,'* ',0,0,'L',FALSE);		    			
 			    		$result = (strlen($text)>0) ? substr($text,0,-3) : '' ;
-		    			$text_final = ucwords(strtolower_total( '* '. utf8_decode($turno['descripcion']) .': ' . utf8_decode($result)));
-
-		    			$this->pdf->MultiCell($anchoCeldaBloque-3,4,$text_final,0,'L',FALSE);
+		    			$text_final = ucwords(strtolower_total(utf8_decode($turno['descripcion']) .': ' . utf8_decode($result)));
+		    			$this->pdf->MultiCell($anchoCeldaBloque-5,4,$text_final,0,'L',FALSE);
 		    		}
 		    		$this->pdf->Ln(1);
 		    		$colorTurno++;
