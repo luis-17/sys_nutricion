@@ -5,7 +5,7 @@ class Model_cita extends CI_Model {
 		parent::__construct();
 	}
  	// ACCESO AL SISTEMA
-	public function m_cargar_citas(){ 
+	public function m_cargar_citas($datos){ 
 		$this->db->select('ci.idcita, ci.idcliente, ci.idprofesional, ci.idubicacion, ci.fecha, ci.hora_desde, ci.hora_hasta, ci.estado_ci',FALSE);
 		$this->db->select('cli.cod_historia_clinica, cli.nombre, cli.apellidos, cli.sexo, cli.estatura, cli.fecha_nacimiento, cli.email',FALSE);
 		$this->db->select("UPPER(CONCAT(pro.nombre, ' ',pro.apellidos)) AS profesional",FALSE);
@@ -22,6 +22,11 @@ class Model_cita extends CI_Model {
 		$this->db->join('atencion at', 'at.idcita = ci.idcita AND at.estado_atencion = 1', 'left');
 		//$this->db->join('atencion_dieta_turno adt', 'adt.idatencion = at.idatencion AND adt.estado_dt = 1', 'left');
 		$this->db->where('ci.estado_ci <>', 0);
+
+		if(!empty($datos['profesional']['id'])){
+			$this->db->where('ci.idprofesional', $datos['profesional']['id']);
+		}
+
 		return $this->db->get()->result_array();
 	}
 

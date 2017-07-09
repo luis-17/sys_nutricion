@@ -6,7 +6,7 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications) { 
+  function CitasController ($scope,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications, ProfesionalServices) { 
     var vm = this;
     $scope.changeViewCita(true);
     $scope.changeViewConsulta(false);
@@ -78,10 +78,19 @@
       vm.menu.removeClass('open');
     }
 
+    vm.fBusqueda = {};
+    ProfesionalServices.sListarProfesionalCbo().then(function(rpta){
+      vm.listaProfesionales = rpta.datos;
+      vm.listaProfesionales.splice(0,0,{id:0, profesional:'Todos los profesionales'});
+      vm.fBusqueda.profesional =  vm.listaProfesionales[0]; 
+    });
+
+
     vm.eventsF = function (start, end, timezone, callback) {
       var events = []; 
       pageLoading.start('Actualizando calendario...');
-      CitasServices.sListarCita().then(function (rpta) {
+
+      CitasServices.sListarCita(vm.fBusqueda).then(function (rpta) {
         angular.forEach(rpta.datos, function(row, key) { 
             //row.start = new Date(row.start);
             row.start =  moment(row.start);

@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -12,7 +13,7 @@ class Cita extends CI_Controller {
 
     public function listar_citas(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_cita->m_cargar_citas();
+		$lista = $this->model_cita->m_cargar_citas($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
 			$es_unica = ($this->model_cita->m_cuenta_citas($row['fecha'],$row['hora_desde']) == 1) ? TRUE : FALSE;
@@ -132,7 +133,7 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
-		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
+		if(strtotime($allInputs['hora_desde_str']) >= strtotime($allInputs['hora_hasta_str'])){
 			$arrData['flag'] = 0;
 			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
 			$this->output
@@ -144,13 +145,21 @@ class Cita extends CI_Controller {
 		$hora_inicio_calendar = strtotime('07:00:00');
 		$hora_fin_calendar = strtotime('23:00:00');		
 
-		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
-		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+		if(strlen($allInputs['hora_desde_str']) == 7){
+			$horadesde = '0' . strtotime(substr($allInputs['hora_desde_str'], 0,4) . ':00');
+		}else{
+			$horadesde = strtotime(substr($allInputs['hora_desde_str'], 0,5) . ':00');
+		}
 
-		if(strtotime($horadesde) < $hora_inicio_calendar || strtotime($horadesde) > $hora_fin_calendar || 
-			strtotime($horahasta) < $hora_inicio_calendar || strtotime($horahasta) > $hora_fin_calendar){
+		if(strlen($allInputs['hora_hasta_str']) == 7){
+			$horahasta = '0' . strtotime(substr($allInputs['hora_hasta_str'], 0,4) . ':00');
+		}else{
+			$horahasta = strtotime(substr($allInputs['hora_hasta_str'], 0,5) . ':00');
+		}
+		
+		if(!($horadesde  >= $hora_inicio_calendar &&  $horahasta <= $hora_fin_calendar)){
 			$arrData['flag'] = 0;
-			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$arrData['message'] = 'Debe seleccionar un rango de horas permitido.';
 			$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -162,8 +171,8 @@ class Cita extends CI_Controller {
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($horadesde)),
-			'hora_hasta' => Date('H:i:s',strtotime($horahasta)),
+			'hora_desde' => Date('H:i:s',$horadesde),
+			'hora_hasta' => Date('H:i:s',$horahasta),
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
@@ -264,7 +273,7 @@ class Cita extends CI_Controller {
 		    return;
 		}
 
-		if(strtotime($allInputs['hora_desde']) >= strtotime($allInputs['hora_hasta'])){
+		if(strtotime($allInputs['hora_desde_str']) >= strtotime($allInputs['hora_hasta_str'])){
 			$arrData['flag'] = 0;
 			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
 			$this->output
@@ -276,13 +285,21 @@ class Cita extends CI_Controller {
 		$hora_inicio_calendar = strtotime('07:00:00');
 		$hora_fin_calendar = strtotime('23:00:00');		
 
-		$horadesde = substr($allInputs['hora_desde_str'], 0,5) . ':00';
-		$horahasta = substr($allInputs['hora_hasta_str'], 0,5) . ':00';
+		if(strlen($allInputs['hora_desde_str']) == 7){
+			$horadesde = '0' . strtotime(substr($allInputs['hora_desde_str'], 0,4) . ':00');
+		}else{
+			$horadesde = strtotime(substr($allInputs['hora_desde_str'], 0,5) . ':00');
+		}
 
-		if(strtotime($horadesde) < $hora_inicio_calendar || strtotime($horadesde) > $hora_fin_calendar || 
-			strtotime($horahasta) < $hora_inicio_calendar || strtotime($horahasta) > $hora_fin_calendar){
+		if(strlen($allInputs['hora_hasta_str']) == 7){
+			$horahasta = '0' . strtotime(substr($allInputs['hora_hasta_str'], 0,4) . ':00');
+		}else{
+			$horahasta = strtotime(substr($allInputs['hora_hasta_str'], 0,5) . ':00');
+		}
+		
+		if(!($horadesde  >= $hora_inicio_calendar &&  $horahasta <= $hora_fin_calendar)){
 			$arrData['flag'] = 0;
-			$arrData['message'] = 'Debe seleccionar un rango de horas valido.';
+			$arrData['message'] = 'Debe seleccionar un rango de horas permitido.';
 			$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
@@ -294,11 +311,12 @@ class Cita extends CI_Controller {
 			'idubicacion' => $allInputs['ubicacion']['id'],
 			'idprofesional' => $this->sessionVP['idprofesional'],
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
-			'hora_desde' => Date('H:i:s',strtotime($horadesde)),
-			'hora_hasta' => Date('H:i:s',strtotime($horahasta)),
+			'hora_desde' => Date('H:i:s',$horadesde),
+			'hora_hasta' => Date('H:i:s',$horahasta),
+			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s')
 			);
-
+		
 		if($this->model_cita->m_actualizar($data, $allInputs['id'])){
 			$arrData['flag'] = 1;
 			$arrData['message'] = 'Cita actualizada.';

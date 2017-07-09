@@ -58,8 +58,8 @@ class Model_profesional extends CI_Model {
 		return $fData['contador'];
 	}	
 	public function m_cargar_profesional_cbo(){
-		$this->db->select('idprofesional, CONCAT(nombre, " ", apellido) As profesional',FALSE);
-		$this->db->from('profesional');
+		$this->db->select("idprofesional, CONCAT(nombre, ' ', apellidos) As profesional",FALSE);
+		$this->db->from('profesional ');
 		$this->db->where('estado_pf', 1);
 		return $this->db->get()->result_array();
 	}
