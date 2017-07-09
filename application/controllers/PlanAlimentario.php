@@ -867,6 +867,7 @@ class PlanAlimentario extends CI_Controller {
 
 		if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
 			$anchoBloque =  $this->pdf->GetPageWidth() / 3;
+			$anchoCeldaBloque =  ($this->pdf->GetPageWidth()-24) / 3;
 			$altoBloque =  ($this->pdf->GetPageHeight() - (25+21)) / 3;
 			$yInicial = $this->pdf->GetY();
 			$this->pdf->SetLeftMargin(0);
@@ -891,15 +892,16 @@ class PlanAlimentario extends CI_Controller {
 					$posY = $yInicial + ($altoBloque*2);
 					$this->pdf->SetXY($posX, $posY);
 				}
+
 				$this->pdf->SetFont('Arial','B',15);
 
 		    	$this->pdf->Cell($anchoBloque,7,ucwords(strtolower_total(utf8_decode($dia['nombre_dia']))),0,1,'C',true);
 		    	$this->pdf->Ln(3);
-		    	$this->pdf->SetX($posX+3);
+		    	$this->pdf->SetX($posX+6);
 
-		    	$this->pdf->SetLeftMargin($posX + 3);
-				$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);
-				$this->pdf->SetFont('Arial','',10);
+		    	$this->pdf->SetLeftMargin($posX + 6);
+				$this->pdf->SetRightMargin( $posX + $anchoBloque-6);
+				$this->pdf->SetFont('Arial','',9);
 				$colorTurno = 0;
 		    	foreach ($dia['turnos'] as $indTurno => $turno) {
 		    		if($colorTurno % 2 == 0){
@@ -909,9 +911,9 @@ class PlanAlimentario extends CI_Controller {
 		    		}
 
 		    		if($consulta['tipo_dieta'] == 'SD'){
-		    			$text = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion']))) .': ' . $turno['indicaciones'];
+		    			$text = ucwords(strtolower_total( '* '. utf8_decode($turno['descripcion']) .': ' . utf8_decode($turno['indicaciones'])));
 
-		    			$this->pdf->MultiCell($anchoBloque,4,$text,0,'L',FALSE);
+		    			$this->pdf->MultiCell($anchoCeldaBloque-3,4,$text,0,'L',FALSE);
 		    		}
 
 		    		if($consulta['tipo_dieta'] == 'CD'){
@@ -929,11 +931,11 @@ class PlanAlimentario extends CI_Controller {
 			    		}
 
 			    		$result = (strlen($text)>0) ? substr($text,0,-3) : '' ;
-		    			$text_final = ucwords(strtolower_total(utf8_decode( '* '. $turno['descripcion'] .': ' . $result)));
+		    			$text_final = ucwords(strtolower_total( '* '. utf8_decode($turno['descripcion']) .': ' . utf8_decode($result)));
 
-		    			$this->pdf->MultiCell($anchoBloque,4,$text_final,0,'L',FALSE);
+		    			$this->pdf->MultiCell($anchoCeldaBloque-3,4,$text_final,0,'L',FALSE);
 		    		}
-		    		$this->pdf->Ln(3);
+		    		$this->pdf->Ln(1);
 		    		$colorTurno++;
 		    	}
 
@@ -946,15 +948,15 @@ class PlanAlimentario extends CI_Controller {
 					/*recomendaciones*/
 					$this->pdf->SetTextColor(255,255,255);
 					$this->pdf->SetXY($posX,$yInicial + ($altoBloque*2));
-					$this->pdf->SetFont('Arial','I',13);
+					$this->pdf->SetFont('Arial','I',12);
 					$this->pdf->Cell($anchoBloque,7,'* Recomendaciones',0,1,'C',true);
 					$this->pdf->Ln(5);
 					$this->pdf->SetX($posX);
-					$this->pdf->SetLeftMargin($posX + 3);
-					$this->pdf->SetRightMargin( $posX + $anchoBloque - 3);
+					$this->pdf->SetLeftMargin($posX + 6);
+					$this->pdf->SetRightMargin( $posX + $anchoBloque - 6);
 					$this->pdf->SetTextColor(0,0,0);
 					$indicaciones = ucfirst(strtolower_total(utf8_decode($consulta['indicaciones_dieta'])));
-					$this->pdf->MultiCell($anchoBloque,4,$indicaciones,0,'L',FALSE);
+					$this->pdf->MultiCell($anchoCeldaBloque-6,4,$indicaciones,0,'L',FALSE);
 
 					$this->pdf->SetY(-20);
 					$this->pdf->SetFont('Arial','',14);
@@ -1008,7 +1010,7 @@ class PlanAlimentario extends CI_Controller {
 
 		if($enviarCorreo){
 			$nombrePaciente = ucwords(strtolower_total($allInputs['cita']['cliente']['paciente']));
-			if(!$this->enviar_correo_pdf_plan($configuracion,$nombrePaciente,$nombreArchivo,$arrayMails)){
+			if(!$this->enviar_correo_pdf_plan($configuracion,$nombrePaciente,$consulta,$nombreArchivo,$arrayMails)){
 				$arrData['flag'] = 0;
 				$arrData['message'] = 'Ha ocurrido un error enviando el Plan Alimentario';
 			}
@@ -1019,8 +1021,12 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	private function enviar_correo_pdf_plan($configuracion, $paciente, $nombreArchivo, $listaCorreos){
-		$cuerpo = ':)';
+	private function enviar_correo_pdf_plan($configuracion, $paciente, $consulta, $nombreArchivo, $listaCorreos){
+		$cuerpo = '<p><b>PLAN ALIMENTARIO - '. strtoupper_total( darFechaCumple($consulta['fecha_atencion'])) .'</b></p>
+				   <p>Hola, '.$paciente.'</p>
+				   <p> Te envío el detalle de tu dieta en el archivo adjunto.</p>
+				   <p>Nos vemos en tu próxima cita. </p>
+				   <p>Saludos.</p>';
 		$asunto = $paciente . ', DESCARGA TU PLAN ALIMENTARIO AQUI.'; 
 		$setFromAleas = $configuracion['empresa'];
 		$this->load->library('My_PHPMailer');
