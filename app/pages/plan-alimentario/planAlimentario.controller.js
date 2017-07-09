@@ -6,7 +6,7 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading) { 
+  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading, ModalReporteFactory) { 
     var vm = this;
     vm.horas = [
       {id: '--', value:'--'},
@@ -38,19 +38,27 @@
     ]; 
 
     
-    vm.initPlan = function(consulta,origen,tipoVista,callbackCitas){
+    vm.initPlan = function(consulta,origen,tipoVista,callbackCitas){      
       pageLoading.start('Cargando formulario');
       vm.consulta = consulta;
       vm.origen = origen;
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
-      //console.log(callbackCitas);
-      //console.log('vm.origen',vm.origen);
-      console.log('consulta', consulta);
+      console.log($scope.actualizarConsulta);
+      console.log('vm.origen',vm.origen);
       if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
         vm.tipoVista = 'edit';
+      }
+
+      if(vm.tipoVista == 'edit'){
+        vm.cargaEstructura();
+      }else{
+        pageLoading.stop();
       }      
-      
+    }
+
+    vm.cargaEstructura = function(){
+      pageLoading.start('Cargando formulario');
       if(vm.tipoVista == 'new'){
         vm.fData = {};
         vm.formaPlan = 'dia';
@@ -137,17 +145,16 @@
           vm.dias = angular.copy(rpta.datos);          
           vm.primeraCargaGeneral = false;
           vm.primeraCargaDia = false;
-          vm.updateEstructura();
-          pageLoading.stop();
+          vm.updateEstructura(true);          
         });       
       }
     }
 
     vm.updateEstructura = function(load){
-        //console.log('paso por aqui...');
+      console.log('paso por aqui...',load);
       if(vm.tipoVista == 'edit'){
         if(load){
-          pageLoading.start('Recargando plan alimentario...');
+          pageLoading.start('Cargando Plan alimentario...');
         }
         
         if(vm.formaPlan == 'general' && !vm.primeraCargaGeneral){
@@ -283,6 +290,9 @@
     vm.seleccionaTipo = function(tipo){
       vm.changeSeleccionado(true);
       vm.tipoPlan = tipo;
+      if(vm.tipoVista == 'new'){
+        vm.cargaEstructura();
+      }      
     }
 
     vm.btnGuardarPlan = function(){
@@ -306,12 +316,20 @@
         if(rpta.flag == 1){ 
           var title = 'OK';
           var iconClass = 'success';
-          $scope.changeViewCita(true);
-          $scope.changeViewOnlyBodyCita(false);
-          $scope.changeViewConsulta(false);
-          $scope.changeViewPlan(false);
-          $scope.changeViewSoloPlan(false);
-          vm.callbackCitas();
+          if(vm.origen == 'cita'){
+            $scope.changeViewCita(true);
+            $scope.changeViewOnlyBodyCita(false);
+            $scope.changeViewConsulta(false);
+            $scope.changeViewPlan(false);
+            $scope.changeViewSoloPlan(false);            
+          }else if(vm.origen == 'consulta'){ 
+            $scope.changeViewConsulta(true,3,vm.consulta.idatencion,'plan');
+            $scope.changeViewCita(false);
+            $scope.changeViewOnlyBodyCita(false);
+            $scope.changeViewPlan(false);
+            $scope.changeViewSoloPlan(false);
+          }
+          vm.callbackCitas();          
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
@@ -344,12 +362,19 @@
         if(rpta.flag == 1){ 
           var title = 'OK';
           var iconClass = 'success';
-          $scope.changeViewCita(true);
-          $scope.changeViewOnlyBodyCita(false);
-          $scope.changeViewConsulta(false);
-          $scope.changeViewPlan(false);
-          $scope.changeViewSoloPlan(false);
-          vm.callbackCitas();
+          if(vm.origen == 'cita'){
+            $scope.changeViewCita(true);
+            $scope.changeViewOnlyBodyCita(false);
+            $scope.changeViewConsulta(false);
+            $scope.changeViewPlan(false);
+            $scope.changeViewSoloPlan(false);            
+          }else if(vm.origen == 'consulta'){
+            $scope.changeViewCita(false);
+            $scope.changeViewOnlyBodyCita(false);
+            $scope.changeViewConsulta(true,3,vm.consulta.idatencion, 'plan');
+            $scope.changeViewPlan(false);
+            $scope.changeViewSoloPlan(false);
+          }
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
@@ -691,7 +716,23 @@
             }
           }        
       });
-    }       
+    } 
+
+    vm.btnImprimirPlan = function(){
+      var arrParams = {
+        titulo: 'PLAN ALIMENTARIO',
+        datos:{
+          cita:vm.cita,
+          consulta:vm.fData,
+          salida: 'pdf',
+          tituloAbv: 'Plan Alimentario',
+          titulo: 'Plan Alimentario'
+        },
+        metodo: 'php',
+        url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
+      }
+      ModalReporteFactory.getPopupReporte(arrParams);
+    }      
   }
 
   function PlanAlimentarioServices($http, $q) {

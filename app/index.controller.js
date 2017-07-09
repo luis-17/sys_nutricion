@@ -129,9 +129,11 @@
     }
     $scope.getValidateSession();
 
-    $scope.changeViewConsulta = function(value, pestania){
+    $scope.changeViewConsulta = function(value, pestania, idatencion, origen){
       $scope.viewConsulta = value;
       $scope.pestaniaConsulta = pestania;
+      $scope.idatencion = idatencion;
+      $scope.origenConsulta = origen;
     }
     $scope.changeViewConsulta(false);
 

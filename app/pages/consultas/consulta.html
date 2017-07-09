@@ -532,7 +532,7 @@
                 <label class="control-label minotaur-label">Proxima Cita</label>
                 <div class="button">
                   <a ng-click="changeViewOnlyBodyCita(true,cons.fData, cons.cita.cliente);changeViewEnviaReporte(false);changeViewPlan(false);"
-                      ng-class="{seleccionado:viewOnlyBodyCita}">Agendar la siguiente cita</a>
+                      ng-class="{seleccionado:viewOnlyBodyCita}">Agendar siguiente cita</a>
                 </div>
               </div>
             </div>
@@ -546,26 +546,26 @@
                 <div class="button">
                   <a ng-click="changeViewOnlyBodyCita(false);
                               changeViewEnviaReporte(false);cons.btnGeneraPlan();" 
-                      ng-if="cons.cita.atencion.tipo_dieta == null"
+                      ng-if="!cons.fData.tipo_dieta || cons.fData.tipo_dieta == null"
                       ng-class="{seleccionado:viewPlan}">Generar plan</a>
 
                   <a ng-click="changeViewOnlyBodyCita(false);
                               changeViewEnviaReporte(false);changeViewConsulta(false);
                               cons.btnGeneraPlan();" 
-                      ng-if="cons.cita.atencion.tipo_dieta != null"
+                      ng-if="cons.fData.tipo_dieta != null"
                       ng-class="{seleccionado:viewPlan}">Modificar plan</a>
                 </div>
                 <div class="button">
                   <a ng-click="changeViewOnlyBodyCita(false);
                               changeViewEnviaReporte(false);cons.btnImprimirPlan();" 
-                      ng-if="cons.cita.atencion.tipo_dieta != null"
+                      ng-if="cons.fData.tipo_dieta != null"
                       ng-class="{seleccionado:viewPlan}">Ver Plan</a>
                 </div>
                 <div class="button">
                   <a ng-click="changeViewEnviaReporte(true);
                               changeViewOnlyBodyCita(false);changeViewPlan(false);"
-                     ng-if="cons.cita.atencion.tipo_dieta != null"
-                     ng-class="{seleccionado:viewEnviaReporte}">Enviar plan al paciente</a>
+                     ng-if="cons.fData.tipo_dieta != null"
+                     ng-class="{seleccionado:viewEnviaReporte}">Enviar al paciente</a>
                 </div>
               </div>
             </div>

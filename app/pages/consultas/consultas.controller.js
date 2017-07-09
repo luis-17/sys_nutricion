@@ -85,6 +85,9 @@
     }
 
     vm.changePestania = function(value){
+      if(value == 3 && $scope.origenConsulta && $scope.origenConsulta == 'plan'){
+        vm.actualizarConsulta($scope.idatencion);
+      }
       vm.pestania = value;
     }
 
@@ -308,6 +311,22 @@
         }
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         pageLoading.stop();
+      });
+    }
+
+    vm.actualizarConsulta = function(idatencion){
+      var datos = { atencion:{
+                            idatencion:idatencion
+                          }
+                  };
+
+      ConsultasServices.sCargarConsulta(datos).then(function(rpta){
+        vm.fData = rpta.datos;
+        vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
+        vm.fData.cita = vm.cita;
+        /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
+        vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
+        */
       });
     }
   }
