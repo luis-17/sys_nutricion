@@ -44,17 +44,22 @@
       vm.origen = origen;
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
-      console.log($scope.actualizarConsulta);
       console.log('vm.origen',vm.origen);
       if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
         vm.tipoVista = 'edit';
       }
+
+      vm.changeTab('1');
 
       if(vm.tipoVista == 'edit'){
         vm.cargaEstructura();
       }else{
         pageLoading.stop();
       }      
+    }
+
+    vm.changeTab = function(indexTab){
+      vm.activeTab = indexTab;
     }
 
     vm.cargaEstructura = function(){
@@ -151,7 +156,7 @@
     }
 
     vm.updateEstructura = function(load){
-      console.log('paso por aqui...',load);
+      //console.log('paso por aqui...',load);
       if(vm.tipoVista == 'edit'){
         if(load){
           pageLoading.start('Cargando Plan alimentario...');
@@ -296,6 +301,7 @@
     }
 
     vm.btnGuardarPlan = function(){
+      pageLoading.start('Registrando plan...');
       console.log('vm.dias',vm.dias);
       var datos = {
         consulta:vm.consulta,
@@ -316,26 +322,32 @@
         if(rpta.flag == 1){ 
           var title = 'OK';
           var iconClass = 'success';
-          if(vm.origen == 'cita'){
+          /*if(vm.origen == 'cita'){
             $scope.changeViewCita(true);
             $scope.changeViewOnlyBodyCita(false);
             $scope.changeViewConsulta(false);
             $scope.changeViewPlan(false);
-            $scope.changeViewSoloPlan(false);            
+            $scope.changeViewSoloPlan(false);
           }else if(vm.origen == 'consulta'){ 
             $scope.changeViewConsulta(true,3,vm.consulta.idatencion,'plan');
             $scope.changeViewCita(false);
             $scope.changeViewOnlyBodyCita(false);
             $scope.changeViewPlan(false);
             $scope.changeViewSoloPlan(false);
-          }
-          vm.callbackCitas();          
+          }*/
+          vm.consulta.tipo_dieta = rpta.tipo_dieta;
+          vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
+          vm.tipoVista = 'edit';
+          vm.callbackCitas();
+          vm.cargaEstructura();  
+          vm.changeTab('1');         
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
         }else{
           alert('Ocurrió un error');
         }
+        pageLoading.stop();
         var toast = toastr[iconClass](rpta.message, title, vm.options);
         openedToasts.push(toast);
       });
@@ -362,7 +374,7 @@
         if(rpta.flag == 1){ 
           var title = 'OK';
           var iconClass = 'success';
-          if(vm.origen == 'cita'){
+          /*if(vm.origen == 'cita'){
             $scope.changeViewCita(true);
             $scope.changeViewOnlyBodyCita(false);
             $scope.changeViewConsulta(false);
@@ -374,7 +386,13 @@
             $scope.changeViewConsulta(true,3,vm.consulta.idatencion, 'plan');
             $scope.changeViewPlan(false);
             $scope.changeViewSoloPlan(false);
-          }
+          }*/
+          vm.consulta.tipo_dieta = rpta.tipo_dieta;
+          vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
+          vm.cargaEstructura();
+          vm.callbackCitas();
+          vm.tipoVista = 'edit';
+          vm.changeTab('1');
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
@@ -722,8 +740,8 @@
       var arrParams = {
         titulo: 'PLAN ALIMENTARIO',
         datos:{
-          cita:vm.cita,
-          consulta:vm.fData,
+          cita:vm.consultacita,
+          consulta:vm.consulta,
           salida: 'pdf',
           tituloAbv: 'Plan Alimentario',
           titulo: 'Plan Alimentario'

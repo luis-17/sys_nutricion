@@ -7,7 +7,7 @@ class PlanAlimentario extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas_helper','otros_helper'));
-        $this->load->model(array('model_plan_alimentario','model_consulta'));
+        $this->load->model(array('model_plan_alimentario','model_consulta', 'model_paciente'));
         $this->load->library('Fpdfext');
     }
 
@@ -232,6 +232,8 @@ class PlanAlimentario extends CI_Controller {
 
 		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
+			$arrData['tipo_dieta'] = $tipo_dieta;
+			$arrData['indicaciones_dieta'] = $allInputs['indicaciones'];
 			$arrData['message'] = 'Se ha registrado el plan alimentario exitosamente.';
 		}
 		$this->db->trans_complete();
@@ -669,6 +671,8 @@ class PlanAlimentario extends CI_Controller {
 
 		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
+			$arrData['tipo_dieta'] = $tipo_dieta;
+			$arrData['indicaciones_dieta'] = $allInputs['indicaciones'];
 			$arrData['message'] = 'Se ha actualizado el plan alimentario exitosamente.';
 		}
 		$this->db->trans_complete();
@@ -678,14 +682,14 @@ class PlanAlimentario extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	private function headerPlan($allInputs, $consulta, $configuracion){
+	private function headerPlan($paciente, $consulta, $configuracion){
 		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
 		$this->pdf->SetFont('Arial','',14);
 
-	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower_total(utf8_decode(strtolower_total($allInputs['cita']['cliente']['paciente'])))),0,1,'R');
+	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower_total(utf8_decode(strtolower_total($paciente['paciente'])))),0,1,'R');
 	    $this->pdf->Ln(0);
 
-    	$fecha = date('d/m/Y',strtotime($allInputs['consulta']['fecha_atencion']));
+    	$fecha = date('d/m/Y',strtotime($consulta['fecha_atencion']));
 	    $this->pdf->Cell(0,5,'Fecha: '.$fecha,0,1,'R');
 
 	    if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
@@ -735,6 +739,7 @@ class PlanAlimentario extends CI_Controller {
     	$arrData['flag'] = 1;
     	$enviarCorreo = FALSE; 
     	$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+    	$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
 
     	if(!empty($allInputs['salida']) && $allInputs['salida']=='correo'){
     		if(empty($allInputs['emails'])){
@@ -778,7 +783,7 @@ class PlanAlimentario extends CI_Controller {
     	$this->pdf->SetAutoPageBreak(false);
 
     	//header
-    	$this->headerPlan($allInputs, $consulta, $configuracion);
+    	$this->headerPlan($paciente, $consulta, $configuracion);
 
 	    //body
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
@@ -806,7 +811,7 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->SetLeftMargin(10);
 			    	if($consulta['tipo_dieta'] == 'SG'){
 			    		if(!empty($turno['indicaciones'])){
-			    			$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);
+			    			$this->pdf->MultiCell(0,5,utf8_decode(chr(127) .' '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);
 			    		}
 			    	}
 
@@ -819,9 +824,9 @@ class PlanAlimentario extends CI_Controller {
 				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
-				    				$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127). ' '.ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
 				    			}else{
-				    				$this->pdf->MultiCell(0,5,utf8_decode('* '.ucfirst(strtolower($alm_nombre))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127).' '.ucfirst(strtolower($alm_nombre))),0,1,'L',true);
 				    			}
 				    		}
 			    		}
@@ -916,7 +921,7 @@ class PlanAlimentario extends CI_Controller {
 
 		    		
 		    		if($consulta['tipo_dieta'] == 'SD'){		    			
-		    			$this->pdf->cell(2,4,'* ',0,0,'L',FALSE);
+		    			$this->pdf->cell(2,4,chr(127).' ',0,0,'L',FALSE);
 		    			$text = ucwords(strtolower_total(utf8_decode($turno['descripcion']) .': ' . utf8_decode($turno['indicaciones'])));
 		    			$this->pdf->MultiCell($anchoCeldaBloque-5,4,$text,0,'L',FALSE);
 		    		}
@@ -935,7 +940,7 @@ class PlanAlimentario extends CI_Controller {
 				    		}
 			    		}
 
-			    		$this->pdf->cell(2,4,'* ',0,0,'L',FALSE);		    			
+			    		$this->pdf->cell(2,4,chr(127).' ',0,0,'L',FALSE);		    			
 			    		$result = (strlen($text)>0) ? substr($text,0,-3) : '' ;
 		    			$text_final = ucwords(strtolower_total(utf8_decode($turno['descripcion']) .': ' . utf8_decode($result)));
 		    			$this->pdf->MultiCell($anchoCeldaBloque-5,4,$text_final,0,'L',FALSE);
@@ -1014,7 +1019,7 @@ class PlanAlimentario extends CI_Controller {
 		$arrData['urlTempPDF'] = $nombreArchivo;
 
 		if($enviarCorreo){
-			$nombrePaciente = ucwords(strtolower_total($allInputs['cita']['cliente']['paciente']));
+			$nombrePaciente = ucwords(strtolower_total($paciente['paciente']));
 			if(!$this->enviar_correo_pdf_plan($configuracion,$nombrePaciente,$consulta,$nombreArchivo,$arrayMails)){
 				$arrData['flag'] = 0;
 				$arrData['message'] = 'Ha ocurrido un error enviando el Plan Alimentario';

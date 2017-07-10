@@ -64,6 +64,7 @@ class Cita extends CI_Controller {
 							'diagnostico_notas' => $row['diagnostico_notas'],
 							'indicaciones_dieta' => $row['indicaciones_dieta'],
 							'tipo_dieta' => $row['tipo_dieta'],
+							'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 						),
 					'className' => $className,
 					'start' => $row['fecha'] .' '. $row['hora_desde'],
