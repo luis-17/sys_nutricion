@@ -53,7 +53,7 @@
 	</div>
 </div>
 <fieldset ng-repeat="(indexTurno,turno) in dia.turnos" class="turno compuesto" ng-if="plan.formaPlan == 'dia'">
-    <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
+    <legend class="text-info f-16" style="text-transform: uppercase;"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
         <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-right">
         	<span class="mr-10 text-orange">KCal: {{turno.valoresTurno.calorias}}</span>
@@ -85,41 +85,45 @@
     	<div class="col-sm-12">
             <label class="control-label minotaur-label pr-0" style="top: 6px;">Alimentos:</label>
 			<form class="form-inline" style="text-align:left;">
-		        <div class="col-sm-6 col-xs-12 pl-0 pb-10" ng-repeat="(indexAlimento, alimento) in turno.alimentos">
-		            <input type="text" class="form-control input-sm col-sm-7" ng-model="alimento.nombre_compuesto"
-							style="width: 65%;" autocomplete="off" placeholder="Digite el alimento..." 
-                                  typeahead-loading="loadingLocations" 
-                                  uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
-                                  typeahead-min-length="2" 
-                                  typeahead-on-select="plan.getSelectedAlimento($item, $model, $label, indexDia, indexTurno, indexAlimento);"
-                                  ng-change="alimento.idalimento = null;"  />
+				<div class="row" ng-repeat="(indexAlimento, alimento) in turno.alimentos">				
+			        <div class="col-sm-8 col-xs-12 pl-0 pb-10" >
+			            <input type="text" class="form-control input-sm col-sm-7" ng-model="alimento.nombre_compuesto"
+								style="width: 65%;" autocomplete="off" placeholder="Digite el alimento..." 
+	                                  typeahead-loading="loadingLocations" 
+	                                  uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
+	                                  typeahead-min-length="2" 
+	                                  typeahead-on-select="plan.getSelectedAlimento($item, $model, $label, indexDia, indexTurno, indexAlimento);"
+	                                  ng-change="alimento.idalimento = null;"  />
 
-					<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
-							style="width: 15%;" ng-change="plan.calcularValoresTurno(indexDia, indexTurno);" />
+						<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="alimento.cantidad"
+								style="width: 15%;" ng-change="plan.calcularValoresTurno(indexDia, indexTurno);" />
 
-		            <label class="btn btn-sm text-tr-black" ng-click="plan.viewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
-		            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
-		            </label>
-		            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,indexDia); $event.stopPropagation();"> 
-		            	<i class="fa fa-trash" tooltip-placement="left" uib-tooltip="QUITAR!"></i> 
-		            </label>
+			            <label class="btn btn-sm text-tr-black" ng-click="plan.viewDetalle(indexDia, indexTurno,indexAlimento); $event.stopPropagation();"> 
+			            	<i class="fa fa-eye" tooltip-placement="left" uib-tooltip="VER DETALLE!"></i> 
+			            </label>
+			            <label class="btn btn-sm text-red" ng-click="plan.eliminarAlimento(indexAlimento,indexTurno,indexDia); $event.stopPropagation();"> 
+			            	<i class="fa fa-trash" tooltip-placement="left" uib-tooltip="QUITAR!"></i> 
+			            </label>
+			        </div>
 		        </div>
-		        <div class="col-sm-6 col-xs-12 pl-0 pb-10">
-		            <input type="text"  class="form-control input-sm col-sm-7" ng-model="turno.temporal"
-							style="width: 70%;" autocomplete="off" placeholder="Digite el alimento..." 
-                                  typeahead-loading="loadingLocations" 
-                                  uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
-                                  typeahead-min-length="2" 
-                                  typeahead-on-select="plan.getSelectedTemporalAlimento($item, $model, $label, indexDia, indexTurno)"
-                                    />
+		        <div class="row">
+			        <div class="col-sm-8 col-xs-12 pl-0 pb-10">
+			            <input type="text"  class="form-control input-sm col-sm-7" ng-model="turno.temporal"
+								style="width: 65%;" autocomplete="off" placeholder="Digite el alimento..." 
+	                                  typeahead-loading="loadingLocations" 
+	                                  uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
+	                                  typeahead-min-length="2" 
+	                                  typeahead-on-select="plan.getSelectedTemporalAlimento($item, $model, $label, indexDia, indexTurno)"
+	                                    />
 
-					<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="turno.temporalCantidad"
-							style="width: 20%;" ng-change="" />
+						<input type="number" step="0.01" required class="form-control input-sm col-sm-4" ng-model="turno.temporalCantidad"
+								style="width: 15%;" ng-change="" />
 
-		            <label class="btn btn-sm text-green" ng-click="plan.agregarAlimento(indexDia, indexTurno); $event.stopPropagation();"> 
-		            	<i class="fa fa-plus" tooltip-placement="left" uib-tooltip="AGREGAR!"></i> 
-		            </label>
-		        </div>        
+			            <label class="btn btn-sm text-green" ng-click="plan.agregarAlimento(indexDia, indexTurno); $event.stopPropagation();"> 
+			            	<i class="fa fa-plus" tooltip-placement="left" uib-tooltip="AGREGAR!"></i> 
+			            </label>
+			        </div>        
+		        </div>
 		    </form>           
          </div>                 
     </div>    
@@ -130,7 +134,7 @@
  </div> -->
 
 <fieldset ng-repeat="(indexTurno,turno) in plan.dia.turnos" class="turno compuesto" ng-if="plan.formaPlan == 'general'">
-    <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
+    <legend class="text-info f-16" style="text-transform: uppercase;"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
         <label class="col-sm-12 col-xs-12 mb-20 control-label minotaur-label text-right">
         	<span class="mr-10 text-orange">KCal: {{turno.valoresTurno.calorias}}</span>

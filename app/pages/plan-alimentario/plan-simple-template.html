@@ -1,5 +1,5 @@
 <fieldset ng-repeat="turno in dia.turnos" class="turno mt-20" ng-if="plan.formaPlan == 'dia'">
-    <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
+    <legend class="text-info f-16" style="text-transform: uppercase;"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
         <label class="col-sm-1 col-xs-12 control-label minotaur-label pr-0" style="top: 6px;">Hora:</label>
         <div class="col-sm-4 col-xs-12 pl-0 pb-10">
@@ -20,7 +20,7 @@
 </fieldset>
 
 <fieldset ng-repeat="turno in plan.dia.turnos" class="turno mt-20" ng-if="plan.formaPlan == 'general'">
-    <legend class="text-info f-16"><strong>{{turno.descripcion}}</strong></legend>            
+    <legend class="text-info f-16" style="text-transform: uppercase;"><strong>{{turno.descripcion}}</strong></legend>            
     <form class="form-inline" style="text-align:left;">
         <label class="col-sm-1 col-xs-12 control-label minotaur-label pr-0" style="top: 6px;">Hora:</label>
         <div class="col-sm-4 col-xs-12 pl-0 pb-10">

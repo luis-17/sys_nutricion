@@ -233,7 +233,7 @@ class PlanAlimentario extends CI_Controller {
 		if(!$errorEnCiclo && $this->model_consulta->m_actualizar_desde_plan($datos)){
 			$arrData['flag'] = 1;
 			$arrData['tipo_dieta'] = $tipo_dieta;
-			$arrData['indicaciones_dieta'] = $allInputs['indicaciones'];
+			$arrData['indicaciones_dieta'] = empty($allInputs['indicaciones']) ? NULL : $allInputs['indicaciones'];
 			$arrData['message'] = 'Se ha registrado el plan alimentario exitosamente.';
 		}
 		$this->db->trans_complete();
