@@ -404,7 +404,9 @@
         vm.previo1 = false;
         vm.previo2 = false;
         console.log(row);
-        vm.mySelectionGrid = [row];
+        if(!vm.externo){
+          vm.mySelectionGrid = [row];          
+        }
         vm.evoRadio = 'Peso';
         PacienteServices.sListarUltimaConsulta(row).then(function(rpta){
           vm.listaUltAntecedentes = [];
@@ -439,35 +441,12 @@
         //console.log(event);
         vm.externo = true;
         vm.modoFicha = true;
-        vm.evoRadio = 'Peso';
-        vm.previo0 = true;
-        vm.previo1 = false;
-        vm.previo2 = false;
         PacienteServices.sListarPacientePorId(event.cliente).then(function (rpta) {
-          vm.ficha = rpta.datos;
-          vm.mySelectionGrid = [];
-          vm.mySelectionGrid[0] = vm.ficha;
-          PacienteServices.sListarUltimaConsulta(vm.ficha).then(function(rpta){
-            console.log(vm.mySelectionGrid);
-            vm.listaUltAntecedentes = [];
-            vm.mySelectionGrid[0].peso = rpta.datos.peso;
-            if(vm.mySelectionGrid[0].estatura > 50){
-              vm.mySelectionGrid[0].imc = (vm.mySelectionGrid[0].peso / ((vm.mySelectionGrid[0].estatura/100)*(vm.mySelectionGrid[0].estatura/100))).toFixed(2);
-              vm.mySelectionGrid[0].objetivo = 0.75*(vm.mySelectionGrid[0].estatura-150) + 50;
-            }
-            vm.listaUltAntecedentes = rpta.antecedentes;
-          });
-          vm.ficha.cambiaPatologico = false;
-          vm.ficha.cambiaHeredado = false;
-          PacienteServices.sListarAntecedentesPaciente(vm.ficha).then(function (rpta) {
-            vm.listaAntPatologicos = rpta.datos.patologicos;
-            vm.listaAntHeredados = rpta.datos.heredados;
-            vm.ficha.antPatologicos = angular.copy(vm.listaAntPatologicos);
-            vm.ficha.antHeredados = angular.copy(vm.listaAntHeredados);
-          });
-          vm.cargarHabitosAlimentarios(vm.ficha);
-          vm.cargarHabitos(vm.ficha);
-          vm.cargarEvolucion(vm.ficha);
+          if(rpta.flag == 1){
+            //console.log('ver ficha');
+            vm.mySelectionGrid[0] = angular.copy(rpta.datos);
+            vm.btnVerFicha(rpta.datos);
+          }
         });
       }
       vm.btnActualizarFicha = function(row){
