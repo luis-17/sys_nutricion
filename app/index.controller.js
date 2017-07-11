@@ -56,7 +56,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($translate, $scope, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
+  function MainController($translate, $scope, $state, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
     var vm = this; 
 
     // var currentPageTemplate = $route.current.templateUrl;
@@ -137,9 +137,9 @@
         search: paciente
       }
       PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) {
-      console.log(rpta.datos);
+      console.log("datos index: ",rpta.datos);
       $scope.paciente = rpta.datos;
-      $scope.goToUrl('/app/paciente');
+      $state.go('pacienteficha');
       });
     };
 

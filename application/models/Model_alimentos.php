@@ -48,7 +48,7 @@ class Model_alimentos extends CI_Model {
 		$data = array(
 			'idgrupo1' => $datos['idgrupo1']['id'],
 			'idgrupo2' => $datos['idgrupo2']['id'],
-			'nombre' => strtoupper($datos['nombre']),
+			'nombre' => strtoupper_total($datos['nombre']),
 			'calorias' => empty($datos['calorias']) ? NULL : $datos['calorias'],
 			'proteinas' => empty($datos['proteinas']) ? NULL : $datos['proteinas'],
 			'grasas' => empty($datos['grasas']) ? NULL : $datos['grasas'],

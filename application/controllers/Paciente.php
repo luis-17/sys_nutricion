@@ -128,6 +128,12 @@ class Paciente extends CI_Controller {
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		// var_dump($allInputs); exit();
 		$row = $this->model_paciente->m_cargar_paciente_por_nombre($allInputs);
+		if ($row['nombre_foto'] == '' ||
+			!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+			$foto = 'sin-imagen.png';
+		}else{
+			$foto = $row['nombre_foto'];
+		}		
 		$arrListado = array(
 			'idcliente' => $row['idcliente'],
 			'nombre' => $row['nombre'],
@@ -135,14 +141,16 @@ class Paciente extends CI_Controller {
 			'paciente' => $row['nombre'] . ' ' . $row['apellidos'],
 			'fecha_nacimiento_st' => formatoFechaReporte3($row['fecha_nacimiento']),
 			'fecha_nacimiento' => darFormatoDMY2($row['fecha_nacimiento']),
-			'nombre_foto' => $row['nombre_foto'],
+			'nombre_foto' => $foto,
 			'celular' => $row['celular'],
 			'sexo_desc' => $row['sexo'] == 'M'? 'Masculino' : 'Femenino',
 			'sexo' => $row['sexo'],
 			'edad' => devolverEdad($row['fecha_nacimiento']),
-			'estatura' => $row['estatura'],
+			'estatura' => (int)$row['estatura'],
 			'idempresa' => $row['idempresa'],
+			'empresa' => $row['nombre_comercial'],
 			'idtipocliente' => $row['idtipocliente'],
+			'tipo_cliente' => $row['descripcion_tc'],
 			'cargo_laboral' => $row['cargo_laboral'],
 			'email' => $row['email'],
 			'idmotivoconsulta' => $row['idmotivoconsulta'],
@@ -152,6 +160,9 @@ class Paciente extends CI_Controller {
 			'medicamentos' => $row['medicamentos'],
 			'antecedentes_notas' => $row['antecedentes_notas'],
 			'habitos_notas' => $row['habitos_notas'],
+			'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
+			'cant_atencion' =>  $row['cant_atencion'],
+			'fecha_alta' =>  darFormatoDMY2($row['fecha_alta']),
 			);
 
     	$arrData['datos'] = $arrListado;
@@ -164,6 +175,7 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+
 	public function lista_pacientes_autocomplete(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
 		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);

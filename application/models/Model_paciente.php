@@ -66,13 +66,17 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_cargar_paciente_por_nombre($datos){
 		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
-			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion, cl.cargo_laboral,
+			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion, cl.cargo_laboral, tc.descripcion_tc,emp.nombre_comercial,
 			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
-			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl');
+			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl, MAX(at.fecha_atencion) AS fec_ult_atencion, count(at.idatencion) AS cant_atencion, cl.createdat as fecha_alta');
 		$this->db->from('cliente cl');
 		$this->db->join('motivo_consulta mc', 'cl.idmotivoconsulta = mc.idmotivoconsulta');
+		$this->db->join('atencion at', 'cl.idcliente = at.idcliente AND at.estado_atencion = 1','left');
+		$this->db->join('tipo_cliente tc','cl.idtipocliente = tc.idtipocliente');
+		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');		
 		$this->db->where('cl.estado_cl', 1);
 		$this->db->where("UPPER(CONCAT(cl.nombre, ' ',cl.apellidos)) LIKE '%". strtoupper_total($datos['search']) . "%'");
+		$this->db->group_by('cl.idcliente');		
 		$this->db->limit(1);
 
 		return $this->db->get()->row_array();
