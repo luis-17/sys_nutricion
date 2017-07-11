@@ -265,11 +265,11 @@ class PlanAlimentario extends CI_Controller {
 		foreach ($lista as $key => $row) {
 			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
 			$arrayPlan[$row['iddia']]['valoresGlobales'] = array();
-			$arrayPlan[$row['iddia']]['nombre_dia'] = $row['nombre_dia'];
+			$arrayPlan[$row['iddia']]['nombre_dia'] = strtolower_total($row['nombre_dia']);
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['valoresTurno'] = array();
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = $row['descripcion_tu'];
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = strtolower_total($row['descripcion_tu']);
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = strtolower_total($row['indicaciones']);
 
 			if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = NULL;
@@ -306,7 +306,7 @@ class PlanAlimentario extends CI_Controller {
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['idalimento'] = $row['idalimento'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['nombre'] = $row['nombre'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['medida_casera'] = $row['medida_casera'];
-				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['nombre_compuesto'] = $row['nombre'] . ' - '. strtoupper($row['medida_casera']);
+				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['nombre_compuesto'] = strtoupper_total($row['nombre']) . ' - '. strtoupper_total($row['medida_casera']);
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['calorias'] = (float)$row['calorias'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['proteinas'] = (float)$row['proteinas'];
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['alimentos'][$row['idatenciondietaalim']]['grasas'] = (float)$row['grasas'];
@@ -328,7 +328,7 @@ class PlanAlimentario extends CI_Controller {
 					'idalimento' => $row['idalimento_alter'],
 					'nombre' => $row['nombre_alter'],
 					'medida_casera' => $row['medida_casera_alter'],
-					'nombre_compuesto' => $row['nombre_alter'] . ' - '. strtoupper($row['medida_casera_alter']),
+					'nombre_compuesto' => strtoupper_total($row['nombre_alter']) . ' - '. strtoupper_total($row['medida_casera_alter']),
 					'calorias' => (float)$row['calorias_alter'],
 					'proteinas' => (float)$row['proteinas_alter'],
 					'grasas' => (float)$row['grasas_alter'],
@@ -785,9 +785,10 @@ class PlanAlimentario extends CI_Controller {
     	//header
     	$this->headerPlan($paciente, $consulta, $configuracion);
 
-	    //body
+	    //body	    
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
 			$plan = $arrayPlan[1];
+			$altoBloque =  ($this->pdf->GetPageHeight() - (18+23)) / 3; //total alto pagina - header - footer
 			foreach ($plan['turnos'] as $key => $turno) {
 				if($turno['id'] % 2 != 0){
 					$this->pdf->SetTextColor(255,255,255);
@@ -796,14 +797,16 @@ class PlanAlimentario extends CI_Controller {
 					}
 
 					if($turno['id']==3){
+						$this->pdf->SetY($altoBloque+18);
 						$this->pdf->SetFillColor(106,220,0);
 					}
 
 					if($turno['id']==5){
+						$this->pdf->SetY(($altoBloque*2)+18);
 						$this->pdf->SetFillColor(255,0,100);
 					}
 					$this->pdf->SetFont('Arial','B',14);
-			    	$this->pdf->Cell(50,6,utf8_decode('       ' . ucwords(strtolower($turno['descripcion']))),0,1,'L',true);
+			    	$this->pdf->Cell(50,6,utf8_decode('       ' . ucwords(strtolower_total($turno['descripcion']))),0,1,'L',true);
 			    	$this->pdf->Ln(1);
 			    	$this->pdf->SetTextColor(83,83,83);
 			    	$this->pdf->SetFillColor(255,255,255);
@@ -811,7 +814,7 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->SetLeftMargin(10);
 			    	if($consulta['tipo_dieta'] == 'SG'){
 			    		if(!empty($turno['indicaciones'])){
-			    			$this->pdf->MultiCell(0,5,utf8_decode(chr(127) .' '.ucfirst(strtolower($turno['indicaciones']))),0,1,'L',true);
+			    			$this->pdf->MultiCell(0,5,utf8_decode(chr(127) .' '.ucfirst(strtolower_total($turno['indicaciones']))),0,1,'L',true);
 			    		}
 			    	}
 
@@ -824,23 +827,23 @@ class PlanAlimentario extends CI_Controller {
 				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
-				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127). ' '.ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127). ' '.ucfirst(strtolower_total($alm_nombre . $text))),0,1,'L',true);
 				    			}else{
-				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127).' '.ucfirst(strtolower($alm_nombre))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(chr(127).' '.ucfirst(strtolower_total($alm_nombre))),0,1,'L',true);
 				    			}
 				    		}
 			    		}
 			    	}
 
 			    	$this->pdf->SetLeftMargin(0);
-			    	$this->pdf->Ln(1);
+			    	$this->pdf->Ln(2);
 				}else{
 			    	$this->pdf->SetLeftMargin(10);
 			    	$this->pdf->SetTextColor(83,83,83);
 			    	$this->pdf->SetFillColor(255,255,255);
 
 			    	if($consulta['tipo_dieta'] == 'SG'){
-			    		$this->pdf->MultiCell(0, 5, utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($turno['indicaciones']))));
+			    		$this->pdf->MultiCell(0, 5, utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($turno['indicaciones']))));
 			    	}
 
 			    	if($consulta['tipo_dieta'] == 'CG'){
@@ -852,15 +855,15 @@ class PlanAlimentario extends CI_Controller {
 				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
-				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($alm_nombre . $text))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($alm_nombre . $text))),0,1,'L',true);
 				    			}else{
-				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper($turno['descripcion']) . ': ' . ucfirst(strtolower($alm_nombre))),0,1,'L',true);
+				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($alm_nombre))),0,1,'L',true);
 				    			}
 				    		}
 			    		}
 			    	}
 
-			    	$this->pdf->Ln(1);
+			    	$this->pdf->Ln(2);
 			    	$this->pdf->SetLeftMargin(0);
 			    	$this->pdf->Ln(5);
 				}

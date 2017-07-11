@@ -120,7 +120,7 @@
         <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true" ng-if="plan.formaPlan == 'dia'" 
           ng-init="indextab = 1">
           <uib-tab heading="{{dia.nombre_dia}}"  active="dia.id == plan.activeTab" ng-click="changeTab(dia.id);"
-            ng-repeat="(indexDia, dia) in plan.dias" >
+            ng-repeat="(indexDia, dia) in plan.dias" style=" text-transform: uppercase;" >
             <div ng-if="plan.tipoPlan == 'simple'" ng-include="'app/pages/plan-alimentario/plan-simple-template.html'"></div>
             <div ng-if="plan.tipoPlan == 'compuesto'" ng-include="'app/pages/plan-alimentario/plan-compuesto-template.html'"></div>
           </uib-tab>
