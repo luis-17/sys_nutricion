@@ -37,12 +37,24 @@
         controllerAs: 'emp'
       })
       //paciente
-      .state('paciente', {
+      .state('paciente', {   
         url: '/app/paciente',
         templateUrl: 'app/pages/paciente/paciente.html',
         controller: 'PacienteController',
-        controllerAs: 'pac' 
+        controllerAs: 'pac' ,
+        params: {
+          search : false
+        }        
       })
+      .state('pacienteficha', {
+        url: '/app/paciente/ficha',
+        templateUrl: 'app/pages/paciente/paciente.html',
+        controller: 'PacienteController',
+        controllerAs: 'pac' ,
+        params: {
+          search : true
+        }
+      })      
       //citas
       .state('citas', {
         url: '/app/citas',

@@ -103,5 +103,59 @@ class Usuario extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}	
+	public function mostrar_usuario_id(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$lista = $this->model_usuario->m_cargar_usuario_id($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idusuario' => $row['idusuario'],
+					'username' => $row['username'],
+					'idgrupo' => $row['idgrupo']
+				)
+			);
+		}
 
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}		
+	public function cambiar_clave(){
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$arrData['message'] = 'Error al cambiar la clave, inténtelo nuevamente';
+    	$arrData['flag'] = 0;
+    	// var_dump($allInputs); exit();
+    	$passOK = $this->model_usuario->m_verificar_clave($allInputs);    	
+    	if(!$passOK){
+    		$arrData['message'] = 'La contraseña actual no es correcta.';
+			$arrData['flag'] = 0;
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;     		
+    	} 
+    	if($allInputs['pass'] != $allInputs['pass2']){
+    		$arrData['message'] = 'Las nuevas contraseñas no son iguales.';
+			$arrData['flag'] = 0;
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;    		
+    	} 
+
+		if($this->model_usuario->m_cambiar_clave($allInputs)){
+			$arrData['message'] = 'Se actualizaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 }

@@ -7,14 +7,14 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document, alertify,toastr,pageLoading,ModalReporteFactory,
+  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document,$state,$stateParams,alertify,toastr,pageLoading,ModalReporteFactory,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
   {
 
     var vm = this;
-    console.log('paciente',$scope.paciente);
+
     vm.modoFicha = false;
     vm.modoEditar = false;
     vm.fotoCrop = false;
@@ -236,7 +236,7 @@
           }
         });
       }
-      vm.getPaginationServerSide(true);
+      //vm.getPaginationServerSide(true);
     // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
@@ -403,7 +403,7 @@
         vm.previo0 = true;
         vm.previo1 = false;
         vm.previo2 = false;
-        console.log(row);
+        // console.log(row);
         if(!vm.externo){
           vm.mySelectionGrid = [row];          
         }
@@ -429,13 +429,13 @@
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
         //vm.ficha.fecha_nacimiento = $filter('date')(row.fecha_nacimiento,'dd/MM/yyyy');
-
         vm.cargarAntecedentes(row);
         vm.cargarHabitosAlimentarios(row);
         vm.cargarHabitos(row);
         vm.cargarEvolucion(row);
         vm.cargarConsultas(row);
         vm.cargarPlanes(row);
+
       }
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
@@ -458,179 +458,212 @@
         });
       }
       // CARGAR GRAFICO
-        vm.cargarEvolucion = function(row){
-          PacienteServices.slistarEvolucion(row).then(function(rpta){
-            // console.log('rpta', rpta.datos.peso);
+      vm.cargarEvolucion = function(row){
+        PacienteServices.slistarEvolucion(row).then(function(rpta){
+          // console.log('rpta', rpta.datos.peso);
 
-            if(rpta.datos.peso[0].data.length >= 2){
-              vm.sinGrafico = false;
-            }else{
-              vm.sinGrafico = true;
+          if(rpta.datos.peso[0].data.length >= 2){
+            vm.sinGrafico = false;
+          }else{
+            vm.sinGrafico = true;
+          }
+
+          vm.chartOptions1 = {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Peso'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+              title: {
+                  text: 'Peso en Kg.'
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+            },
+            // series: [{
+            //     // data: ['85','80','70','90']
+            //     data: []
+            // }]
+          };
+          vm.chartOptions1.series = rpta.datos.peso;
+          vm.chartOptions1.xAxis.categories = rpta.datos.xAxis;
+          vm.chartOptions1.chart.events = {
+            load: function () {
+              var thes = this;
+              setTimeout(function () {
+                  thes.setSize($("#chartOptions1").parent().width(), $("#chartOptions1").parent().height());
+              }, 10);
             }
+          };
 
-            vm.chartOptions1 = {
-              chart: {
-                  type: 'line'
-              },
+
+          vm.chartOptions2 = {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'IMC'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
               title: {
-                  text: 'Peso'
+                  text: 'IMC.'
               },
-              xAxis: {
-                  categories: []
-              },
-              yAxis: {
-                title: {
-                    text: 'Peso en Kg.'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-              },
-              // series: [{
-              //     // data: ['85','80','70','90']
-              //     data: []
-              // }]
-            };
-            vm.chartOptions1.series = rpta.datos.peso;
-            vm.chartOptions1.xAxis.categories = rpta.datos.xAxis;
-            vm.chartOptions1.chart.events = {
-              load: function () {
-                var thes = this;
-                setTimeout(function () {
-                    thes.setSize($("#chartOptions1").parent().width(), $("#chartOptions1").parent().height());
-                }, 10);
-              }
-            };
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+            },
+            // series: [{
+            //     // data: ['85','80','70','90']
+            //     data: []
+            // }]
+          };
+          vm.chartOptions2.series = rpta.datos.imc;
+          vm.chartOptions2.xAxis.categories = rpta.datos.xAxis;
+          vm.chartOptions2.chart.events = {
+            load: function () {
+              var thes = this;
+              setTimeout(function () {
+                  thes.setSize($("#chartOptions2").parent().width(), $("#chartOptions2").parent().height());
+              }, 10);
+            }
+          };
 
-
-            vm.chartOptions2 = {
-              chart: {
-                  type: 'line'
-              },
+          vm.chartOptions3 = {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Todos'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
               title: {
-                  text: 'IMC'
+                  text: 'OTROS'
               },
-              xAxis: {
-                  categories: []
-              },
-              yAxis: {
-                title: {
-                    text: 'IMC.'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-              },
-              // series: [{
-              //     // data: ['85','80','70','90']
-              //     data: []
-              // }]
-            };
-            vm.chartOptions2.series = rpta.datos.imc;
-            vm.chartOptions2.xAxis.categories = rpta.datos.xAxis;
-            vm.chartOptions2.chart.events = {
-              load: function () {
-                var thes = this;
-                setTimeout(function () {
-                    thes.setSize($("#chartOptions2").parent().width(), $("#chartOptions2").parent().height());
-                }, 10);
-              }
-            };
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+            },
+            // series: [
+            //   {
+            //     data: ['85','80']
+            //   },
+            //   {
+            //     data: ['55','50']
+            //   },
+            // ]
+          };
+          vm.chartOptions3.series = rpta.datos.todos;
+          vm.chartOptions3.xAxis.categories = rpta.datos.xAxis;
+          vm.chartOptions3.chart.events = {
+            load: function () {
+              var thes = this;
+              setTimeout(function () {
+                  thes.setSize($("#chartOptions3").parent().width(), $("#chartOptions3").parent().height());
+              }, 10);
+            }
+          };
 
-            vm.chartOptions3 = {
-              chart: {
-                  type: 'line'
-              },
-              title: {
-                  text: 'Todos'
-              },
-              xAxis: {
-                  categories: []
-              },
-              yAxis: {
-                title: {
-                    text: 'OTROS'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-              },
-              // series: [
-              //   {
-              //     data: ['85','80']
-              //   },
-              //   {
-              //     data: ['55','50']
-              //   },
-              // ]
-            };
-            vm.chartOptions3.series = rpta.datos.todos;
-            vm.chartOptions3.xAxis.categories = rpta.datos.xAxis;
-            vm.chartOptions3.chart.events = {
-              load: function () {
-                var thes = this;
-                setTimeout(function () {
-                    thes.setSize($("#chartOptions3").parent().width(), $("#chartOptions3").parent().height());
-                }, 10);
-              }
-            };
-
-          });
-        }
+        });
+      }
       // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
-        vm.cargarImagen = function(){
-          vm.fotoCrop = true;
-          vm.image = {
-             originalImage: '',
-             croppedImage: '',
-          };
-          vm.cropType='circle';
+      vm.cargarImagen = function(){
+        vm.fotoCrop = true;
+        vm.image = {
+           originalImage: '',
+           croppedImage: '',
+        };
+        vm.cropType='circle';
 
-          var handleFileSelect2=function(evt) {
-            var file = evt.currentTarget.files[0];
-            // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
-            //       // notify({
-            //       //     message: 'Only .jpg and .png files are accepted!',
-            //       //     classes: ["alert-danger"]
-            //       // });
-            //       alert('Solo se permiten imagenes');
-            //       return false;
-            //   }
-            //   if (file.size > 4194304) {
-            //       // notify({
-            //       //     message: 'Max file size is 4mb!',
-            //       //     classes: ["alert-danger"]
-            //       // });
-            //       alert('Max. 4Mb');
-            //       return false;
-            //   }
-            var reader = new FileReader();
-            reader.onload = function (evt) {
-              /* eslint-disable */
-              $scope.$apply(function($scope){
-                vm.image.originalImage=evt.target.result;
-                // vm.image.fotoNueva=evt.target.result;
-                console.log("foto", vm.image);
-              });
-              /* eslint-enable */
-            };
-            reader.readAsDataURL(file);
+        var handleFileSelect2=function(evt) {
+          var file = evt.currentTarget.files[0];
+          // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
+          //       // notify({
+          //       //     message: 'Only .jpg and .png files are accepted!',
+          //       //     classes: ["alert-danger"]
+          //       // });
+          //       alert('Solo se permiten imagenes');
+          //       return false;
+          //   }
+          //   if (file.size > 4194304) {
+          //       // notify({
+          //       //     message: 'Max file size is 4mb!',
+          //       //     classes: ["alert-danger"]
+          //       // });
+          //       alert('Max. 4Mb');
+          //       return false;
+          //   }
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            /* eslint-disable */
+            $scope.$apply(function($scope){
+              vm.image.originalImage=evt.target.result;
+              // vm.image.fotoNueva=evt.target.result;
+              console.log("foto", vm.image);
+            });
+            /* eslint-enable */
           };
-          $timeout(function() { // lo pongo dentro de un timeout sino no funciona
-            angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
-          });
-        }
-        vm.subirFoto = function(){
-          vm.image.nombre_foto = vm.ficha.nombre_foto;
-          vm.image.idcliente = vm.ficha.idcliente;
-          vm.image.nombre = vm.ficha.nombre;
-          PacienteServices.sSubirFoto(vm.image).then(function(rpta){
+          reader.readAsDataURL(file);
+        };
+        $timeout(function() { // lo pongo dentro de un timeout sino no funciona
+          angular.element($document[0].querySelector('#fileInput2')).on('change',handleFileSelect2);
+        });
+      }
+      vm.subirFoto = function(){
+        vm.image.nombre_foto = vm.ficha.nombre_foto;
+        vm.image.idcliente = vm.ficha.idcliente;
+        vm.image.nombre = vm.ficha.nombre;
+        PacienteServices.sSubirFoto(vm.image).then(function(rpta){
+          if(rpta.flag == 1){
+            var title = 'OK';
+            var iconClass = 'success';
+            vm.ficha.nombre_foto = rpta.datos;
+            vm.fotoCrop = false;
+            vm.image = {
+               originalImage: '',
+               croppedImage: '',
+            };
+
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.cancelarFoto = function(){
+        vm.fotoCrop = false;
+        vm.image = {
+           originalImage: '',
+           croppedImage: '',
+        };
+      }
+      vm.eliminarFoto = function(){
+        alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
+          ev.preventDefault();
+          PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
             if(rpta.flag == 1){
               var title = 'OK';
               var iconClass = 'success';
@@ -652,42 +685,9 @@
             var toast = toastr[iconClass](rpta.message, title, vm.options);
             openedToasts.push(toast);
           });
-        }
-        vm.cancelarFoto = function(){
-          vm.fotoCrop = false;
-          vm.image = {
-             originalImage: '',
-             croppedImage: '',
-          };
-        }
-        vm.eliminarFoto = function(){
-          alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
-            ev.preventDefault();
-            PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
-              if(rpta.flag == 1){
-                var title = 'OK';
-                var iconClass = 'success';
-                vm.ficha.nombre_foto = rpta.datos;
-                vm.fotoCrop = false;
-                vm.image = {
-                   originalImage: '',
-                   croppedImage: '',
-                };
+        });
 
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                // vm.toast.title = 'Advertencia';
-                var iconClass = 'warning';
-                // vm.options.iconClass = {name:'warning'}
-              }else{
-                alert('Ocurrió un error');
-              }
-              var toast = toastr[iconClass](rpta.message, title, vm.options);
-              openedToasts.push(toast);
-            });
-          });
-
-        }
+      }
       vm.cargarAntecedentes = function(row){
         PacienteServices.sListarAntecedentesPaciente(row).then(function (rpta) {
           vm.listaAntPatologicos = rpta.datos.patologicos;
@@ -801,237 +801,238 @@
         });
       }
       // BOTONES DE EDICION
-        vm.btnAceptarTab2 = function(datos){//datos personales
-          PacienteServices.sEditarPaciente(datos).then(function (rpta) {
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              // closeButton: true,
-              // closeHtml : '<button>&times;</button>',
-              progressBar: true,
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
-            if(rpta.flag == 1){
-              vm.modoEditar = false;
-              // vm.getPaginationServerSide();
-              // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-
-              //   vm.ficha = rpta.datos;
-              //   vm.mySelectionGrid = [rpta.datos];
-              // });
-              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-              var title = 'OK';
-              var iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              // vm.toast.title = 'Advertencia';
-              var iconClass = 'warning';
-              // vm.options.iconClass = {name:'warning'}
-            }else{
-              alert('Ocurrió un error');
-            }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
-          });
-        }
-        vm.btnCancelarTab2 = function(){
-          vm.modoEditar = false;
-          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          // vm.cargarAntecedentes(vm.ficha);
-          // vm.cargarHabitosAlimentarios(vm.ficha);
-          // vm.cargarHabitos(vm.ficha);
-        }
-        vm.btnAceptarTab3 = function(){// antecedentes
-          console.log('array',vm.listaAntPatologicos);
-          PacienteServices.sRegistrarAntecedentePaciente(vm.ficha).then(function (rpta) {
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              // closeButton: true,
-              // closeHtml : '<button>&times;</button>',
-              progressBar: true,
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
-            if(rpta.flag == 1){
-              vm.modoEditar = false;
-              // vm.getPaginationServerSide();
-              // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-              //   vm.ficha = rpta.datos;
-              //   vm.mySelectionGrid = [rpta.datos];
-              // });
-              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-              var title = 'OK';
-              var iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              // vm.toast.title = 'Advertencia';
-              var iconClass = 'warning';
-              // vm.options.iconClass = {name:'warning'}
-            }else{
-              alert('Ocurrió un error');
-            }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
-          });
-        }
-        vm.btnCancelarTab3 = function(){
-          vm.modoEditar = false;
-          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          // vm.cargarAntecedentes(vm.ficha);
-          // vm.cargarHabitosAlimentarios(vm.ficha);
-          // vm.cargarHabitos(vm.ficha);
-        }
-        vm.btnAceptarTab4 = function(){
-          vm.ficha.habitos.idcliente = vm.ficha.idcliente;
-          vm.ficha.habitos.alimentarios = vm.ficha.listaHabitosAlim;
-          PacienteServices.sRegistrarHabitoPaciente(vm.ficha.habitos).then(function (rpta) {
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              // closeButton: true,
-              // closeHtml : '<button>&times;</button>',
-              progressBar: true,
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
-            if(rpta.flag == 1){
-              vm.modoEditar = false;
-              vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-              // vm.cargarHabitos(vm.ficha);
-              // vm.cargarHabitosAlimentarios(vm.ficha);
-              var title = 'OK',
-                  iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia',
-                  iconClass = 'warning';
-              // vm.options.iconClass = {name:'warning'}
-            }else{
-              alert('Ocurrió un error');
-            }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
-          });
-        }
-        vm.btnCancelarTab4 = function(){
-          vm.modoEditar = false;
-          vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-          // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-          // vm.cargarAntecedentes(vm.ficha);
-          // vm.cargarHabitosAlimentarios(vm.ficha);
-          // vm.cargarHabitos(vm.ficha);
-        }
-      // OTROS BOTONES
-        vm.btnRegresar = function(){
-          vm.modoFicha = false;
-          vm.modoEditar = false;
-          vm.fotoCrop = false;
-          vm.image = {
-             originalImage: '',
-             croppedImage: '',
+      vm.btnAceptarTab2 = function(datos){//datos personales
+        PacienteServices.sEditarPaciente(datos).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
           };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            // vm.getPaginationServerSide();
+            // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+
+            //   vm.ficha = rpta.datos;
+            //   vm.mySelectionGrid = [rpta.datos];
+            // });
+            vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.btnCancelarTab2 = function(){
+        vm.modoEditar = false;
+        vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+        // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        // vm.cargarAntecedentes(vm.ficha);
+        // vm.cargarHabitosAlimentarios(vm.ficha);
+        // vm.cargarHabitos(vm.ficha);
+      }
+      vm.btnAceptarTab3 = function(){// antecedentes
+        console.log('array',vm.listaAntPatologicos);
+        PacienteServices.sRegistrarAntecedentePaciente(vm.ficha).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            // vm.getPaginationServerSide();
+            // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
+            //   vm.ficha = rpta.datos;
+            //   vm.mySelectionGrid = [rpta.datos];
+            // });
+            vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+            var title = 'OK';
+            var iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia';
+            // vm.toast.title = 'Advertencia';
+            var iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.btnCancelarTab3 = function(){
+        vm.modoEditar = false;
+        vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+        // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        // vm.cargarAntecedentes(vm.ficha);
+        // vm.cargarHabitosAlimentarios(vm.ficha);
+        // vm.cargarHabitos(vm.ficha);
+      }
+      vm.btnAceptarTab4 = function(){
+        vm.ficha.habitos.idcliente = vm.ficha.idcliente;
+        vm.ficha.habitos.alimentarios = vm.ficha.listaHabitosAlim;
+        PacienteServices.sRegistrarHabitoPaciente(vm.ficha.habitos).then(function (rpta) {
+          vm.options = {
+            timeout: '3000',
+            extendedTimeout: '1000',
+            // closeButton: true,
+            // closeHtml : '<button>&times;</button>',
+            progressBar: true,
+            preventDuplicates: false,
+            preventOpenDuplicates: false
+          };
+          if(rpta.flag == 1){
+            vm.modoEditar = false;
+            vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+            // vm.cargarHabitos(vm.ficha);
+            // vm.cargarHabitosAlimentarios(vm.ficha);
+            var title = 'OK',
+                iconClass = 'success';
+          }else if( rpta.flag == 0 ){
+            var title = 'Advertencia',
+                iconClass = 'warning';
+            // vm.options.iconClass = {name:'warning'}
+          }else{
+            alert('Ocurrió un error');
+          }
+          var toast = toastr[iconClass](rpta.message, title, vm.options);
+          openedToasts.push(toast);
+        });
+      }
+      vm.btnCancelarTab4 = function(){
+        vm.modoEditar = false;
+        vm.btnActualizarFicha(vm.mySelectionGrid[0]);
+        // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
+        // vm.cargarAntecedentes(vm.ficha);
+        // vm.cargarHabitosAlimentarios(vm.ficha);
+        // vm.cargarHabitos(vm.ficha);
+      }
+    // OTROS BOTONES
+      vm.btnRegresar = function(){
+        $state.go('paciente');
+        vm.modoFicha = false;
+        vm.modoEditar = false;
+        vm.fotoCrop = false;
+        vm.image = {
+           originalImage: '',
+           croppedImage: '',
+        };
+        vm.previo0 = true;
+        vm.previo1 = false;
+        vm.previo2 = false;
+        vm.getPaginationServerSide(true);
+      }
+      vm.verPrevio = function(index){
+        // console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
+        // console.log('listaUltAntecedentes.length: ', vm.listaUltAntecedentes.length);
+        if(index == 0){
           vm.previo0 = true;
           vm.previo1 = false;
           vm.previo2 = false;
-          vm.getPaginationServerSide(true);
+        }else if(index == 1){
+          vm.previo0 = false;
+          vm.previo1 = true;
+          vm.previo2 = false;
+        }else{
+          vm.previo0 = false;
+          vm.previo1 = false;
+          vm.previo2 = true;
         }
-        vm.verPrevio = function(index){
-          // console.log('mySelectionGrid.length: ', vm.mySelectionGrid.length);
-          // console.log('listaUltAntecedentes.length: ', vm.listaUltAntecedentes.length);
-          if(index == 0){
-            vm.previo0 = true;
-            vm.previo1 = false;
-            vm.previo2 = false;
-          }else if(index == 1){
-            vm.previo0 = false;
-            vm.previo1 = true;
-            vm.previo2 = false;
-          }else{
-            vm.previo0 = false;
-            vm.previo1 = false;
-            vm.previo2 = true;
-          }
-        }
-        vm.btnAnular = function(row){
-          alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
-            ev.preventDefault();
-            PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
-              var openedToasts = [];
-              vm.options = {
-                timeout: '3000',
-                extendedTimeout: '1000',
-                // closeButton: true,
-                // closeHtml : '<button>&times;</button>',
-                preventDuplicates: false,
-                preventOpenDuplicates: false
-              };
-              if(rpta.flag == 1){
-                vm.getPaginationServerSide(true);
-                var title = 'OK';
-                var iconClass = 'success';
-              }else if( rpta.flag == 0 ){
-                var title = 'Advertencia';
-                var iconClass = 'warning';
-              }else{
-                alert('Ocurrió un error');
-              }
-              var toast = toastr[iconClass](rpta.message, title, vm.options);
-              openedToasts.push(toast);
-            });
-          }, function(ev) {
-              ev.preventDefault();
-          });
-        }
-        vm.btnPdf = function(){
-          // alert('En proceso');
-          PacienteServices.sImprimirFicha(vm.ficha).then(function(rpta){
-            if(rpta.flag == 1){
-              console.log('pdf...');
-              $window.open(rpta.urlTempPDF, '_blank');
-            }
-          });
-        }
-        vm.btnImprimirConsulta = function(item){
-          var arrParams = {
-              titulo: 'CONSULTA',
-              datos:{
-                consulta: item,
-                salida: 'pdf',
-                tituloAbv: 'Consulta',
-                titulo: 'Consulta'
-              },
-              metodo: 'php',
-              url: angular.patchURLCI + "Consulta/imprimir_consulta"
-            }
-            ModalReporteFactory.getPopupReporte(arrParams);
-        }
-        vm.btnImprimirPlan = function(item){
-          var arrParams = {
-              titulo: 'PLAN ALIMENTARIO',
-              datos:{
-                consulta: item,
-                cita: {cliente: {paciente:vm.ficha.paciente}},
-                salida: 'pdf',
-                tituloAbv: 'PLAN',
-                titulo: 'PLAN ALIMENTARIO'
-              },
-              metodo: 'php',
-              url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
-            }
-            ModalReporteFactory.getPopupReporte(arrParams);
-        }
-      if($scope.paciente){
-        var row = {
-          entity:$scope.paciente
-        }
-        vm.btnVerFicha(row);
       }
+      vm.btnAnular = function(row){
+        alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
+          ev.preventDefault();
+          PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
+            var openedToasts = [];
+            vm.options = {
+              timeout: '3000',
+              extendedTimeout: '1000',
+              // closeButton: true,
+              // closeHtml : '<button>&times;</button>',
+              preventDuplicates: false,
+              preventOpenDuplicates: false
+            };
+            if(rpta.flag == 1){
+              vm.getPaginationServerSide(true);
+              var title = 'OK';
+              var iconClass = 'success';
+            }else if( rpta.flag == 0 ){
+              var title = 'Advertencia';
+              var iconClass = 'warning';
+            }else{
+              alert('Ocurrió un error');
+            }
+            var toast = toastr[iconClass](rpta.message, title, vm.options);
+            openedToasts.push(toast);
+          });
+        }, function(ev) {
+            ev.preventDefault();
+        });
+      }
+      vm.btnPdf = function(){
+        // alert('En proceso');
+        PacienteServices.sImprimirFicha(vm.ficha).then(function(rpta){
+          if(rpta.flag == 1){
+            console.log('pdf...');
+            $window.open(rpta.urlTempPDF, '_blank');
+          }
+        });
+      }
+      vm.btnImprimirConsulta = function(item){
+        var arrParams = {
+            titulo: 'CONSULTA',
+            datos:{
+              consulta: item,
+              salida: 'pdf',
+              tituloAbv: 'Consulta',
+              titulo: 'Consulta'
+            },
+            metodo: 'php',
+            url: angular.patchURLCI + "Consulta/imprimir_consulta"
+          }
+          ModalReporteFactory.getPopupReporte(arrParams);
+      }
+      vm.btnImprimirPlan = function(item){
+        var arrParams = {
+            titulo: 'PLAN ALIMENTARIO',
+            datos:{
+              consulta: item,
+              cita: {cliente: {paciente:vm.ficha.paciente}},
+              salida: 'pdf',
+              tituloAbv: 'PLAN',
+              titulo: 'PLAN ALIMENTARIO'
+            },
+            metodo: 'php',
+            url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
+          }
+          ModalReporteFactory.getPopupReporte(arrParams);
+      }
+      if($scope.paciente && $stateParams.search){
+        vm.btnVerFicha($scope.paciente);        
+      }else{
+        vm.getPaginationServerSide(true);
+      }
+
       vm.callback = function(row){
         vm.cargarConsultas(row);
-        // console.log(row);
+        //console.log(row);
       }
       vm.btnEditarConsulta = function(row){
         vm.tipoVista = 'edit';

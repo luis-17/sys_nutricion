@@ -15,7 +15,9 @@
         sRegistrarUsuario: sRegistrarUsuario,
         sEditarUsuario: sEditarUsuario,
         sAnularUsuario: sAnularUsuario,
-        sListaUsuarioAutocomplete: sListaUsuarioAutocomplete,            
+        sListaUsuarioAutocomplete: sListaUsuarioAutocomplete, 
+        sMostrarUsuarioID: sMostrarUsuarioID,
+        sCambiarClave: sCambiarClave           
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -58,5 +60,21 @@
       });
       return (request.then(handleSuccess,handleError));
     }
+    function sMostrarUsuarioID(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Usuario/mostrar_usuario_id",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }    
+    function sCambiarClave(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Usuario/cambiar_clave",
+            data : datos
+      });
+      return (request.then(handleSuccess,handleError));
+    }     
   }
 })();

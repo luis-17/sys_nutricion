@@ -265,7 +265,7 @@
             // var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
-            // console.log("row",vm.fData);
+            vm.fData.afterUsuario = vm.fData.usuario;
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
 
@@ -343,6 +343,69 @@
                 }
               });              
             }
+            /* --------- Editar datos del usuario -------*/
+            vm.Edituser = function(){
+              var modalInstance = $uibModal.open({
+                templateUrl: 'user.html',
+                controllerAs: 'us',
+                size: 'md',
+                backdropClass: 'splash',
+                windowClass: 'splash',          
+                controller: function($scope, $uibModalInstance, data ,modoEdit,arrToModal ){
+                  var vm = this;
+                  vm.fData = {};
+                  //vm.fData.username = data.usuario;
+                  //vm.fData.idusuario = data.idusuario;
+                  vm.modoEdit = modoEdit;
+                  vm.modalTitle = 'Edición de Usuario'; 
+
+                  UsuarioServices.sMostrarUsuarioID(data).then(function(rptaUsu){
+                    vm.fData.username = rptaUsu.datos[0]['username'];
+                    vm.fData.idusuario = data.idusuario;                    
+                    GrupoServices.sListarGrupo().then(function (rpta) {
+                      vm.listaGrupo = angular.copy(rpta.datos);
+                      angular.forEach(vm.listaGrupo, function(value, key){
+                        if(value.id == rptaUsu.datos[0]['idgrupo']){
+                          vm.fData.idgrupo = vm.listaGrupo[key];
+                        }                      
+                      });
+                      
+                    });                    
+                  });          
+                  // BOTONES
+                  vm.aceptar = function () {
+                    UsuarioServices.sEditarUsuario(vm.fData).then(function (rpta) { 
+                      if(rpta.flag == 1){ 
+                        data.usuario = vm.fData.username;
+                        $uibModalInstance.close();          
+                        var pTitle = 'OK!';
+                        var pType = 'success';
+                      }else if( rpta.flag == 0 ){
+                        var pTitle = 'Advertencia!';
+                        var pType = 'warning';  
+                      }else{
+                        alert('Ocurrió un error');
+                      }
+                      pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+                    });
+
+                  };
+                  vm.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                  };
+                },
+                resolve: {
+                  data : function() { return vm.fData},
+                  modoEdit : function() { return vm.modoEdicion},
+                  arrToModal: function() {
+                    return {
+                      getPaginationServerSide : vm.getPaginationServerSide,
+                    }
+                  }
+                }
+              });              
+            }
+
             /*------------  FIN REGISTRO USUARIO  ------------*/ 
             // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
             vm.cargarImagen = function(){
@@ -421,6 +484,9 @@
 
             };
             vm.cancel = function () {
+              if(vm.fData.afterUsuario != vm.fData.usuario && vm.modoEdicion ){
+                vm.getPaginationServerSide();
+              }
               $uibModalInstance.dismiss('cancel');
             };
           },

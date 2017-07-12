@@ -8,7 +8,7 @@ class Profesional extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));        
-        $this->load->model(array('model_profesional'));
+        $this->load->model(array('model_profesional','model_usuario'));
 
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
@@ -33,7 +33,8 @@ class Profesional extends CI_Controller {
 					'num_colegiatura' => $row['num_colegiatura'],
 					'idusuario' => $row['idusuario'],
 					'nombre_foto' => $row['nombre_foto'],
-					'usuario' => $row['username']					
+					'usuario' => $row['username'],
+					'idgrupo' => $row['idgrupo']					
 				)
 			);
 			// var_dump($row['fecha_nacimiento'], darFormatoDMY($row['fecha_nacimiento'])); exit(); 
@@ -163,10 +164,15 @@ class Profesional extends CI_Controller {
 		$arrData['message'] = 'Error al anular los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
+    	$this->db->trans_start();
 		if($this->model_profesional->m_anular($allInputs)){
-			$arrData['message'] = 'Se anularon los datos correctamente';
-    		$arrData['flag'] = 1;
+			if($this->model_usuario->m_anular($allInputs)){
+				$arrData['message'] = 'Se anularon los datos correctamente';
+	    		$arrData['flag'] = 1;				
+			}
+
 		}
+		$this->db->trans_complete();		
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));

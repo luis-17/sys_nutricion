@@ -56,7 +56,7 @@
     }]);
 
   /** @ngInject */
-  function MainController($translate, $scope, rootServices, PacienteServices,$location) {
+  function MainController($translate, $scope, $state, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
     var vm = this; 
 
     // var currentPageTemplate = $route.current.templateUrl;
@@ -94,14 +94,52 @@
         $scope.goToUrl('/app/pages/login');
       });
     };
+    $scope.btnChangePassword = function() {
+      var modalInstance = $uibModal.open({
+        templateUrl: 'password.html',
+        controllerAs: 'ps',
+        size: 'sm',
+        scope: $scope,
+        backdropClass: 'splash',
+        windowClass: 'splash',          
+        controller: function($scope, $uibModalInstance){
+          var vm = this;
+          vm.fData = {};
+          vm.modalTitle = 'Cambio de Clave';  
+          vm.fData.idusuario = $scope.fSessionCI.idusuario;
+          //console.log("sesion: ",$scope.fSessionCI.idusuario);     
+          // BOTONES
+          vm.aceptar = function () {
+            UsuarioServices.sCambiarClave(vm.fData).then(function (rpta) { 
+              if(rpta.flag == 1){ 
+                //data.usuario = vm.fData.username;
+                $uibModalInstance.close();          
+                var pTitle = 'OK!';
+                var pType = 'success';
+              }else if( rpta.flag == 0 ){
+                var pTitle = 'Advertencia!';
+                var pType = 'warning';  
+              }else{
+                alert('Ocurrió un error');
+              }
+              pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+            });
+
+          };
+          vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }
+      }); 
+    };
     $scope.buscarPaciente = function (paciente) {
       var paramDatos = {
         search: paciente
       }
       PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) {
-      console.log(rpta.datos);
+      console.log("datos index: ",rpta.datos);
       $scope.paciente = rpta.datos;
-      $scope.goToUrl('/app/paciente');
+      $state.go('pacienteficha');
       });
     };
 
@@ -116,6 +154,7 @@
           $scope.fSessionCI = response.datos;
           console.log("datos login: ",response.datos);
           $scope.logIn();
+          $scope.CargaMenu();
           if( $location.path() == '/app/pages/login' ){
             $scope.goToUrl('/');
           }
@@ -128,7 +167,18 @@
 
     }
     $scope.getValidateSession();
-
+    $scope.CargaMenu = function() {
+      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opEstadisticas','opInformes'];
+      if($scope.fSessionCI.idgrupo == 1){
+        $scope.valores = [true,true,true,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 2){
+        $scope.valores = [true,true,true,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 3){
+        $scope.valores = [true,false,true,true,false,false,false,false];
+      }
+    }
     $scope.changeViewConsulta = function(value, pestania, idatencion, origen){
       $scope.viewConsulta = value;
       $scope.pestaniaConsulta = pestania;

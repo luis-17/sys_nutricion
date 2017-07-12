@@ -31,7 +31,7 @@
 			        		</div>
 				        </div>
 				        <!--  -->
-						<div class="row">
+						<div class="row" ng-if="!us.modoEdit">
 				            <div class="form-group col-md-6">
 				              	<label for="pass" class="control-label minotaur-label">Ingrese la contraseña <small class="text-red">(*)</small></label>
 				              	<input type="password" name="pass" id="pass" class="form-control" ng-model="us.fData.pass" placeholder="Registre contraseña" >
@@ -129,7 +129,8 @@
                                   ng-change="mp.fData.idusuario = null;" 
                                   ng-if="mp.type != 'edit'" required/>
 			                  	<span class="input-group-btn">
-			                      <button type="button" class="btn btn-default" ng-click="mp.user()"><i class="glyphicon glyphicon-user"></i></button>
+			                      	<button type="button" class="btn btn-default" ng-if="!mp.modoEdicion" ng-click="mp.user()"><i class="glyphicon glyphicon-user"></i></button>
+			                     	<button type="button" class="btn btn-default" ng-if="mp.modoEdicion" ng-click="mp.Edituser()"><i class="glyphicon glyphicon-pencil"></i></button>
 			                    </span>			                    
 			                </div>
 			            </div>			            						
