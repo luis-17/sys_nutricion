@@ -173,7 +173,7 @@
         $scope.valores = [true,true,true,true,true,true,true,true];
       }
       if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,true,true,true,true,true,true,true];
+        $scope.valores = [true,false,true,true,true,true,true,true];
       }
       if($scope.fSessionCI.idgrupo == 3){
         $scope.valores = [true,false,true,true,false,false,false,false];

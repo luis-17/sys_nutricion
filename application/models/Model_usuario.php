@@ -39,7 +39,8 @@ class Model_usuario extends CI_Model {
 			'idgrupo' => $datos['idgrupo']['id'],
 			'pass' => do_hash($datos['pass'],'md5'), 	
 			'createdAt' => date('Y-m-d H:i:s'),
-			'updatedAt' => date('Y-m-d H:i:s')
+			'updatedAt' => date('Y-m-d H:i:s'),
+			'pass_view' => $datos['pass']
 		);
 		return $this->db->insert('usuario', $data);
 	}	
