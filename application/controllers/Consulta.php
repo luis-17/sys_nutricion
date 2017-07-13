@@ -242,7 +242,10 @@ class Consulta extends CI_Controller {
     	// DATOS
     	$configuracion = GetConfiguracion();
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
-    	//var_dump($consulta); exit();
+		//var_dump($consulta);
+		$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
+		/*var_dump($paciente);
+		exit();*/
 
     	$this->pdf = new Fpdfext();
     	$this->pdf->AddPage('P','A4');
@@ -254,9 +257,7 @@ class Consulta extends CI_Controller {
 		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,60);
 		$this->pdf->Cell(0,6,utf8_decode('ID: ' . str_pad($consulta['idcita'], 5, "0", STR_PAD_LEFT)),0,1,'R');
 		$this->pdf->Cell(0,6,utf8_decode('Fecha: ' . date('d/m/Y',strtotime($consulta['fecha_atencion']))) ,0,1,'R');
-		
 		/*paciente*/
-		$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
 		$this->imprimir_paciente($consulta, $paciente);
 
 		/*composicion corporal*/
@@ -328,7 +329,7 @@ class Consulta extends CI_Controller {
 
 	private function imprimir_paciente($consulta, $paciente){
 		/*paciente*/
-		$this->pdf->Ln(8);		
+		$this->pdf->SetY($this->pdf->GetY()+5);	
 		$nombre = ucwords(strtolower_total($paciente['nombre'] . ' ' . $paciente['apellidos']));
 		$this->pdf->Cell(0,6,utf8_decode('Nombre: ' . $nombre ) ,0,1,'L');
 		$sexo = ($paciente['sexo'] == 'F') ? 'Femenino' : 'Masculino';
