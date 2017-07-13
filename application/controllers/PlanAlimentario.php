@@ -1044,10 +1044,11 @@ class PlanAlimentario extends CI_Controller {
 		$setFromAleas = $configuracion['empresa'];
 		$this->load->library('My_PHPMailer');
 		date_default_timezone_set('UTC');
+		var_dump($configuracion); 
 
 		$mail = new PHPMailer();
 		$mail->IsSMTP(true);
-		//$mail->SMTPDebug = 1;
+		$mail->SMTPDebug = 2;
 		$mail->SMTPAuth = ($configuracion['smtp_auth'] == 1) ? TRUE : FALSE;
 		$mail->SMTPSecure = $configuracion['smtp_secure'];
 		$mail->Host = $configuracion['smtp_host'];
