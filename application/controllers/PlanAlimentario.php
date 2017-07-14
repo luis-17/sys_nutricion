@@ -1040,7 +1040,7 @@ class PlanAlimentario extends CI_Controller {
 				   <p> Te envío el detalle de tu dieta en el archivo adjunto.</p>
 				   <p>Nos vemos en tu próxima cita. </p>
 				   <p>Saludos.</p>';
-		$asunto = $paciente . ', DESCARGA TU PLAN ALIMENTARIO AQUI.'; 
+		$asunto = 'DESCARGA TU PLAN ALIMENTARIO AQUI.'; 
 		$setFromAleas = $configuracion['empresa'];
 		$this->load->library('My_PHPMailer');
 		date_default_timezone_set('UTC');
