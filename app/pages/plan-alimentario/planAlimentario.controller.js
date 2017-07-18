@@ -354,7 +354,8 @@
     }
 
     vm.btnActualizarPlan = function(){
-      console.log('vm.dias',vm.dias);
+      //console.log('vm.dias',vm.dias);
+      pageLoading.start('Actualizando plan...');
       var datos = {
         consulta:vm.consulta,
         tipo:vm.tipoPlan,
@@ -389,16 +390,17 @@
           }*/
           vm.consulta.tipo_dieta = rpta.tipo_dieta;
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
-          vm.cargaEstructura();
           vm.callbackCitas();
           vm.tipoVista = 'edit';
           vm.changeTab('1');
+          vm.cargaEstructura();
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
         }else{
           alert('Ocurrió un error');
         }
+        pageLoading.stop();
         var toast = toastr[iconClass](rpta.message, title, vm.options);
         openedToasts.push(toast);
       });

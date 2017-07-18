@@ -22,7 +22,7 @@ class PlanAlimentario extends CI_Controller {
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
 		if(!empty($consulta['tipo_dieta'])){
 			$arrData['flag'] = 0;
-			$arrData['message'] = 'Ya existe un plan alimentario registrado.Intente editarlo.';
+			$arrData['message'] = 'Ya existe un plan alimentario registrado. Intente editarlo.';
 			$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
@@ -32,6 +32,7 @@ class PlanAlimentario extends CI_Controller {
 		/*validaciones dia*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
+		$hayUnNoNumerico  = FALSE;
 		if($allInputs['forma']== 'dia'){
 			foreach ($allInputs['planDias'] as $key => $dia) {
 				foreach ($dia['turnos'] as $turno) {
@@ -41,6 +42,11 @@ class PlanAlimentario extends CI_Controller {
 
 					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
 						$unTurnoLlenoCompuesto = TRUE;
+						foreach ($turno['alimentos'] as $ind => $ali) {
+							if(!is_numeric($ali['cantidad'])){
+								$hayUnNoNumerico = TRUE;
+							}
+						}
 					}
 				}
 			}
@@ -67,11 +73,21 @@ class PlanAlimentario extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 			}
+
+			if($hayUnNoNumerico){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar campos de cantidad validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
 		}
 
 		/*validaciones general*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
+		$hayUnNoNumerico  = FALSE;
 		if($allInputs['forma'] == 'general'){
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
@@ -80,6 +96,19 @@ class PlanAlimentario extends CI_Controller {
 
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
+					foreach ($turno['alimentos'] as $ind => $ali) {
+						if(!is_numeric($ali['cantidad'])){
+							$hayUnNoNumerico = TRUE;
+						}
+
+						if(!$hayUnNoNumerico){
+							foreach ($ali['alternativos'] as $indAlm => $alter) {
+								if(!empty($alter['idalimento']) && !is_numeric($alter['cantidad'])){
+									$hayUnNoNumerico = TRUE;
+								}
+							}
+						}
+					}
 				}
 
 			}
@@ -105,7 +134,17 @@ class PlanAlimentario extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 			}
+
+			if($hayUnNoNumerico){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar campos de cantidad validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
 		}
+
 
 		/*print_r($allInputs);
 		exit();*/
@@ -355,6 +394,7 @@ class PlanAlimentario extends CI_Controller {
 
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
+		$hayUnNoNumerico = FALSE;
 		if($allInputs['forma']== 'dia'){
 			foreach ($allInputs['planDias'] as $key => $dia) {
 				foreach ($dia['turnos'] as $turno) {
@@ -364,6 +404,11 @@ class PlanAlimentario extends CI_Controller {
 
 					if($turno['hora']['id']!='--' && $turno['minuto']['id'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0){
 						$unTurnoLlenoCompuesto = TRUE;
+						foreach ($turno['alimentos'] as $ind => $ali) {
+							if(!is_numeric($ali['cantidad'])){
+								$hayUnNoNumerico = TRUE;
+							}
+						}
 					}
 				}
 			}
@@ -389,11 +434,21 @@ class PlanAlimentario extends CI_Controller {
 				    ->set_output(json_encode($arrData));
 				return;
 			}
+
+			if($hayUnNoNumerico){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar campos de cantidad validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
 		}
 
 		/*validaciones general*/
 		$unTurnoLleno = FALSE;
 		$unTurnoLlenoCompuesto = FALSE;
+		$hayUnNoNumerico = FALSE;
 		if($allInputs['forma'] == 'general'){
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['indicaciones'])){
@@ -402,6 +457,19 @@ class PlanAlimentario extends CI_Controller {
 
 				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && !empty($turno['alimentos']) && count($turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
+					foreach ($turno['alimentos'] as $ind => $ali) {
+						if(!is_numeric($ali['cantidad'])){
+							$hayUnNoNumerico = TRUE;
+						}
+
+						if(!$hayUnNoNumerico){
+							foreach ($ali['alternativos'] as $indAlmi=> $alter) {
+								if(!empty($alter['idalimento']) && !is_numeric($alter['cantidad'])){
+									$hayUnNoNumerico = TRUE;
+								}
+							}
+						}
+					}
 				}
 
 			}
@@ -422,6 +490,15 @@ class PlanAlimentario extends CI_Controller {
 			if(!$unTurnoLlenoCompuesto){
 				$arrData['flag'] = 0;
 				$arrData['message'] = 'Debe ingresar al menos las indicaciones de un turno.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+			}
+
+			if($hayUnNoNumerico){
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Debe ingresar campos de cantidad validos.';
 				$this->output
 				    ->set_content_type('application/json')
 				    ->set_output(json_encode($arrData));
