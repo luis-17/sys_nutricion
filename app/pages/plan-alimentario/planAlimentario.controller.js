@@ -542,6 +542,7 @@
 
         vm.dia.turnos[indexTurno].alimentos.push(vm.dia.turnos[indexTurno].seleccionado);
         vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].cantidad = vm.dia.turnos[indexTurno].temporalCantidad; 
+        vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = angular.copy(vm.dia.turnos[indexTurno].temporal.alternativos);
         /*vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = [{nombre_compuesto:'', idalimento:0, cantidad:null},
                                                                                                             {nombre_compuesto:'', idalimento:0, cantidad:null}];*/
         vm.dia.turnos[indexTurno].seleccionado = null;

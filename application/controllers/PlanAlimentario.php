@@ -934,19 +934,24 @@ class PlanAlimentario extends CI_Controller {
 
 			    	if($consulta['tipo_dieta'] == 'CG'){
 			    		if(!empty($turno['alimentos'])){
+			    			$text_total = '';
 				    		foreach ($turno['alimentos'] as $ind => $alm) {
-				    			$alm_nombre = $alm['medida_casera'] . ' ' . $alm['nombre'];
+				    			$text = $alm['medida_casera'] . ' ' . $alm['nombre'];
 				    			if(!empty($alm['alternativos'])){
-				    				$text = '';
 				    				foreach ($alm['alternativos'] as $index => $alm_alter) {
 				    					$text .= ' o ' . $alm_alter['medida_casera'] . ' ' . $alm_alter['nombre'];
 				    				}
-				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($alm_nombre . $text))),0,1,'L',true);
-				    			}else{
-				    				$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($alm_nombre))),0,1,'L',true);
 				    			}
+
+				    			$text_total .= $text . ', ';
 				    		}
 			    		}
+
+			    		if(strlen($text_total) > 3){
+			    			$text_total = substr($text_total, 0, -2);
+			    		}
+
+				    	$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion']) . ': ' . ucfirst(strtolower_total($text_total))),0,1,'L',true);
 			    	}
 
 			    	$this->pdf->Ln(2);
