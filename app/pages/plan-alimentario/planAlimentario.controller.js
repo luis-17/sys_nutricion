@@ -453,6 +453,13 @@
       }
     }
 
+    vm.getSelectedTemporalAlimentoAlt = function($item, $model, $label, indexDia, indexTurno, indexAlt){
+      if(vm.formaPlan == 'general'){
+        vm.dia.turnos[indexTurno].temporal.alternativos[indexAlt] = $item;
+        vm.dia.turnos[indexTurno].temporal.alternativos[indexAlt].cantidad = 1;
+      }
+    }
+
     vm.agregarAlimento = function(indexDia, indexTurno){
       if(vm.formaPlan == 'dia'){
         if(!(vm.dias[indexDia].turnos[indexTurno].seleccionado) ||
@@ -535,8 +542,8 @@
 
         vm.dia.turnos[indexTurno].alimentos.push(vm.dia.turnos[indexTurno].seleccionado);
         vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].cantidad = vm.dia.turnos[indexTurno].temporalCantidad; 
-        vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = [{nombre_compuesto:'', idalimento:0, cantidad:null},
-                                                                                                            {nombre_compuesto:'', idalimento:0, cantidad:null}];
+        /*vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = [{nombre_compuesto:'', idalimento:0, cantidad:null},
+                                                                                                            {nombre_compuesto:'', idalimento:0, cantidad:null}];*/
         vm.dia.turnos[indexTurno].seleccionado = null;
         vm.dia.turnos[indexTurno].temporalCantidad = null;
         vm.dia.turnos[indexTurno].temporal = null;

@@ -818,6 +818,15 @@ class PlanAlimentario extends CI_Controller {
     	$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
     	$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
 
+    	if(empty($consulta['tipo_dieta'])){
+    		$arrData['flag'] = 0;
+			$arrData['message'] = 'No ha sido generado el Plan Alimentario.';
+			$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+
     	if(!empty($allInputs['salida']) && $allInputs['salida']=='correo'){
     		if(empty($allInputs['emails'])){
     			$arrData['flag'] = 0;
