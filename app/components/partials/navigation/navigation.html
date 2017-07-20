@@ -21,26 +21,6 @@
         <span class="nav-text">{{ 'Menu.PROFESIONALES' | translate }}</span>
         <i class="fa fa-user-md"></i>
       </a>
-      <!-- <ul>
-        <li ui-sref-active="active">
-          <a ng-click="$state.reload();" ui-sref="profesional">
-            <span class="nav-text">{{ 'Menu.PROFESIONALES' | translate }}</span>
-            <i>{{ 'Menu.PROFESIONALES' | translate | limitTo: 2}}</i>
-          </a>
-        </li>
-        <li ui-sref-active="active">
-          <a ng-click="$state.reload();" ui-sref="mail.compose">
-            <span class="nav-text">{{ 'Menu.USUARIOS' | translate }}</span>
-            <i>{{ 'Menu.USUARIOS' | translate | limitTo: 2}}</i>
-          </a>
-        </li>
-        <li ui-sref-active="active">
-          <a ng-click="$state.reload();" ui-sref="mail.single">
-            <span class="nav-text">{{ 'Menu.ROLES' | translate }}</span>
-            <i>{{ 'Menu.ROLES' | translate | limitTo: 2}}</i>
-          </a>
-        </li> 
-      </ul>-->
     </li>
     <li ng-class="{'active':$state.includes('paciente')}" ng-if="valores[2]">
       <a ng-click="$state.reload();" ui-sref="paciente">
@@ -73,7 +53,7 @@
       </a>
     </li>
     <li ng-class="{'active':$state.includes('informe')}" ng-if="valores[7]">
-      <a ng-click="$state.reload();" ui-sref="informe">
+      <a ng-click="$state.reload();" ui-sref="informe-empresarial">
         <span class="nav-text">{{ 'Menu.INFORMES' | translate }}</span>
         <i class="fa fa-home"></i>
       </a>

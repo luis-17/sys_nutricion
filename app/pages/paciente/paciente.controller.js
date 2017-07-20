@@ -159,7 +159,7 @@
         { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80,  sort: { direction: uiGridConstants.DESC} },
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS', minWidth:100 },
-        { field: 'empresa', name:'empresa', displayName: 'EMPRESA', minWidth:100 },
+        { field: 'empresa', name:'nombre_comercial', displayName: 'EMPRESA', minWidth:100 },
 
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
@@ -387,11 +387,7 @@
           resolve: {
             arrToModal: function() {
               return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-                // document: $document,
-                // listaSexos : $scope.listaSexos,
-                // gridComboOptions : $scope.gridComboOptions,
-                // mySelectionComboGrid : $scope.mySelectionComboGrid
+                getPaginationServerSide : vm.getPaginationServerSide 
               }
             }
           }
@@ -560,15 +556,7 @@
                   width: 1,
                   color: '#808080'
               }]
-            },
-            // series: [
-            //   {
-            //     data: ['85','80']
-            //   },
-            //   {
-            //     data: ['55','50']
-            //   },
-            // ]
+            }
           };
           vm.chartOptions3.series = rpta.datos.todos;
           vm.chartOptions3.xAxis.categories = rpta.datos.xAxis;
@@ -594,22 +582,6 @@
 
         var handleFileSelect2=function(evt) {
           var file = evt.currentTarget.files[0];
-          // if (file.type !== "image/jpeg" && file.type !== "image/jpg" && file.type !== "image/png") {
-          //       // notify({
-          //       //     message: 'Only .jpg and .png files are accepted!',
-          //       //     classes: ["alert-danger"]
-          //       // });
-          //       alert('Solo se permiten imagenes');
-          //       return false;
-          //   }
-          //   if (file.size > 4194304) {
-          //       // notify({
-          //       //     message: 'Max file size is 4mb!',
-          //       //     classes: ["alert-danger"]
-          //       // });
-          //       alert('Max. 4Mb');
-          //       return false;
-          //   }
           var reader = new FileReader();
           reader.onload = function (evt) {
             /* eslint-disable */
@@ -750,7 +722,8 @@
         }
       }
       vm.cargarConsultas = function(row){
-        vm.historial = {}
+        vm.historial = {};
+        pageLoading.start('Cargando datos...');
         ConsultasServices.sCargarConsultasPaciente(row).then(function(rpta){
           if(rpta.flag == 1){
             vm.historial.listaCabecera = rpta.cabecera;
@@ -763,7 +736,7 @@
             vm.historial.listaPorcMasa = rpta.datos.porc_masa;
             vm.historial.listaMasaMuscular = rpta.datos.masa_muscular;
             // vm.historial.listaPorcGrasa = rpta.datos.porc_grasa;
-            vm.historial.listaGrasa = rpta.datos.grasa_visceral;
+            vm.historial.listaGrasa = rpta.datos.puntaje_grasa_visceral;
             vm.historial.listaCmPecho = rpta.datos.cm_pecho;
             vm.historial.listaCmAntebrazo = rpta.datos.cm_antebrazo;
             vm.historial.listaCmCintura = rpta.datos.cm_cintura;
@@ -772,7 +745,7 @@
             vm.historial.listaCmMuslo = rpta.datos.cm_muslo;
             vm.historial.listaCmHombros = rpta.datos.cm_hombros;
             vm.historial.listaCmBicepsRel = rpta.datos.cm_biceps_relajados;
-            vm.historial.listaCmBicepsCon = rpta.datos.cm_biceps_contraidos;
+            vm.historial.listaCmBicepsCon = rpta.datos.cm_biceps_contraidos; 
             vm.historial.listaCmMuneca = rpta.datos.cm_muneca;
             vm.historial.listaCmRodilla = rpta.datos.cm_rodilla;
             vm.historial.listaCmGemelos = rpta.datos.cm_gemelos;
@@ -788,7 +761,7 @@
             vm.historial.listaCmPierna = rpta.datos.cm_pierna;
             vm.historial.listaDiagnostico_notas = rpta.datos.diagnostico_notas;
             vm.historial.imc = rpta.datos.imc;
-
+            pageLoading.stop();
           }
           // console.log('Peso',vm.listaPeso);
         });

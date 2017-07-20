@@ -173,8 +173,8 @@ class Consulta extends CI_Controller {
 		$arrListado = array();
 		foreach ($lista as $key => $row) {
 			// array_push($arrListado, array(
-			// 	'idatencion' => $row['idatencion'],
-			// 	'fecha_atencion' => $row['fecha_atencion'],
+			// 	'idatencion' => $row['idatencion'], 
+			// 	'fecha_atencion' => $row['fecha_atencion'], listaAguaCorporal
 			// 	)
 			// );
 			$arrListado['peso'][] = array('id' =>$key ,'valor' => $row['peso']);
@@ -186,7 +186,7 @@ class Consulta extends CI_Controller {
 			$arrListado['porc_masa'][] = array('id' =>$key ,'valor' => $row['porc_masa_muscular']);
 			$arrListado['masa_muscular'][] = array('id' =>$key ,'valor' => $row['kg_masa_muscular']);
 			$arrListado['porc_grasa'][] = array('id' => $key, 'valor' => $row['porc_grasa_visceral']);
-			$arrListado['grasa_visceral'][] = array('id' => $key, 'valor' => $row['kg_grasa_visceral']);
+			//$arrListado['grasa_visceral'][] = array('id' => $key, 'valor' => $row['kg_grasa_visceral']);
 			$arrListado['cm_pecho'][] = array('id' => $key, 'valor' => $row['cm_pecho']);
 			$arrListado['cm_antebrazo'][] = array('id' => $key, 'valor' => $row['cm_antebrazo']);
 			$arrListado['cm_cintura'][] = array('id' => $key, 'valor' => $row['cm_cintura']);
@@ -210,6 +210,7 @@ class Consulta extends CI_Controller {
 			$arrListado['cm_abdominal'][] = array('id' => $key, 'valor' => $row['cm_abdominal']);
 			$arrListado['cm_pierna'][] = array('id' => $key, 'valor' => $row['cm_pierna']);
 			$arrListado['diagnostico_notas'][] = array('id' => $key, 'valor' => $row['diagnostico_notas']);
+			$arrListado['puntaje_grasa_visceral'][] = array('id' => $key, 'valor' => $row['puntaje_grasa_visceral']); 
 			$arrListado['imc'][] = array(
 				'id' => $key,
 				'valor' => round($row['peso']*10000/($allInputs['estatura']*$allInputs['estatura']),2)

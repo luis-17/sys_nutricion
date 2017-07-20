@@ -136,8 +136,7 @@
       var paramDatos = {
         search: paciente
       }
-      PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) {
-      console.log("datos index: ",rpta.datos);
+      PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) { 
       $scope.paciente = rpta.datos;
       $state.go('pacienteficha');
       });
