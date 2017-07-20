@@ -6,7 +6,7 @@
     .service('CitasServices', CitasServices);
 
   /** @ngInject */
-  function CitasController ($scope,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications, ProfesionalServices) { 
+  function CitasController ($scope,$location,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications, ProfesionalServices) { 
     var vm = this;
     $scope.changeViewCita(true);
     $scope.changeViewConsulta(false);
@@ -91,13 +91,25 @@
       pageLoading.start('Actualizando calendario...');
 
       CitasServices.sListarCita(vm.fBusqueda).then(function (rpta) {
-        angular.forEach(rpta.datos, function(row, key) { 
-            //row.start = new Date(row.start);
-            row.start =  moment(row.start);
-            row.end =  moment(row.end);
-        });
-        events = rpta.datos; 
-        callback(events); 
+        if(rpta.flag == 1){          
+          angular.forEach(rpta.datos, function(row, key) { 
+              //row.start = new Date(row.start);
+              row.start =  moment(row.start);
+              row.end =  moment(row.end);
+          });
+          events = rpta.datos; 
+          callback(events); 
+        }else if(rpta.flag == 'session_expired'){
+          alertify.okBtn("CLICK AQUI")
+                  .cancelBtn("Cerrar")
+                  .confirm(rpta.message, 
+                    function (ev) {
+                      var dir = window.location.href.split('app')[0];
+                      window.location.href = dir + 'app/pages/login';
+                      //$scope.goToUrl('/app/pages/login');
+                    }
+                  );
+        }
         pageLoading.stop();
       });
     } 
