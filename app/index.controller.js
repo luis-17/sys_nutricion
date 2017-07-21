@@ -146,6 +146,11 @@
       $location.path( path );
     };
 
+    $scope.goToLogin = function(){
+      var dir = window.location.href.split('app')[0];
+      window.location.href = dir + 'app/pages/login';
+    }
+
     $scope.getValidateSession = function () {
       rootServices.sGetSessionCI().then(function (response) {
         //console.log(response);

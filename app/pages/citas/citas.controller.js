@@ -103,10 +103,8 @@
           alertify.okBtn("CLICK AQUI")
                   .cancelBtn("Cerrar")
                   .confirm(rpta.message, 
-                    function (ev) {
-                      var dir = window.location.href.split('app')[0];
-                      window.location.href = dir + 'app/pages/login';
-                      //$scope.goToUrl('/app/pages/login');
+                    function (ev) {                      
+                      $scope.goToLogin();
                     }
                   );
         }
