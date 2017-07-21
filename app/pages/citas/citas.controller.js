@@ -99,14 +99,6 @@
           });
           events = rpta.datos; 
           callback(events); 
-        }else if(rpta.flag == 'session_expired'){
-          alertify.okBtn("CLICK AQUI")
-                  .cancelBtn("Cerrar")
-                  .confirm(rpta.message, 
-                    function (ev) {                      
-                      $scope.goToLogin();
-                    }
-                  );
         }
         pageLoading.stop();
       });
