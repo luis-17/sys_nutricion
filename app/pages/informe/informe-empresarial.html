@@ -3,8 +3,101 @@
     <li><a ui-sref="dashboard">Home</a></li>
     <li class="active">Informe Empresarial</li>
   </ol>
-  <!-- row -->
+    <!-- row -->
   <div class="row">
-  	
+    <!-- col -->
+    <div class="col-md-12">
+      <!-- tile -->
+      <div class="tile">
+        <!-- tile header -->
+        <section class="tile-header">
+          <h1 class="heading">INFORMES EMPRESARIALES</h1>
+          <div class="controls">
+            <div class="btn-group" uib-dropdown>
+              <button class="btn btn-transparent" uib-dropdown-toggle><i class="fa fa-cog"></i></button>
+              <ul class="dropdown-menu dropdown-menu-custom" uib-dropdown-menu role="menu">
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-minimize></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-refresh></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-fullscreen></a></li>
+                <li role="menuitem"><a href="javascript:;" minotaur-tile-lightbox></a></li>
+              </ul>
+            </div>
+            <minotaur-tile-close></minotaur-tile-close>
+          </div>
+        </section>
+        <!-- /tile header -->
+        <!-- tile body -->
+        <!-- PANEL PRINCIPAL -->
+        <section class="tile-body col-sm-12 pr-md pl-md">
+        	<div class="col-sm-12">
+        		<div class="form-group">
+              	<label for="empresa" class="control-label minotaur-label"> Inicio </label>
+              	<select class="form-control" name="empresa" id="empresa" ng-model="us.fData.empresa" ng-options="item as item.descripcion for item in us.listaEmpresas" required ></select> 
+            </div>
+        		<div class="form-group">
+              	<label for="inicio" class="control-label minotaur-label"> Inicio </label>
+              	<input type="text" class="form-control  text-center" ng-model="mp.fData.inicio" 
+              		input-mask mask-options="{alias: 'dd-mm-yyyy'}" placeholder="dd-mm-yyyy" > 
+            </div>
+            <div class="form-group">
+              	<label for="fin" class="control-label minotaur-label"> Fin </label>
+              	<input type="text" class="form-control  text-center" ng-model="mp.fData.fin" 
+              		input-mask mask-options="{alias: 'dd-mm-yyyy'}" placeholder="dd-mm-yyyy" > 
+            </div>
+        	</div>
+        	<div class="col-sm-12">
+	          <div class="card-container">
+					    <div class="card">
+					        <div class="front bg-greensea">
+					          <div class="row">
+					            <div class="col-xs-4">
+					              <i class="fa fa-users fa-4x"></i>
+					            </div>
+					            <div class="col-xs-8">
+					              <p class="text-xl line-xl text-strong mb-0"> 90 </p>
+					              <span>Pacientes atendidos</span>
+					            </div>
+					          </div>
+					        </div>
+					     </div>
+					  </div>
+					  <div class="card-container">
+					    <div class="card">
+					        <div class="front bg-greensea">
+					          <div class="row">
+					            <div class="col-xs-4">
+					              <i class="fa fa-users fa-4x"></i>
+					            </div>
+					            <div class="col-xs-8">
+					              <p class="text-xl line-xl text-strong mb-0"> 90 </p>
+					              <span>Total de peso perdido</span>
+					            </div>
+					          </div>
+					        </div>
+					     </div>
+					  </div>
+					  <div class="card-container">
+					    <div class="card">
+					        <div class="front bg-greensea">
+					          <div class="row">
+					            <div class="col-xs-4">
+					              <i class="fa fa-users fa-4x"></i>
+					            </div>
+					            <div class="col-xs-8">
+					              <p class="text-xl line-xl text-strong mb-0"> 90 </p>
+					              <span>Total de grasa perdida</span>
+					            </div>
+					          </div>
+					        </div>
+					     </div>
+					  </div>
+					</div>
+				</section> 
+        <!-- /tile body -->
+      </div>
+      <!-- /tile -->
+    </div>
+    <!-- /col -->
   </div>
+  <!-- /row --> 
 </div>
