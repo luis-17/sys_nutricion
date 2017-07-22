@@ -46,16 +46,5 @@ function handleError(error) {
   };
 }
 function handleSuccess(response) {
-    console.log('response.data',response.data);
-   /* if(response.data.flag == 'session_expired'){
-      alertify.okBtn("CLICK AQUI")
-              .cancelBtn("Cerrar")
-              .confirm(rpta.message, 
-                function (ev) {                      
-                  var dir = window.location.href.split('app')[0];
-                  window.location.href = dir + 'app/pages/login';
-                }
-              );
-    }*/
     return( response.data );
 }

@@ -9,7 +9,7 @@
   function DiaController($scope,diasServices) { 
     var vm = this;    
   }
-  function DiaServices($http, $q) {
+  function DiaServices($http, $q, handle) {
     return({
         sListarDiasCbo: sListarDiasCbo
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "Dia/listar_dias_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then(handle.success,handle.error));
     }
   }
 })();

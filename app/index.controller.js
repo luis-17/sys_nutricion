@@ -42,6 +42,30 @@
       }
       return pageLoading;
     })
+    .factory("handle", function(alertify){
+      var handle = {
+        error: function (error) {
+                      return function () {
+                        return {success: false, message: Notification.warning({message: error})};
+                      };
+        },
+        success: function (response) {
+            //console.log('response.data',response.data);
+            if(response.data.flag == 'session_expired'){
+              alertify.okBtn("CLICK AQUI")
+                      .cancelBtn("Cerrar")
+                      .confirm(response.data.message, 
+                        function (ev) {                      
+                          var dir = window.location.href.split('app')[0];
+                          window.location.href = dir + 'app/pages/login';
+                        }
+                      );
+            }
+            return( response.data );
+        }
+      }
+      return handle;
+    })
     .factory('pinesNotifications', ['$window', function ($window) {
       'use strict';
       return {

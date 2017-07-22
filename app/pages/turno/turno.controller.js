@@ -9,7 +9,7 @@
   function TurnoController($scope,TurnoServices) { 
     var vm = this;    
   }
-  function TurnoServices($http, $q) {
+  function TurnoServices($http, $q, handle) {
     return({
         sListarTurnosCbo: sListarTurnosCbo
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "Turno/listar_turnos_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then(handle.success,handle.error));
     }
   }
 })();

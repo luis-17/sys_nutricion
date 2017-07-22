@@ -146,11 +146,15 @@
         vm.indicaciones = vm.consulta.indicaciones_dieta;
 
         PlanAlimentarioServices.sCargarPlan(vm.consulta).then(function(rpta){
-          vm.dia = angular.copy(rpta.datos[0]);
-          vm.dias = angular.copy(rpta.datos);          
-          vm.primeraCargaGeneral = false;
-          vm.primeraCargaDia = false;
-          vm.updateEstructura(true);          
+          if(rpta.flag == 1){            
+            vm.dia = angular.copy(rpta.datos[0]);
+            vm.dias = angular.copy(rpta.datos);          
+            vm.primeraCargaGeneral = false;
+            vm.primeraCargaDia = false;
+            vm.updateEstructura(true);          
+          }else{
+            pageLoading.stop(); 
+          }
         });       
       }
     }
@@ -344,8 +348,6 @@
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
-        }else{
-          alert('Ocurrió un error');
         }
         pageLoading.stop();
         var toast = toastr[iconClass](rpta.message, title, vm.options);
@@ -397,8 +399,6 @@
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
-        }else{
-          alert('Ocurrió un error');
         }
         pageLoading.stop();
         var toast = toastr[iconClass](rpta.message, title, vm.options);
@@ -700,6 +700,7 @@
     }
 
     vm.viewDetalle = function(indexDia, indexTurno,indexAlimento, indexAlimentoAlt){
+      pageLoading.start('Cargando formulario...');
       if(vm.formaPlan == 'dia'){
         vm.fDataAlimento = vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento];
         console.log(vm.dias[indexDia].turnos[indexTurno].alimentos[indexAlimento]);
@@ -714,7 +715,6 @@
         }
       }
 
-      pageLoading.start('Cargando formulario...');
       var modalInstance = $uibModal.open({
         templateUrl:'app/pages/alimento/alimentoViewDetalle_formView.html',        
         controllerAs: 'modalAli',
@@ -763,7 +763,7 @@
     }      
   }
 
-  function PlanAlimentarioServices($http, $q) {
+  function PlanAlimentarioServices($http, $q, handle) {
     return({
       sRegistrarPlan:sRegistrarPlan,
       sCargarPlan:sCargarPlan,
@@ -776,7 +776,7 @@
             url : angular.patchURLCI+"PlanAlimentario/registrar_plan_alimentario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }    
     function sCargarPlan(datos) {
       var request = $http({
@@ -784,7 +784,7 @@
             url : angular.patchURLCI+"PlanAlimentario/cargar_plan_alimentario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }    
     function sActualizarPlan(datos) {
       var request = $http({
@@ -792,7 +792,7 @@
             url : angular.patchURLCI+"PlanAlimentario/actualizar_plan_alimentario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sGenerarPdfPlan(datos) {
       var request = $http({
@@ -800,7 +800,7 @@
             url : angular.patchURLCI+"PlanAlimentario/generar_pdf_plan",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
   }
 })();

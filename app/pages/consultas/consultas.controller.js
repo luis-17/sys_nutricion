@@ -33,11 +33,13 @@
         pageLoading.stop();
       }else if(vm.tipoVista == 'edit'){
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
-          vm.fData = rpta.datos;
-          vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
-          /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
-          vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
-          */
+          if(rpta.flag == 1){            
+            vm.fData = rpta.datos;
+            vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
+            /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
+            vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
+            */
+          }
           pageLoading.stop();
         });
       }
@@ -216,8 +218,6 @@
         }else if( rpta.flag == 0 ){
           var pTitle = 'Advertencia!';
           var pType = 'warning';  
-        }else{
-          alert('Ocurrió un error');
         }
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         pageLoading.stop();
@@ -247,8 +247,6 @@
         }else if( rpta.flag == 0 ){
           var pTitle = 'Advertencia!';
           var pType = 'warning';  
-        }else{
-          alert('Ocurrió un error');
         }
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
@@ -306,8 +304,6 @@
         }else if( rpta.flag == 0 ){
           var pTitle = 'Advertencia!';
           var pType = 'warning';  
-        }else{
-          alert('Ocurrió un error');
         }
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         pageLoading.stop();
@@ -321,16 +317,18 @@
                   };
 
       ConsultasServices.sCargarConsulta(datos).then(function(rpta){
-        vm.fData = rpta.datos;
-        vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
-        vm.fData.cita = vm.cita;
-        /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
-        vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
-        */
+        if(rpta.flag==1){          
+          vm.fData = rpta.datos;
+          vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
+          vm.fData.cita = vm.cita;
+          /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
+          vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
+          */
+        }
       });
     }
   }
-  function ConsultasServices($http, $q) {
+  function ConsultasServices($http, $q, handle) {
     return({
         sRegistrarConsulta: sRegistrarConsulta,
         sActualizarConsulta:sActualizarConsulta,
@@ -344,7 +342,7 @@
             url : angular.patchURLCI+"Consulta/registrar_consulta",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
 
     function sActualizarConsulta(datos) {
@@ -353,7 +351,7 @@
             url : angular.patchURLCI+"Consulta/actualizar_consulta",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
 
     function sAnularConsulta(datos) {
@@ -362,7 +360,7 @@
             url : angular.patchURLCI+"Consulta/anular_consulta",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sCargarConsulta(datos) {
       var request = $http({
@@ -370,7 +368,7 @@
             url : angular.patchURLCI+"Consulta/cargar_consulta",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sCargarConsultasPaciente(datos) {
       var request = $http({
@@ -378,7 +376,7 @@
             url : angular.patchURLCI+"Consulta/listar_consultas_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
 
   }

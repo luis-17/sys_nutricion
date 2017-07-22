@@ -31,8 +31,6 @@
         }else if( rpta.flag == 0 ){
           var pTitle = 'Advertencia!';
           var pType = 'warning';  
-        }else{
-          alert('Ocurrió un error');
         }
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
@@ -265,15 +263,15 @@
             pageLoading.start('Registrando cita...');
             CitasServices.sRegistrarCita(vm.fData).then(function (rpta) {                
               if(rpta.flag == 1){ 
-                $uibModalInstance.close(vm.fData);
                 angular.element('.calendar').fullCalendar( 'refetchEvents' );            
                 var pTitle = 'OK!';
                 var pType = 'success';
+                $uibModalInstance.close(vm.fData);
               }else if( rpta.flag == 0 ){
                 var pTitle = 'Advertencia!';
                 var pType = 'danger';  
               }else{
-                alert('Ocurrió un error');
+                $uibModalInstance.close(vm.fData);
               }
               pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               pageLoading.stop();
@@ -400,17 +398,16 @@
             }          
             CitasServices.sActualizarCita(vm.fData).then(function (rpta) {
               // var openedToasts = [];
-
               if(rpta.flag == 1){ 
                 angular.element('.calendar').fullCalendar( 'refetchEvents' );
-                $uibModalInstance.close();
                 var pTitle = 'OK!';
                 var pType = 'success';
+                $uibModalInstance.close();
               }else if( rpta.flag == 0 ){
                 var pTitle = 'Advertencia!';
                 var pType = 'warning';  
               }else{
-                alert('Ocurrió un error');
+                $uibModalInstance.close();
               }
               pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
               pageLoading.stop();
@@ -449,8 +446,6 @@
           }else if( rpta.flag == 0 ){
             var pTitle = 'Advertencia!';
             var pType = 'danger';  
-          }else{
-            alert('Ocurrió un error');
           }
           pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
           pageLoading.stop();
@@ -504,8 +499,6 @@
           }else if( rpta.flag == 0 ){
             var pTitle = 'Advertencia!';
             var pType = 'warning';  
-          }else{
-            alert('Ocurrió un error');
           }
           pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
           pageLoading.stop();
@@ -570,7 +563,7 @@
     };
     //console.log(vm.uiConfig.calendar);
   }
-  function CitasServices($http, $q) {
+  function CitasServices($http, $q, handle) {
     return({
         sListarCita: sListarCita,
         sRegistrarCita: sRegistrarCita,
@@ -584,7 +577,7 @@
             url : angular.patchURLCI+"Cita/listar_citas",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
 
     function sRegistrarCita(datos) {
@@ -593,7 +586,7 @@
             url : angular.patchURLCI+"Cita/registrar_cita",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }  
 
     function sDropCita(datos) {
@@ -602,7 +595,7 @@
             url : angular.patchURLCI+"Cita/drop_cita",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }    
 
     function sActualizarCita(datos) {
@@ -611,7 +604,7 @@
             url : angular.patchURLCI+"Cita/actualizar_cita",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }    
     function sAnularCita(datos) {
       var request = $http({
@@ -619,7 +612,7 @@
             url : angular.patchURLCI+"Cita/anular_cita",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+     return (request.then(handle.success,handle.error));
     }
   }
 })();
