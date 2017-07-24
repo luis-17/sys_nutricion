@@ -6,7 +6,7 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading, ModalReporteFactory) { 
+  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
     var vm = this;
     vm.horas = [
       {id: '--', value:'--'},
@@ -146,7 +146,8 @@
         vm.indicaciones = vm.consulta.indicaciones_dieta;
 
         PlanAlimentarioServices.sCargarPlan(vm.consulta).then(function(rpta){
-          if(rpta.flag == 1){            
+          if(rpta.flag == 1){ 
+            //console.log(rpta.datos);           
             vm.dia = angular.copy(rpta.datos[0]);
             vm.dias = angular.copy(rpta.datos);          
             vm.primeraCargaGeneral = false;
@@ -375,34 +376,20 @@
           preventOpenDuplicates: false
         };       
         if(rpta.flag == 1){ 
-          var title = 'OK';
-          var iconClass = 'success';
-          /*if(vm.origen == 'cita'){
-            $scope.changeViewCita(true);
-            $scope.changeViewOnlyBodyCita(false);
-            $scope.changeViewConsulta(false);
-            $scope.changeViewPlan(false);
-            $scope.changeViewSoloPlan(false);            
-          }else if(vm.origen == 'consulta'){
-            $scope.changeViewCita(false);
-            $scope.changeViewOnlyBodyCita(false);
-            $scope.changeViewConsulta(true,3,vm.consulta.idatencion, 'plan');
-            $scope.changeViewPlan(false);
-            $scope.changeViewSoloPlan(false);
-          }*/
           vm.consulta.tipo_dieta = rpta.tipo_dieta;
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
           vm.callbackCitas();
           vm.tipoVista = 'edit';
           vm.changeTab('1');
-          vm.cargaEstructura();
+          vm.cargaEstructura();        
+          var pTitle = 'OK!';
+          var pType = 'success';
         }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';  
         }
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
       });
     }
 
@@ -455,8 +442,13 @@
 
     vm.getSelectedTemporalAlimentoAlt = function($item, $model, $label, indexDia, indexTurno, indexAlt){
       if(vm.formaPlan == 'general'){
-        vm.dia.turnos[indexTurno].temporal.alternativos[indexAlt] = $item;
-        vm.dia.turnos[indexTurno].temporal.alternativos[indexAlt].cantidad = 1;
+        if(indexAlt == 0){          
+          vm.dia.turnos[indexTurno].seleccionado2 = $item;
+          vm.dia.turnos[indexTurno].temporalCantidad2 = 1;
+        }else if(indexAlt == 1){          
+          vm.dia.turnos[indexTurno].seleccionado3 = $item;
+          vm.dia.turnos[indexTurno].temporalCantidad3 = 1;
+        }
       }
     }
 
@@ -542,12 +534,33 @@
 
         vm.dia.turnos[indexTurno].alimentos.push(vm.dia.turnos[indexTurno].seleccionado);
         vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].cantidad = vm.dia.turnos[indexTurno].temporalCantidad; 
-        vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = angular.copy(vm.dia.turnos[indexTurno].temporal.alternativos);
-        /*vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = [{nombre_compuesto:'', idalimento:0, cantidad:null},
-                                                                                                            {nombre_compuesto:'', idalimento:0, cantidad:null}];*/
+        
+        var obj2 = {nombre_compuesto:'', idalimento:0, cantidad:null};
+        var obj3 = {nombre_compuesto:'', idalimento:0, cantidad:null};
+        if(vm.dia.turnos[indexTurno].seleccionado2){
+          var obj2 = angular.copy(vm.dia.turnos[indexTurno].seleccionado2);
+          obj2.cantidad = angular.copy(vm.dia.turnos[indexTurno].temporalCantidad2);
+        }
+
+        if(vm.dia.turnos[indexTurno].seleccionado2){
+          var obj3 = angular.copy(vm.dia.turnos[indexTurno].seleccionado3);
+          obj3.cantidad = angular.copy(vm.dia.turnos[indexTurno].temporalCantidad3);
+        }
+
+        vm.dia.turnos[indexTurno].alimentos[vm.dia.turnos[indexTurno].alimentos.length - 1].alternativos = [
+          angular.copy(obj2),
+          angular.copy(obj3),
+        ];
+        
         vm.dia.turnos[indexTurno].seleccionado = null;
         vm.dia.turnos[indexTurno].temporalCantidad = null;
         vm.dia.turnos[indexTurno].temporal = null;
+        vm.dia.turnos[indexTurno].seleccionado2 = null;
+        vm.dia.turnos[indexTurno].temporalCantidad2 = null;
+        vm.dia.turnos[indexTurno].temporal2 = null;
+        vm.dia.turnos[indexTurno].seleccionado3 = null;
+        vm.dia.turnos[indexTurno].temporalCantidad3 = null;
+        vm.dia.turnos[indexTurno].temporal3 = null;
       }
 
       vm.calcularValoresTurno(indexDia, indexTurno);

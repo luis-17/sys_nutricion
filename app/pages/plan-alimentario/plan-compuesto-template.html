@@ -291,16 +291,16 @@
 							<div class="col-md-12 col-sm-12 col-xs-12 pr-0">
 								<div class="form-inline">
 									<div class="form-group">
-										<input type="text" class="form-control input-sm" ng-model="turno.temporal.alternativos[0].nombre_compuesto" ng-disabled="turno.temporal == null"
+										<input type="text" class="form-control input-sm" ng-model="turno.temporal2.nombre_compuesto" ng-disabled="turno.temporal == null"
 											autocomplete="off" placeholder="Digite el alimento..." 
 											id="alimento{{indexAlimento}}" typeahead-loading="loadingLocations" 
 											uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" 
 											typeahead-min-length="2" 
 											typeahead-on-select="plan.getSelectedTemporalAlimentoAlt($item, $model, $label,null, indexTurno, 0);"
-											ng-change="turno.temporal.alternativos[0].idalimento = null;"    />
+											ng-change="turno.temporal2.idalimento = null;"    />
 							
 										<input type="number" step="0.01" required class="form-control input-sm" 
-											ng-model="turno.temporal.alternativos[0].cantidad" style="width:55px;"
+											ng-model="turno.temporalCantidad2" style="width:55px;"
 											ng-change="plan.calcularValoresTurno(null, indexTurno);"
 											ng-disabled="turno.temporal == null" />
 										
@@ -316,16 +316,16 @@
 							<div class="col-md-12 col-sm-12 col-xs-12 pl-0 pr-0">
 								<div class="form-inline">
 									<div class="form-group">
-										<input type="text" class="form-control input-sm" ng-model="turno.temporal.alternativos[1].nombre_compuesto"
+										<input type="text" class="form-control input-sm" ng-model="turno.temporal3.nombre_compuesto"
 											autocomplete="off" placeholder="Digite el alimento..." 
 											id="alimento{{indexAlimento}}" typeahead-loading="loadingLocations" 
 											uib-typeahead="item as item.nombre_compuesto for item in plan.getAlimentoAutocomplete($viewValue)" ng-disabled="turno.temporal == null"
 											typeahead-min-length="2" 
 											typeahead-on-select="plan.getSelectedTemporalAlimentoAlt($item, $model, $label, null, indexTurno, 1);"
-											ng-change="turno.temporal.alternativos[1].idalimento = null;"    />
+											ng-change="turno.temporal3.idalimento = null;"    />
 							
 										<input type="number" step="0.01" required class="form-control input-sm" 
-											ng-model="turno.temporal.alternativos[1].cantidad" style="width:55px;"
+											ng-model="turno.temporalCantidad3" style="width:55px;"
 											ng-change="plan.calcularValoresTurno(null, indexTurno);"
 											ng-disabled="turno.temporal == null" />
 										

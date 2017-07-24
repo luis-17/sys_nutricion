@@ -76,11 +76,11 @@
           </button>
 
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                  ng-click='changeViewPlan(false);changeViewConsulta(true,3);'
+                  ng-click='changeViewPlan(false);changeViewConsulta(true,3);plan.callbackCitas();'
                   ng-if="viewPlan">Salir
           </button>
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                  ng-click='changeViewSoloPlan(false);changeViewCita(true);'
+                  ng-click='changeViewSoloPlan(false);changeViewCita(true);plan.callbackCitas();'
                   ng-if="viewSoloPlan">Salir
           </button>
           <div class="row">
@@ -153,11 +153,11 @@
           </button>
 
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                ng-click='changeViewPlan(false);changeViewConsulta(true,3);'
+                ng-click='changeViewPlan(false);changeViewConsulta(true,3);plan.callbackCitas();'
                 ng-if="viewPlan">Salir
           </button>
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                  ng-click='changeViewSoloPlan(false);changeViewCita(true);'
+                  ng-click='changeViewSoloPlan(false);changeViewCita(true);plan.callbackCitas();'
                   ng-if="viewSoloPlan">Salir
           </button>
         </div>            
