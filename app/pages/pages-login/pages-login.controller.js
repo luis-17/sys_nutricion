@@ -19,8 +19,7 @@
   /** @ngInject */
   function LoginController($scope,loginServices) {
   	$scope.getValidateSession();
-  	$scope.btnLoginToSystem = function () {
-      //console.log('esta en el Login');
+  	$scope.btnLoginToSystem = function () { 
       if($scope.fLogin.usuario == null || $scope.fLogin.clave == null || $scope.fLogin.usuario == '' || $scope.fLogin.clave == ''){
         $scope.fAlert = {};
         $scope.fAlert.type= 'orange';
