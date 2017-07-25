@@ -62,7 +62,8 @@
       'ngMap',
       'leaflet-directive',
       'ui.calendar',
-      'angular-flot'
+      'angular-flot',
+      'highcharts-ng'
     ]);
 
 })();

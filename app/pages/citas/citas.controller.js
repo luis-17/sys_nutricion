@@ -137,8 +137,7 @@
 
           if(paciente){
             vm.type='edit';
-            vm.fData.cliente = paciente;
-            console.log('vm.fData.paciente',vm.fData.cliente);
+            vm.fData.cliente = paciente; 
           }
 
           if(consultaOrigen){

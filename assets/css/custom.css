@@ -2,7 +2,7 @@
 	AQUÍ IRÁ EL CÓDIGO CSS PERSONALIZADO
 	Antes de crear algún estilo, verificar que no haya uno con la misma funcionalidad en el tema.
 */
-/* CUSTOM by Ruben Guevara luisls1717@gmail.com */
+/* CUSTOM by Luis Luna luisls1717@gmail.com */
 /*
 * { outline: 2px dotted red }
 * * { outline: 2px dotted green }
@@ -424,4 +424,49 @@ section.tile-body{
 .alimentos .item.sombreado{
     background-color: #e8eef4;
     border-radius: 5px;
+}
+
+.waterMarkEmptyData { 
+    position: absolute;
+    top : 80px;
+    opacity: 0.25;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
+.card-container-2{
+    position: relative;
+}
+.card-container-2 .card-2 {
+    min-height: 110px;
+    margin-bottom: 30px;
+    position: relative;
+    perspective: 600px;
+    width: 100%;
+    cursor: pointer;
+    z-index: 9;
+}
+.card-container-2 .card-2 .front-2{ 
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.05);
+    height: 100%;
+    position: relative;
+    width: 100%;
+    padding: 28px;
+    top: 0;
+    left: 0;
+    z-index: 11;
+}
+/*.graph-hc{
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    float: left;
+}*/
+highchart {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid #e5e5e5;
+  float: left;
 }
