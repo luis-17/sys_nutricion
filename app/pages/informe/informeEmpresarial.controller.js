@@ -13,34 +13,6 @@
     var vm = this; 
     vm.fData = {};
     vm.fData.informe = {};
-    /*vm.fData.informe = {
-      chartOptionsPA: {
-        chart: {
-            type: 'pie'
-        },
-        title: {
-            text: 'PACIENTES POR GÉNERO'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' 
-        },
-        plotOptions: {
-          pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                enabled: false
-              },
-              showInLegend: true
-          }
-        }
-      }
-    }; */
-/*,
-        series: [{ 
-          name: 'Sexo.',
-          data: []
-        }]*/
     vm.fParam = {};
     vm.fParam.infoVisible = false;
     vm.fParam.inicio = moment().format('01-MM-YYYY');
@@ -52,52 +24,6 @@
       vm.fData.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione una empresa--'}); 
       vm.fParam.empresa = vm.fData.listaEmpresas[0];
     }); 
-
-    // CARGAR GRAFICO
-    // vm.cargarEvolucion = function(row){
-    //   PacienteServices.slistarEvolucion(row).then(function(rpta){
-    //     // console.log('rpta', rpta.datos.peso);
-
-    //     if(rpta.datos.peso[0].data.length >= 2){
-    //       vm.sinGrafico = false;
-    //     }else{
-    //       vm.sinGrafico = true;
-    //     }
-
-    //     vm.chartOptions1 = {
-    //       chart: {
-    //           type: 'line'
-    //       },
-    //       title: {
-    //           text: 'Peso'
-    //       },
-    //       xAxis: {
-    //           categories: []
-    //       },
-    //       yAxis: {
-    //         title: {
-    //             text: 'Peso en Kg.'
-    //         },
-    //         plotLines: [{
-    //             value: 0,
-    //             width: 1,
-    //             color: '#808080'
-    //         }]
-    //       },
-    //     };
-    //     vm.chartOptions1.series = rpta.datos.peso;
-    //     vm.chartOptions1.xAxis.categories = rpta.datos.xAxis;
-    //     vm.chartOptions1.chart.events = {
-    //       load: function () {
-    //         var thes = this;
-    //         setTimeout(function () {
-    //             thes.setSize($("#chartOptions1").parent().width(), $("#chartOptions1").parent().height());
-    //         }, 10);
-    //       }
-    //     };
-    //   });
-    // }
-    /**/
     vm.fData.informe.chartConfigPA = { 
       chart: { 
           type: 'pie',
@@ -155,11 +81,187 @@
         labelFormat: '{name} ( {y} )' 
       },
       series: [{ 
-        name: 'Sexo.',
+        name: 'Grupo Etáreo.',
         colorByPoint: true,
         data: []
       }]
     }; 
+    vm.fData.informe.chartConfigPesoIMC = { 
+      chart: { 
+          type: 'column',
+          height: 350
+      },
+      title: {
+          text: 'Dx. Nutricional según IMC.' 
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+            text: 'Cant. de Consultas' 
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<b>{point.y} </b> consultas' 
+      }, 
+      series: [{ 
+        name: 'Diagnóstico según IMC. ',
+        colorByPoint: true,
+        data: [],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#000000',
+            align: 'right',
+            format: '{point.y}'
+        }
+      }]
+    }; 
+    vm.fData.informe.chartConfigEdadPesoIMC = { 
+      chart: { 
+          type: 'column',
+          height: 350
+      },
+      title: {
+          text: 'Edad & Dx. Nutricional.' 
+      },
+      xAxis: {
+        categories: [
+            'JOVENES',
+            'ADULTOS',
+            'ADULTOS MAYORES' 
+        ],
+        crosshair: true
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Cant. de Consultas.'
+          }
+      },
+      tooltip: { 
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y} u.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+      },
+      series: [] 
+    }; 
+    vm.fData.informe.chartConfigSexoPesoIMC = { 
+      chart: { 
+          type: 'column',
+          height: 350
+      },
+      title: {
+          text: 'Sexo & Dx. Nutricional.' 
+      },
+      xAxis: {
+        categories: [
+            'MASCULINO',
+            'FEMENINO'
+        ],
+        crosshair: true
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Cant. de Consultas.'
+          }
+      },
+      tooltip: { 
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y} u.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+      },
+      series: [] 
+    }; 
+    vm.fData.informe.chartConfigPPS = { 
+      chart: { 
+          type: 'pie',
+          height: 250,
+
+      },
+      title: {
+          text: 'PESO PERDIDO POR GÉNERO'
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' 
+      },
+      plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+        }
+      },
+      legend: {
+        labelFormat: '{name} ( {y} Kg.)' 
+      },
+      series: [{ 
+        name: 'Género.',
+        colorByPoint: true,
+        data: []
+      }]
+    };
+    vm.fData.informe.chartConfigPPE = { 
+      chart: { 
+          type: 'pie',
+          height: 250,
+
+      },
+      title: {
+          text: 'PESO PERDIDO POR EDAD' 
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' 
+      },
+      plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+        }
+      },
+      legend: {
+        labelFormat: '{name} ( {y} Kg.)' 
+      },
+      series: [{ 
+        name: 'Edad.',
+        colorByPoint: true,
+        data: []
+      }]
+    };
     vm.fParam.generarInformeEmpresarial = function() { 
       InformeEmpresarialServices.sListarInformeEmpresa(vm.fParam).then(function (rpta) {
         if( rpta.flag == 1 ){
@@ -167,6 +269,12 @@
           vm.fData.informe.pac_atendidos = angular.copy(rpta.datos.pac_atendidos);
           vm.fData.informe.chartConfigPA.series[0].data = angular.copy(rpta.datos.pac_sexo_graph); 
           vm.fData.informe.chartConfigEdad.series[0].data = angular.copy(rpta.datos.pac_edad_graph); 
+          vm.fData.informe.chartConfigPesoIMC.series[0].data = angular.copy(rpta.datos.pac_peso_graph); 
+          vm.fData.informe.chartConfigEdadPesoIMC.series = angular.copy(rpta.datos.pac_edad_peso_graph); 
+          vm.fData.informe.chartConfigSexoPesoIMC.series = angular.copy(rpta.datos.pac_sexo_peso_graph); 
+          vm.fData.informe.peso_perdido = angular.copy(rpta.datos.peso_perdido);
+          vm.fData.informe.chartConfigPPS.series[0].data = angular.copy(rpta.datos.peso_perdido_sexo_graph); 
+          vm.fData.informe.chartConfigPPE.series[0].data = angular.copy(rpta.datos.peso_perdido_edad_graph); 
         }else{
           vm.fParam.infoVisible = false;
         }
