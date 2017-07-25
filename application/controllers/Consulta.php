@@ -1,3 +1,4 @@
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -243,6 +244,7 @@ class Consulta extends CI_Controller {
     	// DATOS
     	$configuracion = GetConfiguracion();
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
+		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, TRUE, $consulta['fecha_atencion']);
 		//var_dump($consulta);
 		$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
 		/*var_dump($paciente);
@@ -291,7 +293,6 @@ class Consulta extends CI_Controller {
     	$this->pdf->SetAutoPageBreak(false);
 		
 		/*graficos*/
-		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, TRUE, $consulta['fecha_atencion']);
 		$arrayFechas = array();
 		$arrayPeso = array();
 		$arrayImc = array();
@@ -300,11 +301,11 @@ class Consulta extends CI_Controller {
 		foreach ($atenciones as $key => $atencion) {
 			array_push($arrayFechas, strtotime($atencion['fecha_atencion']));
 			array_push($arrayPeso, (float)$atencion['peso']);
-			array_push($arrayGrasa, (float)$atencion['kg_masa_grasa']);
-			array_push($arrayMasa, (float)$atencion['kg_masa_muscular']);
-			$imc = (float)$atencion['peso'] / 
+			array_push($arrayGrasa,(float)$atencion['porc_masa_grasa']);
+			array_push($arrayMasa, (float)$atencion['porc_masa_muscular']);
+			$imc = round((float)$atencion['peso'] / 
 					(((float)$paciente['estatura']/100) * 
-						((float)$paciente['estatura']/100));
+						((float)$paciente['estatura']/100)),2);
 			array_push($arrayImc, $imc);
 		}
 
@@ -330,7 +331,7 @@ class Consulta extends CI_Controller {
 
 	private function imprimir_paciente($consulta, $paciente){
 		/*paciente*/
-		$this->pdf->SetY($this->pdf->GetY()+5);	
+		$this->pdf->SetY($this->pdf->GetY()+15);	
 		$nombre = ucwords(strtolower_total($paciente['nombre'] . ' ' . $paciente['apellidos']));
 		$this->pdf->Cell(0,6,utf8_decode('Nombre: ' . $nombre ) ,0,1,'L');
 		$sexo = ($paciente['sexo'] == 'F') ? 'Femenino' : 'Masculino';
@@ -346,22 +347,22 @@ class Consulta extends CI_Controller {
 	}
 
 	private function imprimir_composicion_corporal($consulta, $posYCuadro){
-		$this->pdf->Ln(10);
+		$this->pdf->Ln(5);
 		$this->pdf->SetFont('Arial','B',11);		
 		$this->pdf->Cell(10,6,utf8_decode('COMPOSICION CORPORAL') ,0,0,'L');
-		$this->pdf->Image('assets/images/icons/cuerpo.png',8,$posYCuadro+16);
+		$this->pdf->Image('assets/images/icons/cuerpo.png',8,$posYCuadro+11);
 		$this->pdf->SetFont('Arial','',11);
-		$posXporc = 32;
+		$posXporc = 48;
 		$anchoPorc = (($this->pdf->GetPageWidth() - 8) / 2)-$posXporc;
 		$this->pdf->Ln(12);
 		$this->pdf->SetX($posXporc);
-		$this->pdf->Cell($anchoPorc,6,utf8_decode('GRASA: '  . $consulta['porc_masa_grasa'] . ' %') ,0,0,'C');
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('% GRASA CORPORAL: '  . $consulta['porc_masa_grasa'] . ' %') ,0,0,'L');
 		$this->pdf->Ln(15);
 		$this->pdf->SetX($posXporc);
-		$this->pdf->Cell($anchoPorc,6,utf8_decode('PROTEINA: '  . $consulta['porc_masa_muscular'] . ' %') ,0,0,'C');
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('% MASA MUSCULAR: '  . $consulta['porc_masa_muscular'] . ' %') ,0,0,'L');
 		$this->pdf->Ln(15);
 		$this->pdf->SetX($posXporc);
-		$this->pdf->Cell($anchoPorc,6,utf8_decode('AGUA: '  . $consulta['porc_agua_corporal'] . ' %') ,0,0,'C');
+		$this->pdf->Cell($anchoPorc,6,utf8_decode('AGUA: '  . $consulta['porc_agua_corporal'] . ' %') ,0,0,'L');
 	}
 
 	private function imprimir_cuadro_detalle_peso($paciente, $consulta, $posYCuadro){
@@ -459,34 +460,38 @@ class Consulta extends CI_Controller {
 	}
 
 	private function imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta){
-		$this->pdf->Ln(10);
-		$this->pdf->SetX(8);
-		$anchoProgreso = (($this->pdf->GetPageWidth() - 16) / 2)+ 22;
-		$this->pdf->SetFont('Arial','B',11);
-		$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso:') ,0,1,'L');
-		$this->pdf->SetFont('Arial','',11);
+		if($consulta['idatencion'] != $primeraConsulta['idatencion']){
 
-		$posYprogreso = $this->pdf->GetY();
-		$this->pdf->Image('assets/images/icons/star.png',9, null, 4);
-		$this->pdf->SetXY(13, $posYprogreso);
-		$pesoPerdido = round((float)$consultaAnterior['peso'] - (float)$consulta['peso'],2);
-		$pesoTotalPerdido = round((float)$primeraConsulta['peso'] - (float)$consulta['peso'],2);
-		$progreso = 'Ha perdido ' . $pesoPerdido . ' kg desde la ultima cita. (¡'. $pesoTotalPerdido .' kg en total!)';
-		$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+			$this->pdf->Ln(10);
+			$this->pdf->SetX(8);
 
-		$posYprogreso+=6;
-		$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
-		$this->pdf->SetXY(13, $posYprogreso);
-		$grasaPerdida = round((float)$consultaAnterior['kg_masa_grasa'] - (float)$consulta['kg_masa_grasa'],2);
-		$progreso = 'Ha perdido ' . $grasaPerdida . ' kg de grasa gracias al tratamiento';
-		$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+			$anchoProgreso = (($this->pdf->GetPageWidth() - 16) / 2)+ 22;
+			$this->pdf->SetFont('Arial','B',11);
+			$this->pdf->Cell($anchoProgreso,6,utf8_decode('Progreso:') ,0,1,'L');
+			$this->pdf->SetFont('Arial','',11);
 
-		$posYprogreso+=6;
-		$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
-		$this->pdf->SetXY(13, $posYprogreso);
-		$grasaVisceralPerdida = round((float)$consultaAnterior['puntaje_grasa_visceral'] - (float)$consulta['puntaje_grasa_visceral'],2);
-		$progreso = 'Ha reducido ' . $grasaVisceralPerdida . ' puntos de grasa visceral desde su ultima cita';
-		$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+			$posYprogreso = $this->pdf->GetY();
+			$this->pdf->Image('assets/images/icons/star.png',9, null, 4);
+			$this->pdf->SetXY(13, $posYprogreso);
+			$pesoPerdido = round((float)$consultaAnterior['peso'] - (float)$consulta['peso'],2);
+			$pesoTotalPerdido = round((float)$primeraConsulta['peso'] - (float)$consulta['peso'],2);
+			$progreso = 'Ha perdido ' . $pesoPerdido . ' kg desde la ultima cita. (¡'. $pesoTotalPerdido .' kg en total!)';
+			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+
+			$posYprogreso+=6;
+			$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
+			$this->pdf->SetXY(13, $posYprogreso);
+			$grasaPerdida = round((float)$consultaAnterior['kg_masa_grasa'] - (float)$consulta['kg_masa_grasa'],2);
+			$progreso = 'Ha perdido ' . $grasaPerdida . ' kg de grasa gracias al tratamiento';
+			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+
+			$posYprogreso+=6;
+			$this->pdf->Image('assets/images/icons/star.png',9, $posYprogreso, 4);
+			$this->pdf->SetXY(13, $posYprogreso);
+			$grasaVisceralPerdida = round((float)$consultaAnterior['puntaje_grasa_visceral'] - (float)$consulta['puntaje_grasa_visceral'],2);
+			$progreso = 'Ha reducido ' . $grasaVisceralPerdida . ' puntos de grasa visceral desde su ultima cita';
+			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+		}
 	}
 
 	private function imprimir_barra_imc($paciente,$consulta, $anchoTotalBarras, $margen){
@@ -598,13 +603,14 @@ class Consulta extends CI_Controller {
 		}
 	}
 
-	function YAxisFormat($Value) { return(round($Value,2)); } 
+
+	function YAxisFormat($value) { return(round($value,2)); } 
 
 	private function imprimir_grafico_peso($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
 		$myData->addPoints($dataY,"Values");
-		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
+		$myData->setSerieWeight("Values",2);
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -614,12 +620,15 @@ class Consulta extends CI_Controller {
 		$myPicture = new pImage(600,400,$myData);
 		$myPicture->setFontProperties(array(
 			"FontName"=>"application/libraries/pchart/fonts/verdana.ttf",
-			"FontSize"=>10)
+			"FontSize"=>11)
 		);	
 		$myPicture->setGraphArea(60,40,580,370);
 		$myPicture->drawRectangle(15,1,586,399,array("R"=>150,"G"=>155,"B"=>165));
 		$myPicture->drawScale();
-		$myPicture->drawSplineChart();
+		//$myPicture->drawSplineChart();
+		$myPicture->drawLineChart();
+		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
+
 		$timestamp = date('YmdHis');
 		$nombre = "assets/images/dinamic/pdfTemporales/imagePeso". $timestamp .".png";
 		$myPicture->render($nombre);
@@ -631,11 +640,12 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoGrafico,6,utf8_decode('PESO: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen-1,null,$anchoGrafico);
 	}
-
+	
 	private function imprimir_grafico_imc($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
 		$myData->addPoints($dataY,"Values");
+		$myData->setSerieWeight("Values",2);
 		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
 
 		$myData->addPoints($dataX,"Timestamp");
@@ -646,7 +656,7 @@ class Consulta extends CI_Controller {
 		$myPicture = new pImage(600,400,$myData);
 		$myPicture->setFontProperties(array(
 			"FontName"=>"application/libraries/pchart/fonts/verdana.ttf",
-			"FontSize"=>10)
+			"FontSize"=>11)
 		);	
 		$myPicture->setGraphArea(60,40,580,370);
 		$myPicture->drawRectangle(11,1,587,399,array("R"=>150,"G"=>155,"B"=>165));
@@ -654,7 +664,10 @@ class Consulta extends CI_Controller {
 											"Max"=>50)
 									);
 		$myPicture->drawScale(array("Mode" => SCALE_MODE_MANUAL, "ManualScale"=>$scaleProperties));
-		$myPicture->drawSplineChart();
+		//$myPicture->drawSplineChart();
+		$myPicture->drawLineChart();
+		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
+
 		$timestamp = date('YmdHis');
 		$nombre = "assets/images/dinamic/pdfTemporales/imageImc". $timestamp .".png";
 		$myPicture->render($nombre);
@@ -671,7 +684,9 @@ class Consulta extends CI_Controller {
 		//genero el grafico
 		$myData = new pData(); 
 		$myData->addPoints($dataY,"Values");
-		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
+		$myData->setSerieWeight("Values",2);		
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM); 
+		$myData->setAxisUnit(0,"%");
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -681,12 +696,15 @@ class Consulta extends CI_Controller {
 		$myPicture = new pImage(600,400,$myData);
 		$myPicture->setFontProperties(array(
 			"FontName"=>"application/libraries/pchart/fonts/verdana.ttf",
-			"FontSize"=>10)
+			"FontSize"=>11)
 		);	
 		$myPicture->setGraphArea(60,40,580,370);
 		$myPicture->drawRectangle(15,1,586,399,array("R"=>150,"G"=>155,"B"=>165));
 		$myPicture->drawScale();
-		$myPicture->drawSplineChart();
+		//$myPicture->drawSplineChart();
+		$myPicture->drawLineChart();
+		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
+
 		$timestamp = date('YmdHis');
 		$nombre = "assets/images/dinamic/pdfTemporales/imageGrasa". $timestamp .".png";
 		$myPicture->render($nombre);
@@ -696,7 +714,7 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetFont('Arial','B',15);
 		$this->pdf->Ln(5);
 		$this->pdf->SetX($margen);
-		$this->pdf->Cell($anchoGrafico,6,utf8_decode('GRASA CORPORAL: '  ) ,0,1,'L');
+		$this->pdf->Cell($anchoGrafico,6,utf8_decode('% GRASA CORPORAL: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen-1,null,$anchoGrafico);
 	}
 
@@ -704,7 +722,9 @@ class Consulta extends CI_Controller {
 		//genero el grafico
 		$myData = new pData(); 
 		$myData->addPoints($dataY,"Values");
-		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM,"YAxisFormat");  
+		$myData->setSerieWeight("Values",2);
+		$myData->setAxisDisplay(0,AXIS_FORMAT_CUSTOM); 
+		$myData->setAxisUnit(0,"%"); 
 
 		$myData->addPoints($dataX,"Timestamp");
 		$myData->setSerieDescription("Timestamp","Sampled Dates");
@@ -714,12 +734,15 @@ class Consulta extends CI_Controller {
 		$myPicture = new pImage(600,400,$myData);
 		$myPicture->setFontProperties(array(
 			"FontName"=>"application/libraries/pchart/fonts/verdana.ttf",
-			"FontSize"=>10)
+			"FontSize"=>11)
 		);	
 		$myPicture->setGraphArea(60,40,580,370);
 		$myPicture->drawRectangle(11,1,587,399,array("R"=>150,"G"=>155,"B"=>165));
 		$myPicture->drawScale();
-		$myPicture->drawSplineChart();
+		//$myPicture->drawSplineChart();
+		$myPicture->drawLineChart();
+		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
+
 		$timestamp = date('YmdHis');
 		$nombre = "assets/images/dinamic/pdfTemporales/imageMasa". $timestamp .".png";
 		$myPicture->render($nombre);
@@ -728,7 +751,7 @@ class Consulta extends CI_Controller {
 		$anchoGrafico = ($this->pdf->GetPageWidth() - ($margen*2))/2;
 		$this->pdf->SetFont('Arial','B',15);
 		$this->pdf->SetXY($margen+$anchoGrafico, $this->pdf->GetY()-72);
-		$this->pdf->Cell($anchoGrafico,6,utf8_decode('MASA MUSCULAR: '  ) ,0,1,'L');
+		$this->pdf->Cell($anchoGrafico,6,utf8_decode('% MASA MUSCULAR: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen+$anchoGrafico,null,$anchoGrafico);
 	}
 
