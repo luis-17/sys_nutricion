@@ -257,7 +257,7 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetFont('Arial','',13);		
 
 		/*header*/
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,60);
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,0,20);
 		$this->pdf->Cell(0,6,utf8_decode('ID: ' . str_pad($consulta['idcita'], 5, "0", STR_PAD_LEFT)),0,1,'R');
 		$this->pdf->Cell(0,6,utf8_decode('Fecha: ' . date('d/m/Y',strtotime($consulta['fecha_atencion']))) ,0,1,'R');
 		/*paciente*/

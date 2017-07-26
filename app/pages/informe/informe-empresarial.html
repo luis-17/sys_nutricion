@@ -115,6 +115,32 @@
                 <highchart id="chartConfigPPE" config="vm.fData.informe.chartConfigPPE" class="col-xs-12"></highchart> 
               </div>
             </div>
+            <div class="col-xs-12 b-t b-tr-black m-20"></div>
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="card-container-2">
+                  <div class="card-2">
+                      <div class="front-2 bg-greensea">
+                        <div class="row">
+                          <div class="col-xs-4">
+                            <i class="fa fa-users fa-4x"></i>
+                          </div>
+                          <div class="col-xs-8">
+                            <p class="text-xl line-xl text-strong mb-0"> {{ vm.fData.informe.grasa_perdida.cantidad }} Kg. </p> 
+                            <span>Total de grasa perdida</span>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                </div>
+              </div>
+              <div class="col-sm-4"> 
+                <highchart id="chartConfigPGS" config="vm.fData.informe.chartConfigPGS" class="col-xs-12"></highchart> 
+              </div>
+              <div class="col-sm-5"> 
+                <highchart id="chartConfigPGE" config="vm.fData.informe.chartConfigPGE" class="col-xs-12"></highchart> 
+              </div>
+            </div>
 					</div>
           <div class="col-sm-12" ng-hide="vm.fParam.infoVisible">
             <div class="waterMarkEmptyData" style="position:relative; top:inherit; font-size: 28px; margin-bottom: 40px; margin-top: 40px;">
@@ -122,7 +148,7 @@
             </div>
           </div>
 				</section> 
-        <!-- /tile body -->
+        <!-- /tile body --> 
       </div>
       <!-- /tile -->
     </div>

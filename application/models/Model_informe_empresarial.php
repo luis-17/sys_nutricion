@@ -212,7 +212,7 @@ class Model_informe_empresarial extends CI_Model {
 	public function cargar_detalle_pacientes_atendidos($datos)
 	{
 		$sql = 'SELECT am.idatencion, cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, emp.idempresa, am.fecha_atencion, am.peso, 
-				TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) AS edad   
+				TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) AS edad, am.kg_masa_grasa 
 				FROM atencion am 
 				INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
 				INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 

@@ -240,53 +240,73 @@ class InformeEmpresarial extends CI_Controller {
 		}
 		$arrListado['pac_sexo_peso_graph'] = $arrGroupPesoSexo;
 
-		// EVALUACION DEL PESO PERDIDO 
-		$arrPacientesPesoPerdido = array(); 
+		// EVALUACION DEL PESO Y GRASA PERDIDA 
+		$arrPacientesPesoGrasaPerdida = array(); 
 		$listaDetalleAtenciones = $this->model_informe_empresarial->cargar_detalle_pacientes_atendidos($allInputs);
 		foreach ($listaDetalleAtenciones as $key => $row) {
-			$arrPacientesPesoPerdido[$row['idcliente']] = array(
+			$arrPacientesPesoGrasaPerdida[$row['idcliente']] = array(
 				'idcliente' => $row['idcliente'],
 				'nombres' => $row['nombre'].' '.$row['apellidos'],
 				'sexo' => $row['sexo'],
 				'edad' => $row['edad'],
 				'peso_perdido'=> null,
+				'grasa_perdida'=> null,
 				'atenciones'=> array() 
 			);
 		}
 		foreach ($listaDetalleAtenciones as $key => $row) {
-			$arrPacientesPesoPerdido[$row['idcliente']]['atenciones'][$row['idatencion']] = array(
+			$arrPacientesPesoGrasaPerdida[$row['idcliente']]['atenciones'][$row['idatencion']] = array(
 				'idatencion' => $row['idatencion'],
 				'fecha_atencion'=> strtotime($row['fecha_atencion']),
-				'peso'=> (float)$row['peso'] 
+				'peso'=> (float)$row['peso'], 
+				'kg_masa_grasa'=> (float)$row['kg_masa_grasa'] 
 			);
 		}
-		$arrPacientesPesoPerdido = array_values($arrPacientesPesoPerdido);
-		foreach ($arrPacientesPesoPerdido as $key => $value) { 
-			$arrPacientesPesoPerdido[$key]['atenciones'] = array_values($arrPacientesPesoPerdido[$key]['atenciones']);
+		$arrPacientesPesoGrasaPerdida = array_values($arrPacientesPesoGrasaPerdida);
+		foreach ($arrPacientesPesoGrasaPerdida as $key => $value) { 
+			$arrPacientesPesoGrasaPerdida[$key]['atenciones'] = array_values($arrPacientesPesoGrasaPerdida[$key]['atenciones']);
 		}
 		$cantPesoPerdido = 0; 
-		foreach ($arrPacientesPesoPerdido as $key => $row) {
+		$cantGrasaPerdida = 0; 
+		foreach ($arrPacientesPesoGrasaPerdida as $key => $row) {
 			if( count($row['atenciones']) > 1 ){ // mas de una atencion 
-				$arrPacientesPesoPerdido[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
-				$cantPesoPerdido += $arrPacientesPesoPerdido[$key]['peso_perdido']; 
+				$arrPacientesPesoGrasaPerdida[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
+				$arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'] = $row['atenciones'][(count($row['atenciones']) - 1)]['kg_masa_grasa'] - $row['atenciones'][0]['kg_masa_grasa']; 
+				$cantPesoPerdido += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido']; 
+				$cantGrasaPerdida += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida']; 
 			}
 		}
 		$arrListado['peso_perdido'] = array( 
 			'cantidad'=> $cantPesoPerdido 
 		);
+		$arrListado['grasa_perdida'] = array( 
+			'cantidad'=> $cantGrasaPerdida 
+		);
 
-		// PESO PERDIDO POR GÉNERO 
+		// PESO Y GRASA PERDIDA POR GÉNERO 
 		$arrPacientePPSGraph = array();
 		$sumaPesoM = 0;
 		$sumaPesoF = 0;
-		foreach ($arrPacientesPesoPerdido as $key => $row) { 
+		$arrPacientePGSGraph = array();
+		$sumaGrasaM = 0;
+		$sumaGrasaF = 0;
+		foreach ($arrPacientesPesoGrasaPerdida as $key => $row) { 
 			if( count($row['atenciones']) > 1 ){ // mas de una atencion 
-				$arrPacientesPesoPerdido[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
+
+				$arrPacientesPesoGrasaPerdida[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
 				if( strtoupper($row['sexo']) == 'M' ){
-					$sumaPesoM += $arrPacientesPesoPerdido[$key]['peso_perdido'];
+					$sumaPesoM += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido'];
 				}
 				if( strtoupper($row['sexo']) == 'F' ){
-					$sumaPesoF += $arrPacientesPesoPerdido[$key]['peso_perdido'];
+					$sumaPesoF += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido'];
+				}
+
+				$arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'] = $row['atenciones'][(count($row['atenciones']) - 1)]['kg_masa_grasa'] - $row['atenciones'][0]['kg_masa_grasa']; 
+				if( strtoupper($row['sexo']) == 'M' ){
+					$sumaGrasaM += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'];
+				}
+				if( strtoupper($row['sexo']) == 'F' ){
+					$sumaGrasaF += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'];
 				}
 			}
 		}
@@ -302,24 +322,55 @@ class InformeEmpresarial extends CI_Controller {
 			'sliced'=> FALSE,
             'selected'=> FALSE 
 		);
+		$arrPacientePGSGraph[] = array( 
+			'name'=> 'MASCULINO',
+			'y'=> abs($sumaGrasaM),
+			'sliced'=> TRUE,
+            'selected'=> TRUE 
+		);
+		$arrPacientePGSGraph[] = array( 
+			'name'=> 'FEMENINO',
+			'y'=> abs($sumaGrasaF),
+			'sliced'=> FALSE,
+            'selected'=> FALSE 
+		);
 		$arrListado['peso_perdido_sexo_graph'] = $arrPacientePPSGraph;
+		$arrListado['grasa_perdida_sexo_graph'] = $arrPacientePGSGraph;
 
-		// PESO PERDIDO POR EDAD 
+		// PESO Y GRASA PERDIDA POR EDAD 
 		$arrPacientePPEGraph = array();
+		$arrPacientePGEGraph = array();
+
 		$sumaPesoPorEdadJ = 0;
 		$sumaPesoPorEdadA = 0;
 		$sumaPesoPorEdadAD = 0;
-		foreach ($arrPacientesPesoPerdido as $key => $row) { 
+
+		$sumaGrasaPorEdadJ = 0;
+		$sumaGrasaPorEdadA = 0;
+		$sumaGrasaPorEdadAD = 0;
+
+		foreach ($arrPacientesPesoGrasaPerdida as $key => $row) { 
 			if( count($row['atenciones']) > 1 ){ // mas de una atencion 
-				$arrPacientesPesoPerdido[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
+				$arrPacientesPesoGrasaPerdida[$key]['peso_perdido'] = $row['atenciones'][(count($row['atenciones']) - 1)]['peso'] - $row['atenciones'][0]['peso']; 
 				if( $row['edad'] >= 18 && $row['edad'] <= 29 ){
-					$sumaPesoPorEdadJ += $arrPacientesPesoPerdido[$key]['peso_perdido'];
+					$sumaPesoPorEdadJ += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido'];
 				}
 				if( $row['edad'] >= 30 && $row['edad'] <= 59 ){
-					$sumaPesoPorEdadA += $arrPacientesPesoPerdido[$key]['peso_perdido'];
+					$sumaPesoPorEdadA += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido'];
 				}
 				if( $row['edad'] >= 60  ){
-					$sumaPesoPorEdadAD += $arrPacientesPesoPerdido[$key]['peso_perdido'];
+					$sumaPesoPorEdadAD += $arrPacientesPesoGrasaPerdida[$key]['peso_perdido'];
+				}
+
+				$arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'] = $row['atenciones'][(count($row['atenciones']) - 1)]['kg_masa_grasa'] - $row['atenciones'][0]['kg_masa_grasa']; 
+				if( $row['edad'] >= 18 && $row['edad'] <= 29 ){
+					$sumaGrasaPorEdadJ += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'];
+				}
+				if( $row['edad'] >= 30 && $row['edad'] <= 59 ){
+					$sumaGrasaPorEdadA += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'];
+				}
+				if( $row['edad'] >= 60  ){
+					$sumaGrasaPorEdadAD += $arrPacientesPesoGrasaPerdida[$key]['grasa_perdida'];
 				}
 			}
 		}
@@ -343,6 +394,25 @@ class InformeEmpresarial extends CI_Controller {
 		);
 		$arrListado['peso_perdido_edad_graph'] = $arrPacientePPEGraph;
 
+		$arrPacientePGEGraph[] = array( 
+			'name'=> 'JÓVENES',
+			'y'=> abs($sumaGrasaPorEdadJ),
+			'sliced'=> TRUE,
+            'selected'=> TRUE 
+		);
+		$arrPacientePGEGraph[] = array( 
+			'name'=> 'ADULTOS',
+			'y'=> abs($sumaGrasaPorEdadA),
+			'sliced'=> FALSE,
+            'selected'=> FALSE 
+		);
+		$arrPacientePGEGraph[] = array( 
+			'name'=> 'ADULTOS MAYORES',
+			'y'=> abs($sumaGrasaPorEdadAD),
+			'sliced'=> FALSE,
+            'selected'=> FALSE 
+		);
+		$arrListado['grasa_perdida_edad_graph'] = $arrPacientePGEGraph;
 
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';

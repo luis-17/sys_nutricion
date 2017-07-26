@@ -8,7 +8,7 @@
 
   /** @ngInject */
   function InformeEmpresarialController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,toastr,
-    InformeEmpresarialServices, EmpresaServices,GrupoServices,UsuarioServices, pinesNotifications) {
+    InformeEmpresarialServices, EmpresaServices,GrupoServices,UsuarioServices, pinesNotifications, pageLoading) {
 
     var vm = this; 
     vm.fData = {};
@@ -262,7 +262,70 @@
         data: []
       }]
     };
+    vm.fData.informe.chartConfigPGS = { 
+      chart: { 
+          type: 'pie',
+          height: 250,
+
+      },
+      title: {
+          text: 'GRASA PERDIDA POR GÉNERO'
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' 
+      },
+      plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+        }
+      },
+      legend: {
+        labelFormat: '{name} ( {y} Kg.)' 
+      },
+      series: [{ 
+        name: 'Género.',
+        colorByPoint: true,
+        data: []
+      }]
+    };
+    vm.fData.informe.chartConfigPGE = { 
+      chart: { 
+          type: 'pie',
+          height: 250,
+
+      },
+      title: {
+          text: 'GRASA PERDIDA POR EDAD' 
+      },
+      tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>' 
+      },
+      plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true
+        }
+      },
+      legend: {
+        labelFormat: '{name} ( {y} Kg.)' 
+      },
+      series: [{ 
+        name: 'Edad.',
+        colorByPoint: true,
+        data: []
+      }]
+    };
     vm.fParam.generarInformeEmpresarial = function() { 
+      pageLoading.start('Cargando datos...');
       InformeEmpresarialServices.sListarInformeEmpresa(vm.fParam).then(function (rpta) {
         if( rpta.flag == 1 ){
           vm.fParam.infoVisible = true;
@@ -275,9 +338,13 @@
           vm.fData.informe.peso_perdido = angular.copy(rpta.datos.peso_perdido);
           vm.fData.informe.chartConfigPPS.series[0].data = angular.copy(rpta.datos.peso_perdido_sexo_graph); 
           vm.fData.informe.chartConfigPPE.series[0].data = angular.copy(rpta.datos.peso_perdido_edad_graph); 
+          vm.fData.informe.grasa_perdida = angular.copy(rpta.datos.grasa_perdida);
+          vm.fData.informe.chartConfigPGS.series[0].data = angular.copy(rpta.datos.grasa_perdida_sexo_graph); 
+          vm.fData.informe.chartConfigPGE.series[0].data = angular.copy(rpta.datos.grasa_perdida_edad_graph); 
         }else{
           vm.fParam.infoVisible = false;
         }
+        pageLoading.stop(); 
       }); 
     }
   }
