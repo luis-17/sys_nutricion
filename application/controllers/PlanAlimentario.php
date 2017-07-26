@@ -762,7 +762,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	private function headerPlan($paciente, $consulta, $configuracion){
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,50);
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,0,16);
 		$this->pdf->SetFont('Arial','',14);
 
 	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower_total(utf8_decode(strtolower_total($paciente['paciente'])))),0,1,'R');
@@ -861,8 +861,7 @@ class PlanAlimentario extends CI_Controller {
     		}
     	}
 
-    	$configuracion = GetConfiguracion();
-		// var_dump($allInputs); exit();
+    	$configuracion = GetConfiguracion(); 
     	$arrayPlan = $this->genera_estructura_plan($allInputs['consulta']);
 
     	$this->pdf = new Fpdfext();
