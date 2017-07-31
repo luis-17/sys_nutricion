@@ -5,7 +5,7 @@
     .controller('CitasController', CitasController)
     .service('CitasServices', CitasServices);
 
-  /** @ngInject */
+  /** @ngInject vm.tipoVista  */
   function CitasController ($scope,$location,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications, ProfesionalServices) { 
     var vm = this;
     $scope.changeViewCita(true);
@@ -15,6 +15,8 @@
     $scope.changeViewOnlyBodyCita(false);
     $scope.changeViewSoloPlan(false);
 
+    // $scope.idatencion = null;
+    // $scope.tipoDieta = null;
     /* alert on Drop */
     vm.alertOnDrop = function(event, delta){      
       pageLoading.start('Actualizando calendario...');

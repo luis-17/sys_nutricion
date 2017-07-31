@@ -1,10 +1,10 @@
 <div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'new'" 
       ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'new'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'new');" > 
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'new', tipoDieta);" > 
 </div>
 <div id="pageConsulta" class="page page-ui pull-to-header page-consulta" ng-if="viewConsulta && vm.tipoVista == 'edit'" 
       ng-include="'app/pages/consultas/consulta.html'" ng-show="viewConsulta && vm.tipoVista == 'edit'"
-      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'edit');" > 
+      ng-controller="ConsultasController as cons" ng-init="cons.initConsulta(vm.event,'citas', vm.actualizarCalendario, 'edit', tipoDieta);" > 
 </div>
 
 <div id="pagePlan" class="page page-ui pull-to-header page-plan" ng-if="viewPlan" 
@@ -17,7 +17,7 @@
 </div>
 
 <div id="pagePaciente" ng-if="viewFicha" ng-include="'app/pages/paciente/paciente.html'" ng-show="viewFicha"
-      ng-controller="PacienteController as pac" ng-init="pac.btnExternoVerFicha(vm.event);">
+      ng-controller="PacienteController as pac" ng-init="pac.btnExternoVerFicha(vm.event);"> 
 </div>
 
 <div class="page page-ui pull-to-header" id="pageCitas" ng-show="viewCita || viewOnlyBodyCita">

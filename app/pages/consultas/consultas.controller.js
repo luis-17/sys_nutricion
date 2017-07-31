@@ -9,13 +9,19 @@
   function ConsultasController ($scope,$uibModal,$window,alertify,ConsultasServices,pageLoading,PlanAlimentarioServices, pinesNotifications, ModalReporteFactory) { 
     var vm = this;
 
-    vm.initConsulta = function(cita,origen,callback,tipoVista){
+    vm.initConsulta = function(cita,origen,callback,tipoVista,tipoDieta/**/){
       pageLoading.start('Cargando formulario...');
+      //var tipoDieta = tipoDieta || null;
       vm.cita = cita;
+      console.log(vm.cita.atencion.idatencion,$scope.idatencion,'vm.cita.atencion.idatencion,$scope.idatencion');
+      if( !(vm.cita.atencion.idatencion) ){ 
+        vm.cita.atencion.idatencion = $scope.idatencion; 
+      }
+      vm.fData = {};
       vm.origen = origen;
       vm.callback = callback;
       vm.tipoVista = tipoVista;
-      //console.log('cita',cita);
+      
       //console.log('callback',callback);
       vm.emails = cita.cliente.email;
 
@@ -24,17 +30,24 @@
       }else{
         vm.changePestania(1);
       }
-
+      console.log($scope.tipoDieta,'$scope.tipoDieta',$scope.pestaniaConsulta,'$scope.pestaniaConsulta');
+      if( $scope.tipoDieta ){
+        vm.tipoVista = 'edit';
+      }
       if(vm.tipoVista == 'new'){
         vm.fData = {};
         vm.fData.si_embarazo = false;
-        vm.fData.fecha_atencion = moment(vm.cita.fecha).toDate();
+        vm.fData.fecha_atencion = moment(vm.cita.fecha).toDate(); 
         //console.log('vm.fData.fecha_atencion',vm.fData.fecha_atencion);
         pageLoading.stop();
-      }else if(vm.tipoVista == 'edit'){
+      }else if(vm.tipoVista == 'edit'){ 
+        console.log('entro editar');
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           if(rpta.flag == 1){            
             vm.fData = rpta.datos;
+            
+            console.log(vm.fData,'vm.fDataaaaaaaaaaaaaaaaaaaaaaa');
+            $scope.tipoDieta = vm.fData.tipo_dieta; 
             vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
             /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
             vm.fData.kg_masa_libre = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_libre)) / 100).toFixed(2));
@@ -254,7 +267,9 @@
     }
 
     vm.btnGeneraPlan = function(){
+      console.log(vm.cita,'vm.citafffffffffff',vm.fData);
       vm.fData.cita = vm.cita;
+
       $scope.changeViewPlan(true,vm.fData);
     }
 

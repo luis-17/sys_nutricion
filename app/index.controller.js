@@ -245,11 +245,14 @@
         $scope.valores = [true,false,true,true,false,false,false,false];
       }
     }
-    $scope.changeViewConsulta = function(value, pestania, idatencion, origen){
+    $scope.tipoDieta = null;
+    $scope.idatencion = null;
+    $scope.changeViewConsulta = function(value, pestania, idatencion, origen, tipoDieta){
       $scope.viewConsulta = value;
-      $scope.pestaniaConsulta = pestania;
-      $scope.idatencion = idatencion;
-      $scope.origenConsulta = origen;
+      $scope.pestaniaConsulta = pestania || null;
+      $scope.idatencion = idatencion || null;
+      $scope.tipoDieta = tipoDieta || null;
+      $scope.origenConsulta = origen || null;
     }
     $scope.changeViewConsulta(false);
 

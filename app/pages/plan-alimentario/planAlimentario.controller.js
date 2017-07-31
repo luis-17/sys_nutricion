@@ -6,7 +6,7 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
+  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, ConsultasServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
     var vm = this;
     vm.horas = [
       {id: '--', value:'--'},
@@ -40,11 +40,13 @@
     
     vm.initPlan = function(consulta,origen,tipoVista,callbackCitas){      
       pageLoading.start('Cargando formulario');
+      $scope.idatencion = consulta.idatencion; 
+      console.log($scope.idatencion,'$scope.idatencion');
       vm.consulta = consulta;
       vm.origen = origen;
       vm.tipoVista = tipoVista;
       vm.callbackCitas = callbackCitas;
-      console.log('vm.origen',vm.origen);
+      
       if(vm.origen == 'consulta' && vm.consulta.tipo_dieta != null){
         vm.tipoVista = 'edit';
       }
@@ -307,7 +309,7 @@
 
     vm.btnGuardarPlan = function(){
       pageLoading.start('Registrando plan...');
-      console.log('vm.dias',vm.dias);
+      //console.log('vm.dias',vm.dias);
       var datos = {
         consulta:vm.consulta,
         tipo:vm.tipoPlan,
@@ -316,6 +318,8 @@
         planGeneral:vm.dia,
         indicaciones:vm.indicaciones,
       };
+      //console.log(vm.consulta,'vm.consulta');
+      // return false;
       PlanAlimentarioServices.sRegistrarPlan(datos).then(function(rpta){
         var openedToasts = [];
         vm.options = {
@@ -334,18 +338,22 @@
             $scope.changeViewPlan(false);
             $scope.changeViewSoloPlan(false);
           }else if(vm.origen == 'consulta'){ 
-            $scope.changeViewConsulta(true,3,vm.consulta.idatencion,'plan');
+            $scope.changeViewConsulta(true,3,vm.consulta.idatencion,'plan'); tipoVista pestaniaConsulta
             $scope.changeViewCita(false);
             $scope.changeViewOnlyBodyCita(false);
             $scope.changeViewPlan(false);
             $scope.changeViewSoloPlan(false);
           }*/
           vm.consulta.tipo_dieta = rpta.tipo_dieta;
+          console.log(rpta,'rpta');
+          // $scope.tipoDieta = rpta.tipo_dieta; 
+          $scope.tipoDieta = (rpta.tipo_dieta); 
+
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
           vm.tipoVista = 'edit';
           vm.callbackCitas();
-          vm.cargaEstructura();  
-          vm.changeTab('1');         
+          vm.cargaEstructura(); 
+          vm.changeTab('1'); 
         }else if( rpta.flag == 0 ){
           var title = 'Advertencia';
           var iconClass = 'warning';
@@ -377,6 +385,8 @@
         };       
         if(rpta.flag == 1){ 
           vm.consulta.tipo_dieta = rpta.tipo_dieta;
+          $scope.tipoDieta = (rpta.tipo_dieta); 
+          // console.log($scope.tipoDieta,'$scope.tipoDieta');
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
           vm.callbackCitas();
           vm.tipoVista = 'edit';

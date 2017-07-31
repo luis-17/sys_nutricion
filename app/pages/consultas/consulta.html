@@ -546,25 +546,25 @@
                 <div class="button">
                   <a ng-click="changeViewOnlyBodyCita(false);
                               changeViewEnviaReporte(false);cons.btnGeneraPlan();" 
-                      ng-if="!cons.fData.tipo_dieta || cons.fData.tipo_dieta == null"
+                      ng-if="!tipoDieta || tipoDieta == null || !cons.fData.tipo_dieta || cons.fData.tipo_dieta == null"
                       ng-class="{seleccionado:viewPlan}">Generar plan</a>
 
                   <a ng-click="changeViewOnlyBodyCita(false);
-                              changeViewEnviaReporte(false);changeViewConsulta(false);
+                              changeViewEnviaReporte(false);changeViewConsulta(false,false,idatencion,null,tipoDieta);
                               cons.btnGeneraPlan();" 
-                      ng-if="cons.fData.tipo_dieta != null"
+                      ng-if="tipoDieta != null || cons.fData.tipo_dieta != null"
                       ng-class="{seleccionado:viewPlan}">Modificar plan</a>
                 </div>
                 <div class="button">
                   <a ng-click="changeViewOnlyBodyCita(false);
                               changeViewEnviaReporte(false);cons.btnImprimirPlan();" 
-                      ng-if="cons.fData.tipo_dieta != null"
+                      ng-if="tipoDieta != null || cons.fData.tipo_dieta != null"
                       ng-class="{seleccionado:viewPlan}">Ver Plan</a>
                 </div>
                 <div class="button">
                   <a ng-click="changeViewEnviaReporte(true);
                               changeViewOnlyBodyCita(false);changeViewPlan(false);"
-                     ng-if="cons.fData.tipo_dieta != null"
+                     ng-if="tipoDieta != null || cons.fData.tipo_dieta != null"
                      ng-class="{seleccionado:viewEnviaReporte}">Enviar al paciente</a>
                 </div>
               </div>

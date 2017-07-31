@@ -1,6 +1,6 @@
 <ol class="breadcrumb bg-white" ng-show="plan.seleccionadoTipo && viewPlan">
   <li><a ui-sref="dashboard">Inicio</a></li>
-  <li><a ng-click='changeViewPlan(false);changeViewConsulta(true,3);'>Consulta</a></li>
+  <li><a ng-click='changeViewPlan(false);changeViewConsulta(true,3,idatencion,null,tipoDieta);'>Consulta</a></li>
   <li class="active">Plan Alimentario</li>
 </ol>
 <ol class="breadcrumb bg-white" ng-show="viewSoloPlan">
@@ -76,7 +76,7 @@
           </button>
 
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                  ng-click='changeViewPlan(false);changeViewConsulta(true,3);plan.callbackCitas();'
+                  ng-click='changeViewPlan(false);changeViewConsulta(true,3,idatencion,null,tipoDieta);plan.callbackCitas();' 
                   ng-if="viewPlan">Salir
           </button>
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
@@ -150,11 +150,10 @@
           <button type="button" class="btn btn-success mr-15" style="float:right;"
               ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit'"                    
                   ng-disabled="formDiagnostico.$invalid"> Guardar
-          </button>
-
+          </button> 
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
-                ng-click='changeViewPlan(false);changeViewConsulta(true,3);plan.callbackCitas();'
-                ng-if="viewPlan">Salir
+                ng-click='changeViewPlan(false);changeViewConsulta(true,3,idatencion,null,tipoDieta);plan.callbackCitas();'
+                ng-if="viewPlan">Salir 
           </button>
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
                   ng-click='changeViewSoloPlan(false);changeViewCita(true);plan.callbackCitas();'
