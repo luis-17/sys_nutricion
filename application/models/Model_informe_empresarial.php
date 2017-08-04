@@ -33,16 +33,18 @@ class Model_informe_empresarial extends CI_Model {
 		$query = $this->db->query( $sql,array($datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin'])) ); 
 		return $query->result_array();
 	}
-	public function cargar_pacientes_por_sexo_atendidos_mas_imc($datos)
+	public function cargar_pacientes_por_sexo_atendidos_mas_complementos($datos)
 	{
-		$sql = 'SELECT cl.idcliente, cl.sexo, emp.idempresa, 
-				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc   
+		$sql = "
+		SELECT cl.idcliente, cl.sexo, emp.idempresa, 
+				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc, am.puntaje_grasa_visceral, 
+				(1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) AS value_porc_grasa_corporal    
 				FROM atencion am 
 				INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
 				INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
 				WHERE am.estado_atencion = 1 
 				AND emp.idempresa = ? 
-				AND DATE(am.fecha_atencion) BETWEEN ? AND ? ';
+				AND DATE(am.fecha_atencion) BETWEEN ? AND ?";
 		$query = $this->db->query( $sql,array($datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin'])) ); 
 		return $query->result_array();
 	}
@@ -85,11 +87,12 @@ class Model_informe_empresarial extends CI_Model {
 		); 
 		return $query->result_array();
 	}
-	public function cargar_pacientes_por_edad_atendidos_mas_imc($datos)
+	public function cargar_pacientes_por_edad_atendidos_mas_complementos($datos)
 	{
 		$sql = " 
-			SELECT cl.idcliente, emp.idempresa, 'J' AS etareo,
-				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc  
+			SELECT cl.idcliente, emp.idempresa, 'J' AS etareo, cl.sexo, 
+				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc, am.puntaje_grasa_visceral, 
+				(1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) AS value_porc_grasa_corporal    
 			FROM atencion am 
 			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
 			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
@@ -98,8 +101,9 @@ class Model_informe_empresarial extends CI_Model {
 			AND emp.idempresa = ? 
 			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
 			UNION 
-			SELECT DISTINCT cl.idcliente, emp.idempresa, 'A' AS etareo, 
-				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc  
+			SELECT DISTINCT cl.idcliente, emp.idempresa, 'A' AS etareo, cl.sexo, 
+				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc, am.puntaje_grasa_visceral, 
+				(1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) AS value_porc_grasa_corporal    
 			FROM atencion am 
 			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
 			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
@@ -108,8 +112,9 @@ class Model_informe_empresarial extends CI_Model {
 			AND emp.idempresa = ? 
 			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
 			UNION 
-			SELECT DISTINCT cl.idcliente, emp.idempresa, 'AD' AS etareo, 
-				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc  
+			SELECT DISTINCT cl.idcliente, emp.idempresa, 'AD' AS etareo, cl.sexo, 
+				ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) AS imc, am.puntaje_grasa_visceral, 
+				(1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) AS value_porc_grasa_corporal    
 			FROM atencion am 
 			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
 			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
@@ -221,6 +226,144 @@ class Model_informe_empresarial extends CI_Model {
 				AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
 				ORDER BY cl.idcliente ASC, am.fecha_atencion ASC';
 		$query = $this->db->query( $sql,array($datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin'])) ); 
+		return $query->result_array();
+	}
+	// INDICE GRASA VISCERAL 
+	public function cargar_pacientes_por_grasa_visceral_atendidos($datos)
+	{
+		$sql= "
+			SELECT COUNT(*) AS contador ,'NORMAL' AS indice_grasa_visceral  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND am.puntaje_grasa_visceral BETWEEN 0 AND 9  
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			UNION 
+			SELECT COUNT(*) AS contador ,'ALTO' AS indice_grasa_visceral  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND am.puntaje_grasa_visceral BETWEEN 10 AND 14 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			UNION 
+			SELECT COUNT(*) AS contador ,'MUY ALTO' AS indice_grasa_visceral    
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND am.puntaje_grasa_visceral >= 15 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+		";
+		$query = $this->db->query( $sql, 
+			array(
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']) 
+			) 
+		); 
+		return $query->result_array();
+	}
+	// % GRASA CORPORAL  
+	public function cargar_pacientes_por_grasa_corporal_atendidos($datos)
+	{
+		$sql= "
+			SELECT COUNT(*) AS contador ,'BAJO' AS porc_grasa_corporal 
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) < 25 
+			AND cl.sexo = 'F' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			UNION 
+			SELECT COUNT(*) AS contador ,'BAJO' AS porc_grasa_corporal  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) < 15 
+			AND cl.sexo = 'M' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			
+			UNION 
+
+			SELECT COUNT(*) AS contador ,'NORMAL' AS porc_grasa_corporal  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) BETWEEN 25 AND 30 
+			AND cl.sexo = 'F' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			UNION 
+			SELECT COUNT(*) AS contador ,'NORMAL' AS porc_grasa_corporal  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) BETWEEN 15 AND 20 
+			AND cl.sexo = 'M' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			
+			UNION 
+
+			SELECT COUNT(*) AS contador ,'ALTO' AS porc_grasa_corporal  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) > 30 
+			AND cl.sexo = 'F' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+			UNION 
+			SELECT COUNT(*) AS contador ,'ALTO' AS porc_grasa_corporal  
+			FROM atencion am 
+			INNER JOIN cliente cl ON am.idcliente = cl.idcliente 
+			INNER JOIN empresa emp ON cl.idempresa = emp.idempresa 
+			WHERE am.estado_atencion = 1 
+			AND (1.2 * ( ROUND(am.peso / ( (cl.estatura / 100) * (cl.estatura / 100)  ) ,2 ) ) + 0.23 * ( TIMESTAMPDIFF(YEAR, cl.fecha_nacimiento, CURDATE()) ) - 10.8 * ( IF (cl.sexo = 'M',1,0) ) - 5.4) > 20 
+			AND cl.sexo = 'M' 
+			AND am.peso > 0 
+			AND cl.estatura > 0 
+			AND emp.idempresa = ? 
+			AND DATE(am.fecha_atencion) BETWEEN ? AND ? 
+		";
+		$query = $this->db->query( $sql, 
+			array(
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin']),
+				$datos['empresa']['id'], darFormatoYMD($datos['inicio']), darFormatoYMD($datos['fin'])
+			) 
+		); 
 		return $query->result_array();
 	}
 }

@@ -86,7 +86,10 @@ class InformeEmpresarial extends CI_Controller {
 		$arrGroupEdad = array_values($arrGroupEdad);
 		$arrListado['pac_edad_graph'] = $arrGroupEdad;
 
-		// EVALUACIÓN DEL PESO - BARRAS 
+		/****************************************************/
+		/*                        IMC                       */
+		/****************************************************/
+		// EVALUACIÓN DEL IMC - BARRAS 
 		$listaPacPeso = $this->model_informe_empresarial->cargar_pacientes_por_peso_atendidos($allInputs); 
 		$arrGroupPeso = array();
 		foreach ($listaPacPeso as $key => $row) {
@@ -94,7 +97,7 @@ class InformeEmpresarial extends CI_Controller {
 		}
 		$arrListado['pac_peso_graph'] = $arrGroupPeso;
 
-		// EVALUACIÓN DEL PESO CON LA EDAD - BARRAS AGRUPADAS 
+		// EVALUACIÓN DEL IMC CON LA EDAD - BARRAS AGRUPADAS 
 		$arrGroupPacPeso = array();
 		$sumObesidad = 0;
 		foreach ($listaPacPeso as $key => $row) { 
@@ -112,7 +115,7 @@ class InformeEmpresarial extends CI_Controller {
 		$arrGroupPacPeso['obesidad']['tipo_peso'] = 'Obesidad';
 		$arrGroupPacPeso = array_values($arrGroupPacPeso);
 
-		$listaPacPorEdadMasIMC = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_imc($allInputs);
+		$listaPacPorEdadMasIMC = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_complementos($allInputs);
 		$arrGroupPesoEdad = array(); 
 		foreach ($arrGroupPacPeso as $key => $row) { 
 			array_push($arrGroupPesoEdad,
@@ -182,8 +185,8 @@ class InformeEmpresarial extends CI_Controller {
 		}
 		$arrListado['pac_edad_peso_graph'] = $arrGroupPesoEdad;
 
-		// EVALUACIÓN DEL SEXO CON LA EDAD - BARRAS AGRUPADAS 
-		$listaPacPorSexoMasIMC = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_imc($allInputs);
+		// EVALUACIÓN DEL IMC CON EL SEXO - BARRAS AGRUPADAS 
+		$listaPacPorSexoMasIMC = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_complementos($allInputs);
 		$arrGroupPesoSexo = array(); 
 		foreach ($arrGroupPacPeso as $key => $row) { 
 			array_push($arrGroupPesoSexo,
@@ -239,6 +242,299 @@ class InformeEmpresarial extends CI_Controller {
 			$arrGroupPesoSexo[$key]['data'] = array($countM,$countF);
 		}
 		$arrListado['pac_sexo_peso_graph'] = $arrGroupPesoSexo;
+
+		/****************************************************/
+		/*               ÍNDICE GRASA VISCERAL              */
+		/****************************************************/
+		// EVALUACIÓN DE LA GRASA VISCERAL - BARRAS 
+		$listaPacGrasaVisceral = $this->model_informe_empresarial->cargar_pacientes_por_grasa_visceral_atendidos($allInputs); 
+		$arrGroupGV = array();
+		foreach ($listaPacGrasaVisceral as $key => $row) {
+			$arrGroupGV[] = array($row['indice_grasa_visceral'],(float)$row['contador']);
+		}
+		$arrListado['pac_grasa_visceral_graph'] = $arrGroupGV;
+
+		// EVALUACIÓN DE LA GRASA VISCERAL CON LA EDAD - BARRAS AGRUPADAS 
+		$arrGroupPacGV = array();
+		foreach ($listaPacGrasaVisceral as $key => $row) { 
+			$newKey = $row['indice_grasa_visceral']; 
+			$arrGroupPacGV[$newKey] = array(
+				'contador'=> (int)$row['contador'],
+				'indice_grasa_visceral'=> $row['indice_grasa_visceral']
+			);
+		}
+		$arrGroupPacGV = array_values($arrGroupPacGV);
+
+		$listaPacPorEdadMasGV = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_complementos($allInputs);
+		$arrGroupGVEdad = array(); 
+		foreach ($arrGroupPacGV as $key => $row) { 
+			array_push($arrGroupGVEdad,
+				array(
+					'name'=> $row['indice_grasa_visceral'],
+					'data'=> array()
+				)
+			); 
+			$countJ = 0;
+			$countA = 0;
+			$countAD = 0;
+			foreach ($listaPacPorEdadMasGV as $keyDet => $rowDet) {
+				if( $row['indice_grasa_visceral'] == 'NORMAL' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] <= 9  ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+				if( $row['indice_grasa_visceral'] == 'ALTO' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] >= 10 && (float)$rowDet['puntaje_grasa_visceral'] <= 14  ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+				if( $row['indice_grasa_visceral'] == 'MUY ALTO' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] >= 15 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+			}
+			$arrGroupGVEdad[$key]['data'] = array($countJ,$countA,$countAD); 
+		}
+		$arrListado['pac_edad_grasa_visceral_graph'] = $arrGroupGVEdad;
+
+		// EVALUACIÓN DE LA GRASA VISCERAL CON EL SEXO - BARRAS AGRUPADAS 
+		$listaPacPorSexoMasGV = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_complementos($allInputs);
+		$arrGroupGVSexo = array(); 
+		foreach ($arrGroupPacGV as $key => $row) { 
+			array_push($arrGroupGVSexo,
+				array(
+					'name'=> $row['indice_grasa_visceral'],
+					'data'=> array()
+				)
+			); 
+			$countM = 0;
+			$countF = 0;
+			foreach ($listaPacPorSexoMasGV as $keyDet => $rowDet) {
+				if( $row['indice_grasa_visceral'] == 'NORMAL' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] <=9  ){ 
+						if( $rowDet['sexo'] == 'M' ){ 
+							$countM++;
+						}
+						if( $rowDet['sexo'] == 'F' ){ 
+							$countF++;
+						}
+					}
+				}
+				if( $row['indice_grasa_visceral'] == 'ALTO' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] >= 10 && (float)$rowDet['puntaje_grasa_visceral'] <= 14  ){ 
+						if( $rowDet['sexo'] == 'M' ){ 
+							$countM++;
+						}
+						if( $rowDet['sexo'] == 'F' ){ 
+							$countF++;
+						}
+					}
+				}
+				if( $row['indice_grasa_visceral'] == 'MUY ALTO' ){
+					if( (float)$rowDet['puntaje_grasa_visceral'] >= 15 ){ 
+						if( $rowDet['sexo'] == 'M' ){ 
+							$countM++;
+						}
+						if( $rowDet['sexo'] == 'F' ){ 
+							$countF++;
+						}
+					}
+				}
+			}
+			$arrGroupGVSexo[$key]['data'] = array($countM,$countF);
+		}
+		$arrListado['pac_sexo_grasa_visceral_graph'] = $arrGroupGVSexo;
+
+		/****************************************************/
+		/*                  % GRASA CORPORAL                */
+		/****************************************************/
+		// EVALUACIÓN DE LA GRASA CORPORAL - BARRAS 
+
+		$listaPacGrasaCorporal = $this->model_informe_empresarial->cargar_pacientes_por_grasa_corporal_atendidos($allInputs); 
+		$arrListaPacGrasaCorporal = array();
+		foreach ($listaPacGrasaCorporal as $key => $row) { 
+			$arrListaPacGrasaCorporal[ $row['porc_grasa_corporal'] ]['contador'] = 0; 
+		}
+		foreach ($listaPacGrasaCorporal as $key => $row) {  
+			$arrListaPacGrasaCorporal[$row['porc_grasa_corporal']]['porc_grasa_corporal'] = $row['porc_grasa_corporal']; 
+			$arrListaPacGrasaCorporal[$row['porc_grasa_corporal']]['contador'] += (float)$listaPacGrasaCorporal[$key]['contador']; 
+		}
+		$arrListaPacGrasaCorporal = array_values($arrListaPacGrasaCorporal);
+		// var_dump($listaPacGrasaCorporal,$arrListaPacGrasaCorporal); exit();
+		$arrGroupGC = array();
+		foreach ($arrListaPacGrasaCorporal as $key => $row) {
+			$arrGroupGC[] = array($row['porc_grasa_corporal'],(float)$row['contador']);
+		}
+		$arrListado['pac_porc_grasa_corporal_graph'] = $arrGroupGC;
+
+		// EVALUACIÓN DE LA GRASA CORPORAL CON LA EDAD - BARRAS AGRUPADAS 
+		$arrGroupPacGC = array();
+		foreach ($arrListaPacGrasaCorporal as $key => $row) { 
+			$newKey = $row['porc_grasa_corporal']; 
+			$arrGroupPacGC[$newKey] = array(
+				'contador'=> (int)$row['contador'],
+				'porc_grasa_corporal'=> $row['porc_grasa_corporal']
+			);
+		}
+		$arrGroupPacGC = array_values($arrGroupPacGC);
+
+		$listaPacPorEdadMasGC = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_complementos($allInputs);
+		$arrGroupGCEdad = array(); 
+		foreach ($arrGroupPacGC as $key => $row) { 
+			array_push($arrGroupGCEdad,
+				array(
+					'name'=> $row['porc_grasa_corporal'],
+					'data'=> array()
+				)
+			); 
+			$countJ = 0;
+			$countA = 0;
+			$countAD = 0;
+			foreach ($listaPacPorEdadMasGC as $keyDet => $rowDet) {
+				if( $row['porc_grasa_corporal'] == 'BAJO' ){
+					if( (float)$rowDet['value_porc_grasa_corporal'] < 25 && $rowDet['sexo'] == 'F' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['value_porc_grasa_corporal'] < 15 && $rowDet['sexo'] == 'M' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+				if( $row['porc_grasa_corporal'] == 'NORMAL' ){
+					if( (float)$rowDet['value_porc_grasa_corporal'] >= 25 && (float)$rowDet['value_porc_grasa_corporal'] <= 30 && $rowDet['sexo'] == 'F' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['value_porc_grasa_corporal'] >= 15 && (float)$rowDet['value_porc_grasa_corporal'] <= 20 && $rowDet['sexo'] == 'M' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+				if( $row['porc_grasa_corporal'] == 'ALTO' ){
+					if( (float)$rowDet['value_porc_grasa_corporal'] > 30 && $rowDet['sexo'] == 'F' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['value_porc_grasa_corporal'] > 20 && $rowDet['sexo'] == 'M' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+			}
+			$arrGroupGCEdad[$key]['data'] = array($countJ,$countA,$countAD); 
+		}
+		$arrListado['pac_edad_porc_grasa_corporal_graph'] = $arrGroupGCEdad;
+
+		// EVALUACIÓN DE LA GRASA CORPORAL CON EL SEXO - BARRAS AGRUPADAS 
+		$listaPacPorSexoMasGC = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_complementos($allInputs);
+		$arrGroupGCSexo = array(); 
+		foreach ($arrGroupPacGC as $key => $row) { 
+			array_push($arrGroupGCSexo,
+				array(
+					'name'=> $row['porc_grasa_corporal'],
+					'data'=> array()
+				)
+			); 
+			$countM = 0;
+			$countF = 0;
+			foreach ($listaPacPorSexoMasGC as $keyDet => $rowDet) {
+				if( $row['porc_grasa_corporal'] == 'BAJO' ){
+					if( $rowDet['value_porc_grasa_corporal'] < 25 && $rowDet['sexo'] == 'F' ){ 
+						$countF++;
+					}
+					if( $rowDet['value_porc_grasa_corporal'] < 15 && $rowDet['sexo'] == 'M' ){ 
+						$countM++;
+					} 
+				}
+				if( $row['porc_grasa_corporal'] == 'NORMAL' ){
+					if( $rowDet['value_porc_grasa_corporal'] >= 25 && $rowDet['value_porc_grasa_corporal'] <= 30 && $rowDet['sexo'] == 'F' ){ 
+						$countF++;
+					}
+					if( $rowDet['value_porc_grasa_corporal'] >= 15 && $rowDet['value_porc_grasa_corporal'] <= 20 && $rowDet['sexo'] == 'M' ){ 
+						$countM++;
+					}
+				}
+				if( $row['porc_grasa_corporal'] == 'ALTO' ){
+					if( $rowDet['value_porc_grasa_corporal'] > 30 && $rowDet['sexo'] == 'F' ){ 
+						$countF++;
+					}
+					if( $rowDet['value_porc_grasa_corporal'] > 20 && $rowDet['sexo'] == 'M' ){ 
+						$countM++;
+					}
+				}
+			}
+			$arrGroupGCSexo[$key]['data'] = array($countM,$countF);
+		}
+		$arrListado['pac_sexo_porc_grasa_corporal_graph'] = $arrGroupGCSexo;
+
 
 		// EVALUACION DEL PESO Y GRASA PERDIDA 
 		$arrPacientesPesoGrasaPerdida = array(); 
