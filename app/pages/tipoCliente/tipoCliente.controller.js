@@ -9,7 +9,7 @@
   function TipoClienteController($scope,TipoClienteServices) {
     var vm = this;
   }
-  function TipoClienteServices($http, $q) {
+  function TipoClienteServices($http, $q, handle) {
     return({
         sListarTipoClienteCbo: sListarTipoClienteCbo
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "TipoCliente/listar_tipo_cliente_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 })();

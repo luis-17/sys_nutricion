@@ -12,7 +12,8 @@
 
     var unregister = $rootScope.$on('$stateChangeSuccess', function(event, toState) {
       event.targetScope.$watch('$viewContentLoaded', function () {
-        angular.element('html, body, #content').animate({ scrollTop: 0 }, 200);
+        angular.element('html, body, #content').animate({ scrollTop: 0 }, 200); 
+        angular.element('html, body, #content').show().addClass('block'); 
       });
       $rootScope.$state.current = toState;
       $rootScope.specialClass = toState.specialClass;

@@ -9,7 +9,7 @@
   function GrupoAlimentoController($scope,GrupoAlimentoServices) {
     var vm = this;
   }
-  function GrupoAlimentoServices($http, $q) {
+  function GrupoAlimentoServices($http, $q, handle) {
     return({
         sListarGrupoAlimento1: sListarGrupoAlimento1,
         sListarGrupoAlimento2: sListarGrupoAlimento2,        
@@ -21,7 +21,7 @@
             url :  angular.patchURLCI + "GrupoAlimento/listar_grupo_alimento_1",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sListarGrupoAlimento2(pDatos) {
       var datos = pDatos || {};
@@ -30,7 +30,7 @@
             url :  angular.patchURLCI + "GrupoAlimento/listar_grupo_alimento_2",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }    
   }
 })();

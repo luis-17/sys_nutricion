@@ -9,7 +9,7 @@
   function EspecialidadController($scope,EspecilidadServices) {
     var vm = this;
   }
-  function EspecialidadServices($http, $q) {
+  function EspecialidadServices($http, $q, handle) {
     return({
         sListarEspecialidad: sListarEspecialidad
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "especialidad/listar_especialidad",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 })();

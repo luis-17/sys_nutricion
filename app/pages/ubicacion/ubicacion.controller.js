@@ -9,7 +9,7 @@
   function UbicacionController($scope,UbicacionServices) { 
     var vm = this;    
   }
-  function UbicacionServices($http, $q) {
+  function UbicacionServices($http, $q, handle) { 
     return({
         sListarUbicacionCbo: sListarUbicacionCbo
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "Ubicacion/listar_ubicacion_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error )); 
     }
   }
 })();

@@ -47,6 +47,10 @@ class Model_consulta extends CI_Model {
 			'diagnostico_notas' 	=> (empty($datos['consulta']['diagnostico_notas'])) ? NULL : $datos['consulta']['diagnostico_notas'],
 			'resultados_laboratorio'=> (empty($datos['consulta']['resultados_laboratorio'])) ? NULL : $datos['consulta']['resultados_laboratorio'],
 			'fecha_atencion' 		=> date('Y-m-d H:i:s', strtotime($datos['consulta']['fecha_atencion'])),
+			// OBJETIVO
+			'grasa_para_objetivo' 	=> (empty($datos['consulta']['grasa_para_objetivo'])) ? NULL : $datos['consulta']['grasa_para_objetivo'],
+			'masa_muscular_objetivo'=> (empty($datos['consulta']['masa_muscular_para_objetivo'])) ? NULL : $datos['consulta']['masa_muscular_para_objetivo'],
+			// AUDITORIA 
 			'createdat' 			=> date('Y-m-d H:i:s'),
 			'updatedat'				=> date('Y-m-d H:i:s')
 			);
@@ -93,6 +97,10 @@ class Model_consulta extends CI_Model {
 			'diagnostico_notas' 	=> (empty($datos['consulta']['diagnostico_notas'])) ? NULL : $datos['consulta']['diagnostico_notas'],
 			'resultados_laboratorio'=> (empty($datos['consulta']['resultados_laboratorio'])) ? NULL : $datos['consulta']['resultados_laboratorio'],
 			'fecha_atencion' 		=> date('Y-m-d H:i:s', strtotime($datos['consulta']['fecha_atencion'])),
+			// OBJETIVO
+			'grasa_para_objetivo' 	=> (empty($datos['consulta']['grasa_para_objetivo'])) ? NULL : $datos['consulta']['grasa_para_objetivo'],
+			'masa_muscular_objetivo'=> (empty($datos['consulta']['masa_muscular_para_objetivo'])) ? NULL : $datos['consulta']['masa_muscular_para_objetivo'],
+			// AUDITORIA 
 			'updatedat'				=> date('Y-m-d H:i:s')
 			);
 		$this->db->where('idatencion',$datos['consulta']['idatencion']);
@@ -114,8 +122,8 @@ class Model_consulta extends CI_Model {
 			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral, at.kg_masa_grasa,
-			at.kg_masa_libre, at.resultados_laboratorio, at.indicaciones_dieta, at.tipo_dieta');
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.puntaje_grasa_visceral, at.kg_masa_grasa, 
+			at.masa_muscular_objetivo, at.grasa_para_objetivo, at.kg_masa_libre, at.resultados_laboratorio, at.indicaciones_dieta, at.tipo_dieta');
 		$this->db->select('at.idproxcita, c.fecha as prox_cita');
 		$this->db->select("pr.nombre, pr.apellidos, pr.num_colegiatura", FALSE);
 

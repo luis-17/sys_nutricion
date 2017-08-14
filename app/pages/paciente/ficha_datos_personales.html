@@ -43,6 +43,24 @@
           <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.sexo" ng-options="item.id as item.descripcion for item in pac.listaSexos" required > </select>
         </div>
       </div>
+      <div class="form-group">
+        <label for="tipo_cliente" class="col-sm-3 control-label minotaur-label">Tipo de Paciente: </label>
+        <div class="col-sm-9">
+          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center" >{{pac.ficha.tipo_cliente}} </p>  
+          <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.idtipocliente" ng-change="pac.cambiaTipoCliente();" 
+            ng-options="item.id as item.descripcion for item in pac.listaTiposClientes" required > 
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="empresa" class="col-sm-3 control-label minotaur-label"> Empresa: </label>
+        <div class="col-sm-9">
+          <p ng-if="!pac.modoEditar" class="form-control underline-input text-center" > {{pac.ficha.empresa}} </p> 
+          <select class="form-control" ng-if="pac.modoEditar" ng-model="pac.ficha.idempresa" ng-disabled="!pac.corp" 
+            ng-options="item.id as item.descripcion for item in pac.listaEmpresas" > 
+          </select>
+        </div>
+      </div>
     </div>
     <div class="col-sm-4">
       <h4 class="text-info f-14 col-sm-12">Foto</h4>

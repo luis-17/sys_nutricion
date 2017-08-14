@@ -1,4 +1,3 @@
-
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -135,6 +134,9 @@ class Consulta extends CI_Controller {
 					'kg_masa_libre' 		=> (float)$row['kg_masa_libre'],
 					'indicaciones_dieta' 	=> $row['indicaciones_dieta'],
 					'tipo_dieta' 			=> $row['tipo_dieta'],
+
+					'grasa_para_objetivo' 			=> (float)$row['grasa_para_objetivo'],
+					'masa_muscular_para_objetivo' 	=> (float)$row['masa_muscular_objetivo']
 				);
 
 			$arrData['flag'] = 1;
@@ -244,7 +246,7 @@ class Consulta extends CI_Controller {
     	// DATOS
     	$configuracion = GetConfiguracion();
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
-		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, TRUE, $consulta['fecha_atencion']);
+		$atenciones = $this->model_consulta->m_cargar_atenciones_paciente($consulta['idcliente'], FALSE, FALSE, $consulta['fecha_atencion']);
 		//var_dump($consulta);
 		$paciente = $this->model_paciente->m_cargar_paciente_por_id($consulta);
 		/*var_dump($paciente);
@@ -270,7 +272,7 @@ class Consulta extends CI_Controller {
 		/*progreso*/
 		$consultaAnterior = $this->model_consulta->m_cargar_atencion_anterior($consulta['idcliente'], $consulta['fecha_atencion']);
 		$primeraConsulta = $this->model_consulta->m_cargar_primera_atencion($consulta['idcliente']);
-		$this->imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta);		
+		$this->imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta,$paciente);		
 
 		/*detalle peso*/
 		$this->imprimir_cuadro_detalle_peso($paciente,$consulta, $posYCuadro);
@@ -391,17 +393,17 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell(30,9,utf8_decode($objetivo . ' kg.') ,1,0,'C', FALSE);
 
 		$posY += 9;
-		$this->pdf->SetFillColor(252,184,185);
+		//$this->pdf->SetFillColor(252,184,185);
 		$this->pdf->SetXY($posXCuadro, $posY);
 		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   GRASA') ,1,0,'L', TRUE);
 		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
-		$this->pdf->Cell(30,9,utf8_decode(' ') ,1,0,'C', TRUE);
+		$this->pdf->Cell(30,9,utf8_decode(@$consulta['grasa_para_objetivo'] . ' kg.') ,1,0,'C', TRUE);
 
 		$posY += 9;
 		$this->pdf->SetXY($posXCuadro, $posY);
 		$this->pdf->Cell($anchoSubCuadro,9,utf8_decode('   MASA MUSCULAR') ,1,0,'L', TRUE);
 		$this->pdf->SetXY(($posXCuadro+$anchoCuadro-30), $posY);		
-		$this->pdf->Cell(30,9,utf8_decode(' ') ,1,0,'C', TRUE);
+		$this->pdf->Cell(30,9,utf8_decode(@$consulta['masa_muscular_objetivo'] . ' kg.') ,1,0,'C', TRUE);
 
 		/*tipo cuerpo*/
 		$posY += 12;
@@ -459,7 +461,7 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetY($posY);
 	}
 
-	private function imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta){
+	private function imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta, $paciente = FALSE){
 		if($consulta['idatencion'] != $primeraConsulta['idatencion']){
 
 			$this->pdf->Ln(10);
@@ -490,6 +492,28 @@ class Consulta extends CI_Controller {
 			$this->pdf->SetXY(13, $posYprogreso);
 			$grasaVisceralPerdida = round((float)$consultaAnterior['puntaje_grasa_visceral'] - (float)$consulta['puntaje_grasa_visceral'],2);
 			$progreso = 'Ha reducido ' . $grasaVisceralPerdida . ' puntos de grasa visceral desde su ultima cita';
+			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
+
+			$posYprogreso+=6;
+			$this->pdf->Image('assets/images/icons/corazon.png',9, $posYprogreso, 4);
+			$this->pdf->SetXY(13, $posYprogreso); 
+			if( strtoupper($paciente['sexo']) == 'F' ){
+				if( $consulta['cm_cintura'] <= 80 && !empty($consulta['cm_cintura']) ){
+					$progreso = 'No presenta riesgo cardiovascular'; 
+				}elseif ( $consulta['cm_cintura'] > 80 ) {
+					$progreso = 'Presenta riesgo cardiovascular'; 
+				}else{
+					$progreso = '-';
+				}
+			}elseif ( strtoupper($paciente['sexo']) == 'M' ) {
+				if( $consulta['cm_cintura'] <= 90 && !empty($consulta['cm_cintura']) ){
+					$progreso = 'No presenta riesgo cardiovascular'; 
+				}elseif ( $consulta['cm_cintura'] > 90 ) {
+					$progreso = '-'; 
+				}else{
+					
+				}
+			}
 			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
 		}
 	}

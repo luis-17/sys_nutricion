@@ -13,7 +13,7 @@
       pageLoading.start('Cargando formulario...');
       //var tipoDieta = tipoDieta || null;
       vm.cita = cita;
-      console.log(vm.cita.atencion.idatencion,$scope.idatencion,'vm.cita.atencion.idatencion,$scope.idatencion');
+      // console.log(vm.cita.atencion.idatencion,$scope.idatencion,'vm.cita.atencion.idatencion,$scope.idatencion');
       if( !(vm.cita.atencion.idatencion) ){ 
         vm.cita.atencion.idatencion = $scope.idatencion; 
       }
@@ -30,7 +30,7 @@
       }else{
         vm.changePestania(1);
       }
-      console.log($scope.tipoDieta,'$scope.tipoDieta',$scope.pestaniaConsulta,'$scope.pestaniaConsulta');
+      // console.log($scope.tipoDieta,'$scope.tipoDieta',$scope.pestaniaConsulta,'$scope.pestaniaConsulta');
       if( $scope.tipoDieta ){
         vm.tipoVista = 'edit';
       }
@@ -41,12 +41,12 @@
         //console.log('vm.fData.fecha_atencion',vm.fData.fecha_atencion);
         pageLoading.stop();
       }else if(vm.tipoVista == 'edit'){ 
-        console.log('entro editar');
+        // console.log('entro editar');
         ConsultasServices.sCargarConsulta(vm.cita).then(function(rpta){
           if(rpta.flag == 1){            
             vm.fData = rpta.datos;
             
-            console.log(vm.fData,'vm.fDataaaaaaaaaaaaaaaaaaaaaaa');
+            // console.log(vm.fData,'vm.fDataaaaaaaaaaaaaaaaaaaaaaa');
             $scope.tipoDieta = vm.fData.tipo_dieta; 
             vm.fData.fecha_atencion = moment(vm.fData.fecha_atencion).toDate();
             /*vm.fData.kg_masa_grasa = parseFloat(((parseFloat(vm.fData.peso) * parseFloat(vm.fData.porc_masa_grasa)) / 100).toFixed(2));
@@ -88,14 +88,14 @@
     };
 
     vm.isOpen = false;
-    vm.titleToggle = "Ver Pliegues";
+    vm.titleToggle = "Ver edición avanzada.";
     vm.changeToggle = function(){
       if(vm.isOpen){
         vm.isOpen = false;
-        vm.titleToggle = "Ver Pliegues";
+        vm.titleToggle = "Ver edición avanzada.";
       }else{
         vm.isOpen = true;
-        vm.titleToggle = "Ocultar Pliegues";
+        vm.titleToggle = "Ocultar edición avanzada";
       }
     }
 

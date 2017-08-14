@@ -83,7 +83,7 @@ class Paciente extends CI_Controller {
 		}else{
 			$foto = $row['nombre_foto'];
 		}
-		$arrListado = array(
+		$arrListado = array( 
 			'idcliente' => $row['idcliente'],
 			'nombre' => $row['nombre'],
 			'apellidos' => $row['apellidos'],
@@ -112,7 +112,7 @@ class Paciente extends CI_Controller {
 			'ultima_visita'=> empty($row['fec_ult_atencion'])? 'Sin Consultas' :formatoFechaReporte3($row['fec_ult_atencion']),
 			'cant_atencion' =>  $row['cant_atencion'],
 			'fecha_alta' =>  darFormatoDMY2($row['fecha_alta']),
-			);
+		);
 
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';

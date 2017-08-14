@@ -77,7 +77,8 @@
 					<div class="row">
 						<div class="form-group col-md-4">
 			              <label for="tipocliente" class="control-label minotaur-label">Tipo de Paciente <small class="text-red">(*)</small> </label>
-			              <select class="form-control" ng-model="mp.fData.idtipocliente" ng-options="item.id as item.descripcion for item in mp.listaTiposClientes" ng-change="mp.cambiaTipoCliente();" required > </select>
+			              <select class="form-control" ng-model="mp.fData.idtipocliente" ng-options="item.id as item.descripcion for item in mp.listaTiposClientes" 
+			              	ng-change="mp.cambiaTipoCliente();" required > </select>
 
 			              <div ng-messages="formCliente.tipocliente.$error" ng-if="formCliente.tipocliente.$dirty" role="alert" class="help-block text-red">
 			                <div ng-messages-include="app/components/templates/messages_tmpl.html"></div>

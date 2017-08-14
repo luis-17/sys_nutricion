@@ -256,7 +256,7 @@
       }      
 
   }
-  function EmpresaServices($http, $q) {
+  function EmpresaServices($http, $q, handle) {
     return({
         sListarEmpresas: sListarEmpresas,
         sListarEmpresaCbo: sListarEmpresaCbo,
@@ -271,7 +271,7 @@
             url :  angular.patchURLCI + "Empresa/listar_empresas",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }    
     function sListarEmpresaCbo(pDatos) {
       var datos = pDatos || {};
@@ -280,7 +280,7 @@
             url :  angular.patchURLCI + "Empresa/listar_empresa_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sRegistrarEmpresa(pDatos) {
       var datos = pDatos || {};      
@@ -289,7 +289,7 @@
             url : angular.patchURLCI + "Empresa/registrar_empresa",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }   
     function sEditarEmpresa(pDatos) {
       var datos = pDatos || {};      
@@ -298,7 +298,7 @@
             url : angular.patchURLCI + "Empresa/editar_empresa",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }  
     function sAnularEmpresa(pDatos) {
       var datos = pDatos || {};      
@@ -307,7 +307,7 @@
             url : angular.patchURLCI + "Empresa/anular_empresa",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }         
   }
 })();

@@ -17,7 +17,7 @@
     vm.fParam.infoVisible = false;
     vm.fParam.inicio = moment().format('01-MM-YYYY');
     vm.fParam.fin = moment().format('DD-MM-YYYY');
-    console.log(vm.fParam.fin,'vm.fParam.fin'); 
+    // console.log(vm.fParam.fin,'vm.fParam.fin'); 
     // LISTA DE EMPRESAS
     EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
       vm.fData.listaEmpresas = angular.copy(rpta.datos);
@@ -618,7 +618,7 @@
       }); 
     }
   }
-  function InformeEmpresarialServices($http, $q) {
+  function InformeEmpresarialServices($http, $q, handle) {
     return({
         sListarInformeEmpresa: sListarInformeEmpresa
     });
@@ -629,7 +629,7 @@
             url :  angular.patchURLCI + "InformeEmpresarial/listar_informe_empresarial",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }            
   }
 })();

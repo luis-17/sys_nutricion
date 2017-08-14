@@ -9,7 +9,7 @@
   function GrupoController($scope,GrupoServices) {
     var vm = this;
   }
-  function GrupoServices($http, $q) {
+  function GrupoServices($http, $q, handle) {
     return({
         sListarGrupo: sListarGrupo,        
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "Grupo/listar_grupo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 })();

@@ -114,21 +114,21 @@
         // }
       });
       // LISTA MOTIVO CONSULTA
-        MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
-          vm.listaMotivos = angular.copy(rpta.datos);
-          vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-          // if(vm.fData.idmotivoconsulta == null){
-          //   vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
-          // }
-        });
-        vm.cambiaTipoCliente = function(){
-          vm.fData.idempresa = vm.listaEmpresas[0].id;
-          if(vm.fData.idtipocliente == 3 ){
-            vm.corp = true;
-          }else{
-            vm.corp = false;
-          }
+      MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
+        vm.listaMotivos = angular.copy(rpta.datos);
+        vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+        // if(vm.fData.idmotivoconsulta == null){
+        //   vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
+        // }
+      });
+      vm.cambiaTipoCliente = function(){
+        vm.fData.idempresa = vm.listaEmpresas[0].id;
+        if(vm.fData.idtipocliente == 3 ){
+          vm.corp = true;
+        }else{
+          vm.corp = false;
         }
+      }
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -159,8 +159,7 @@
         { field: 'idcliente', name:'idcliente', displayName: 'ID', width: 80,  sort: { direction: uiGridConstants.DESC} },
         { field: 'nombre', name:'nombre', displayName: 'NOMBRE', width: 150, },
         { field: 'apellidos', name:'apellidos', displayName: 'APELLIDOS', minWidth:100 },
-        { field: 'empresa', name:'nombre_comercial', displayName: 'EMPRESA', minWidth:100 },
-
+        { field: 'empresa', name:'nombre_comercial', displayName: 'EMPRESA', minWidth:100 }, 
         { field: 'cant_atencion', name:'cant_atencion', displayName: 'CANT. VISITAS', width: 100, enableFiltering: false, cellClass:'text-center' },
         { field: 'accion', name:'accion', displayName: 'ACCION', width: 80, enableFiltering: false, enableSorting:false,
           cellTemplate:'<button class="btn btn-default btn-sm text-green btn-action" ng-click="grid.appScope.btnVerFicha(row.entity);$event.stopPropagation();" tooltip-placement="left" uib-tooltip="VER FICHA!"> <i class="fa fa-eye"></i> </button>'+
@@ -227,13 +226,18 @@
         vm.datosGrid = {
           paginate : paginationOptions
         };
-        PacienteServices.sListarPacientes(vm.datosGrid).then(function (rpta) {
-          vm.gridOptions.data = rpta.datos;
-          vm.gridOptions.totalItems = rpta.paginate.totalRows;
-          vm.mySelectionGrid = [];
-          if(loader){
+        PacienteServices.sListarPacientes(vm.datosGrid).then(function (rpta) { 
+          if( rpta.flag == 1 ){
+            vm.gridOptions.data = rpta.datos;
+            vm.gridOptions.totalItems = rpta.paginate.totalRows;
+            vm.mySelectionGrid = [];
+            if(loader){
+              pageLoading.stop();
+            }
+          }else{
             pageLoading.stop();
           }
+          
         });
       }
       //vm.getPaginationServerSide(true);
@@ -424,7 +428,8 @@
         vm.ficha = angular.copy(row);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
-        //vm.ficha.fecha_nacimiento = $filter('date')(row.fecha_nacimiento,'dd/MM/yyyy');
+        var graph = angular.element(document).find('hc-chart');
+        console.log(graph,'graph');
         vm.cargarAntecedentes(row);
         vm.cargarHabitosAlimentarios(row);
         vm.cargarHabitos(row);
@@ -432,6 +437,18 @@
         vm.cargarConsultas(row);
         vm.cargarPlanes(row);
 
+        vm.cambiaTipoCliente = function(){ 
+          console.log(vm.ficha.idtipocliente,'vm.ficha.idtipocliente'); 
+          if(vm.ficha.idtipocliente == 3 ){ // CORPORATIVO 
+            //vm.ficha.idempresa = vm.listaEmpresas[0].id;
+            vm.corp = true;
+          }else{
+            console.log(vm.listaEmpresas[0].id,'vm.listaEmpresas[0].id');
+            vm.ficha.idempresa = vm.listaEmpresas[0].id;
+            vm.corp = false;
+          }
+        }
+        vm.cambiaTipoCliente(); 
       }
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
@@ -760,10 +777,9 @@
             vm.historial.listaCmAbdominal = rpta.datos.cm_abdominal;
             vm.historial.listaCmPierna = rpta.datos.cm_pierna;
             vm.historial.listaDiagnostico_notas = rpta.datos.diagnostico_notas;
-            vm.historial.imc = rpta.datos.imc;
-            pageLoading.stop();
+            vm.historial.imc = rpta.datos.imc; 
           }
-          // console.log('Peso',vm.listaPeso);
+          pageLoading.stop(); 
         });
       }
       vm.cargarPlanes = function(row){
@@ -910,6 +926,9 @@
         vm.previo0 = true;
         vm.previo1 = false;
         vm.previo2 = false;
+        vm.chartOptions1 = {};
+        vm.chartOptions2 = {};
+        vm.chartOptions3 = {};
         vm.getPaginationServerSide(true);
       }
       vm.verPrevio = function(index){
@@ -1054,7 +1073,7 @@
       }
   }
 
-  function PacienteServices($http, $q) {
+  function PacienteServices($http, $q, handle) {
     return({
         sListarPacientes: sListarPacientes,
         sListaPacientesAutocomplete: sListaPacientesAutocomplete,
@@ -1082,7 +1101,7 @@
             url :  angular.patchURLCI + "Paciente/listar_pacientes",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sListaPacientesAutocomplete(datos) {
       var request = $http({
@@ -1090,7 +1109,7 @@
             url : angular.patchURLCI+"Paciente/lista_pacientes_autocomplete",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarHabitosAlimPaciente(datos) {
       var request = $http({
@@ -1098,7 +1117,7 @@
             url : angular.patchURLCI+"Paciente/listar_habitos_alim_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarHabitosPaciente(datos) {
       var request = $http({
@@ -1106,7 +1125,7 @@
             url : angular.patchURLCI+"Paciente/listar_habitos_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarAntecedentesPaciente(datos) {
       var request = $http({
@@ -1114,7 +1133,7 @@
             url : angular.patchURLCI+"Paciente/listar_antecedentes_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarPacientePorId(datos) {
       var request = $http({
@@ -1122,7 +1141,7 @@
             url : angular.patchURLCI+"Paciente/listar_paciente_por_id",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarPacientePorNombre(datos) {
       var request = $http({
@@ -1130,7 +1149,7 @@
             url : angular.patchURLCI+"Paciente/listar_paciente_por_nombre",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarUltimaConsulta(datos) {
       var request = $http({
@@ -1138,7 +1157,7 @@
             url : angular.patchURLCI+"Consulta/listar_ultima_consulta",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sRegistrarPaciente(datos) {
       var request = $http({
@@ -1162,7 +1181,7 @@
                 return formData;
             }
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sEditarPaciente(datos) {
       var request = $http({
@@ -1170,7 +1189,7 @@
             url : angular.patchURLCI+"Paciente/editar_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sAnularPaciente(datos) {
       var request = $http({
@@ -1178,7 +1197,7 @@
             url : angular.patchURLCI+"Paciente/anular_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sRegistrarAntecedentePaciente(datos) {
       var request = $http({
@@ -1186,7 +1205,7 @@
             url : angular.patchURLCI+"Paciente/registrar_antecedente_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sRegistrarHabitoPaciente(datos) {
       var request = $http({
@@ -1194,7 +1213,7 @@
             url : angular.patchURLCI+"Paciente/registrar_habito_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sSubirFoto(datos) {
       var request = $http({
@@ -1202,7 +1221,7 @@
             url : angular.patchURLCI+"Paciente/subir_foto_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sEliminarFoto(datos) {
       var request = $http({
@@ -1210,7 +1229,7 @@
             url : angular.patchURLCI+"Paciente/eliminar_foto_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function slistarEvolucion(datos) {
       var request = $http({
@@ -1218,7 +1237,7 @@
             url : angular.patchURLCI+"Paciente/listar_evolucion_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListarPlanesPaciente(datos) {
       var request = $http({
@@ -1226,7 +1245,7 @@
             url : angular.patchURLCI+"Paciente/listar_planes_paciente",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sImprimirFicha(datos) {
       var request = $http({
@@ -1234,7 +1253,7 @@
             url : angular.patchURLCI+"Paciente/imprimir_ficha",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
   }
   //

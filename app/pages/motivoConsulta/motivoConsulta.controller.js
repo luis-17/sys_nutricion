@@ -9,7 +9,7 @@
   function MotivoConsultaController($scope,MotivoConsultaServices) {
     var vm = this;
   }
-  function MotivoConsultaServices($http, $q) {
+  function MotivoConsultaServices($http, $q, handle) {
     return({
         sListarMotivoConsultaCbo: sListarMotivoConsultaCbo
     });
@@ -20,7 +20,7 @@
             url :  angular.patchURLCI + "MotivoConsulta/listar_motivo_consulta_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 })();

@@ -523,7 +523,7 @@
       }      
 
   }
-  function ProfesionalServices($http, $q) {
+  function ProfesionalServices($http, $q, handle) {
     return({
         sListarProfesional: sListarProfesional,
         sListarProfesionalCbo: sListarProfesionalCbo,
@@ -539,7 +539,7 @@
             url :  angular.patchURLCI + "Profesional/listar_profesional",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }    
     function sListarProfesionalCbo(pDatos) {
       var datos = pDatos || {};
@@ -548,7 +548,7 @@
             url :  angular.patchURLCI + "Profesional/listar_profesional_cbo",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sRegistrarProfesional(pDatos) {
       var datos = pDatos || {};      
@@ -565,7 +565,7 @@
                 return formData;
             }            
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }      
     function sEditarProfesional(pDatos) {
       var datos = pDatos || {};      
@@ -574,7 +574,7 @@
             url : angular.patchURLCI + "Profesional/editar_profesional",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }  
     function sAnularProfesional(pDatos) {
       var datos = pDatos || {};      
@@ -583,7 +583,7 @@
             url : angular.patchURLCI + "Profesional/anular_profesional",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sSubirFoto(datos) {
       var request = $http({
@@ -591,7 +591,7 @@
             url : angular.patchURLCI+"Profesional/subir_foto_profesional",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }             
   }
 })();

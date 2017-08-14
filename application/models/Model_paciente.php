@@ -49,7 +49,8 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_cargar_paciente_por_id($datos){
 		$this->db->select('cl.idcliente, cl.nombre, cl.apellidos, cl.sexo, cl.fecha_nacimiento, cl.estatura,
-			cl.email, cl.celular, cl.nombre_foto, cl.idtipocliente, cl.idempresa, mc.descripcion_mc AS clasificacion, cl.cargo_laboral, tc.descripcion_tc,emp.nombre_comercial,
+			cl.email, cl.celular, cl.nombre_foto, mc.descripcion_mc AS clasificacion, cl.cargo_laboral, 
+			tc.idtipocliente, tc.descripcion_tc, emp.idempresa, emp.nombre_comercial,
 			cl.idmotivoconsulta, cl.cod_historia_clinica, alergias_ia, cl.medicamentos,
 			cl.antecedentes_notas, cl.habitos_notas, cl.estado_cl, MAX(at.fecha_atencion) AS fec_ult_atencion, count(at.idatencion) AS cant_atencion, cl.createdat as fecha_alta');
 		$this->db->select("UPPER(CONCAT(cl.nombre, ' ',cl.apellidos)) as paciente",FALSE);
@@ -192,8 +193,8 @@ class Model_paciente extends CI_Model {
 		$data = array(
 			'nombre' => strtoupper_total($datos['nombre']),
 			'apellidos' => strtoupper_total($datos['apellidos']),
-			// 'idtipocliente' => $datos['idtipocliente'],
-			// 'idempresa' => $datos['idempresa'],
+			'idtipocliente' => $datos['idtipocliente'], 
+			'idempresa' => empty($datos['idempresa']) ? NULL : $datos['idempresa'],
 			'idmotivoconsulta' => $datos['idmotivoconsulta'],
 			'sexo' => $datos['sexo'],
 			'estatura' => $datos['estatura'],

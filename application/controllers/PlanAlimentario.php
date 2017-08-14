@@ -901,7 +901,7 @@ class PlanAlimentario extends CI_Controller {
 					$this->pdf->SetLeftMargin(10);
 			    	if($consulta['tipo_dieta'] == 'SG'){
 			    		if(!empty($turno['indicaciones'])){
-			    			$this->pdf->MultiCell(0,5,chr(127) .' '.ucfirst(strtolower_total(utf8_decode($turno['indicaciones']))),0,1,'L',true);
+			    			$this->pdf->MultiCell(0,5,/*chr(127) .' '.*/ucfirst(strtolower_total(utf8_decode($turno['indicaciones']))),0,1,'L',true);
 			    		}
 			    	}
 

@@ -9,7 +9,7 @@
   function UsuarioController($scope,UsuarioServices) {
     var vm = this;
   }
-  function UsuarioServices($http, $q) {
+  function UsuarioServices($http, $q, handle) {
     return({
         sListarUsuario: sListarUsuario,    
         sRegistrarUsuario: sRegistrarUsuario,
@@ -26,7 +26,7 @@
             url :  angular.patchURLCI + "Usuario/listar_usuario",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sRegistrarUsuario(datos) {
       var request = $http({
@@ -34,7 +34,7 @@
             url : angular.patchURLCI+"Usuario/registrar_usuario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sEditarUsuario(datos) {
       var request = $http({
@@ -42,7 +42,7 @@
             url : angular.patchURLCI+"Usuario/editar_usuario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sAnularUsuario(datos) {
       var request = $http({
@@ -50,7 +50,7 @@
             url : angular.patchURLCI+"Usuario/anular_usuario",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sListaUsuarioAutocomplete(datos) {
       var request = $http({
@@ -58,7 +58,7 @@
             url : angular.patchURLCI+"Usuario/lista_usuario_autocomplete",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sMostrarUsuarioID(datos) {
       var request = $http({
@@ -66,7 +66,7 @@
             url : angular.patchURLCI+"Usuario/mostrar_usuario_id",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }    
     function sCambiarClave(datos) {
       var request = $http({
@@ -74,7 +74,7 @@
             url : angular.patchURLCI+"Usuario/cambiar_clave",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }     
   }
 })();

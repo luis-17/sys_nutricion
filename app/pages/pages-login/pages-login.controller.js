@@ -53,7 +53,7 @@
     }
   }
 
-  function loginServices($http, $q) {
+  function loginServices($http, $q, handle) {
     return({
         sLoginToSystem: sLoginToSystem
     });
@@ -64,7 +64,7 @@
             url :  angular.patchURLCI + "acceso/", 
             data : datos          
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 

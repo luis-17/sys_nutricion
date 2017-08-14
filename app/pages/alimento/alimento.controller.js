@@ -279,7 +279,7 @@
 
   }
 
-  function AlimentoServices($http, $q) {
+  function AlimentoServices($http, $q, handle) {
     return({
         sListarAlimentos: sListarAlimentos,
         sListaAlimentosAutocomplete: sListaAlimentosAutocomplete,
@@ -294,7 +294,7 @@
             url :  angular.patchURLCI + "Alimentos/listar_alimentos",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sListaAlimentosAutocomplete(datos) {
       var request = $http({
@@ -302,7 +302,7 @@
             url : angular.patchURLCI+"Alimentos/lista_alimentos_autocomplete",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sRegistrarAlimento(datos) {
       var request = $http({
@@ -310,7 +310,7 @@
             url : angular.patchURLCI+"Alimentos/registrar_alimento",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sEditarAlimento(datos) {
       var request = $http({
@@ -318,7 +318,7 @@
             url : angular.patchURLCI+"Alimentos/editar_alimento",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
     function sAnularAlimento(datos) {
       var request = $http({
@@ -326,7 +326,7 @@
             url : angular.patchURLCI+"Alimentos/anular_alimento",
             data : datos
       });
-      return (request.then(handleSuccess,handleError));
+      return (request.then(handle.success,handle.error));
     }
   }
   //

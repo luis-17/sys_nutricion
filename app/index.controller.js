@@ -296,7 +296,7 @@
     }
     $scope.changeViewSoloPlan(false);
   }
-  function rootServices($http, $q) {
+  function rootServices($http, $q, handle) {
     return({
         sLogoutSessionCI: sLogoutSessionCI,
         sGetSessionCI: sGetSessionCI,
@@ -308,7 +308,7 @@
             url :  angular.patchURLCI + "Acceso/logoutSessionCI",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
     function sGetSessionCI(pDatos) {
       var datos = pDatos || {};
@@ -317,7 +317,7 @@
             url :  angular.patchURLCI + "Acceso/getSessionCI",
             data : datos
       });
-      return (request.then( handleSuccess,handleError ));
+      return (request.then( handle.success,handle.error ));
     }
   }
 })();

@@ -157,8 +157,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
+              </div> 
               <div class="form-horizontal col-md-6">
                 <legend>Medidas</legend>
                 <div class="row">
@@ -258,20 +257,18 @@
                     </div>
                   </div>
                 </div>
-              </div>
-
+              </div> 
               <div class="form-horizontal col-md-12 mt-15">
                 <div style="width:100%; text-align:center;">
                   <button type="button" class="btn btn-sm btn-green mb-10"
                           data-toggle="collapse" data-target="#pliegues"
                           ng-click="cons.changeToggle();">{{cons.titleToggle}}
                   </button>
-                </div>
-
+                </div> 
                 <div id="pliegues" class="collapse">
-                  <legend>Pliegues</legend>
-                  <div class="row">
-                    <div class="col-md-4">
+                  <div class="form-horizontal col-md-7 col-xs-12"> 
+                    <legend>Pliegues</legend>
+                    <div class="col-md-6">
                       <div class="form-group">
                         <label class="col-sm-5 control-label minotaur-label">Tricipital: </label>
                         <div class="input-group col-sm-6">
@@ -293,8 +290,6 @@
                           <span class="input-group-addon">cm</span>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-4">
                       <div class="form-group">
                         <label class="col-sm-5 control-label minotaur-label">Axilar: </label>
                         <div class="input-group col-sm-6">
@@ -309,6 +304,8 @@
                           <span class="input-group-addon">cm</span>
                         </div>
                       </div>
+                    </div> 
+                    <div class="col-md-6">
                       <div class="form-group">
                         <label class="col-sm-5 control-label minotaur-label">Suprailiaco: </label>
                         <div class="input-group col-sm-6">
@@ -316,8 +313,6 @@
                           <span class="input-group-addon">cm</span>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-4">
                       <div class="form-group">
                         <label class="col-sm-5 control-label minotaur-label">Supraespinal: </label>
                         <div class="input-group col-sm-6">
@@ -339,6 +334,25 @@
                           <span class="input-group-addon">cm</span>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="form-horizontal col-md-5 col-xs-12"> 
+                    <legend>Valores para Objetivo</legend>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="col-sm-5 control-label minotaur-label">Grasa para objetivo: </label>
+                        <div class="input-group col-sm-6">
+                          <input type="number" step="1"  class="form-control" ng-model="cons.fData.grasa_para_objetivo" />
+                          <span class="input-group-addon">Kg</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-5 control-label minotaur-label">Masa muscular para objetivo: </label>
+                        <div class="input-group col-sm-6">
+                          <input type="number" step="1" class="form-control" ng-model="cons.fData.masa_muscular_para_objetivo" />
+                          <span class="input-group-addon">Kg</span>
+                        </div>
+                      </div> 
                     </div>
                   </div>
                 </div>
