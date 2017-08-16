@@ -8,8 +8,7 @@ class Empresa extends CI_Controller {
         // Se le asigna a la informacion a la variable $sessionVP.
         // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));        
-        $this->load->model(array('model_empresa'));
-
+        $this->load->model(array('model_empresa')); 
     }
     // LISTAS, COMBOS Y AUTOCOMPLETES
 	public function listar_empresas()
@@ -45,7 +44,7 @@ class Empresa extends CI_Controller {
 		    ->set_output(json_encode($arrData));
 	}
 
-	 public function listar_empresa_cbo(){
+	public function listar_empresa_cbo(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$lista = $this->model_empresa->m_cargar_empresa_cbo();
 		$arrListado = array();
@@ -112,4 +111,4 @@ class Empresa extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}	
-}
+} 

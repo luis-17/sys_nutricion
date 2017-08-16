@@ -301,16 +301,15 @@ class Consulta extends CI_Controller {
 		$arrayGrasa = array();
 		$arrayMasa = array();
 		foreach ($atenciones as $key => $atencion) {
-			array_push($arrayFechas, strtotime($atencion['fecha_atencion']));
-			array_push($arrayPeso, (float)$atencion['peso']);
-			array_push($arrayGrasa,(float)$atencion['porc_masa_grasa']);
-			array_push($arrayMasa, (float)$atencion['porc_masa_muscular']);
+			array_unshift($arrayFechas, strtotime($atencion['fecha_atencion']));
+			array_unshift($arrayPeso, (float)$atencion['peso']);
+			array_unshift($arrayGrasa,(float)$atencion['porc_masa_grasa']);
+			array_unshift($arrayMasa, (float)$atencion['porc_masa_muscular']);
 			$imc = round((float)$atencion['peso'] / 
 					(((float)$paciente['estatura']/100) * 
 						((float)$paciente['estatura']/100)),2);
-			array_push($arrayImc, $imc);
+			array_unshift($arrayImc, $imc);
 		}
-
 		$margen = 6;
 		$this->imprimir_grafico_peso($arrayFechas, $arrayPeso, $margen);
 		$this->imprimir_grafico_imc($arrayFechas, $arrayImc, $margen);
@@ -347,7 +346,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetFont('Arial','BU',15);
 		$this->pdf->Cell(10,6,utf8_decode($consulta['peso'] . 'KG.') ,0,0,'L');
 	}
-
 	private function imprimir_composicion_corporal($consulta, $posYCuadro){
 		$this->pdf->Ln(5);
 		$this->pdf->SetFont('Arial','B',11);		
@@ -366,7 +364,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->SetX($posXporc);
 		$this->pdf->Cell($anchoPorc,6,utf8_decode('AGUA: '  . $consulta['porc_agua_corporal'] . ' %') ,0,0,'L');
 	}
-
 	private function imprimir_cuadro_detalle_peso($paciente, $consulta, $posYCuadro){
 		$posXCuadro = (($this->pdf->GetPageWidth() - 16) / 2)+ 25;
 		$anchoCuadro =(($this->pdf->GetPageWidth() - 16) / 2) -20;
@@ -460,7 +457,6 @@ class Consulta extends CI_Controller {
 		
 		$this->pdf->SetY($posY);
 	}
-
 	private function imprimir_progreso($consulta, $consultaAnterior, $primeraConsulta, $paciente = FALSE){
 		if($consulta['idatencion'] != $primeraConsulta['idatencion']){
 
@@ -517,7 +513,6 @@ class Consulta extends CI_Controller {
 			$this->pdf->Cell($anchoProgreso,6,utf8_decode($progreso) ,0,0,'L');
 		}
 	}
-
 	private function imprimir_barra_imc($paciente,$consulta, $anchoTotalBarras, $margen){
 		$this->pdf->Ln(12);
 		$this->pdf->SetFont('Arial','B',15);
@@ -566,7 +561,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoColor,5,utf8_decode('35 a 39.9') ,0,0,'C',FALSE);
 		$this->pdf->Cell($anchoColor,5,utf8_decode('> 40') ,0,0,'C',FALSE);
 	}
-
 	private function imprimir_barra_grasa($consulta, $anchoTotalBarras, $margen){
 		$this->pdf->Ln(12);
 		$this->pdf->SetFont('Arial','B',15);
@@ -599,7 +593,6 @@ class Consulta extends CI_Controller {
 			$this->pdf->Cell($anchoPuntaje,5,utf8_decode($i*5) ,0,0,'L',FALSE);
 		}
 	}
-
 	private function imprimir_barra_grasa_visceral($consulta, $anchoTotalBarras, $margen){
 		$this->pdf->Ln(12);
 		$this->pdf->SetFont('Arial','B',15);
@@ -626,8 +619,6 @@ class Consulta extends CI_Controller {
 			$this->pdf->Cell($anchoPuntaje,5,utf8_decode($i) ,0,0,'L',FALSE);
 		}
 	}
-
-
 	function YAxisFormat($value) { return(round($value,2)); } 
 
 	private function imprimir_grafico_peso($dataX, $dataY, $margen){
@@ -664,7 +655,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoGrafico,6,utf8_decode('PESO: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen-1,null,$anchoGrafico);
 	}
-	
 	private function imprimir_grafico_imc($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
@@ -703,7 +693,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoGrafico,6,utf8_decode('IMC: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen + $anchoGrafico,null,$anchoGrafico);
 	}
-
 	private function imprimir_grafico_grasa_corporal($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
@@ -741,7 +730,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoGrafico,6,utf8_decode('% GRASA CORPORAL: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen-1,null,$anchoGrafico);
 	}
-
 	private function imprimir_grafico_masa_muscular($dataX, $dataY, $margen){
 		//genero el grafico
 		$myData = new pData(); 
@@ -778,7 +766,6 @@ class Consulta extends CI_Controller {
 		$this->pdf->Cell($anchoGrafico,6,utf8_decode('% MASA MUSCULAR: '  ) ,0,1,'L');
 		$this->pdf->Image($nombre,$margen+$anchoGrafico,null,$anchoGrafico);
 	}
-
 	private function imprimir_datos_finales($consulta, $margen, $configuracion){
 		$posYRectangulos = ($this->pdf->GetPageHeight()/2) + 15;
 		$anchoColumnas = ($this->pdf->GetPageWidth()-16)/3;
