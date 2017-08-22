@@ -811,7 +811,7 @@ class PlanAlimentario extends CI_Controller {
 			$this->pdf->Cell(60, 12, utf8_decode(date('d/m/Y',strtotime($consulta['prox_cita']))), 0, 'C', false);
 		}
 	}
-
+	// correo 
 	public function generar_pdf_plan(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['message'] = '';
@@ -1115,7 +1115,10 @@ class PlanAlimentario extends CI_Controller {
 			$nombrePaciente = ucwords(strtolower_total($paciente['paciente']));
 			if(!$this->enviar_correo_pdf_plan($configuracion,$nombrePaciente,$consulta,$nombreArchivo,$arrayMails)){
 				$arrData['flag'] = 0;
-				$arrData['message'] = 'Ha ocurrido un error enviando el Plan Alimentario';
+				$arrData['message'] = 'Ha ocurrido un error enviando el Plan Alimentario'; 
+			}else{
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'Se envió el Plan Alimentario correctamente'; 
 			}
 		}
 

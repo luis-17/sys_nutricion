@@ -18,7 +18,7 @@
       return $http.post(arrParams.url, arrParams.datos).then(handleSuccess, handleError('Recurso no encontrado'));
     }
   }
-  function ModalReporteFactory($uibModal,$http,$q,rootServices){
+  function ModalReporteFactory($uibModal,$http,$q,pageLoading,pinesNotifications,rootServices,PlanAlimentarioServices,ConsultasServices){
     var interfazReporte = {
       getPopupReporte: function(arrParams){ //console.log(arrParams.datos.salida,' as');
         if( arrParams.datos.salida == 'pdf' || angular.isUndefined(arrParams.datos.salida) ){
@@ -28,19 +28,77 @@
             size: 'lg',
             controller: function ($scope,$uibModalInstance,arrParams) {
               $scope.titleModalReporte = arrParams.titulo;
+              $scope.envioCorreoEnabled = false;
+              if( arrParams.envio_correo == 'si' ){
+                $scope.envioCorreoEnabled = true;
+              }
               $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
               }
+              $scope.enviarCorreo = function() { 
+                $uibModal.open({
+                  templateUrl: 'app/pages/reportes/popup_envio_correo.php',
+                  controllerAs: 'ec',
+                  size: 'lg',
+                  controller: function ($scope,$uibModalInstance) { 
+                    $scope.titleModalReporteEmail = 'Envío de Correo'; 
+                    $scope.fEnvio = {}; 
+                    $scope.envioCorreoExec = function() {
+                      if(arrParams.titulo == 'CONSULTA'){ 
+                        pageLoading.start('Enviando Ficha de Paciente...'); 
+                        var datos = { 
+                          consulta: arrParams.datos.consulta,
+                          salida: 'correo',
+                          emails: $scope.fEnvio.emails
+                        }; 
+                        ConsultasServices.sGenerarPDFConsulta(datos).then(function(rpta){
+                          if(rpta.flag == 1){      
+                            var pTitle = 'OK!';
+                            var pType = 'success';
+                          }else if( rpta.flag == 0 ){
+                            var pTitle = 'Advertencia!';
+                            var pType = 'warning';  
+                          }
+                          $uibModalInstance.dismiss('cancel'); 
+                          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
+                          pageLoading.stop();
+                        });
+                      }
+                      if(arrParams.titulo == 'PLAN ALIMENTARIO'){
+                        pageLoading.start('Enviando Plan Alimentario...'); 
+                        var datos = {
+                          cita: arrParams.datos.cita,
+                          consulta: arrParams.datos.consulta,
+                          salida: 'correo',
+                          emails: $scope.fEnvio.emails
+                        }
+                        PlanAlimentarioServices.sGenerarPdfPlan(datos).then(function(rpta){
+                          if(rpta.flag == 1){      
+                            var pTitle = 'OK!';
+                            var pType = 'success';
+                          }else if( rpta.flag == 0 ){
+                            var pTitle = 'Advertencia!';
+                            var pType = 'warning';  
+                          }
+                          $uibModalInstance.dismiss('cancel'); 
+                          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
+                          pageLoading.stop();
+                        });
+                      }
+                    }
+                    $scope.detCancel = function () { 
+                      $uibModalInstance.dismiss('cancel');
+                    }
+                  } 
+                });
+              }
               var deferred = $q.defer();
               $http.post(arrParams.url, arrParams.datos).then(
-                function(res) {
-                    // console.log('succes !', res.data);
-                    $('#frameReporte').attr("src", res.data.urlTempPDF);
-
+                function(res) { 
+                    $('#frameReporte').attr("src", res.data.urlTempPDF); 
                     deferred.resolve(res.data);
                 },
-                function(err) {
-                    // console.log('error...', err);
+                function(err) { 
                     deferred.resolve(err);
                 }
               );

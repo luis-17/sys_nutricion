@@ -243,6 +243,40 @@ class Consulta extends CI_Controller {
 		$arrData = array();
 		$arrData['message'] = '';
     	$arrData['flag'] = 1;
+    	$enviarCorreo = FALSE; 
+    	// VALIDACION 
+    	if(!empty($allInputs['salida']) && $allInputs['salida']=='correo'){
+    		if(empty($allInputs['emails'])){
+    			$arrData['flag'] = 0;
+    			$arrData['message'] = 'Debe ingresar correos validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));
+				return;
+    		}
+
+    		$arrayMails = explode(',', $allInputs['emails']);
+    		$hayError = false;
+    		foreach ($arrayMails as $key => $mail) {
+    			if(!comprobar_email($mail)){
+    				$hayError = TRUE;
+    			}
+    		}
+
+    		if($hayError){
+    			$arrData['flag'] = 0;
+    			$arrData['message'] = 'Debe ingresar correos validos.';
+				$this->output
+				    ->set_content_type('application/json')
+				    ->set_output(json_encode($arrData));		
+				return;
+    		}
+
+    		if(!$hayError){
+    			$enviarCorreo = TRUE;
+    		}
+    	}
+
     	// DATOS
     	$configuracion = GetConfiguracion();
 		$consulta = $this->model_consulta->m_consultar_atencion($allInputs['consulta']['idatencion']);
@@ -321,15 +355,61 @@ class Consulta extends CI_Controller {
 
 		/*output*/
 		$timestamp = date('YmdHis');
-		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
-
+		$nombreArchivo = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$result = $this->pdf->Output( 'F', $nombreArchivo ); 
 		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+
+		if($enviarCorreo){
+			$nombrePaciente = ucwords(strtolower_total($paciente['paciente']));
+			if(!$this->enviar_correo_pdf_ficha_pac($configuracion,$nombrePaciente,$consulta,$nombreArchivo,$arrayMails)){ 
+				$arrData['flag'] = 0;
+				$arrData['message'] = 'Ha ocurrido un error enviando la Ficha de Consulta'; 
+			}else{
+				$arrData['flag'] = 1;
+				$arrData['message'] = 'Se envió la Ficha de Consulta correctamente'; 
+			}
+		}
 
 		$this->output
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
+	private function enviar_correo_pdf_ficha_pac($configuracion, $paciente, $consulta, $nombreArchivo, $listaCorreos)
+	{
+		$cuerpo = '<p><b>FICHA DE PACIENTE - '. strtoupper_total( darFechaCumple($consulta['fecha_atencion'])) .'</b></p>
+				   <p>Hola, '.$paciente.'</p>
+				   <p> Te envío la Ficha de Consulta en el archivo adjunto.</p>
+				   <p>Nos vemos en tu próxima cita. </p>
+				   <p>Saludos.</p>';
+		$asunto = 'DESCARGA TU FICHA DE CONSULTA AQUI.'; 
+		$setFromAleas = $configuracion['empresa'];
+		$this->load->library('My_PHPMailer');
+		date_default_timezone_set('UTC');
 
+		$mail = new PHPMailer();
+		$mail->IsSMTP(true);
+		//$mail->SMTPDebug = 1;
+		$mail->SMTPAuth = ($configuracion['smtp_auth'] == 1) ? TRUE : FALSE;
+		$mail->SMTPSecure = $configuracion['smtp_secure'];
+		$mail->Host = $configuracion['smtp_host'];
+		$mail->Port = $configuracion['smtp_port'];
+		$mail->Username =  $configuracion['smtp_username'];
+		$mail->Password = $configuracion['smtp_password'];
+		$mail->SetFrom($configuracion['smtp_username'],$setFromAleas);
+		$mail->AddReplyTo($configuracion['smtp_username'],$setFromAleas);
+		$mail->Subject = $asunto;
+		$mail->IsHTML(true);
+		$mail->AltBody = $cuerpo;
+		$mail->MsgHTML($cuerpo);
+		$mail->CharSet = 'UTF-8';
+		$mail->addStringAttachment(file_get_contents($nombreArchivo), 'FichaConsulta.pdf');
+
+		foreach ($listaCorreos as $key => $email) {
+			$mail->addAddress($email);						
+		} 
+
+		return $mail->Send();
+	}
 	private function imprimir_paciente($consulta, $paciente){
 		/*paciente*/
 		$this->pdf->SetY($this->pdf->GetY()+15);	

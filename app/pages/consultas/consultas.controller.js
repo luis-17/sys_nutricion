@@ -282,6 +282,7 @@
           tituloAbv: 'Consulta',
           titulo: 'Consulta'
         },
+        envio_correo: 'si',
         metodo: 'php',
         url: angular.patchURLCI + "Consulta/imprimir_consulta"
       }
@@ -299,6 +300,7 @@
           titulo: 'Plan Alimentario'
         },
         metodo: 'php',
+        envio_correo: 'si',
         url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
       }
       ModalReporteFactory.getPopupReporte(arrParams);
@@ -350,6 +352,7 @@
         sAnularConsulta : sAnularConsulta,
         sCargarConsulta: sCargarConsulta,
         sCargarConsultasPaciente: sCargarConsultasPaciente,
+        sGenerarPDFConsulta: sGenerarPDFConsulta
     });
     function sRegistrarConsulta(datos) {
       var request = $http({
@@ -393,6 +396,13 @@
       });
       return (request.then(handle.success,handle.error));
     }
-
+    function sGenerarPDFConsulta(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Consulta/imprimir_consulta",
+            data : datos
+      });
+      return (request.then(handle.success,handle.error));
+    }
   }
 })();

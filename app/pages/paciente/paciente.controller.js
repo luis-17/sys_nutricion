@@ -996,6 +996,7 @@
               tituloAbv: 'Consulta',
               titulo: 'Consulta'
             },
+            envio_correo: 'si',
             metodo: 'php',
             url: angular.patchURLCI + "Consulta/imprimir_consulta"
           }
@@ -1011,6 +1012,7 @@
               tituloAbv: 'PLAN',
               titulo: 'PLAN ALIMENTARIO'
             },
+            envio_correo: 'si',
             metodo: 'php',
             url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
           }

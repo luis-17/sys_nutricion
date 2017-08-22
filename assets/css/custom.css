@@ -23,6 +23,7 @@
 	.text-red	{color: #dd191d;}
 	.text-green	{color: #038009;}
 	.text-gray	{color: #ccc;}
+    .text-blackgray  {color: #505050;}
 
 /* FONT SIZE´s */
 	.f-12{font-size: 12px;}
@@ -435,10 +436,12 @@ section.tile-body{
     text-align: center;
     z-index: 1000;
 }
-.card-container-2{
+
+
+.card.card-container-2{
     position: relative;
 }
-.card-container-2 .card-2 {
+.card.card-container-2 .card-2 {
     min-height: 110px;
     margin-bottom: 30px;
     position: relative;
@@ -447,7 +450,7 @@ section.tile-body{
     cursor: pointer;
     z-index: 9;
 }
-.card-container-2 .card-2 .front-2{ 
+.card.card-container-2 .card-2 .front-2{ 
     border-radius: 6px;
     box-shadow: 0 5px 15px rgba(0,0,0,.05);
     height: 100%;
@@ -457,6 +460,12 @@ section.tile-body{
     top: 0;
     left: 0;
     z-index: 11;
+}
+.card.card-container-2 .front-2 span{
+    font-size: 12px;
+}
+.card.card-container-2 .front-2 p{
+    font-size: 26px;
 }
 /*.graph-hc{
     width: 100%;

@@ -779,6 +779,7 @@
           tituloAbv: 'Plan Alimentario',
           titulo: 'Plan Alimentario'
         },
+        envio_correo: 'si',
         metodo: 'php',
         url: angular.patchURLCI + "PlanAlimentario/generar_pdf_plan"
       }

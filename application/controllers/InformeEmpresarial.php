@@ -29,6 +29,15 @@ class InformeEmpresarial extends CI_Controller {
 			'cantidad'=> $fPacAte['contador']
 		);
 
+		// ATENCIONES REALIZADAS 
+		$fAteRealizadas = $this->model_informe_empresarial->cargar_total_atenciones_realizadas($allInputs); 
+		if( empty($fAteRealizadas) ){
+			$fAteRealizadas['contador'] = 0;
+		}
+		$arrListado['atenciones_realizadas'] = array( 
+			'cantidad'=> $fAteRealizadas['contador']
+		);
+
 		// PACIENTES ATENDIDOS POR GENERO 
 		$arrPacienteSexoGraph = array();
 		$listaPacSexo = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos($allInputs); 
@@ -384,8 +393,7 @@ class InformeEmpresarial extends CI_Controller {
 			$arrListaPacGrasaCorporal[$row['porc_grasa_corporal']]['porc_grasa_corporal'] = $row['porc_grasa_corporal']; 
 			$arrListaPacGrasaCorporal[$row['porc_grasa_corporal']]['contador'] += (float)$listaPacGrasaCorporal[$key]['contador']; 
 		}
-		$arrListaPacGrasaCorporal = array_values($arrListaPacGrasaCorporal);
-		// var_dump($listaPacGrasaCorporal,$arrListaPacGrasaCorporal); exit();
+		$arrListaPacGrasaCorporal = array_values($arrListaPacGrasaCorporal); 
 		$arrGroupGC = array();
 		foreach ($arrListaPacGrasaCorporal as $key => $row) {
 			$arrGroupGC[] = array($row['porc_grasa_corporal'],(float)$row['contador']);
@@ -535,8 +543,523 @@ class InformeEmpresarial extends CI_Controller {
 		}
 		$arrListado['pac_sexo_porc_grasa_corporal_graph'] = $arrGroupGCSexo;
 
+		/****************************************************/
+		/*                PERÍMETRO DE CINTURA              */
+		/****************************************************/
 
-		// EVALUACION DEL PESO Y GRASA PERDIDA 
+		// DX POR PERÍMETRO DE CINTURA
+		$listaPacPerimetroCintura = $this->model_informe_empresarial->cargar_pacientes_por_perimetro_cintura_atendidos($allInputs);
+		$arrListaPacPerimetroCintura = array();
+		foreach ($listaPacPerimetroCintura as $key => $row) { 
+			$arrListaPacPerimetroCintura[ $row['dx_perimetro_cintura'] ]['contador'] = 0; 
+		}
+		foreach ($listaPacPerimetroCintura as $key => $row) {  
+			$arrListaPacPerimetroCintura[$row['dx_perimetro_cintura']]['dx_perimetro_cintura'] = $row['dx_perimetro_cintura']; 
+			$arrListaPacPerimetroCintura[$row['dx_perimetro_cintura']]['contador'] += (float)$listaPacPerimetroCintura[$key]['contador']; 
+		}
+		$arrListaPacPerimetroCintura = array_values($arrListaPacPerimetroCintura);
+		$arrGroupPCi = array();
+		foreach ($arrListaPacPerimetroCintura as $key => $row) {
+			$arrGroupPCi[] = array($row['dx_perimetro_cintura'],(float)$row['contador']);
+		}
+		$arrListado['pac_riesgo_cardio_graph'] = $arrGroupPCi;
+
+		// DX POR PERÍMETRO DE CINTURA CON LA EDAD - BARRAS AGRUPADAS 
+		$arrGroupPCPac = array();
+		foreach ($arrListaPacPerimetroCintura as $key => $row) { 
+			$newKey = $row['dx_perimetro_cintura']; 
+			$arrGroupPCPac[$newKey] = array(
+				'contador'=> (int)$row['contador'],
+				'dx_perimetro_cintura'=> $row['dx_perimetro_cintura']
+			);
+		}
+		$arrGroupPCPac = array_values($arrGroupPCPac);
+
+		$listaPacPorEdadMasPC = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_complementos($allInputs);
+		$arrGroupPCEdad = array(); 
+		foreach ($arrGroupPCPac as $key => $row) { 
+			array_push($arrGroupPCEdad,
+				array(
+					'name'=> $row['dx_perimetro_cintura'],
+					'data'=> array()
+				)
+			); 
+			$countJ = 0;
+			$countA = 0;
+			$countAD = 0;
+			foreach ($listaPacPorEdadMasPC as $keyDet => $rowDet) {
+				if( $row['dx_perimetro_cintura'] == 'NORMAL' ){
+					if( (float)$rowDet['cm_cintura'] > 0 && (float)$rowDet['cm_cintura'] <= 80 && $rowDet['sexo'] == 'F' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['cm_cintura'] > 0 && (float)$rowDet['cm_cintura'] <= 90 && $rowDet['sexo'] == 'M' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				}
+				if( $row['dx_perimetro_cintura'] == 'RIESGO CARDIOVASCULAR' ){ 
+					if( (float)$rowDet['cm_cintura'] > 80 && $rowDet['sexo'] == 'F' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['cm_cintura'] > 90 && $rowDet['sexo'] == 'M' ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+				} 
+			}
+			$arrGroupPCEdad[$key]['data'] = array($countJ,$countA,$countAD); 
+		}
+		$arrListado['pac_edad_riesgo_cardio_graph'] = $arrGroupPCEdad;
+
+		// DX POR PERÍMETRO DE CINTURA CON EL SEXO - BARRAS AGRUPADAS 
+		$listaPacPorSexoMasPC = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_complementos($allInputs);
+		$arrGroupPCSexo = array(); 
+		foreach ($arrGroupPCPac as $key => $row) { 
+			array_push($arrGroupPCSexo,
+				array(
+					'name'=> $row['dx_perimetro_cintura'],
+					'data'=> array()
+				)
+			); 
+			$countM = 0;
+			$countF = 0;
+			foreach ($listaPacPorSexoMasPC as $keyDet => $rowDet) { 
+				if( $row['dx_perimetro_cintura'] == 'NORMAL' ){
+					if( (float)$rowDet['cm_cintura'] > 0 && (float)$rowDet['cm_cintura'] <= 80 && $rowDet['sexo'] == 'F' ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['cm_cintura'] > 0 && (float)$rowDet['cm_cintura'] <= 90 && $rowDet['sexo'] == 'M' ){ 
+						$countM++;
+					}
+				}
+				if( $row['dx_perimetro_cintura'] == 'RIESGO CARDIOVASCULAR' ){ 
+					if( (float)$rowDet['cm_cintura'] > 80 && $rowDet['sexo'] == 'F' ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['cm_cintura'] > 90 && $rowDet['sexo'] == 'M' ){ 
+						$countM++;
+					}
+				}
+			}
+			$arrGroupPCSexo[$key]['data'] = array($countM,$countF);
+		}
+		$arrListado['pac_sexo_riesgo_cardio_graph'] = $arrGroupPCSexo;
+
+
+		/****************************************************/
+		/*                   % MASA MUSCULAR                */
+		/****************************************************/
+
+		// DX POR % DE MASA MUSCULAR 
+		$listaPacMasaMuscular = $this->model_informe_empresarial->cargar_pacientes_por_porc_masa_muscular_atendidos($allInputs);
+		$arrListaPacMasaMuscular = array();
+		foreach ($listaPacMasaMuscular as $key => $row) { 
+			$arrListaPacMasaMuscular[ $row['dx_porc_masa_muscular'] ]['contador'] = 0; 
+		}
+		foreach ($listaPacMasaMuscular as $key => $row) {  
+			$arrListaPacMasaMuscular[$row['dx_porc_masa_muscular']]['dx_porc_masa_muscular'] = $row['dx_porc_masa_muscular']; 
+			$arrListaPacMasaMuscular[$row['dx_porc_masa_muscular']]['contador'] += (float)$listaPacMasaMuscular[$key]['contador']; 
+		}
+		$arrListaPacMasaMuscular = array_values($arrListaPacMasaMuscular);
+		$arrGroupMm = array();
+		foreach ($arrListaPacMasaMuscular as $key => $row) {
+			$arrGroupMm[] = array($row['dx_porc_masa_muscular'],(float)$row['contador']);
+		}
+		$arrListado['pac_porc_masa_muscular_graph'] = $arrGroupMm;
+
+		// DX POR % DE MASA MUSCULAR CON LA EDAD - BARRAS AGRUPADAS 
+		$arrGroupMMPac = array();
+		foreach ($arrListaPacMasaMuscular as $key => $row) { 
+			$newKey = $row['dx_porc_masa_muscular']; 
+			$arrGroupMMPac[$newKey] = array(
+				'contador'=> (int)$row['contador'],
+				'dx_porc_masa_muscular'=> $row['dx_porc_masa_muscular']
+			);
+		}
+		$arrGroupMMPac = array_values($arrGroupMMPac);
+
+		$listaPacPorEdadMasMM = $this->model_informe_empresarial->cargar_pacientes_por_edad_atendidos_mas_complementos($allInputs);
+		$arrGroupMMEdad = array(); 
+		foreach ($arrGroupMMPac as $key => $row) { 
+			array_push($arrGroupMMEdad,
+				array(
+					'name'=> $row['dx_porc_masa_muscular'],
+					'data'=> array()
+				)
+			); 
+			$countJ = 0;
+			$countA = 0;
+			$countAD = 0;
+			foreach ($listaPacPorEdadMasMM as $keyDet => $rowDet) {
+				if( $row['dx_porc_masa_muscular'] == 'BAJO' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 24.3 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 24.1 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 23.9 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 33.3 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 33.1 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 32.9 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					} 
+				}
+				if( $row['dx_porc_masa_muscular'] == 'NORMAL' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 24.3 && (float)$rowDet['porc_masa_muscular'] <= 30.3 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 24.1 && (float)$rowDet['porc_masa_muscular'] <= 30.1 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 23.9 && (float)$rowDet['porc_masa_muscular'] <= 29.9 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 33.3 && (float)$rowDet['porc_masa_muscular'] <= 39.3 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 33.1 && (float)$rowDet['porc_masa_muscular'] <= 39.1 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 32.9 && (float)$rowDet['porc_masa_muscular'] <= 38.9 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					} 
+				} 
+				if( $row['dx_porc_masa_muscular'] == 'ELEVADO' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30.4 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30.2 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39.4 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39.2 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						if( $rowDet['etareo'] == 'J' ){ 
+							$countJ++;
+						}
+						if( $rowDet['etareo'] == 'A' ){ 
+							$countA++;
+						}
+						if( $rowDet['etareo'] == 'AD' ){ 
+							$countAD++;
+						}
+					} 
+				} 
+			}
+			$arrGroupMMEdad[$key]['data'] = array($countJ,$countA,$countAD); 
+		}
+		$arrListado['pac_edad_porc_masa_muscular_graph'] = $arrGroupMMEdad;
+
+		// DX POR % DE MASA MUSCULAR CON EL SEXO - BARRAS AGRUPADAS 
+		$listaPacPorSexoMasMM = $this->model_informe_empresarial->cargar_pacientes_por_sexo_atendidos_mas_complementos($allInputs);
+		$arrGroupMMSexo = array(); 
+		foreach ($arrGroupMMPac as $key => $row) { 
+			array_push($arrGroupMMSexo,
+				array(
+					'name'=> $row['dx_porc_masa_muscular'],
+					'data'=> array()
+				)
+			); 
+			$countM = 0;
+			$countF = 0;
+			foreach ($listaPacPorSexoMasMM as $keyDet => $rowDet) { 
+				if( $row['dx_porc_masa_muscular'] == 'BAJO' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 24.3 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 24.1 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 23.9 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countF++;
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 33.3 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 33.1 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] < 32.9 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countM++;
+					} 
+				}
+				if( $row['dx_porc_masa_muscular'] == 'NORMAL' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 24.3 && (float)$rowDet['porc_masa_muscular'] <= 30.3 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 24.1 && (float)$rowDet['porc_masa_muscular'] <= 30.1 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 23.9 && (float)$rowDet['porc_masa_muscular'] <= 29.9 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countF++;
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 33.3 && (float)$rowDet['porc_masa_muscular'] <= 39.3 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 33.1 && (float)$rowDet['porc_masa_muscular'] <= 39.1 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 32.9 && (float)$rowDet['porc_masa_muscular'] <= 38.9 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countM++;
+					} 
+				} 
+				if( $row['dx_porc_masa_muscular'] == 'ELEVADO' ){ 
+					// MUJERES 
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30.4 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30.2 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countF++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 30 && $rowDet['sexo'] == 'F' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countF++;
+					}
+					// HOMBRES
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39.4 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 18 && $rowDet['edad'] <= 39 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39.2 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 40 && $rowDet['edad'] <= 59 ){ 
+						$countM++;
+					}
+					if( (float)$rowDet['porc_masa_muscular'] > 0 && (float)$rowDet['porc_masa_muscular'] >= 39 && $rowDet['sexo'] == 'M' && 
+						$rowDet['edad'] >= 60 && $rowDet['edad'] <= 80 ){ 
+						$countM++;
+					} 
+				} 
+			}
+			$arrGroupMMSexo[$key]['data'] = array($countM,$countF);
+		}
+		$arrListado['pac_sexo_porc_masa_muscular_graph'] = $arrGroupMMSexo;
+
+
+		/****************************************************/
+		// 		  EVALUACION DEL PESO Y GRASA PERDIDA 		//
+		/****************************************************/
 		$arrPacientesPesoGrasaPerdida = array(); 
 		$listaDetalleAtenciones = $this->model_informe_empresarial->cargar_detalle_pacientes_atendidos($allInputs);
 		foreach ($listaDetalleAtenciones as $key => $row) {

@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h4 class="modal-title"> {{titleModalReporte }}  </h4>
+	<h4 class="modal-title"> {{ titleModalReporte }}  </h4>
 </div>
 <div class="modal-body">
     <form class="row" name="formExamen">
@@ -9,5 +9,6 @@
 	</form>
 </div>
 <div class="modal-footer">
+	<button ng-show="envioCorreoEnabled" ng-click="enviarCorreo();" class="btn btn-info">Enviar por correo</button>
     <button class="btn btn-warning" ng-click="cancel()">Salir</button>
 </div>
