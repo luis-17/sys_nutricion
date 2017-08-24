@@ -98,13 +98,13 @@
       public function setIdEmpresaFarm($param){
         $this->idEmpresaFarm = $param;
       }
-      public function Row($data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$fontSize=FALSE)
+      public function Row($data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$arrFontSize=FALSE)
       {
           //Calculate the height of the row
           //var_dump($heigthCell); exit();
-          if(empty($fontSize)){
-            $fontSize = 7;
-          }
+          // if(empty($fontSize)){
+          //   $fontSize = 7;
+          // }
           if( empty($heigthCell) ){
             $heigthCell = 5;
           }
@@ -125,21 +125,24 @@
               //Draw the border
               // $this->Rect($x,$y,$w,$h);
               //Print the text
-              if( $arrBolds ){
-                if( $arrBolds[$i] == 'B'){
-                  $this->SetFont('Arial','B',$fontSize+1);
-                }else{
-                  $this->SetFont('Arial','',$fontSize);
-                }
-              }
+              // if( $arrBolds ){
+              //   if( $arrBolds[$i] == 'B'){
+              //     $this->SetFont('Arial','B',$fontSize+1);
+              //   }else{
+              //     $this->SetFont('Arial','',$fontSize);
+              //   }
+              // }
               if( $arrTextColor ){
                 if( $arrTextColor[$i] == 'red'){
                   $this->SetTextColor(225,22,22);
                 }elseif( $arrTextColor[$i] == 'green'){
                   $this->SetTextColor(12,162,10);
                 }else{
-                  $this->SetTextColor(0);
+                  $this->SetTextColor($arrTextColor[$i]['r'],$arrTextColor[$i]['g'],$arrTextColor[$i]['b']);
                 }
+              }
+              if( $arrFontSize ){
+                $this->SetFont($arrFontSize[$i]['family'],$arrFontSize[$i]['weight'],$arrFontSize[$i]['size']);
               }
               if( $arrBGColor ){
                 $fill=TRUE;
@@ -154,8 +157,8 @@
                 }elseif( $arrBGColor[$i] == 'p5'){
                   $this->SetFillColor(240);
                 }else{
-                  $fill=FALSE;
-                  $this->SetFillColor(255);
+                  // $fill=FALSE;
+                  $this->SetFillColor($arrBGColor[$i]['r'],$arrBGColor[$i]['g'],$arrBGColor[$i]['b']);
                 }
               }
               $textoCell = $data[$i];
@@ -172,11 +175,9 @@
               // if( empty($heigthCell) ){
               //   $heigthCell = 5;
               // }
-              if( !empty($fontSize) ){
-
-              }
+              
               $this->MultiCell($w,$heigthCell,$textoCell,$border,$a,$fill);
-              $this->SetFont('Arial','',$fontSize);
+              //$this->SetFont('Arial','',$fontSize);
               //Put the position to the right of the cell
               $this->SetXY($x+$w,($y));
               // var_dump($i);

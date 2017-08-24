@@ -309,7 +309,7 @@ class PlanAlimentario extends CI_Controller {
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['id'] = $row['idturno'];
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['valoresTurno'] = array();
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = strtoupper_total($row['descripcion_tu']);
-			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = strtolower_total($row['indicaciones']);
+			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
 
 			if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idatenciondietaturno'] = NULL;
@@ -762,11 +762,14 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	private function headerPlan($paciente, $consulta, $configuracion){
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,0,16);
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,0,25);
 		$this->pdf->SetFont('Arial','',14);
-
+		$this->pdf->SetTextColor(83,83,83);
+		$this->pdf->Cell(0,5,utf8_decode('PLAN DE ALIMENTACIÓN') ,0,1,'C');
+		$this->pdf->Ln(4);
+		$this->pdf->SetFont('Arial','',12);
 	    $this->pdf->Cell(0,5,'Nombre: ' . ucwords(strtolower_total(utf8_decode(strtolower_total($paciente['paciente'])))),0,1,'R');
-	    $this->pdf->Ln(0);
+	    // $this->pdf->Ln(1);
 
     	$fecha = date('d/m/Y',strtotime($consulta['fecha_atencion']));
 	    $this->pdf->Cell(0,5,'Fecha: '.$fecha,0,1,'R');
@@ -775,41 +778,101 @@ class PlanAlimentario extends CI_Controller {
 	    	$this->pdf->SetFont('Arial','B',14);
 	    	$this->pdf->Cell(0,5,'DIETA SEMANAL',0,1,'C');
 	    }
-
 	    $this->pdf->Ln(10);
 	}
 
-	private function footerPlan($consulta){
-		$this->pdf->SetLeftMargin(0);
-		$this->pdf->SetRightMargin(0);
-		$this->pdf->SetY(-23);
+	private function footerPlan($consulta, $margen, $configuracion){
+		// $this->pdf->SetLeftMargin(0);
+		// $this->pdf->SetRightMargin(0);
+		// $this->pdf->SetY(-23);
 
-	    $this->pdf->SetTextColor(83,83,83);
-		$this->pdf->SetFillColor(204,211,211);
-		$this->pdf->SetFont('Arial','I',11);
-		$y = $this->pdf->GetY();
-		$this->pdf->Rect(0, $y, $this->pdf->GetPageWidth(), 25, 'F');
-		$texto = '* Recomendaciones: ' . ucfirst(strtolower($consulta['indicaciones_dieta']));
+	 	//    $this->pdf->SetTextColor(83,83,83);
+		// $this->pdf->SetFillColor(204,211,211);
+		// $this->pdf->SetFont('Arial','I',11);
+		// $y = $this->pdf->GetY();
+		// $this->pdf->Rect(0, $y, $this->pdf->GetPageWidth(), 25, 'F');
+		// $texto = '* Recomendaciones: ' . ucfirst(strtolower($consulta['indicaciones_dieta']));
 
-		$this->pdf->SetLeftMargin(10);
-		$this->pdf->SetRightMargin(70);
-		$this->pdf->SetXY(10,$y+3);
-		//$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);
-		$this->pdf->Write(5, utf8_decode($texto));
+		// $this->pdf->SetLeftMargin(10);
+		// $this->pdf->SetRightMargin(70);
+		// $this->pdf->SetXY(10,$y+3);
+		// //$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);
+		// $this->pdf->Write(5, utf8_decode($texto));
 
-		$this->pdf->SetRightMargin(10);
-		$this->pdf->SetFont('Arial','',17);
-		$this->pdf->SetTextColor(0,0,0);
-		$this->pdf->SetXY(155,$y+1);
-		$this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);
+		// $this->pdf->SetRightMargin(10);
+		// $this->pdf->SetFont('Arial','',17);
+		// $this->pdf->SetTextColor(0,0,0);
+		// $this->pdf->SetXY(155,$y+1);
+		// $this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);
 
-		if(empty($consulta['prox_cita'])){
-			$this->pdf->SetXY(167,$y+8);
-			$this->pdf->Cell(60, 12, 'no tiene', 0, 'C', false);
+		// if(empty($consulta['prox_cita'])){
+		// 	$this->pdf->SetXY(167,$y+8);
+		// 	$this->pdf->Cell(60, 12, 'no tiene', 0, 'C', false);
+		// }else{
+		// 	$this->pdf->SetXY(163,$y+8);
+		// 	$this->pdf->Cell(60, 12, utf8_decode(date('d/m/Y',strtotime($consulta['prox_cita']))), 0, 'C', false);
+		// }
+		$this->pdf->SetDrawColor(156,156,156);
+		$this->pdf->SetLineWidth(0);
+		$posYRectangulos = 20; // ($this->pdf->GetPageHeight()/2) + 15;
+		$anchoColumnas = ($this->pdf->GetPageWidth()-16)/3;
+		$anchoObsevaciones = ($anchoColumnas * 2) - 5;
+		$anchoProxCita =  $anchoColumnas;
+		$altoColumnas = ($this->pdf->GetPageHeight()/2) - 60;
+
+		$texto = ucfirst(strtolower($consulta['indicaciones_dieta'])); 
+
+		//observaciones
+		$this->pdf->Rect($margen, $posYRectangulos, $anchoObsevaciones, $altoColumnas, 'D');
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->SetXY($margen+5, $posYRectangulos+5);
+		$this->pdf->Cell($anchoObsevaciones-10,6,utf8_decode('RECOMENDACIONES: '  ) ,0,1,'L');
+		$this->pdf->SetFont('Arial','I',10);
+		$this->pdf->SetXY($margen+5, $posYRectangulos+5+7);
+		$this->pdf->MultiCell($anchoObsevaciones-10,5,utf8_decode('* ' .$texto) ,0,'L');
+
+		//prox cita
+		$posXProxCita = $margen + $anchoObsevaciones + 5;
+		$this->pdf->Rect($posXProxCita, $posYRectangulos, $anchoProxCita, $altoColumnas, 'D');
+		$this->pdf->SetFont('Arial','B',15);
+		$this->pdf->SetXY($posXProxCita+5, $posYRectangulos+5);
+		$this->pdf->Cell($anchoProxCita-10, 12, utf8_decode('PRÓXIMA CITA:'), 0, 1, 'C', false);
+
+		$this->pdf->Image('assets/images/icons/calendario.png',$posXProxCita+10,null,$anchoProxCita-20);
+
+		$posY = $this->pdf->GetY();
+		if(!empty($consulta['prox_cita'])){
+			$this->pdf->SetXY($posXProxCita, $posY-26);
+			$this->pdf->SetFont('Arial','B',55);
+			$dia_fecha = date('d', strtotime($consulta['prox_cita']));
+			$this->pdf->Cell($anchoProxCita, 12, $dia_fecha, 0, 1, 'C', false);
+			$this->pdf->SetX($posXProxCita);
+			$this->pdf->SetFont('Arial','',16);
+			$this->pdf->Cell($anchoProxCita, 12, formatoSoloMes($consulta['prox_cita']), 0, 1, 'C', false);
 		}else{
-			$this->pdf->SetXY(163,$y+8);
-			$this->pdf->Cell(60, 12, utf8_decode(date('d/m/Y',strtotime($consulta['prox_cita']))), 0, 'C', false);
+			$this->pdf->SetXY($posXProxCita, $posY-22);
+			$this->pdf->SetFont('Arial','B',18);
+			$this->pdf->Cell($anchoProxCita, 12, 'NO TIENE', 0, 1, 'C', false);
 		}
+
+		//empresa
+		$this->pdf->SetFont('Arial','',13);
+		$this->pdf->Ln();
+		$this->pdf->SetXY($posXProxCita,$posY+5);
+		$this->pdf->Cell($anchoProxCita,6,$configuracion['pagina_web'],0,1,'C',FALSE);
+		$this->pdf->SetX($posXProxCita);
+		$this->pdf->Cell($anchoProxCita,6,'cel.: ' . $configuracion['celular'],0,1,'C',FALSE);
+		$this->pdf->SetX($posXProxCita);
+		$this->pdf->Cell($anchoProxCita,6,$configuracion['correo'],0,1,'C',FALSE);
+
+		//profesional
+		$this->pdf->SetLeftMargin(14);
+		$this->pdf->SetY($posYRectangulos + $altoColumnas+10);
+		$this->pdf->SetFont('Arial','',12);
+		$profesional = 'Lic. ' . ucwords(strtolower_total(utf8_decode($consulta['nombre'] . ' ' . $consulta['apellidos'] )));
+		$this->pdf->MultiCell(0,6,$profesional,0,'L',FALSE);
+		$this->pdf->Cell(0,6,'CNP: ' . $consulta['num_colegiatura'],0,1,'L',FALSE);
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],152,112,0,25); 
 	}
 	// correo 
 	public function generar_pdf_plan(){
@@ -873,35 +936,64 @@ class PlanAlimentario extends CI_Controller {
     	$this->headerPlan($paciente, $consulta, $configuracion);
 
 	    //body	    
-		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){
+		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){ // SIMPLE GENERAL - COMPUESTO GENERAL 
 			$plan = $arrayPlan[1];
 			$altoBloque =  ($this->pdf->GetPageHeight() - (18+23)) / 3; //total alto pagina - header - footer
 			foreach ($plan['turnos'] as $key => $turno) {
 				if($turno['id'] % 2 != 0){
 					$this->pdf->SetTextColor(255,255,255);
 					if($turno['id']==1){
-						$this->pdf->SetFillColor(0,156,222);
+						$r = 0;
+						$g = 156;
+						$b = 222;
+						$this->pdf->SetFillColor($r,$g,$b);
 					}
-
 					if($turno['id']==3){
-						$this->pdf->SetY($altoBloque+18);
-						$this->pdf->SetFillColor(106,220,0);
+						$this->pdf->SetY($altoBloque+18+8);
+						$r = 106;
+						$g = 220;
+						$b = 0;
+						$this->pdf->SetFillColor($r,$g,$b);
 					}
-
 					if($turno['id']==5){
 						$this->pdf->SetY(($altoBloque*2)+18);
-						$this->pdf->SetFillColor(255,0,100);
+						$r = 255;
+						$g = 0;
+						$b = 100;
+						$this->pdf->SetFillColor($r,$g,$b);
 					}
 					$this->pdf->SetFont('Arial','B',14);
-			    	$this->pdf->Cell(50,6,utf8_decode('       ' . ucwords(strtolower_total(utf8_decode($turno['descripcion'])))),0,1,'L',true);
+					$this->pdf->SetWidths(array(42, 30));
+					// var_dump($turno); exit();
+					$arrTurno = array(
+						'data'=> array(
+							utf8_decode('       ' . ucwords(strtoupper_total(utf8_decode($turno['descripcion'])))),
+							utf8_decode('   '.$turno['hora'].':'.$turno['min'].' '.$turno['tiempo'].'.') 
+						),
+						'textColor'=> array(
+							array('r'=> 255, 'g'=> 255, 'b'=> 255),
+							array('r'=> 83, 'g'=> 83, 'b'=> 83 )
+						),
+						'fontSize'=> array(
+							array('family'=> NULL, 'weight'=> NULL, 'size'=> 14),
+							array('family'=> NULL, 'weight'=> NULL, 'size'=> 10 )
+						),
+						'bgColor'=> array(
+							array('r'=> $r, 'g'=> $g, 'b'=> $b ), 
+							array('r'=> 255, 'g'=> 255, 'b'=> 255 ) 
+						)
+					);
+					// $data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$fontSize=FALSE
+					$this->pdf->Row($arrTurno['data'],true,0,FALSE,6,$arrTurno['textColor'],$arrTurno['bgColor'],FALSE,FALSE,$arrTurno['fontSize']);
 			    	$this->pdf->Ln(1);
 			    	$this->pdf->SetTextColor(83,83,83);
 			    	$this->pdf->SetFillColor(255,255,255);
-			    	$this->pdf->SetFont('Arial','',12);
+			    	$this->pdf->SetFont('Arial','',11);
 					$this->pdf->SetLeftMargin(10);
-			    	if($consulta['tipo_dieta'] == 'SG'){
-			    		if(!empty($turno['indicaciones'])){
-			    			$this->pdf->MultiCell(0,5,/*chr(127) .' '.*/ucfirst(strtolower_total(utf8_decode($turno['indicaciones']))),0,1,'L',true);
+			    	if($consulta['tipo_dieta'] == 'SG'){ 
+			    		if(!empty($turno['indicaciones'])){ 
+			    			// $this->pdf->MultiCell(0,5,/*chr(127) .' '.*/ucfirst(strtolower_total(utf8_decode($turno['indicaciones']))),0,1,'L',true);
+			    			$this->pdf->MultiCell(0,6,utf8_decode($turno['indicaciones']),0,1,'L',true);
 			    		}
 			    	}
 
@@ -927,11 +1019,27 @@ class PlanAlimentario extends CI_Controller {
 			    	$this->pdf->SetTextColor(83,83,83);
 			    	$this->pdf->SetFillColor(255,255,255);
 
-			    	if($consulta['tipo_dieta'] == 'SG'){
-			    		$this->pdf->MultiCell(0, 5, utf8_decode(strtoupper_total($turno['descripcion'])) . ': ' . ucfirst(strtolower_total(utf8_decode($turno['indicaciones']))));
+			    	if($consulta['tipo_dieta'] == 'SG'){ // SIMPLE GENERAL 
+			    		$this->pdf->SetDrawColor($r,$g,$b);
+			    		$this->pdf->SetLineWidth(1.2);
+			    		//var_dump( $this->pdf->GetX(),$this->pdf->GetY() ); exit(); 
+			    		$this->pdf->Line($this->pdf->GetX(),$this->pdf->GetY(),200,$this->pdf->GetY());
+			    		$this->pdf->SetWidths(array(80, 30));
+			    		$arrTurno = array(
+							'data'=> array(
+								utf8_decode('  ' . ucwords(strtoupper_total(($turno['descripcion'])))) .' - '.$turno['hora'].':'.$turno['min'].' '.$turno['tiempo'].'.',
+								' '
+							)
+						);
+						$this->pdf->Ln(4);
+						// $data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$arrFontSize=FALSE
+						
+						$this->pdf->Row($arrTurno['data'],true,0,FALSE,6); 
+						$this->pdf->SetFont('Arial','',11);
+			    		$this->pdf->MultiCell(0, 7, '    '.utf8_decode($turno['indicaciones']));
 			    	}
 
-			    	if($consulta['tipo_dieta'] == 'CG'){
+			    	if($consulta['tipo_dieta'] == 'CG'){ // COMPUESTO GENERAL 
 			    		$text_total = '';
 			    		if(!empty($turno['alimentos'])){
 				    		foreach ($turno['alimentos'] as $ind => $alm) {
@@ -950,7 +1058,8 @@ class PlanAlimentario extends CI_Controller {
 			    			$text_total = substr($text_total, 0, -2);
 			    		}
 
-				    	$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion'])) . ': ' . ucfirst(strtolower_total(utf8_decode($text_total))),0,1,'L',true);
+				    	// $this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion'])) . ': ' . ucfirst(strtolower_total(utf8_decode($text_total))),0,1,'L',true);
+				    	$this->pdf->MultiCell(0,5,utf8_decode(strtoupper_total($turno['descripcion'])) . ': ' . utf8_decode($text_total),0,1,'L',true);
 			    	}
 
 			    	$this->pdf->Ln(2);
@@ -959,8 +1068,12 @@ class PlanAlimentario extends CI_Controller {
 				}
 			}
 
-			//footer
-    		$this->footerPlan($consulta);
+			//footer 
+			$this->pdf->AddPage('P','A4');
+			$this->pdf->SetMargins(8, 8, 8);
+	    	$this->pdf->SetAutoPageBreak(false);
+	    	// $configuracion = GetConfiguracion();
+    		$this->footerPlan($consulta,8,GetConfiguracion());
 		}
 
 		if($consulta['tipo_dieta'] == 'SD' || $consulta['tipo_dieta'] == 'CD'){
@@ -1047,8 +1160,12 @@ class PlanAlimentario extends CI_Controller {
 		    		$posX = 0;
 		    	}
 
-		    	if($dia['id']==7){
-					/*recomendaciones*/
+		    	if($dia['id']==7){ 
+					//footer /*recomendaciones*/ 
+					// $this->pdf->AddPage('P','A4');
+					// $this->pdf->SetMargins(8, 8, 8);
+			  //   	$this->pdf->SetAutoPageBreak(false);
+
 					$this->pdf->SetTextColor(255,255,255);
 					$this->pdf->SetXY($posX,$yInicial + ($altoBloque*2));
 					$this->pdf->SetFont('Arial','I',12);
@@ -1093,13 +1210,13 @@ class PlanAlimentario extends CI_Controller {
 						$this->pdf->Cell($anchoBloque, 12, 'NO TIENE', 0, 1, 'C', false);
 					}
 
-					$this->pdf->SetFont('Arial','',13);
-					$this->pdf->SetXY($posX,-20);
-					$this->pdf->Cell($anchoBloque,6,$configuracion['pagina_web'],0,1,'C',FALSE);
+					$this->pdf->SetFont('Arial','',12);
+					$this->pdf->SetXY($posX,-16);
+					$this->pdf->Cell($anchoBloque,5,$configuracion['pagina_web'],0,1,'C',FALSE);
 					$this->pdf->SetX($posX);
-					$this->pdf->Cell($anchoBloque,6,'cel.: ' . $configuracion['celular'],0,1,'C',FALSE);
+					$this->pdf->Cell($anchoBloque,5,'cel.: ' . $configuracion['celular'],0,1,'C',FALSE);
 					$this->pdf->SetX($posX);
-					$this->pdf->Cell($anchoBloque,6,$configuracion['correo'],0,1,'C',FALSE);
+					$this->pdf->Cell($anchoBloque,5,$configuracion['correo'],0,1,'C',FALSE);
 				}
 			}
 		}
