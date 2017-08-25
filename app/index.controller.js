@@ -212,7 +212,7 @@
     $scope.goToUrl = function ( path , searchParam) {
       $location.path( path );
       if(searchParam){ 
-        $location.search({param: searchParam})
+        $location.search({param: searchParam});
       }
     };
 

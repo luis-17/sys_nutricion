@@ -38,7 +38,7 @@
       })
       //paciente
       .state('paciente', {   
-        url: '/app/paciente:param',
+        url: '/app/paciente',
         templateUrl: 'app/pages/paciente/paciente.html',
         controller: 'PacienteController',
         controllerAs: 'pac' ,

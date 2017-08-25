@@ -7,17 +7,14 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document,$state,$stateParams,alertify,toastr,pageLoading,ModalReporteFactory,
+  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document,$state,$stateParams,$location,alertify,toastr,pageLoading,ModalReporteFactory,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
   {
 
     var vm = this;
-    console.log($stateParams,'$stateParams'); // stateParams
-
-    console.log($stateParams.instanceID);
-    console.log($stateParams.param, $state, $stateParams.params, vm.param) 
+    var params = $location.search();
     vm.modoFicha = false;
     vm.modoEditar = false;
     vm.fotoCrop = false;
@@ -1075,6 +1072,11 @@
           });
         });
         // console.log('anulando...');
+      }
+      
+      if(params.param == 'nuevo-paciente'){
+        vm.btnNuevo();
+        //$location.search({param: searchParam});
       }
   }
 

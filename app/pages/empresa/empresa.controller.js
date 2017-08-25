@@ -7,9 +7,10 @@
     .service('EmpresaServices', EmpresaServices);
 
   /** @ngInject */
-  function EmpresaController($scope,$uibModal,$timeout,filterFilter, uiGridConstants,$document, alertify,toastr,EmpresaServices) {
+  function EmpresaController($scope,$uibModal,$timeout,$location,filterFilter, uiGridConstants,$document, alertify,toastr,EmpresaServices) {
 
     var vm = this;
+    var params = $location.search();
     vm.selectedItem = {};
     vm.options = {};
     vm.fDemo = {};
@@ -254,7 +255,10 @@
             ev.preventDefault();
         }); 
       }      
-
+      if(params.param == 'nueva-empresa'){
+        vm.btnNuevo();
+        //$location.search({param: searchParam});
+      }
   }
   function EmpresaServices($http, $q, handle) {
     return({

@@ -8,6 +8,7 @@
   /** @ngInject vm.tipoVista  */
   function CitasController ($scope,$location,$uibModal,$controller,alertify,CitasServices,UbicacionServices,PacienteServices, ConsultasServices, pageLoading, pinesNotifications, ProfesionalServices) { 
     var vm = this;
+    var params = $location.search();
     $scope.changeViewCita(true);
     $scope.changeViewConsulta(false);
     $scope.changeViewFicha(false);
@@ -561,7 +562,11 @@
         },
       }
     };
-    //console.log(vm.uiConfig.calendar);
+    
+    if(params.param == 'nueva-cita'){
+        vm.btnCita();
+        //$location.search({param: searchParam});
+    }
   }
   function CitasServices($http, $q, handle) {
     return({

@@ -5,9 +5,10 @@
     .controller('AlimentoController', AlimentoController)
     .service('AlimentoServices', AlimentoServices);
   /** @ngInject */
-  function AlimentoController($scope,$uibModal,uiGridConstants,alertify,toastr,AlimentoServices,GrupoAlimentoServices) {
+  function AlimentoController($scope,$uibModal,$location,uiGridConstants,alertify,toastr,AlimentoServices,GrupoAlimentoServices) {
 
     var vm = this;
+    var params = $location.search();
     // GRILLA PRINCIPAL
       var paginationOptions = {
         pageNumber: 1,
@@ -276,7 +277,10 @@
             ev.preventDefault();
         }); 
       }
-
+      if(params.param == 'nuevo-alimento'){
+        vm.btnNuevo();
+        //$location.search({param: searchParam});
+      }
   }
 
   function AlimentoServices($http, $q, handle) {
