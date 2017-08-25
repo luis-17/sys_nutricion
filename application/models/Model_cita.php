@@ -52,6 +52,7 @@ class Model_cita extends CI_Model {
 		$this->db->where('ci.fecha > CURDATE()'); // mayor que hoy 
 		$this->db->order_by('ci.fecha ASC');
 		$this->db->order_by('ci.hora_desde ASC');
+		$this->db->limit($datos['numeroCitas']);
 		return $this->db->get()->result_array();
 	}
 	public function m_registrar($data){
