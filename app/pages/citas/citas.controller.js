@@ -566,6 +566,7 @@
   function CitasServices($http, $q, handle) {
     return({
         sListarCita: sListarCita,
+        sListarProximasCitas: sListarProximasCitas,
         sRegistrarCita: sRegistrarCita,
         sDropCita: sDropCita,
         sActualizarCita: sActualizarCita,
@@ -579,7 +580,14 @@
       });
       return (request.then(handle.success,handle.error));
     }
-
+    function sListarProximasCitas(datos) {
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Cita/listar_proximas_citas",
+            data : datos
+      });
+      return (request.then(handle.success,handle.error));
+    }
     function sRegistrarCita(datos) {
       var request = $http({
             method : "post",

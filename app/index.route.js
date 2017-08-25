@@ -13,7 +13,7 @@
         url: '/app/dashboard',
         templateUrl: 'app/pages/dashboard/dashboard.html',
         controller: 'DashboardController',
-        controllerAs: 'dashboard'
+        controllerAs: 'ds'
       })
       //app core pages (errors, login,signup)
       .state('pages', {
@@ -38,7 +38,7 @@
       })
       //paciente
       .state('paciente', {   
-        url: '/app/paciente',
+        url: '/app/paciente:param',
         templateUrl: 'app/pages/paciente/paciente.html',
         controller: 'PacienteController',
         controllerAs: 'pac' ,

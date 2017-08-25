@@ -209,8 +209,11 @@
       });
     };
 
-    $scope.goToUrl = function ( path ) {
+    $scope.goToUrl = function ( path , searchParam) {
       $location.path( path );
+      if(searchParam){ 
+        $location.search({param: searchParam})
+      }
     };
 
     $scope.getValidateSession = function () {

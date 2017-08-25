@@ -90,7 +90,34 @@ class Cita extends CI_Controller {
 	public function ver_popup_formulario(){
 		$this->load->view('cita/cita_formView');
 	}
+	public function listar_proximas_citas()
+	{
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$numeroCitas = 10; 
+		$lista = $this->model_cita->m_cargar_proximas_citas($allInputs);
+		$arrListado = array();
+		foreach ($lista as $row) {
+			array_push($arrListado,
+				array(
+					'idcita' => $row['idcita'],
+					'dia' => $row['fecha'],
+					'hora' => $row['hora_desde'],
+					'paciente' => strtoupper($row['nombre'].' '.$row['apellidos']),
+					'canal' => strtoupper($row['descripcion_ub'])
+				)
+			);
+		}
 
+    	$arrData['datos'] = $arrListado;
+    	$arrData['message'] = '';
+    	$arrData['flag'] = 1;
+		if(empty($lista)){
+			$arrData['flag'] = 0;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
 	public function registrar_cita(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
 		$arrData['flag'] = 0;

@@ -14,7 +14,10 @@
   {
 
     var vm = this;
+    console.log($stateParams,'$stateParams'); // stateParams
 
+    console.log($stateParams.instanceID);
+    console.log($stateParams.param, $state, $stateParams.params, vm.param) 
     vm.modoFicha = false;
     vm.modoEditar = false;
     vm.fotoCrop = false;

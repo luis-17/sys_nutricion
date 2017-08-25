@@ -7,8 +7,7 @@
     .service('InformeEmpresarialServices', InformeEmpresarialServices);
 
   /** @ngInject */
-  function InformeEmpresarialController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,toastr,
-    InformeEmpresarialServices, EmpresaServices,GrupoServices,UsuarioServices, pinesNotifications, pageLoading) {
+  function InformeEmpresarialController($scope, $uibModal, $timeout, $filter, InformeEmpresarialServices, EmpresaServices, pinesNotifications, pageLoading) { 
 
     var vm = this; 
     vm.fData = {};
