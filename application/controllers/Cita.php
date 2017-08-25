@@ -93,7 +93,7 @@ class Cita extends CI_Controller {
 	public function listar_proximas_citas()
 	{
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$numeroCitas = 10; 
+		$allInputs['numeroCitas'] = 10; 
 		$lista = $this->model_cita->m_cargar_proximas_citas($allInputs);
 		$arrListado = array();
 		foreach ($lista as $row) {
