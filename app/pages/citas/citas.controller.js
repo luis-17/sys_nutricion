@@ -491,8 +491,7 @@
       alertify.okBtn("Aceptar").cancelBtn("Cancelar").confirm("¿Realmente desea realizar la acción?", function (ev) {
         ev.preventDefault();
         pageLoading.start('Procesando información...');
-        ConsultasServices.sAnularConsulta(row).then(function (rpta) {              
-          // var openedToasts = [];
+        ConsultasServices.sAnularConsulta(row).then(function (rpta) { 
           if(rpta.flag == 1){ 
             angular.element('.calendar').fullCalendar( 'refetchEvents' ); 
             var pTitle = 'OK!';

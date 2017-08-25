@@ -18,7 +18,7 @@
       return $http.post(arrParams.url, arrParams.datos).then(handleSuccess, handleError('Recurso no encontrado'));
     }
   }
-  function ModalReporteFactory($uibModal,$http,$q,pageLoading,pinesNotifications,rootServices,PlanAlimentarioServices,ConsultasServices){
+  function ModalReporteFactory($uibModal,$http,$q,pageLoading,pinesNotifications,rootServices,PlanAlimentarioServices,ConsultasServices,PacienteServices){
     var interfazReporte = {
       getPopupReporte: function(arrParams){ //console.log(arrParams.datos.salida,' as');
         if( arrParams.datos.salida == 'pdf' || angular.isUndefined(arrParams.datos.salida) ){
@@ -43,6 +43,20 @@
                   controller: function ($scope,$uibModalInstance) { 
                     $scope.titleModalReporteEmail = 'Envío de Correo'; 
                     $scope.fEnvio = {}; 
+                    // OBTENER CORREO DE CLIENTE 
+                    var arrParamsCliente = {
+                      'idcliente': arrParams.datos.consulta.idcliente
+                    };
+                    PacienteServices.sListarPacientePorId(arrParamsCliente).then(function(rpta) { 
+                      if(rpta.flag == 1){ 
+                        $scope.fEnvio.emails = rpta.datos.email;
+                        // console.log('ver ficha');
+                        // vm.mySelectionGrid[0] = angular.copy(rpta.datos);
+                        // vm.btnVerFicha(rpta.datos);
+                      }
+                    });
+                    
+                    
                     $scope.envioCorreoExec = function() {
                       if(arrParams.titulo == 'CONSULTA'){ 
                         pageLoading.start('Enviando Ficha de Paciente...'); 

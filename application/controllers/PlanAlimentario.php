@@ -13,8 +13,6 @@ class PlanAlimentario extends CI_Controller {
 
 	public function registrar_plan_alimentario(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		/*print_r($allInputs);
-		exit();*/
 		$arrData['flag'] = 0;
 		$arrData['message'] = 'Ha ocurrido un error registrando el plan alimentario.';
 
@@ -144,10 +142,6 @@ class PlanAlimentario extends CI_Controller {
 				return;
 			}
 		}
-
-
-		/*print_r($allInputs);
-		exit();*/
 
 		/*registro de datos*/
 		$errorEnCiclo = FALSE;
@@ -298,9 +292,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	private function genera_estructura_plan($allInputs){
-		$lista = $this->model_plan_alimentario->m_cargar_plan_alimentario($allInputs);
-		/*print_r($lista);
-		exit();*/
+		$lista = $this->model_plan_alimentario->m_cargar_plan_alimentario($allInputs); 
 		$arrayPlan =array();
 		foreach ($lista as $key => $row) {
 			$arrayPlan[$row['iddia']]['id'] = $row['iddia'];
@@ -383,9 +375,7 @@ class PlanAlimentario extends CI_Controller {
 				);
 			}
 		}
-
 		$arrayPlan = array_values($arrayPlan);
-
 		return $arrayPlan;
 	}
 

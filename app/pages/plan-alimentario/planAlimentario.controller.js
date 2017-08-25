@@ -6,7 +6,8 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, ConsultasServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
+  function PlanAlimentarioController ($scope,$uibModal,$timeout,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, PlanPlantillaServices, 
+      ConsultasServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
     var vm = this;
     vm.horas = [
       {id: '--', value:'--'},
@@ -36,12 +37,12 @@
       {id:'am', value:'am'},
       {id:'pm', value:'pm'},
     ]; 
-
-    
+    vm.planPlantilla = {}; 
+    vm.listaPlanPlantillas = [];
     vm.initPlan = function(consulta,origen,tipoVista,callbackCitas){      
       pageLoading.start('Cargando formulario');
       $scope.idatencion = consulta.idatencion; 
-      console.log($scope.idatencion,'$scope.idatencion');
+
       vm.consulta = consulta;
       vm.origen = origen;
       vm.tipoVista = tipoVista;
@@ -59,9 +60,111 @@
         pageLoading.stop();
       }      
     }
+    vm.guardarComoPlantilla = function() {
+      var modalInstance = $uibModal.open({ 
+          templateUrl: 'app/pages/plan-plantilla/planPlantilla_formview.html',
+          controllerAs: 'pd',
+          size: 'md',
+          backdropClass: 'splash splash-ef-14',
+          windowClass: 'splash splash-ef-14',
+          // controller: 'ModalInstanceController',
+          controller: function($scope, $uibModalInstance, backParams){ 
+            var vm = this;
+            vm.modalTitle = 'Registro de Plantilla';
+            vm.fPlantilla = {};
+            //console.log(backParams.consulta, 'backParams.consulta');
+            vm.aceptar = function() {
+              pageLoading.start('Registrando plan...');
+              var datos = { 
+                fPlantilla: vm.fPlantilla,
+                consulta: backParams.consulta,
+                tipo: backParams.tipoPlan,
+                forma: backParams.formaPlan,
+                planDias: backParams.dias,
+                planGeneral: backParams.dia 
+              };
+              PlanPlantillaServices.sRegistrarPlanPlantilla(datos).then(function(rpta){       
+                if(rpta.flag == 1){ 
+                  var pTitle = 'OK!';
+                  var pType = 'success';
+                  backParams.changeTab('1'); 
+                  backParams.listarPlantillas(backParams.formaPlan); 
+                  pageLoading.stop();
+                  $uibModalInstance.close(vm.fPlantilla); 
+                }else if( rpta.flag == 0 ){
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
+                }
+                pageLoading.stop();
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
+              });
+            }
+            vm.cancel = function () {
+              $uibModalInstance.dismiss('cancel'); 
+            };
+          },
+          resolve: {
+            backParams: function() {
+              return {
+                consulta : vm.consulta, 
+                tipoPlan : vm.tipoPlan, 
+                formaPlan : vm.formaPlan, 
+                dias : vm.dias, 
+                dia : vm.dia,
+                changeTab : vm.changeTab,
+                listarPlantillas : vm.listarPlantillas   
+              }
+            }
+          }
+      });
+    }
+    vm.mostrarDatosDesdePlantilla = function() { 
+      pageLoading.start('Importando plantilla');
+      vm.consulta.plantilla = vm.planPlantilla; 
+      //console.log(vm.tipoVista,'antes');
+      if(vm.tipoVista == 'new'){
+        vm.tipoVista = 'plantillaNew'; 
+      }
+      if(vm.tipoVista == 'edit'){
+        vm.tipoVista = 'plantillaEdit';
+      }  
+      //console.log(vm.tipoVista,'despues');
+      PlanPlantillaServices.sListarPlanPlantilla(vm.consulta).then(function(rpta){ 
+        if(rpta.flag == 1){ 
+          vm.dia = angular.copy(rpta.datos[0]);
+          vm.dias = angular.copy(rpta.datos);          
+          vm.primeraCargaGeneral = false;
+          vm.primeraCargaDia = false;
+          vm.updateEstructura(true); 
+          $timeout(function(argument) { 
+            var objContentTabs = $('#pagePlan .tab-content > .tab-pane');
+            var angElement = angular.element($(objContentTabs[0]));
+            angElement.addClass('active');
+          },400); 
+        }else{
+          pageLoading.stop(); 
+        }
+      });  
+      //vm.indicaciones = 'lolol';
+    }
+    vm.listarPlantillas = function(formaPlan) {
+      var arrParams = {
+        tipo: formaPlan 
+      };
+      PlanPlantillaServices.sListarPlantillasCbo(arrParams).then(function (rpta){
+        if( rpta.flag == 1 ){ 
+          vm.listaPlanPlantillas = rpta.datos; 
+          vm.listaPlanPlantillas.splice(0,0,{ id : '', descripcion:'--Seleccione plantilla guardada--'}); 
+          vm.planPlantilla = vm.listaPlanPlantillas[0]; 
+        }else{
+          vm.listaPlanPlantillas = []; 
+        }
+      });
+    }
 
     vm.changeTab = function(indexTab){
       vm.activeTab = indexTab;
+      // console.log('asdf');
     }
 
     vm.cargaEstructura = function(){
@@ -163,8 +266,8 @@
     }
 
     vm.updateEstructura = function(load){
-      //console.log('paso por aqui...',load);
-      if(vm.tipoVista == 'edit'){
+      //console.log('paso por aqui...',load); tipoPlan
+      if(vm.tipoVista == 'edit' || vm.tipoVista == 'plantillaNew' || vm.tipoVista == 'plantillaEdit' ){
         if(load){
           pageLoading.start('Cargando Plan alimentario...');
         }
@@ -176,20 +279,17 @@
             objIndex = vm.horas.filter(function(obj) {
               return obj.id == vm.dia.turnos[ind].hora;
             }).shift();                 
-            vm.dia.turnos[ind].hora = objIndex; 
-            //console.log(objIndex);  
+            vm.dia.turnos[ind].hora = objIndex;   
 
             objIndex = vm.minutos.filter(function(obj) {
               return obj.id == vm.dia.turnos[ind].min;
             }).shift(); 
             vm.dia.turnos[ind].minuto = objIndex; 
-            //console.log(objIndex);
 
             objIndex = vm.tiempo.filter(function(obj) {
               return obj.id == vm.dia.turnos[ind].tiempo;
             }).shift();            
             vm.dia.turnos[ind].tiempo = objIndex;
-            //console.log(objIndex);
 
             vm.dia.turnos[ind].valoresTurno = {
               calorias: 0,
@@ -287,6 +387,7 @@
               }            
             });
           });
+          vm.changeTab('1');
         }
         if(load){
           pageLoading.stop();
@@ -304,6 +405,10 @@
       vm.tipoPlan = tipo;
       if(vm.tipoVista == 'new'){
         vm.cargaEstructura();
+        if( vm.tipoPlan == 'simple' ){
+          vm.listarPlantillas('dia');
+        }
+        
       }      
     }
 
@@ -329,38 +434,23 @@
           preventOpenDuplicates: false
         };       
         if(rpta.flag == 1){ 
-          var title = 'OK';
-          var iconClass = 'success';
-          /*if(vm.origen == 'cita'){
-            $scope.changeViewCita(true);
-            $scope.changeViewOnlyBodyCita(false);
-            $scope.changeViewConsulta(false);
-            $scope.changeViewPlan(false);
-            $scope.changeViewSoloPlan(false);
-          }else if(vm.origen == 'consulta'){ 
-            $scope.changeViewConsulta(true,3,vm.consulta.idatencion,'plan'); tipoVista pestaniaConsulta
-            $scope.changeViewCita(false);
-            $scope.changeViewOnlyBodyCita(false);
-            $scope.changeViewPlan(false);
-            $scope.changeViewSoloPlan(false);
-          }*/
+          var pTitle = 'OK';
+          var pType = 'success';
           vm.consulta.tipo_dieta = rpta.tipo_dieta;
-          console.log(rpta,'rpta');
-          // $scope.tipoDieta = rpta.tipo_dieta; 
           $scope.tipoDieta = (rpta.tipo_dieta); 
-
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
           vm.tipoVista = 'edit';
           vm.callbackCitas();
           vm.cargaEstructura(); 
           vm.changeTab('1'); 
         }else if( rpta.flag == 0 ){
-          var title = 'Advertencia';
-          var iconClass = 'warning';
-        }
+          var pTitle = 'Advertencia';
+          var pType = 'warning';
+        } 
+        pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
-        var toast = toastr[iconClass](rpta.message, title, vm.options);
-        openedToasts.push(toast);
+        // var toast = toastr[iconClass](rpta.message, title, vm.options);
+        // openedToasts.push(toast);
       });
     }
 
@@ -375,8 +465,7 @@
         planGeneral:vm.dia,
         indicaciones:vm.indicaciones,
       };
-      PlanAlimentarioServices.sActualizarPlan(datos).then(function(rpta){
-        var openedToasts = [];
+      PlanAlimentarioServices.sActualizarPlan(datos).then(function(rpta){ 
         vm.options = {
           timeout: '3000',
           extendedTimeout: '1000',

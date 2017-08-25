@@ -67,11 +67,11 @@
               <i class="fa fa-file-pdf-o"></i>
           </button>
           <button type="button" class="btn btn-success mr-15" style="float:right;"
-              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new'"                  
+              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new' || plan.tipoVista == 'plantillaNew'"                  
                   ng-disabled="formDiagnostico.$invalid"> Guardar
           </button>
           <button type="button" class="btn btn-success mr-15" style="float:right;"
-              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit'"                    
+              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit' || plan.tipoVista == 'plantillaEdit'" 
                   ng-disabled="formDiagnostico.$invalid"> Guardar
           </button>
 
@@ -83,14 +83,14 @@
                   ng-click='changeViewSoloPlan(false);changeViewCita(true);plan.callbackCitas();'
                   ng-if="viewSoloPlan">Salir
           </button>
-          <div class="row">
+          <div class="row" ng-init="plan.listarPlantillas(plan.formaPlan);">
             <div class="btn-group col-lg-4" style="float:right;">
               <label class="btn btn-default" ng-model="plan.formaPlan" 
-                      ng-click="plan.updateEstructura(true);" uib-btn-radio="'dia'">
-                Por dia
+                      ng-click="plan.updateEstructura(true);plan.listarPlantillas(plan.formaPlan);" uib-btn-radio="'dia'" >
+                Por día 
               </label>
               <label class="btn btn-default" ng-model="plan.formaPlan" 
-                      ng-click="plan.updateEstructura(true);" uib-btn-radio="'general'">
+                      ng-click="plan.updateEstructura(true);plan.listarPlantillas(plan.formaPlan);" uib-btn-radio="'general'" >
                 General
               </label>
             </div>            
@@ -104,23 +104,32 @@
             </div>            
           </div>
         </div> -->
-        <div class="form-horizontal col-md-12 pl-0">
-          <div class="form-group col-md-6">
-            <label class="col-sm-2 control-label minotaur-label pl-0">Paciente: </label>
+        <div class="form-horizontal col-md-6 ">
+          <div class="form-group p-n" style="margin-bottom: 0;">
+            <label class="col-sm-2 control-label minotaur-label pl-0" style="text-align:left;">Paciente: </label>
             <div class="col-sm-10 pl-0">
               <p type="text" class="form-control-static" ng-if="plan.origen=='cita'" > {{plan.consulta.paciente}}</p>
               <p type="text" class="form-control-static" ng-if="plan.origen=='consulta'" > {{plan.consulta.cita.cliente.paciente}}</p>
             </div>
           </div>
         </div>
-
-        <div class="clearfix"></div>
+        <!-- seleccionaTipo activeTab -->
+        <div class="form-horizontal col-md-6 p-0" ng-show="plan.consulta.tipo_dieta == 'SG' || plan.tipoPlan == 'simple'"> 
+          <button type="button" class="btn btn-success btn-sm pull-right" ng-click='plan.guardarComoPlantilla();' 
+            style="margin-left: 10px;"> GUARDAR COMO PLANTILLA </button> 
+          <button type="button" ng-disabled="!(plan.planPlantilla.id)" class="btn btn-info btn-sm pull-right" ng-click='plan.mostrarDatosDesdePlantilla();' 
+            style="margin-left: 10px;"> IMPORTAR PLANTILLA </button> 
+          <select class="form-control input-sm pull-right" name="planPlantilla" ng-model="plan.planPlantilla" 
+            ng-options="item as item.descripcion for item in plan.listaPlanPlantillas" style="width: 250px;"> </select> 
+          
+        </div>
+        <div class="clearfix"></div> 
       </section>
-      <section class="tile-body">              
+      <section class="tile-body pt-n">              
         <uib-tabset class="minotaur-tab minotaur-tab-theme mb-10" justified="true" ng-if="plan.formaPlan == 'dia'" 
           ng-init="indextab = 1">
-          <uib-tab heading="{{dia.nombre_dia}}"  active="dia.id == plan.activeTab" ng-click="changeTab(dia.id);"
-            ng-repeat="(indexDia, dia) in plan.dias" style=" text-transform: uppercase;" >
+          <uib-tab heading="{{dia.nombre_dia}}"  active="{{dia.id == plan.activeTab}}" ng-click="plan.changeTab(dia.id);"
+            ng-repeat="(indexDia, dia) in plan.dias" style=" text-transform: uppercase;" class="{{dia.class}}" >
             <div ng-if="plan.tipoPlan == 'simple'" ng-include="'app/pages/plan-alimentario/plan-simple-template.html'"></div>
             <div ng-if="plan.tipoPlan == 'compuesto'" ng-include="'app/pages/plan-alimentario/plan-compuesto-template.html'"></div>
           </uib-tab>
@@ -144,11 +153,11 @@
               <i class="fa fa-file-pdf-o"></i>
           </button>
           <button type="button" class="btn btn-success mr-15" style="float:right;"
-              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new'"                  
+              ng-click="plan.btnGuardarPlan()"  ng-if="plan.tipoVista == 'new' || plan.tipoVista == 'plantillaNew'"                  
                   ng-disabled="formDiagnostico.$invalid"> Guardar
           </button>
           <button type="button" class="btn btn-success mr-15" style="float:right;"
-              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit'"                    
+              ng-click="plan.btnActualizarPlan()"  ng-if="plan.tipoVista == 'edit' || plan.tipoVista == 'plantillaEdit'"                    
                   ng-disabled="formDiagnostico.$invalid"> Guardar
           </button> 
           <button type="button" class="btn btn-warning col-lg-3 mr-15" style="float:right;width:100px;"
