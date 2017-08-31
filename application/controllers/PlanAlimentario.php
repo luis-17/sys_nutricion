@@ -92,7 +92,7 @@ class PlanAlimentario extends CI_Controller {
 					$unTurnoLleno = TRUE;
 				}
 
-				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && count($turno['alimentos'])>0){
+				if($turno['hora']['id']!='--'  && $turno['minuto']['id'] != '--' && count(@$turno['alimentos'])>0){
 					$unTurnoLlenoCompuesto = TRUE;
 					foreach ($turno['alimentos'] as $ind => $ali) {
 						if(!is_numeric($ali['cantidad'])){
@@ -152,7 +152,7 @@ class PlanAlimentario extends CI_Controller {
 				foreach ($dia['turnos'] as $turno) {
 					if(
 						($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
-						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count($turno['alimentos'])>0)
+						|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count(@$turno['alimentos'])>0)
 					){
 						if($turno['tiempo']['value']=='pm'){
 							$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
@@ -195,7 +195,7 @@ class PlanAlimentario extends CI_Controller {
 			foreach ($allInputs['planGeneral']['turnos'] as $turno) {
 				if(
 					($allInputs['tipo'] == 'simple' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && !empty($turno['indicaciones']))
-					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count($turno['alimentos'])>0)
+					|| ($allInputs['tipo'] == 'compuesto' && $turno['hora']['value']!='--'  && $turno['minuto']['value'] != '--' && count(@$turno['alimentos'])>0)
 				){
 					if($turno['tiempo']['value']=='pm'){
 						$hora = (((int)$turno['hora']['value']) + 12) .':'.$turno['minuto']['value'].':00';
