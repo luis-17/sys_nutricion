@@ -121,6 +121,9 @@
     vm.mostrarDatosDesdePlantilla = function() { 
       pageLoading.start('Importando plantilla');
       vm.consulta.plantilla = vm.planPlantilla; 
+      //console.log(vm.formaPlan,'vm.formaPlan');
+      //console.log(vm.tipoPlan,'vm.tipoPlan');
+      vm.consulta.formaPlan = vm.formaPlan;
       //console.log(vm.tipoVista,'antes');
       if(vm.tipoVista == 'new'){
         vm.tipoVista = 'plantillaNew'; 

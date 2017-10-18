@@ -11,8 +11,9 @@ class Cita extends CI_Controller {
     }
 
     public function listar_citas(){
-		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
-		$lista = $this->model_cita->m_cargar_citas($allInputs);
+		$allInputs = json_decode(trim($this->input->raw_input_stream),true); 
+		$lista = $this->model_cita->m_cargar_citas($allInputs); 
+		// var_dump($lista); exit();
 		$arrListado = array();
 		foreach ($lista as $row) {
 			$es_unica = ($this->model_cita->m_cuenta_citas($row['fecha'],$row['hora_desde']) == 1) ? TRUE : FALSE;

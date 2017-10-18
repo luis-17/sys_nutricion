@@ -238,7 +238,7 @@ class PlanPlantilla extends CI_Controller {
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['descripcion'] = strtoupper_total($row['descripcion_tu']);
 			$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['indicaciones'] = $row['indicaciones'];
 
-			if($arrayPlan[$row['iddia']] != 1 && ($allInputs['tipo_dieta'] == 'SG' || $allInputs['tipo_dieta'] == 'CG' )){
+			if($arrayPlan[$row['iddia']] != 1 && (@$allInputs['tipo_dieta'] == 'SG' || @$allInputs['tipo_dieta'] == 'CG' )){
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idplantilladietaturno'] = NULL;
 			}else{
 				$arrayPlan[$row['iddia']]['turnos'][$row['idturno']]['idplantilladietaturno'] = $row['idplantilladietaturno'];

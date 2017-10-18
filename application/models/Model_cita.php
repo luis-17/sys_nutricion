@@ -18,20 +18,17 @@ class Model_cita extends CI_Model {
 		$this->db->join('cliente cli', 'cli.idcliente = ci.idcliente AND cli.estado_cl = 1');
 		$this->db->join('profesional pro', 'pro.idprofesional = ci.idprofesional AND pro.estado_pf = 1');
 		$this->db->join('ubicacion ub', 'ub.idubicacion = ci.idubicacion AND ub.estado_ub = 1');
-
 		$this->db->join('atencion at', 'at.idcita = ci.idcita AND at.estado_atencion = 1', 'left');
-		//$this->db->join('atencion_dieta_turno adt', 'adt.idatencion = at.idatencion AND adt.estado_dt = 1', 'left');
 		$this->db->where('ci.estado_ci <>', 0);
-
+		$this->db->where('ci.fecha BETWEEN '. $this->db->escape(darFormatoYMD($datos['desde']).' 00:00').' AND '. $this->db->escape( darFormatoYMD($datos['hasta']).' 23:59')); 
 		if(!empty($datos['profesional']['id'])){
 			$this->db->where('ci.idprofesional', $datos['profesional']['id']);
 		}
-
 		return $this->db->get()->result_array();
 	}
 
 	public function m_cuenta_citas($fecha, $hora_desde){
-		$this->db->select('count(*) AS contador');
+		$this->db->select('COUNT(*) AS contador');
 		$this->db->from('cita ci');
 		$this->db->where('ci.estado_ci', 1);
 		$this->db->where('ci.fecha', $fecha);

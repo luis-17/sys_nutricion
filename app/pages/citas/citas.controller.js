@@ -90,7 +90,10 @@
     vm.eventsF = function (start, end, timezone, callback) {
       var events = []; 
       pageLoading.start('Actualizando calendario...');
-
+      // console.log(start.toLocaleTimeString(), end.toLocaleTimeString(),'start.toLocaleTimeString(), end.toLocaleTimeString()'); 
+      // console.log(start,'moment(start).tz("America/Lima").format(YYYY-MM-DD)'); 
+      vm.fBusqueda.desde = moment(start).tz('America/Lima').format('YYYY-MM-DD');
+      vm.fBusqueda.hasta = moment(end).tz('America/Lima').format('YYYY-MM-DD');
       CitasServices.sListarCita(vm.fBusqueda).then(function (rpta) {
         if(rpta.flag == 1){          
           angular.forEach(rpta.datos, function(row, key) { 
@@ -252,11 +255,11 @@
           vm.ok = function () {
             
             if(vm.fData.hora_desde){
-              vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString();            
+              vm.fData.hora_desde_str = vm.fData.hora_desde.toLocaleTimeString(); 
             }
 
             if(vm.fData.hora_hasta){
-              vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
+              vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString(); 
             }
 
             if(consultaOrigen){
