@@ -31,7 +31,14 @@ class Model_usuario extends CI_Model {
 		$this->db->where('idusuario',$datos['idusuario']);
 		$this->db->where('estado_us',1);		
 		return $this->db->get()->result_array();
-	}	
+	}
+	public function m_verificar_usuario_check_pago()
+	{
+		$this->db->select('mostrar_info_cobro'); 
+		$this->db->from('usuario');
+		$this->db->limit(1);		
+		return $this->db->get()->row_array();
+	}
 	public function m_registrar($datos)
 	{
 		$data = array(

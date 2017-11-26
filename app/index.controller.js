@@ -104,6 +104,16 @@
                         }
                       );
             }
+            if(response.data.flag == 'pay_expired'){
+              alertify.okBtn("CLICK AQUI")
+                      .cancelBtn("Cerrar")
+                      .confirm(response.data.message, 
+                        function (ev) {                      
+                          var dir = window.location.href.split('app')[0];
+                          window.location.href = dir + 'app/pages/login';
+                        }
+                      );
+            }
             return( response.data );
         }
       }

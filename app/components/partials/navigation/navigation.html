@@ -9,7 +9,7 @@
       opacity: .2
      }">
 
-  <ul class="nav nav-sidebar">
+  <ul class="nav nav-sidebar pb-n">
     <li ng-class="{'active':$state.includes('dashboard')}" ng-if="valores[0]">
       <a ng-click="$state.reload();" ui-sref="dashboard">
         <span class="nav-text">{{ 'Menu.DASHBOARD' | translate }}</span>
@@ -59,4 +59,13 @@
       </a>
     </li>
   </ul>
+  <div class="tile" ng-show="fSessionCI.mostrar_info_contacto == 1"> <!-- MOSTRAR INFO DE CONTACTO --> 
+    <div class="tile-body lined-paper b-t" style="font-size:12px;padding-top: 0 !important;">
+      <p class="mb-n text-info text-center" style="font-weight: bold;font-style: normal;font-size: 16px;">CONTACTO</p>
+      <p class="mb-n">Luis Ricardo Luna Soto</p>
+      <p class="mb-n">Freelancer - Desarrollador Web y Móvil</p>
+      <p class="mb-n">E-MAIL: luisls1717@gmail.com</p>
+      <p class="mb-n">CEL: 992566985</p>
+    </div>
+  </div>
 </div>

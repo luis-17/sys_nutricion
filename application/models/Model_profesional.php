@@ -7,7 +7,8 @@ class Model_profesional extends CI_Model {
  	//CARGAR PERFIL
 	public function m_cargar_perfil($idusuario){ 
 		$this->db->select('pro.idprofesional, pro.idusuario, pro.idespecialidad, pro.nombre, pro.apellidos, pro.correo, 
-			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto, us.username, us.idusuario, gr.idgrupo, gr.nombre_gr, gr.key_grupo',FALSE);
+			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto, gr.idgrupo, gr.nombre_gr, gr.key_grupo, 
+			us.username, us.idusuario, us.mostrar_info_contacto, us.mostrar_info_cobro',FALSE);
 		$this->db->select('esp.descripcion_es as especialidad',FALSE);
 		$this->db->from('profesional pro');
 		$this->db->join('especialidad esp', 'esp.idespecialidad = pro.idespecialidad');
@@ -20,7 +21,7 @@ class Model_profesional extends CI_Model {
 	}
 
 	public function m_cargar_profesional($paramPaginate=FALSE){
-		$this->db->select('p.idprofesional, p.idusuario, u.username , u.idgrupo, e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto');
+		$this->db->select('p.idprofesional, p.idusuario, u.username , u.idgrupo, e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto, u.mostrar_info_contacto, u.mostrar_info_cobro');
 		$this->db->from('profesional p');
 		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left');
 		$this->db->join('usuario u', 'p.idusuario = u.idusuario AND u.estado_us = 1','left');				
