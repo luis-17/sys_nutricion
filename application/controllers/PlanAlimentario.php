@@ -752,7 +752,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	private function headerPlan($paciente, $consulta, $configuracion){
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8,0,25);
+		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8);
 		$this->pdf->SetFont('Arial','',14);
 		$this->pdf->SetTextColor(83,83,83);
 		$this->pdf->Cell(0,5,utf8_decode('PLAN DE ALIMENTACIÓN') ,0,1,'C');
