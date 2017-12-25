@@ -771,37 +771,7 @@ class PlanAlimentario extends CI_Controller {
 	    $this->pdf->Ln(10);
 	}
 
-	private function footerPlan($consulta, $margen, $configuracion){
-		// $this->pdf->SetLeftMargin(0);
-		// $this->pdf->SetRightMargin(0);
-		// $this->pdf->SetY(-23);
-
-	 	//    $this->pdf->SetTextColor(83,83,83);
-		// $this->pdf->SetFillColor(204,211,211);
-		// $this->pdf->SetFont('Arial','I',11);
-		// $y = $this->pdf->GetY();
-		// $this->pdf->Rect(0, $y, $this->pdf->GetPageWidth(), 25, 'F');
-		// $texto = '* Recomendaciones: ' . ucfirst(strtolower($consulta['indicaciones_dieta']));
-
-		// $this->pdf->SetLeftMargin(10);
-		// $this->pdf->SetRightMargin(70);
-		// $this->pdf->SetXY(10,$y+3);
-		// //$this->pdf->MultiCell(0, 25, utf8_decode($texto), 0, 'L', false);
-		// $this->pdf->Write(5, utf8_decode($texto));
-
-		// $this->pdf->SetRightMargin(10);
-		// $this->pdf->SetFont('Arial','',17);
-		// $this->pdf->SetTextColor(0,0,0);
-		// $this->pdf->SetXY(155,$y+1);
-		// $this->pdf->Cell(60, 12, utf8_decode('PRÓXIMA CITA:'), 0, 'C', false);
-
-		// if(empty($consulta['prox_cita'])){
-		// 	$this->pdf->SetXY(167,$y+8);
-		// 	$this->pdf->Cell(60, 12, 'no tiene', 0, 'C', false);
-		// }else{
-		// 	$this->pdf->SetXY(163,$y+8);
-		// 	$this->pdf->Cell(60, 12, utf8_decode(date('d/m/Y',strtotime($consulta['prox_cita']))), 0, 'C', false);
-		// }
+	private function footerPlan($consulta, $margen, $configuracion){ 
 		$this->pdf->SetDrawColor(156,156,156);
 		$this->pdf->SetLineWidth(0);
 		$posYRectangulos = 20; // ($this->pdf->GetPageHeight()/2) + 15;
@@ -921,15 +891,15 @@ class PlanAlimentario extends CI_Controller {
 		$this->pdf->AddPage();
     	$this->pdf->SetMargins(0, 10, 10);
     	$this->pdf->SetAutoPageBreak(false);
-
+    	$variablePosY = 0;
     	//header
     	$this->headerPlan($paciente, $consulta, $configuracion);
 
 	    //body	    
 		if($consulta['tipo_dieta'] == 'SG' || $consulta['tipo_dieta'] == 'CG'){ // SIMPLE GENERAL - COMPUESTO GENERAL 
 			$plan = $arrayPlan[1];
-			$altoBloque =  ($this->pdf->GetPageHeight() - (18+23)) / 3; //total alto pagina - header - footer
-			foreach ($plan['turnos'] as $key => $turno) {
+			$altoBloque =  ( $this->pdf->GetPageHeight() - (18+23) ) / 3; //total alto pagina - header - footer
+			foreach ($plan['turnos'] as $key => $turno) { 
 				if($turno['id'] % 2 != 0){
 					$this->pdf->SetTextColor(255,255,255);
 					if($turno['id']==1){
@@ -973,7 +943,8 @@ class PlanAlimentario extends CI_Controller {
 							array('r'=> 255, 'g'=> 255, 'b'=> 255 ) 
 						)
 					);
-					// $data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$fontSize=FALSE
+					// $data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$fontSize=FALSE 
+					$positionY = $this->pdf->GetY(); 
 					$this->pdf->Row($arrTurno['data'],true,0,FALSE,6,$arrTurno['textColor'],$arrTurno['bgColor'],FALSE,FALSE,$arrTurno['fontSize']);
 			    	$this->pdf->Ln(1);
 			    	$this->pdf->SetTextColor(83,83,83);
@@ -1012,6 +983,7 @@ class PlanAlimentario extends CI_Controller {
 			    	if($consulta['tipo_dieta'] == 'SG'){ // SIMPLE GENERAL 
 			    		$this->pdf->SetDrawColor($r,$g,$b);
 			    		$this->pdf->SetLineWidth(1.2);
+			    		$this->pdf->SetY($positionY+48+$variablePosY); 
 			    		//var_dump( $this->pdf->GetX(),$this->pdf->GetY() ); exit(); 
 			    		$this->pdf->Line($this->pdf->GetX(),$this->pdf->GetY(),200,$this->pdf->GetY());
 			    		$this->pdf->SetWidths(array(80, 30));
@@ -1023,7 +995,8 @@ class PlanAlimentario extends CI_Controller {
 						);
 						$this->pdf->Ln(4);
 						// $data,$fill=FALSE,$border=0,$arrBolds=FALSE,$heigthCell=FALSE,$arrTextColor=FALSE,$arrBGColor=FALSE,$arrImage=FALSE,$bug=FALSE,$arrFontSize=FALSE
-						
+						//$positionY = $this->pdf->GetY(); 
+
 						$this->pdf->Row($arrTurno['data'],true,0,FALSE,6); 
 						$this->pdf->SetFont('Arial','',11);
 			    		$this->pdf->MultiCell(0, 7, '    '.utf8_decode($turno['indicaciones']));
@@ -1055,6 +1028,7 @@ class PlanAlimentario extends CI_Controller {
 			    	$this->pdf->Ln(2);
 			    	$this->pdf->SetLeftMargin(0);
 			    	$this->pdf->Ln(5);
+			    	$variablePosY += 5;
 				}
 			}
 
