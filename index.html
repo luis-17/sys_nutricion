@@ -12,7 +12,7 @@
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#1199d3">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
+    <link rel="icon" type="image/jpeg" href="favicon.jpg" />
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
@@ -30,18 +30,13 @@
     <link rel="stylesheet" href="bower_components/pnotify/pnotify.buttons.css" />
     <link rel="stylesheet" href="bower_components/pnotify/pnotify.history.css" />
 
-    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css" />
     <link rel="stylesheet" href="bower_components/dragular/dist/dragular.min.css" />
-    <link rel="stylesheet" href="bower_components/morris.js/morris.css" />
-    <link rel="stylesheet" href="bower_components/rickshaw/rickshaw.css" />
     <link rel="stylesheet" href="bower_components/angularjs-slider/dist/rzslider.css" />
     <link rel="stylesheet" href="bower_components/angular-bootstrap-colorpicker/css/colorpicker.css" />
     <link rel="stylesheet" href="bower_components/chosen/chosen.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" href="bower_components/ng-img-crop/compile/minified/ng-img-crop.css" />
-    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
     <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
-    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
     <link rel="stylesheet" href="assets/plugins/angular-block/angular-block-ui.min.css"/>
 
@@ -134,15 +129,11 @@
     <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
     <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
     <script src="bower_components/jquery.sparkline/index.js"></script>
-    <script src="bower_components/angular-bootstrap-nav-tree/dist/abn_tree_directive.js"></script>
-    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
     <script src="bower_components/angular-ipsum/dist/ipsum.min.js"></script>
     <script src="bower_components/dragular/dist/dragular.min.js"></script>
     <script src="bower_components/chart.js/dist/Chart.js"></script>
     <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <script src="bower_components/jquery.easy-pie-chart/dist/angular.easypiechart.js"></script>
-    <script src="bower_components/morris.js/morris.js"></script>
-    <script src="bower_components/angular-morris/build/module/angular-morris/angular-morris.min.js"></script>
     <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.js"></script>
 
     <script src="bower_components/pnotify/pnotify.core.js"></script>
@@ -153,9 +144,6 @@
     <script src="bower_components/pnotify/pnotify.history.js"></script>
     <script src="bower_components/pnotify/pnotify.nonblock.js"></script>
     
-    <script src="bower_components/d3/d3.js"></script>
-    <script src="bower_components/rickshaw/rickshaw.js"></script>
-    <script src="bower_components/angular-rickshaw/rickshaw.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
     <script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
     <script src="bower_components/angular-touchspin/dist/angular-touchspin.js"></script>
@@ -170,51 +158,15 @@
     <script src="bower_components/ng-img-crop/compile/minified/ng-img-crop.js"></script>
     <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <script src="bower_components/angular-ui-grid/ui-grid.min.js"></script>
-    <script src="bower_components/ng-table/dist/ng-table.js"></script>
     <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
     <script src="bower_components/footable/dist/footable.all.min.js"></script>
     <script src="bower_components/angular-footable/dist/angular-footable.js"></script>
     <script src="bower_components/mixitup2/dist/mixitup.min.js"></script>
     <script src="bower_components/intro.js/intro.js"></script>
     <script src="bower_components/angular-intro.js/src/angular-intro.js"></script>
-    <script src="bower_components/jqvmap/dist/jquery.vmap.min.js"></script>
-    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.usa.js"></script>
-    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.europe.js"></script>
-    <script src="bower_components/jqvmap/dist/maps/jquery.vmap.germany.js"></script>
-    <script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
-    <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
-    <script src="bower_components/leaflet.editable/src/Leaflet.Editable.js"></script>
-    <script src="bower_components/leaflet-heat/dist/leaflet-heat.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Distance.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Layers.Load.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Permalink.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Permalink.Layer.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Permalink.Line.js"></script>
-    <script src="bower_components/leaflet-plugins/control/Permalink.Marker.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/Icon.Canvas.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/Layer.Deferred.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/Marker.Rotate.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/Marker.Text.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/OpenStreetBugs.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/vector/GPX.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/vector/GPX.Speed.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/vector/KML.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/vector/OSM.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/tile/Bing.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/tile/Google.js"></script>
-    <script src="bower_components/leaflet-plugins/layer/tile/Yandex.js"></script>
     <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
     <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script src="bower_components/gauge.js/dist/gauge.min.js"></script>
-    <script src="bower_components/angular-flot/angular-flot.js"></script>
-    <script src="bower_components/Flot/jquery.flot.js"></script>
-    <script src="bower_components/Flot/jquery.flot.resize.js"></script>
-    <script src="bower_components/Flot/jquery.flot.stack.js"></script>
-    <script src="bower_components/Flot/jquery.flot.pie.js"></script>
-    <script src="bower_components/flot-spline/js/jquery.flot.spline.js"></script>
-    <script src="bower_components/flot.tooltip/js/jquery.flot.tooltip.js"></script>
     <!-- endbower -->
     <script src="assets/plugins/highcharts/code/highcharts.src.js"></script>
     <script src="assets/plugins/highcharts/code/themes/grid-light.js"></script>
@@ -270,7 +222,6 @@
     <script src="app/components/directives/minotaur-tile-close.directive.js"></script>
     <script src="app/components/directives/minotaur-loading.directive.js"></script>
     <script src="app/components/directives/magnific-popup.directive.js"></script>
-    <script src="app/components/directives/leaflet.directive.js"></script>
     <script src="app/components/directives/keypress-escape.directive.js"></script>
     <script src="app/components/directives/input-mask.directive.js"></script>
     <script src="app/components/directives/gaugejs-chart.directive.js"></script>

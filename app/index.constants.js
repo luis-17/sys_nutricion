@@ -7,7 +7,7 @@
     .module('minotaur')
     .constant('moment', moment)
     .constant('_', window._)
-    .constant('L', L);
-  /*esling-enable*/
+    /*.constant('L', L);
+  esling-enable*/
 
 })();
