@@ -21542,7 +21542,7 @@ minotaur-header {
   will-change: transform;
   /* for high resolution display */ }
   minotaur-header .navbar-header .navbar-brand {
-    background: url(../assets/images/logo.png) no-repeat 0 13px;
+    /*background: url(../assets/images/logo.png) no-repeat 0 13px;*/
     font-size: 24px;
     color: #fff;
     font-family: "Raleway", "Arial", sans-serif;

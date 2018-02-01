@@ -10,7 +10,7 @@ function mostrar_plantilla_pdf($obj,$titulo,$subTitulo = false,$tituloAbr=false,
     }
     $obj->setNombreEmpresa($fConfig['razon_social']);
     $obj->setDireccion($fConfig['domicilio_fiscal']); //var_dump($fConfig['domicilio_fiscal']); exit();
-    $obj->setImagenCab('assets/img/dinamic/empresa/'.$fConfig['nombre_logo']);
+    $obj->setImagenCab($this->sessionVP['directorio'].'empresa/'.$fConfig['nombre_logo']);
     $obj->setTitulo($titulo);
     $obj->setTituloAbr($tituloAbr);
     $obj->setEstado($arrConfig['estado']);

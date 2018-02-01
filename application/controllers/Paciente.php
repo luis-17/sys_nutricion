@@ -6,7 +6,7 @@ class Paciente extends CI_Controller {
     {
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
+        $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
         $this->load->helper(array('fechas','otros','imagen'));
         $this->load->model(array('model_paciente','model_consulta','model_tipoCliente'));
         $this->load->library('Fpdfext');
@@ -21,7 +21,7 @@ class Paciente extends CI_Controller {
 		// var_dump($lista); exit();
 		foreach ($lista as $row) {
 			if ($row['nombre_foto'] == '' ||
-				!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+				!file_exists($this->sessionVP['directorio']."pacientes/" . $row['nombre_foto'])){
 				$foto = 'sin-imagen.png';
 			}else{
 				$foto = $row['nombre_foto'];
@@ -78,7 +78,7 @@ class Paciente extends CI_Controller {
 		// var_dump($allInputs); exit();
 		$row = $this->model_paciente->m_cargar_paciente_por_id($allInputs);
 		if ($row['nombre_foto'] == '' ||
-			!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+			!file_exists($this->sessionVP['directorio']."pacientes/" . $row['nombre_foto'])){
 			$foto = 'sin-imagen.png';
 		}else{
 			$foto = $row['nombre_foto'];
@@ -129,7 +129,7 @@ class Paciente extends CI_Controller {
 		// var_dump($allInputs); exit();
 		$row = $this->model_paciente->m_cargar_paciente_por_nombre($allInputs);
 		if ($row['nombre_foto'] == '' ||
-			!file_exists("./assets/images/dinamic/pacientes/" . $row['nombre_foto'])){
+			!file_exists($this->sessionVP['directorio']."pacientes/" . $row['nombre_foto'])){
 			$foto = 'sin-imagen.png';
 		}else{
 			$foto = $row['nombre_foto'];
@@ -619,7 +619,7 @@ class Paciente extends CI_Controller {
 		// var_dump($this->input->post('fecha_nacimiento'));
     	if(!empty($allInputs['Base64Img'])){
     		$allInputs['nombre_foto'] = $allInputs['nombre'].date('YmdHis').'.png';
-    		subir_imagen_Base64($allInputs['Base64Img'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['Base64Img'], $this->sessionVP['directorio'].'pacientes/' ,$allInputs['nombre_foto']);
 
     	}
     	// INICIA EL REGISTRO
@@ -640,7 +640,7 @@ class Paciente extends CI_Controller {
     	if(!empty($allInputs['croppedImage'])){
     		$allInputs['nombre_foto'] = url_title($allInputs['nombre']).date('YmdHis').'.png';
 
-    		subir_imagen_Base64($allInputs['croppedImage'], 'assets/images/dinamic/pacientes/' ,$allInputs['nombre_foto']);
+    		subir_imagen_Base64($allInputs['croppedImage'], $this->sessionVP['directorio'].'pacientes/' ,$allInputs['nombre_foto']);
     		if($this->model_paciente->m_editar_foto($allInputs)){
 	    		$arrData['message'] = 'La foto se cambió correctamente';
 	    		$arrData['flag'] = 1;
@@ -657,8 +657,8 @@ class Paciente extends CI_Controller {
 		$arrData['message'] = 'Error al eliminar la foto, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
-		if( file_exists("./assets/images/dinamic/pacientes/" . trim($allInputs['nombre_foto'])) ){
-			unlink("./assets/images/dinamic/pacientes/" . trim($allInputs['nombre_foto']));
+		if( file_exists($this->sessionVP['directorio']."pacientes/" . trim($allInputs['nombre_foto'])) ){
+			unlink($this->sessionVP['directorio']."pacientes/" . trim($allInputs['nombre_foto']));
 		}
 
 		$allInputs['nombre_foto'] = NULL;
@@ -946,11 +946,11 @@ class Paciente extends CI_Controller {
 
 
 		$timestamp = date('YmdHis');
-		$result = $this->pdf->Output( 'F','assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
+		$result = $this->pdf->Output( 'F',$this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf' );
 
-		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$arrData['urlTempPDF'] = $this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf';
 	    // $arrData = array(
-	    //   'urlTempPDF'=> 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf'
+	    //   'urlTempPDF'=> $this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf'
 	    // );
 
 		$this->output

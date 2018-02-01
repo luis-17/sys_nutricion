@@ -85,7 +85,7 @@
       }
       return pageLoading;
     })
-    .factory("handle", function(alertify){
+    .factory("handle", function(alertify,$state){ 
       var handle = {
         error: function (error) {
                       return function () {
@@ -94,23 +94,29 @@
         },
         success: function (response) {
             //console.log('response.data',response.data);
-            if(response.data.flag == 'session_expired'){
+            if(response.data.flag == 'session_expired'){ 
               alertify.okBtn("CLICK AQUI")
                       .cancelBtn("Cerrar")
                       .confirm(response.data.message, 
                         function (ev) {                      
-                          var dir = window.location.href.split('app')[0];
-                          window.location.href = dir + 'app/pages/login';
+                          //var dir = window.location.href.split('app')[0];
+                          //window.location.href = dir + 'app/pages/login';
+                          var url = $state.href('pages.login'); 
+                          window.open(url,'_self'); 
+                          $('.alertify').remove();
                         }
                       );
             }
-            if(response.data.flag == 'pay_expired'){
-              alertify.okBtn("CLICK AQUI")
-                      .cancelBtn("Cerrar")
+            if(response.data.flag == 'pay_expired'){ 
+              alertify.okBtn("CLICK AQUI") 
+                      .cancelBtn("Cerrar") 
                       .confirm(response.data.message, 
-                        function (ev) {                      
-                          var dir = window.location.href.split('app')[0];
-                          window.location.href = dir + 'app/pages/login';
+                        function (ev) { 
+                          var url = $state.href('pages.login'); 
+                          window.open(url,'_self'); 
+                          $('.alertify').remove();
+                          // var dir = window.location.href.split('app')[0];
+                          // window.location.href = dir + 'app/pages/login';
                         }
                       );
             }

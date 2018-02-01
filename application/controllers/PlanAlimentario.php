@@ -752,7 +752,7 @@ class PlanAlimentario extends CI_Controller {
 	}
 
 	private function headerPlan($paciente, $consulta, $configuracion){
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8);
+		$this->pdf->Image($this->sessionVP['directorio'] . $configuracion['logo_imagen'],8,8);
 		$this->pdf->SetFont('Arial','',14);
 		$this->pdf->SetTextColor(83,83,83);
 		$this->pdf->Cell(0,5,utf8_decode('PLAN DE ALIMENTACIÓN') ,0,1,'C');
@@ -832,7 +832,7 @@ class PlanAlimentario extends CI_Controller {
 		$profesional = 'Lic. ' . ucwords(strtolower_total(utf8_decode($consulta['nombre'] . ' ' . $consulta['apellidos'] )));
 		$this->pdf->MultiCell(0,6,$profesional,0,'L',FALSE);
 		$this->pdf->Cell(0,6,'CNP: ' . $consulta['num_colegiatura'],0,1,'L',FALSE);
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],152,112,0,25); 
+		$this->pdf->Image($this->sessionVP['directorio'] . $configuracion['logo_imagen'],152,112,0,25); 
 	}
 	// correo 
 	public function generar_pdf_plan(){
@@ -1187,7 +1187,7 @@ class PlanAlimentario extends CI_Controller {
 
     	//salida
 		$timestamp = date('YmdHis');
-		$nombreArchivo = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$nombreArchivo = $this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf';
 		$result = $this->pdf->Output( 'F', $nombreArchivo);
 
 		$arrData['urlTempPDF'] = $nombreArchivo;

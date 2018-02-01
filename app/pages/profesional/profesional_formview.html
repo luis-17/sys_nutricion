@@ -163,7 +163,7 @@
 			    <div class="form-group col-md-3" ng-if="mp.modoEdicion">
 			      	<h4 class="text-info f-14 col-sm-12">Foto</h4>
 				    <div class="text-center" ng-if="!mp.fotoCrop">
-				        <img ng-src="assets/images/dinamic/profesionales/{{mp.fData.nombre_foto}}" ng-click="mp.cargarImagen();" style="width: 100%">
+				        <img ng-src="{{fSessionCI.directorio}}profesionales/{{mp.fData.nombre_foto}}" ng-click="mp.cargarImagen();" style="width: 100%">
 				    </div>
 				    <div class="row" ng-show="mp.fotoCrop">
 				        <div class="col-md-12">

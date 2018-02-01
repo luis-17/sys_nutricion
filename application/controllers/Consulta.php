@@ -292,8 +292,8 @@ class Consulta extends CI_Controller {
     	$this->pdf->SetAutoPageBreak(false);
 		$this->pdf->SetFont('Arial','',13);		
 
-		/*header*/
-		$this->pdf->Image('assets/images/dinamic/' . $configuracion['logo_imagen'],8,8);
+		/*header */
+		$this->pdf->Image( $this->sessionVP['directorio'] . $configuracion['logo_imagen'],8,8);
 		$this->pdf->Cell(0,6,utf8_decode('ID: ' . str_pad($consulta['idcita'], 5, "0", STR_PAD_LEFT)),0,1,'R');
 		$this->pdf->Cell(0,6,utf8_decode('Fecha: ' . date('d/m/Y',strtotime($consulta['fecha_atencion']))) ,0,1,'R');
 		/*paciente*/
@@ -355,9 +355,9 @@ class Consulta extends CI_Controller {
 
 		/*output*/
 		$timestamp = date('YmdHis');
-		$nombreArchivo = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$nombreArchivo = $this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf';
 		$result = $this->pdf->Output( 'F', $nombreArchivo ); 
-		$arrData['urlTempPDF'] = 'assets/images/dinamic/pdfTemporales/tempPDF_'. $timestamp .'.pdf';
+		$arrData['urlTempPDF'] = $this->sessionVP['directorio'].'pdfTemporales/tempPDF_'. $timestamp .'.pdf';
 
 		if($enviarCorreo){
 			$nombrePaciente = ucwords(strtolower_total($paciente['paciente']));
@@ -615,7 +615,7 @@ class Consulta extends CI_Controller {
 		}else if($imc >= 40){
 			$posXFlechaIMC = ($anchoColor * 5) + ($anchoColor/2);
 		}	
-		$this->pdf->Image('assets/images/dinamic/flechaAbajoRoja.png',$posXFlechaIMC+$margen-4);
+		$this->pdf->Image('assets/images/flechaAbajoRoja.png',$posXFlechaIMC+$margen-4);
 
 		$this->pdf->Ln();		
 		$this->pdf->SetXY($margen, $this->pdf->GetY()-4);
@@ -654,7 +654,7 @@ class Consulta extends CI_Controller {
 			$posXFlechaGrasa = round(((float)$consulta['porc_masa_grasa'] * ($anchoPuntaje * 12)) /60 );
 		}		
 		$this->pdf->Ln(6);
-		$this->pdf->Image('assets/images/dinamic/flechaAbajoVerde.png',$posXFlechaGrasa+$margen);
+		$this->pdf->Image('assets/images/flechaAbajoVerde.png',$posXFlechaGrasa+$margen);
 
 		$this->pdf->Ln();		
 		$this->pdf->SetXY($margen, $this->pdf->GetY()-4);
@@ -682,7 +682,7 @@ class Consulta extends CI_Controller {
 
 		$posXFlechaGrasa = round(((float)$consulta['puntaje_grasa_visceral'] * ($anchoPuntaje * 20)) /20 );				
 		$this->pdf->Ln(6);
-		$this->pdf->Image('assets/images/dinamic/flechaAbajoVerde.png',$posXFlechaGrasa+$margen);
+		$this->pdf->Image('assets/images/flechaAbajoVerde.png',$posXFlechaGrasa+$margen);
 
 		$this->pdf->Ln();
 		$this->pdf->SetXY($margen, $this->pdf->GetY()-4);
@@ -725,7 +725,7 @@ class Consulta extends CI_Controller {
 		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
 
 		$timestamp = date('YmdHis');
-		$nombre = "assets/images/dinamic/pdfTemporales/imagePeso". $timestamp .".png";
+		$nombre = $this->sessionVP['directorio']."pdfTemporales/imagePeso". $timestamp .".png";
 		$myPicture->render($nombre);
 
 		//inserto grafico a pdf
@@ -762,8 +762,8 @@ class Consulta extends CI_Controller {
 		$myPicture->drawLineChart();
 		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
 
-		$timestamp = date('YmdHis');
-		$nombre = "assets/images/dinamic/pdfTemporales/imageImc". $timestamp .".png";
+		$timestamp = date('YmdHis'); 
+		$nombre = $this->sessionVP['directorio']."pdfTemporales/imageImc". $timestamp .".png";
 		$myPicture->render($nombre);
 
 		//inserto grafico a pdf
@@ -799,7 +799,7 @@ class Consulta extends CI_Controller {
 		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
 
 		$timestamp = date('YmdHis');
-		$nombre = "assets/images/dinamic/pdfTemporales/imageGrasa". $timestamp .".png";
+		$nombre = $this->sessionVP['directorio']."pdfTemporales/imageGrasa". $timestamp .".png";
 		$myPicture->render($nombre);
 
 		//inserto grafico a pdf
@@ -836,7 +836,7 @@ class Consulta extends CI_Controller {
 		$myPicture->drawPlotChart(array("DisplayValues"=>TRUE,"PlotBorder"=>TRUE,"BorderSize"=>2,"Surrounding"=>-60,"BorderAlpha"=>80));
 
 		$timestamp = date('YmdHis');
-		$nombre = "assets/images/dinamic/pdfTemporales/imageMasa". $timestamp .".png";
+		$nombre = $this->sessionVP['directorio']."pdfTemporales/imageMasa". $timestamp .".png";
 		$myPicture->render($nombre);
 
 		//inserto grafico a pdf

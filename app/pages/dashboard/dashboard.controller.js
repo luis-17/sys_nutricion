@@ -10,20 +10,31 @@
     var vm = this;
     vm.fData = {};
     vm.listaProxCitas = [];  
-    CitasServices.sListarProximasCitas().then(function(rpta) {
-      if( rpta.flag == 1 ){
-        vm.listaProxCitas = rpta.datos; 
-      }else{
-        vm.listaProxCitas = [];  
+    vm.listarProxCitas = function() { 
+      CitasServices.sListarProximasCitas().then(function(rpta) {
+        if( rpta.flag == 1 ){
+          vm.listaProxCitas = rpta.datos; 
+        }else{
+          vm.listaProxCitas = [];  
+        }
+      });
+    }
+    vm.listarInformeGeneral = function() { 
+      InformeGeneralServices.sListarInformeGeneral().then(function(rpta) {
+        if( rpta.flag == 1 ){ 
+          vm.fData.cantPacAtendidos = rpta.datos.pac_atendidos.cantidad;
+          vm.fData.cantAteRealizadas = rpta.datos.atenciones_realizadas.cantidad;
+        }else{
+          vm.fData = {};
+        }
+      });
+    }
+    $timeout(function() { 
+      if( $scope.fSessionCI.idusuario ){ 
+        vm.listarProxCitas(); 
+        vm.listarInformeGeneral();
       }
-    });
-    InformeGeneralServices.sListarInformeGeneral().then(function(rpta) {
-      if( rpta.flag == 1 ){ 
-        vm.fData.cantPacAtendidos = rpta.datos.pac_atendidos.cantidad;
-        vm.fData.cantAteRealizadas = rpta.datos.atenciones_realizadas.cantidad;
-      }else{
-        vm.fData = {};
-      }
-    });
+    },1000);
+    
   }
 })();
