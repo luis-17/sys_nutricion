@@ -479,3 +479,10 @@ highchart {
   border: 1px solid #e5e5e5;
   float: left;
 }
+.introjs-button:hover {
+    border-color: #1199d3;
+    color: #1199d3;
+}
+.introjs-nextbutton:focus, .introjs-nextbutton:active, .introjs-prevbutton:focus, .introjs-prevbutton:active {
+    color: #1199d3;
+}

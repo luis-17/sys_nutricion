@@ -38,6 +38,11 @@
 	              <td>{{ item.paciente }}</td>
 	              <td>{{ item.canal }}</td>
 	            </tr> 
+	            <tr ng-if="ds.listaProxCitas.length < 1">
+	              <td colspan="4" class="text-center"> No hay próximas citas registradas. 
+	              	<a href="" ng-click="goToUrl('/app/citas','nueva-cita');" class="text-info"> Reservar cita </a> 
+	              </td>
+	            </tr> 
             </tbody>
           </table>
         </section>

@@ -2,6 +2,7 @@
 class Model_usuario extends CI_Model {
 	public function __construct()
 	{
+		$this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
 		parent::__construct();
 	}
 	public function m_cargar_usuario_disponible(){
@@ -36,6 +37,7 @@ class Model_usuario extends CI_Model {
 	{
 		$this->db->select('mostrar_info_cobro'); 
 		$this->db->from('usuario');
+		$this->db->where('idusuario',$this->sessionVP['idusuario']);
 		$this->db->limit(1);		
 		return $this->db->get()->row_array();
 	}
@@ -84,6 +86,13 @@ class Model_usuario extends CI_Model {
 		$this->db->where("pass",do_hash($datos['passAnt'],'md5'));		
 		return $this->db->get()->result_array();		
 	}			
-	
+	public function m_actualizar_intro_no_mostrar()
+	{
+		$data = array(
+			'mostrar_intro' => 2 
+		);
+		$this->db->where('idusuario',$this->sessionVP['idusuario']);
+		return $this->db->update('usuario', $data);
+	}
 }
 ?>

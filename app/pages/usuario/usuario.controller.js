@@ -17,7 +17,8 @@
         sAnularUsuario: sAnularUsuario,
         sListaUsuarioAutocomplete: sListaUsuarioAutocomplete, 
         sMostrarUsuarioID: sMostrarUsuarioID,
-        sCambiarClave: sCambiarClave           
+        sCambiarClave: sCambiarClave,
+        sActualizarIntroNoMostrar: sActualizarIntroNoMostrar 
     });
     function sListarUsuario(pDatos) {
       var datos = pDatos || {};
@@ -75,6 +76,13 @@
             data : datos
       });
       return (request.then(handle.success,handle.error));
-    }     
+    } 
+    function sActualizarIntroNoMostrar() { 
+      var request = $http({
+            method : "post",
+            url : angular.patchURLCI+"Usuario/actualizar_intro_no_mostrar" 
+      });
+      return (request.then(handle.success,handle.error));
+    }
   }
 })();

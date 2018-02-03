@@ -11,6 +11,7 @@ class Model_plan_plantilla extends CI_Model {
     	$this->db->select('pd.idplantilladieta, pd.nombre_pd, pd.observacion, pd.estado_pd');
     	$this->db->from('plantilla_dieta pd');
     	$this->db->where('tipo_pd',$datos['tipo']);
+    	$this->db->where('pd.idconfiguracion', $this->sessionVP['idconfiguracion']);
     	$this->db->where('estado_pd',1); // activo 
     	return $this->db->get()->result_array();
     } 
@@ -21,8 +22,6 @@ class Model_plan_plantilla extends CI_Model {
 		$this->db->select('pdt.idplantilladieta, pdt.idplantilladietaturno, pdt.hora, pdt.indicaciones',FALSE);		
 		$this->db->from('turno t, dia d'); 
 		$this->db->join('plantilla_dieta_turno pdt', 't.idturno = pdt.idturno AND (d.iddia = pdt.iddia or pdt.iddia is null) AND pdt.idplantilladieta = '.$datos['plantilla']['id'],'left'); 
-		//$this->db->join('plantilla_dieta pd', 'pdt.idplantilladieta = pd.idplantilladieta AND pd.estado_pd = 1','left'); 
-		// $this->db->where('pdt.idplantilladieta',$datos['plantilla']['id']); // idplantilladieta
 		$this->db->where('t.estado_tu',1); 
 		// $this->db->where('pd.estado_pd',1); 
 		$this->db->order_by('d.iddia ASC, t.idturno ASC'); 
@@ -33,6 +32,7 @@ class Model_plan_plantilla extends CI_Model {
     	$data = array(
 			'nombre_pd' => $datos['nombre'],
 			'observacion' => empty($datos['descripcion']) ? NULL : $datos['descripcion'],
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],
 			'tipo_pd' => $datos['tipo']
 		);
 		return $this->db->insert('plantilla_dieta', $data); 

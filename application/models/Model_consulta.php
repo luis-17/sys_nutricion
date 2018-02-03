@@ -51,6 +51,7 @@ class Model_consulta extends CI_Model {
 			'grasa_para_objetivo' 	=> (empty($datos['consulta']['grasa_para_objetivo'])) ? NULL : $datos['consulta']['grasa_para_objetivo'],
 			'masa_muscular_objetivo'=> (empty($datos['consulta']['masa_muscular_para_objetivo'])) ? NULL : $datos['consulta']['masa_muscular_para_objetivo'],
 			// AUDITORIA 
+			'idconfiguracion'		=> $this->sessionVP['idconfiguracion'],
 			'createdat' 			=> date('Y-m-d H:i:s'),
 			'updatedat'				=> date('Y-m-d H:i:s')
 			);
@@ -126,13 +127,13 @@ class Model_consulta extends CI_Model {
 			at.masa_muscular_objetivo, at.grasa_para_objetivo, at.kg_masa_libre, at.resultados_laboratorio, at.indicaciones_dieta, at.tipo_dieta');
 		$this->db->select('at.idproxcita, c.fecha as prox_cita');
 		$this->db->select("pr.nombre, pr.apellidos, pr.num_colegiatura", FALSE);
-
 		$this->db->from('atencion at');
 		$this->db->join('cita c', 'c.idcita = at.idproxcita', 'left');
 		$this->db->join('cita cc', 'cc.idcita = at.idcita');
 		$this->db->join('profesional pr', 'cc.idprofesional = pr.idprofesional', 'left');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idatencion', (int)$idatencion);
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		return $this->db->get()->row_array();
 	}
 	public function m_cargar_ultima_atencion($idcliente){
@@ -141,11 +142,11 @@ class Model_consulta extends CI_Model {
 			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral');
-
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral'); 
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idcliente', $idcliente);
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->order_by('fecha_atencion', 'DESC');
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
@@ -157,12 +158,12 @@ class Model_consulta extends CI_Model {
 			at.cm_antebrazo, at.cm_cintura, at.cm_abdomen, at.cm_cadera_gluteo, at.cm_muslo, at.cm_hombros, at.cm_biceps_relajados,
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral');
-
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral'); 
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idcliente', $idcliente);
 		$this->db->where('fecha_atencion <', $fecha_atencion);
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->order_by('fecha_atencion', 'DESC');
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
@@ -175,10 +176,10 @@ class Model_consulta extends CI_Model {
 			at.cm_biceps_contraidos, at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital, at.cm_bicipital,
 			at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco, at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
 			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.fecha_atencion,at.kg_masa_grasa, at.puntaje_grasa_visceral');
-
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idcliente', $idcliente);
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->order_by('fecha_atencion', 'ASC');
 		$this->db->limit(1);
 		return $this->db->get()->row_array();
@@ -196,9 +197,9 @@ class Model_consulta extends CI_Model {
 			at.cm_bicipital,at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco,
 			at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
 			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral');
-
 		$this->db->from('atencion at');
 		$this->db->where('at.estado_atencion', 1);
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where('at.idcliente', $idcliente);
 
 		if($fecha_maxima){

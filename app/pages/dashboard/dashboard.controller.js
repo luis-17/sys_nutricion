@@ -9,7 +9,7 @@
   function DashboardController($scope,$uibModal,$timeout,$filter, pinesNotifications, pageLoading, CitasServices, InformeGeneralServices) {
     var vm = this;
     vm.fData = {};
-    vm.listaProxCitas = [];  
+    vm.listaProxCitas = []; 
     vm.listarProxCitas = function() { 
       CitasServices.sListarProximasCitas().then(function(rpta) {
         if( rpta.flag == 1 ){
@@ -26,6 +26,8 @@
           vm.fData.cantAteRealizadas = rpta.datos.atenciones_realizadas.cantidad;
         }else{
           vm.fData = {};
+          vm.fData.cantPacAtendidos = 0;
+          vm.fData.cantAteRealizadas = 0;
         }
       });
     }

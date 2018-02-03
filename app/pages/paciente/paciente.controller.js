@@ -25,98 +25,101 @@
     vm.previo2 = false;
     var openedToasts = [];
     // LISTA DE TABS DE LA FICHA
-      vm.templates = [
-        { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
-        { tab: 'Datos Personales', url: 'app/pages/paciente/ficha_datos_personales.html'},
-        { tab: 'Antecedentes', url: 'app/pages/paciente/ficha_antecedentes.html'},
-        { tab: 'Hábitos', url: 'app/pages/paciente/ficha_habitos.html'},
-        { tab: 'Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
-        { tab: 'Planes Alimentarios', url: 'app/pages/paciente/ficha_planes.html'},
-      ];
-      // LISTAS VARIAS
-      vm.listaSexos = [
-        { id:'', descripcion:'--Seleccione sexo--' },
-        { id:'M', descripcion:'MASCULINO' },
-        { id:'F', descripcion:'FEMENINO' }
-      ];
-      vm.actividadFisica = [
-        { id: 'NR', descripcion: 'No realiza' },
-        { id: 'LE', descripcion: 'Leve' },
-        { id: 'MO', descripcion: 'Moderado' },
-      ];
-      vm.frecuencia = [
-        { id: '', descripcion: '--' },
-        { id: '1s', descripcion: 'Una vez a la semana' },
-        { id: '2s', descripcion: 'Dos veces a la semana' },
-        { id: '3s', descripcion: 'Tres veces a la semana' },
-        { id: '4s', descripcion: 'Cuatro veces a la semana' },
-        { id: '5s', descripcion: 'Cinco veces a la semana' },
-        { id: '6s', descripcion: 'Seis veces a la semana' },
-        { id: 'all', descripcion: 'Todos los días' },
-      ];
-      vm.consumoAgua = [
-        { id: '-2L', descripcion : 'Menos de 2L' },
-        { id: '2L', descripcion : '2L' },
-        { id: '+2L', descripcion : 'Mas de 2L' },
-      ];
-      vm.consumos = [
-        { id: 'NC', descripcion: 'No consume'},
-        { id: 'OC', descripcion: 'Ocasional'},
-        { id: 'FR', descripcion: 'Frecuente'},
-        { id: 'EX', descripcion: 'Excesivo'},
-      ]
-      vm.tiempoSuenio = [
-        { id: 'P', descripcion : 'Poco' },
-        { id: 'A', descripcion : 'Adecuado' },
-        { id: 'E', descripcion : 'Excesivo' },
-      ];
-      vm.listaHoras = [
-        { id: '--', descripcion: '--'},
-        { id: '01', descripcion: '01'},
-        { id: '02', descripcion: '02'},
-        { id: '03', descripcion: '03'},
-        { id: '04', descripcion: '04'},
-        { id: '05', descripcion: '05'},
-        { id: '06', descripcion: '06'},
-        { id: '07', descripcion: '07'},
-        { id: '08', descripcion: '08'},
-        { id: '09', descripcion: '09'},
-        { id: '10', descripcion: '10'},
-        { id: '11', descripcion: '11'},
-        { id: '12', descripcion: '12'},
-      ];
-      vm.listaMinutos = [
-        { id: '--', descripcion: '--'},
-        { id: '00', descripcion: '00'},
-        { id: '15', descripcion: '15'},
-        { id: '30', descripcion: '30'},
-        { id: '45', descripcion: '45'},
-      ];
-      vm.listaPeriodos = [
-        { id: 'am', descripcion: 'am'},
-        { id: 'pm', descripcion: 'pm'},
-      ];
+    vm.templates = [
+      { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
+      { tab: 'Datos Personales', url: 'app/pages/paciente/ficha_datos_personales.html'},
+      { tab: 'Antecedentes', url: 'app/pages/paciente/ficha_antecedentes.html'},
+      { tab: 'Hábitos', url: 'app/pages/paciente/ficha_habitos.html'},
+      { tab: 'Consultas', url: 'app/pages/paciente/ficha_consultas.html'},
+      { tab: 'Planes Alimentarios', url: 'app/pages/paciente/ficha_planes.html'},
+    ];
+    // LISTAS VARIAS
+    vm.listaSexos = [
+      { id:'', descripcion:'--Seleccione sexo--' },
+      { id:'M', descripcion:'MASCULINO' },
+      { id:'F', descripcion:'FEMENINO' }
+    ];
+    vm.actividadFisica = [
+      { id: 'NR', descripcion: 'No realiza' },
+      { id: 'LE', descripcion: 'Leve' },
+      { id: 'MO', descripcion: 'Moderado' },
+    ];
+    vm.frecuencia = [
+      { id: '', descripcion: '--' },
+      { id: '1s', descripcion: 'Una vez a la semana' },
+      { id: '2s', descripcion: 'Dos veces a la semana' },
+      { id: '3s', descripcion: 'Tres veces a la semana' },
+      { id: '4s', descripcion: 'Cuatro veces a la semana' },
+      { id: '5s', descripcion: 'Cinco veces a la semana' },
+      { id: '6s', descripcion: 'Seis veces a la semana' },
+      { id: 'all', descripcion: 'Todos los días' },
+    ];
+    vm.consumoAgua = [
+      { id: '-2L', descripcion : 'Menos de 2L' },
+      { id: '2L', descripcion : '2L' },
+      { id: '+2L', descripcion : 'Mas de 2L' },
+    ];
+    vm.consumos = [
+      { id: 'NC', descripcion: 'No consume'},
+      { id: 'OC', descripcion: 'Ocasional'},
+      { id: 'FR', descripcion: 'Frecuente'},
+      { id: 'EX', descripcion: 'Excesivo'},
+    ]
+    vm.tiempoSuenio = [
+      { id: 'P', descripcion : 'Poco' },
+      { id: 'A', descripcion : 'Adecuado' },
+      { id: 'E', descripcion : 'Excesivo' },
+    ];
+    vm.listaHoras = [
+      { id: '--', descripcion: '--'},
+      { id: '01', descripcion: '01'},
+      { id: '02', descripcion: '02'},
+      { id: '03', descripcion: '03'},
+      { id: '04', descripcion: '04'},
+      { id: '05', descripcion: '05'},
+      { id: '06', descripcion: '06'},
+      { id: '07', descripcion: '07'},
+      { id: '08', descripcion: '08'},
+      { id: '09', descripcion: '09'},
+      { id: '10', descripcion: '10'},
+      { id: '11', descripcion: '11'},
+      { id: '12', descripcion: '12'},
+    ];
+    vm.listaMinutos = [
+      { id: '--', descripcion: '--'},
+      { id: '00', descripcion: '00'},
+      { id: '15', descripcion: '15'},
+      { id: '30', descripcion: '30'},
+      { id: '45', descripcion: '45'},
+    ];
+    vm.listaPeriodos = [
+      { id: 'am', descripcion: 'am'},
+      { id: 'pm', descripcion: 'pm'},
+    ];
 
       // TIPO DE CLIENTE
       TipoClienteServices.sListarTipoClienteCbo().then(function (rpta) {
         vm.listaTiposClientes = angular.copy(rpta.datos);
-        vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+        if(vm.listaTiposClientes){
+          vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+        }
+        
         // if(vm.fData.idtipocliente == null){
         //   vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
         // }
       });
       // LISTA DE EMPRESAS
-      EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
-        vm.listaEmpresas = angular.copy(rpta.datos);
-        vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
-        // if(vm.fData.idempresa == null){
-        //   vm.fData.idempresa = vm.listaEmpresas[0].id;
-        // }
-      });
+      vm.listarEmpresasCbo = function() {
+        EmpresaServices.sListarEmpresaCbo().then(function (rpta) {
+          vm.listaEmpresas = angular.copy(rpta.datos);
+          vm.listaEmpresas.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
+        });
+      }
+      vm.listarEmpresasCbo(); 
       // LISTA MOTIVO CONSULTA
       MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
         vm.listaMotivos = angular.copy(rpta.datos);
-        vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione un opción--'});
+        vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
         // if(vm.fData.idmotivoconsulta == null){
         //   vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
         // }
@@ -147,8 +150,6 @@
         useExternalPagination: true,
         useExternalSorting: true,
         useExternalFiltering : true,
-        // showGridFooter: true,
-        // showColumnFooter: true,
         enableRowSelection: true,
         enableRowHeaderSelection: true,
         enableFullRowSelection: false,
@@ -167,6 +168,7 @@
          },
 
       ];
+
       vm.gridOptions.onRegisterApi = function(gridApi) {
         vm.gridApi = gridApi;
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
@@ -199,6 +201,8 @@
             paginationOptions.sortName = sortColumns[0].name;
           }
           vm.getPaginationServerSide(true);
+          console.log(grid.appScope,'grid.appScopegrid.appScope');
+          console.log(grid,'gridgridgrid');
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
@@ -227,7 +231,7 @@
           paginate : paginationOptions
         };
         PacienteServices.sListarPacientes(vm.datosGrid).then(function (rpta) { 
-          if( rpta.flag == 1 ){
+          if( rpta.flag == 1 || rpta.flag == 0 ){
             vm.gridOptions.data = rpta.datos;
             vm.gridOptions.totalItems = rpta.paginate.totalRows;
             vm.mySelectionGrid = [];
@@ -241,7 +245,7 @@
         });
       }
       //vm.getPaginationServerSide(true);
-    // MANTENIMIENTO
+      // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'app/pages/paciente/paciente_formview.html',
@@ -397,7 +401,14 @@
           }
         });
       }
-      vm.btnVerFicha = function(row){
+
+      // console.log($scope,'$scope');
+      // console.log();
+      // console.log($scope.metodos,'$scope.metodos');
+      if( angular.isUndefined($scope.metodos) ){
+        $scope.metodos = {};
+      }
+      $scope.metodos.btnVerFicha = function(row){
         vm.modoFicha = true;
         vm.checkOtro = false;
         vm.previo0 = true;
@@ -428,28 +439,25 @@
         vm.ficha = angular.copy(row);
         vm.ficha.cambiaPatologico = false;
         vm.ficha.cambiaHeredado = false;
-        var graph = angular.element(document).find('hc-chart');
-        console.log(graph,'graph');
+        // var graph = angular.element(document).find('hc-chart');
+        //console.log(graph,'graph');
         vm.cargarAntecedentes(row);
         vm.cargarHabitosAlimentarios(row);
         vm.cargarHabitos(row);
         vm.cargarEvolucion(row);
         vm.cargarConsultas(row);
         vm.cargarPlanes(row);
-
+        //vm.listarEmpresasCbo(); 
         vm.cambiaTipoCliente = function(){ 
-          console.log(vm.ficha.idtipocliente,'vm.ficha.idtipocliente'); 
           if(vm.ficha.idtipocliente == 3 ){ // CORPORATIVO 
-            //vm.ficha.idempresa = vm.listaEmpresas[0].id;
             vm.corp = true;
-          }else{
-            console.log(vm.listaEmpresas[0].id,'vm.listaEmpresas[0].id');
-            vm.ficha.idempresa = vm.listaEmpresas[0].id;
+          }else{ 
             vm.corp = false;
           }
         }
         vm.cambiaTipoCliente(); 
       }
+      vm.btnVerFicha = angular.copy($scope.metodos.btnVerFicha);
       vm.btnExternoVerFicha = function(event){
         //console.log(event);
         vm.externo = true;
@@ -458,15 +466,15 @@
           if(rpta.flag == 1){
             //console.log('ver ficha');
             vm.mySelectionGrid[0] = angular.copy(rpta.datos);
-            vm.btnVerFicha(rpta.datos);
+            $scope.metodos.btnVerFicha(rpta.datos);
           }
         });
       }
       vm.btnActualizarFicha = function(row){
         PacienteServices.sListarPacientePorId(row).then(function(rpta){
           if(rpta.flag == 1){
-            console.log('refresh');
-            vm.btnVerFicha(rpta.datos);
+            //console.log('refresh');
+            $scope.metodos.btnVerFicha(rpta.datos);
           }
         });
       }
@@ -500,23 +508,23 @@
                   width: 1,
                   color: '#808080'
               }]
-            },
-            // series: [{
-            //     // data: ['85','80','70','90']
-            //     data: []
-            // }]
+            } 
           };
           vm.chartOptions1.series = rpta.datos.peso;
           vm.chartOptions1.xAxis.categories = rpta.datos.xAxis;
           vm.chartOptions1.chart.events = {
             load: function () {
               var thes = this;
-              setTimeout(function () {
+              $timeout(function () {
                   thes.setSize($("#chartOptions1").parent().width(), $("#chartOptions1").parent().height());
               }, 10);
+              
+              //vm.evoRadio = 'Peso';
+              //$scope.$apply();
             }
           };
-
+          vm.evoRadio = null;
+          //$scope.$apply();
 
           vm.chartOptions2 = {
             chart: {
@@ -548,7 +556,7 @@
           vm.chartOptions2.chart.events = {
             load: function () {
               var thes = this;
-              setTimeout(function () {
+              $timeout(function () {
                   thes.setSize($("#chartOptions2").parent().width(), $("#chartOptions2").parent().height());
               }, 10);
             }
@@ -580,12 +588,14 @@
           vm.chartOptions3.chart.events = {
             load: function () {
               var thes = this;
-              setTimeout(function () {
+              $timeout(function () {
                   thes.setSize($("#chartOptions3").parent().width(), $("#chartOptions3").parent().height());
               }, 10);
             }
           };
-
+          $timeout(function() {
+            vm.evoRadio = 'Peso';
+          },500);
         });
       }
       // SUBIDA DE IMAGENES MEDIANTE IMAGE CROP
@@ -1018,8 +1028,10 @@
           }
           ModalReporteFactory.getPopupReporte(arrParams);
       }
-      if($scope.paciente && $stateParams.search){
-        vm.btnVerFicha($scope.paciente);        
+
+      if($scope.paciente && $stateParams.search){ 
+        //$state.reload();
+        $scope.metodos.btnVerFicha($scope.paciente);        
       }else{
         vm.getPaginationServerSide(true);
       }

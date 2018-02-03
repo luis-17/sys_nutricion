@@ -16,6 +16,7 @@ class Model_paciente extends CI_Model {
 		$this->db->join('tipo_cliente tc','cl.idtipocliente = tc.idtipocliente');
 		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');
 		$this->db->where('cl.estado_cl', 1);
+		$this->db->where('cl.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -37,6 +38,7 @@ class Model_paciente extends CI_Model {
 		$this->db->from('cliente cl');
 		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');
 		$this->db->where('estado_cl', 1);
+		$this->db->where('cl.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -60,6 +62,7 @@ class Model_paciente extends CI_Model {
 		$this->db->join('tipo_cliente tc','cl.idtipocliente = tc.idtipocliente');
 		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');
 		$this->db->where('cl.estado_cl', 1);
+		$this->db->where('cl.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where('cl.idcliente', $datos['idcliente']);
 		$this->db->group_by('cl.idcliente');
 		$this->db->limit(1);
@@ -77,6 +80,7 @@ class Model_paciente extends CI_Model {
 		$this->db->join('tipo_cliente tc','cl.idtipocliente = tc.idtipocliente');
 		$this->db->join('empresa emp','cl.idempresa = emp.idempresa','left');		
 		$this->db->where('cl.estado_cl', 1);
+		$this->db->where('cl.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where("UPPER(CONCAT(cl.nombre, ' ',cl.apellidos)) LIKE '%". strtoupper_total($datos['search']) . "%'");
 		$this->db->group_by('cl.idcliente');		
 		$this->db->limit(1);
@@ -87,6 +91,7 @@ class Model_paciente extends CI_Model {
 		$this->db->select('cl.idcliente, cl.cod_historia_clinica');
 		$this->db->from('cliente cl');
 		$this->db->where('cl.idtipocliente',$datos['idtipocliente']);
+		$this->db->where('cl.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where("cl.cod_historia_clinica LIKE '" . $datos['prefijo'] . "%'");
 		$this->db->order_by('cl.idcliente', 'DESC');
 		$this->db->limit(1);
@@ -97,6 +102,7 @@ class Model_paciente extends CI_Model {
 		$this->db->select("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) AS paciente", FALSE);
 		$this->db->from('cliente c');
 		$this->db->where("c.estado_cl",1);
+		$this->db->where('c.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where("UPPER(CONCAT(c.nombre, ' ',c.apellidos)) LIKE '%". strtoupper_total($datos['search']) . "%'");
 
 		$this->db->limit(10);
@@ -104,7 +110,6 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_cargar_habitos_alim_paciente($datos){
 		$this->db->select("ht.idclientehabitoturno, tu.idturno, tu.descripcion_tu, ht.hora, ht.texto_alimentos");
-
 		$this->db->from('cliente_habito_turno ht');
 		$this->db->join('turno tu', 'ht.idturno = tu.idturno AND ht.idcliente = ' . $datos['idcliente'] . ' AND ht.estado_ht = 1 AND tu.estado_tu = 1','right');
 
@@ -150,7 +155,7 @@ class Model_paciente extends CI_Model {
 		$this->db->where('at.idcliente',$datos['idcliente']);
 		$this->db->where('at.estado_atencion',1);
 		$this->db->where('at.tipo_dieta IS NOT NULL'); 
-		// $this->db->where('at.indicaciones_dieta IS NOT NULL');
+		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->order_by('at.fecha_atencion','ASC');
 		return $this->db->get()->result_array();
 	}
@@ -171,10 +176,7 @@ class Model_paciente extends CI_Model {
 			'celular' => $datos['celular'],
 			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
 			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
-			// 'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
-			// 'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
-			// 'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
-			// 'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
@@ -202,11 +204,6 @@ class Model_paciente extends CI_Model {
 			'email' => $datos['email'],
 			'celular' => $datos['celular'],
 			'cargo_laboral' => empty($datos['cargo_laboral'])? NULL : $datos['cargo_laboral'],
-			// 'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],
-			// 'alergias_ia' => empty($datos['alergias_ia'])? NULL : $datos['alergias_ia'],
-			// 'medicamentos' => empty($datos['medicamentos'])? NULL : $datos['medicamentos'],
-			// 'antecedentes_notas' => empty($datos['antecedentes_notas'])? NULL : $datos['antecedentes_notas'],
-			// 'habitos_notas' => empty($datos['habitos_notas'])? NULL : $datos['habitos_notas'],
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
 		$this->db->where('idcliente',$datos['idcliente']);
@@ -271,9 +268,7 @@ class Model_paciente extends CI_Model {
 	}
 	public function m_editar_habito_alimentario($datos)
 	{
-		$data = array(
-			// 'idcliente' => $datos['idcliente'],
-			// 'idturno' => $datos['idturno'],
+		$data = array( 
 			'hora' => $datos['hora'],
 			'texto_alimentos' => empty($datos['texto_alimentos'])? '' : $datos['texto_alimentos'],
 		);

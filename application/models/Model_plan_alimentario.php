@@ -16,8 +16,6 @@ class Model_plan_alimentario extends CI_Model {
 						   aa.grasas as grasas_alter,aa.carbohidratos as carbohidratos_alter, aa.medida_casera as medida_casera_alter,
 						   aa.gramo as gramo_alter, aa.ceniza as ceniza_alter, aa.calcio as calcio_alter, aa.fosforo as fosforo_alter, 
 						   aa.zinc as zinc_alter, aa.hierro as hierro_alter, aa.fibra as fibra_alter");
-
-		
 		$this->db->from('turno t, dia d'); 
 		$this->db->join('atencion_dieta_turno adt', 't.idturno = adt.idturno and (d.iddia = adt.iddia or adt.iddia is null) and adt.estado_dt = 1 and adt.idatencion = '.$datos['idatencion'],'left');
 		$this->db->join('atencion_dieta_alim ada', 'ada.idatenciondietaturno = adt.idatenciondietaturno and ada.estado_ada = 1','left');

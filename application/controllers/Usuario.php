@@ -5,7 +5,7 @@ class Usuario extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         // Se le asigna a la informacion a la variable $sessionVP.
-        // $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
+        $this->sessionVP = @$this->session->userdata('sess_vp_'.substr(base_url(),-8,7));
 		$this->load->helper(array('security','otros_helper'));        
         $this->load->model(array('model_usuario'));
     }
@@ -152,6 +152,18 @@ class Usuario extends CI_Controller {
 
 		if($this->model_usuario->m_cambiar_clave($allInputs)){
 			$arrData['message'] = 'Se actualizaron los datos correctamente';
+    		$arrData['flag'] = 1;
+		}
+		$this->output
+		    ->set_content_type('application/json')
+		    ->set_output(json_encode($arrData));
+	}
+	public function actualizar_intro_no_mostrar()
+	{
+		$arrData['message'] = 'Error al procesar información, inténtelo nuevamente'; 
+    	$arrData['flag'] = 0;
+		if($this->model_usuario->m_actualizar_intro_no_mostrar()){ 
+			$arrData['message'] = '';
     		$arrData['flag'] = 1;
 		}
 		$this->output

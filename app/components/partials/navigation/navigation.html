@@ -10,62 +10,63 @@
      }">
 
   <ul class="nav nav-sidebar pb-n">
-    <li ng-class="{'active':$state.includes('dashboard')}" ng-if="valores[0]">
+    <li ng-class="{'active':$state.includes('dashboard')}" ng-if="fArr.valores[0]" class="dashboard"> 
       <a ng-click="$state.reload();" ui-sref="dashboard">
         <span class="nav-text">{{ 'Menu.DASHBOARD' | translate }}</span>
         <i class="fa fa-home"></i>
       </a>
     </li>
-    <li ng-class="{'open active':$state.includes('profesional')}" ng-if="valores[1]">
+    <li ng-class="{'open active':$state.includes('profesional')}" ng-if="fArr.valores[1]" class="profesional">
       <a ng-click="$state.reload();" ui-sref="profesional">
         <span class="nav-text">{{ 'Menu.PROFESIONALES' | translate }}</span>
         <i class="fa fa-user-md"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('paciente')}" ng-if="valores[2]">
+    <li ng-class="{'active':$state.includes('paciente')}" ng-if="fArr.valores[2]" class="paciente">
       <a ng-click="$state.reload();" ui-sref="paciente">
         <span class="nav-text">{{ 'Menu.PACIENTES' | translate }}  </span>
         <i class="fa fa-users"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('citas')}" ng-if="valores[3]">
+    <li ng-class="{'active':$state.includes('citas')}" ng-if="fArr.valores[3]" class="citas">
       <a ng-click="$state.reload();" ui-sref="citas">
         <span class="nav-text">{{ 'Menu.CITAS' | translate }}</span>
         <i class="fa fa-clock-o"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('empresa')}" ng-if="valores[4]">
+    <li ng-class="{'active':$state.includes('empresa')}" ng-if="fArr.valores[4]" class="empresa">
       <a ng-click="$state.reload();" ui-sref="empresa">
         <span class="nav-text">{{ 'Menu.EMPRESAS' | translate }}</span>
-        <i class="fa fa-home"></i>
+        <i class="fa fa-building"></i>
       </a>
     </li>
-    <li ng-class="{'active':$state.includes('alimento')}" ng-if="valores[5]">
+    <li ng-class="{'active':$state.includes('alimento')}" ng-if="fArr.valores[5]" class="alimento">
       <a ng-click="$state.reload();" ui-sref="alimento">
         <span class="nav-text">{{ 'Menu.ALIMENTOS' | translate }}</span>
-        <i class="fa fa-home"></i>
+        <i class="fa fa-apple"></i>
       </a>
     </li>
-    <!-- <li ng-class="{'active':$state.includes('estadistica')}" ng-if="valores[6]">
-      <a ng-click="$state.reload();" ui-sref="estadistica">
-        <span class="nav-text">{{ 'Menu.ESTADISTICAS' | translate }}</span>
-        <i class="fa fa-home"></i>
-      </a>
-    </li> -->
-    <li ng-class="{'active':$state.includes('informe-empresarial')}" ng-if="valores[7]">
+    <li ng-class="{'active':$state.includes('informe-empresarial')}" ng-if="fArr.valores[6]" class="informe-empresarial">
       <a ng-click="$state.reload();" ui-sref="informe-empresarial">
         <span class="nav-text">{{ 'Menu.INFORMES' | translate }}</span>
-        <i class="fa fa-home"></i>
+        <i class="fa fa-bar-chart-o"></i>
       </a>
     </li>
   </ul>
-  <div class="tile" ng-show="fSessionCI.mostrar_info_contacto == 1"> <!-- MOSTRAR INFO DE CONTACTO --> 
+  <div class="tile contacto" ng-show="fSessionCI.mostrar_info_contacto == 1"> <!-- MOSTRAR INFO DE CONTACTO --> 
     <div class="tile-body lined-paper b-t" style="font-size:12px;padding-top: 0 !important;">
-      <p class="mb-n text-info text-center" style="font-weight: bold;font-style: normal;font-size: 16px;">CONTACTO</p>
-      <p class="mb-n">Luis Ricardo Luna Soto</p>
-      <p class="mb-n">Freelancer - Desarrollador Web y Móvil</p>
-      <p class="mb-n">E-MAIL: luisls1717@gmail.com</p>
-      <p class="mb-n">CEL: 992566985</p>
+      <p class="mb-n text-info text-center" style="font-weight: bold;font-style: normal;font-size: 16px;"> Contáctanos... </p>
+      <!-- <p class="mb-n">Luis Ricardo Luna Soto</p> -->
+      <p class="mb-n">
+        <i style="font-size: 18px;margin-right: 8px;" class="fa fa-phone"></i> 992566985 </p> 
+      <p class="mb-n"><i style="font-size: 18px;margin-right: 8px;" class="fa fa-envelope"></i> contacto@vitacloud.pe</p>
+      <p class="mb-n"><a target="_blank" href="http://vitacloud.pe">
+        <i style="font-size: 18px;margin-right: 8px;" class="fa fa-globe"></i>http://vitacloud.pe</p>
+      <p class="mb-n"> <a target="_blank" href="https://www.facebook.com/vitacloudperu/"> 
+        <i style="color:#4267b2;font-size: 18px;margin-right: 8px;" class="fa fa-facebook-square"></i> /vitacloudperu </a> </p>
+      <p class="mb-n"> <a target="_blank" href="https://www.linkedin.com/showcase/centros-nutricionistas/"> 
+        <i style="color:#0077b5;font-size: 18px;margin-right: 8px;" class="fa fa-linkedin-square"></i> /vitacloudperu </a> </p>
+      
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@ class Model_alimentos extends CI_Model {
 		$this->db->join('grupo1 g1','al.idgrupo1 = g1.idgrupo1');
 		$this->db->join('grupo2 g2','al.idgrupo2 = g2.idgrupo2');
 		$this->db->where('al.estado_ali', 1);
+		$this->db->where('al.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -32,6 +33,7 @@ class Model_alimentos extends CI_Model {
 		$this->db->join('grupo1 g1','al.idgrupo1 = g1.idgrupo1');
 		$this->db->join('grupo2 g2','al.idgrupo2 = g2.idgrupo2');
 		$this->db->where('al.estado_ali', 1);
+		$this->db->where('al.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -61,6 +63,7 @@ class Model_alimentos extends CI_Model {
 			'fosforo' => empty($datos['fosforo']) ? NULL : $datos['fosforo'],
 			'zinc' => empty($datos['zinc']) ? NULL : $datos['zinc'],
 			'hierro' => empty($datos['hierro']) ? NULL : $datos['hierro'],
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);
@@ -106,6 +109,7 @@ class Model_alimentos extends CI_Model {
 		$this->db->from('alimento a');
 		$this->db->where("a.estado_ali",1);
 		$this->db->where("UPPER(a.nombre) LIKE '%". strtoupper($datos['search']) . "%'");
+		$this->db->where('a.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->limit(10);
 		return $this->db->get()->result_array();
 	}

@@ -6,9 +6,10 @@ class Model_Empresa extends CI_Model {
 	}
 
 	public function m_cargar_empresas($paramPaginate=FALSE){
-		$this->db->select('idempresa, nombre_comercial, razon_social, ruc, celular, personal_contacto');
-		$this->db->from('empresa');
-		$this->db->where('estado_emp', 1);
+		$this->db->select('emp.idempresa, emp.nombre_comercial, emp.razon_social, emp.ruc, emp.celular, emp.personal_contacto');
+		$this->db->from('empresa emp');
+		$this->db->where('emp.estado_emp', 1);
+		$this->db->where('emp.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -27,8 +28,9 @@ class Model_Empresa extends CI_Model {
 	}
 	public function m_count_empresas($paramPaginate=FALSE){
 		$this->db->select('count(*) AS contador');
-		$this->db->from('empresa');
-		$this->db->where('estado_emp', 1);
+		$this->db->from('empresa emp');
+		$this->db->where('emp.estado_emp', 1);
+		$this->db->where('emp.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -43,6 +45,7 @@ class Model_Empresa extends CI_Model {
 		$this->db->select('emp.idempresa, emp.nombre_comercial');
 		$this->db->from('empresa emp');
 		$this->db->where('emp.estado_emp', 1);
+		$this->db->where('emp.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		return $this->db->get()->result_array();
 	}
 	public function m_registrar($datos)
@@ -52,7 +55,8 @@ class Model_Empresa extends CI_Model {
 			'razon_social' => strtoupper_total($datos['razon_social']),
 			'ruc' => $datos['ruc'],
 			'celular' => empty($datos['celular'])? NULL : $datos['celular'],
-			'personal_contacto' => empty($datos['personal_contacto'])? NULL : $datos['personal_contacto'],			
+			'personal_contacto' => empty($datos['personal_contacto'])? NULL : $datos['personal_contacto'],
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],		
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);

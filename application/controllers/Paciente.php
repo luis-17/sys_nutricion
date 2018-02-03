@@ -168,7 +168,7 @@ class Paciente extends CI_Controller {
     	$arrData['datos'] = $arrListado;
     	$arrData['message'] = '';
     	$arrData['flag'] = 1;
-		if(empty($lista)){
+		if(empty($row)){
 			$arrData['flag'] = 0;
 		}
 		$this->output

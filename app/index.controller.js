@@ -13,15 +13,7 @@
               options: '='
           },
           link: function (scope, element) {
-            // scope.$watch(function () {
-            //   return attrs.chart;
-            // }, function () {
-            //     if (!attrs.chart) return;
-            //     var charts = JSON.parse(attrs.chart);
-            //     $(element[0]).highcharts(charts);
-                Highcharts.chart(element[0], scope.options);
-            // });
-
+            Highcharts.chart(element[0], scope.options); 
           }
       };
     })
@@ -40,11 +32,7 @@
                         type: 'pie',
                         events: {
                           load: function () { 
-                            console.log('laod nme');
-                            /*var thes = this;
-                            setTimeout(function () {
-                                thes.setSize($("#chartOptionsPA").parent().width(), $("#chartOptionsPA").parent().height());
-                            }, 10);*/
+
                           }
                         }
                     },
@@ -139,21 +127,186 @@
     }]);
 
   /** @ngInject */
-  function MainController($translate, $scope, $state, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
+  function MainController($translate, $scope, $timeout, $state, rootServices, $uibModal,PacienteServices,UsuarioServices,$location,pinesNotifications) {
     var vm = this; 
-
-    // var currentPageTemplate = $route.current.templateUrl;
-    // console.log(currentPageTemplate,'currentPageTemplate aaaaaaaaaaaaaa');
-    // $templateCache.remove(currentPageTemplate);
-    // $route.reload();
-
-    // console.log('$translate',$translate);
+    
+    $scope.metodos = {}; 
+    $scope.fArr = {};
+    $scope.fArr.boolAutoStart = false;
+    $scope.iniciarTour = function() { 
+      $scope.fArr.boolAutoStart = true;
+    }
+    $scope.fArr.arrSteps = [];
+    $scope.fArr.valores = [];
+    var arrSteps = [
+        {
+          cod_permiso: null,
+          element: 'minotaur-header .navbar-header',
+          intro: '<h2 class="header">El logo de su marca</h2> <p>Visualizaras tu logo desde aquí.</p>', 
+        },
+        {
+          cod_permiso: null,
+          element: 'minotaur-header .main-search',
+          intro: '<h2 class="header">Buscador de pacientes</h2> <p>Busque a sus pacientes rapidamente. <br /> Desde cualquier opción siempre tendrá este cuadro visible.</p>'
+        },
+        {
+          cod_permiso: null,
+          element: 'minotaur-header button.navigation-toggle',
+          intro: '<h2 class="header">Desglosar el menú</h2> <p>Oculta o muestra el menú para mas comodidad de trabajo.</p>'
+        },
+        {
+          cod_permiso: null,
+          element: 'minotaur-header #profile',
+          intro: '<h2 class="header">Tu perfil</h2> <p>Aquí va tu foto de perfil y tu configuración de la cuenta.</p>'
+        },
+        {
+          cod_permiso: 1,
+          element: 'minotaur-nav .nav li.dashboard',
+          intro: '<h2 class="header">Dashboard</h2> <p> Consulta tus próximas citas, visualiza consolidados e ingresa a las funcionalidades desde los accesos directos. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 2,
+          element: 'minotaur-nav .nav li.profesional',
+          intro: '<h2 class="header">Profesionales</h2> <p> ¿Manejas un Centro Nutricionista? Gestiona a los profesionales que están a tu cargo. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 3,
+          element: 'minotaur-nav .nav li.paciente',
+          intro: '<h2 class="header">Pacientes</h2> <p> Gestiona a tus pacientes, revisa su historia clínica, compara sus atenciones, consulta su plan alimentario y mucho más. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 4,
+          element: 'minotaur-nav .nav li.citas',
+          intro: '<h2 class="header">Citas</h2> <p> - Gestiona tus citas desde nuestro potente calendario de reservas. Arrastra y suelta; es super sencillo. <br/> - Registre atenciones y genera fichas personalizados para cada usuario. <br/> - Genere las hojas de dieta del paciente </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 5,
+          element: 'minotaur-nav .nav li.empresa',
+          intro: '<h2 class="header">Clientes Corporativos</h2> <p> ¿Das tu servicio a clientes corporativos? Agrupa a tus pacientes por empresa y gestiona a tus clientes corporativos. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 6,
+          element: 'minotaur-nav .nav li.alimento',
+          intro: '<h2 class="header">Alimentos</h2> <p> Gestiona tu propia base de datos de alimentos con sus valores nutricionales. No te preocupes, tenemos gran cantidad de alimentos precargados para tí. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: 7,
+          element: 'minotaur-nav .nav li.informe-empresarial',
+          intro: '<h2 class="header">Informe Empresarial</h2> <p> Entrega resultados. Genera reportes consolidados y gráficos estadísticos por cliente corporativo </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: null,
+          element: 'minotaur-nav .contacto',
+          intro: '<h2 class="header">¡Contáctanos!</h2> <p> ¿Necesitas ayuda? Te brindamos soporte los 365 días del año, por nuestros canales de contacto. </p>',
+          position: 'right'
+        },
+        {
+          cod_permiso: null,
+          element: 'minotaur-nav .disfruta_de_la_plataforma',
+          intro: '<h2 class="header">¡Disfruta!</h2> <p> <b>¡FIN!</b> <br/> Esta plataforma ha sido hecha con mucho cariño, y estará actualizándose constantemente con nuevas funcionalidades para tí: Profesional de la Salud. :) </p>',
+          position: 'right'
+        }
+    ]; 
+    $scope.CargaMenu = function() { 
+      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opInformes']; 
+      $scope.fArr.arrSteps = [];
+      if($scope.fSessionCI.idgrupo == 1){
+        $scope.fArr.valores = [true,true,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 2){
+        $scope.fArr.valores = [true,false,true,true,true,true,true];
+      }
+      if($scope.fSessionCI.idgrupo == 3){
+        $scope.fArr.valores = [true,false,true,true,false,true,false];
+      }
+      var cont = 0;
+      //console.log(arrSteps,'arrSteps');
+      angular.forEach(arrSteps,function(val,index) { 
+        if(val.cod_permiso){ 
+          if( $scope.fArr.valores[cont] === true ){ 
+            $scope.fArr.arrSteps.push(val);
+          }
+          cont++; 
+        }else{
+          $scope.fArr.arrSteps.push(val);
+        }
+      }); 
+      var result = [];
+      angular.forEach($scope.fArr.arrSteps,function(val,index) { 
+        if(val){ 
+          result.push(val);
+        } 
+      }); 
+      //$scope.fArr.arrSteps = result; 
+      vm.introOptions.steps = result;
+      console.log($scope.fArr.arrSteps,'$scope.fArr.arrSteps');
+      console.log(vm.introOptions.steps,'vm.introOptions.steps');
+    } 
+    $scope.getValidateSession = function () {
+      rootServices.sGetSessionCI().then(function (response) {
+        //console.log(response);
+        if(response.flag == 1){
+          $scope.fSessionCI = response.datos; 
+          $scope.fArr.boolAutoStart = ($scope.fSessionCI.mostrar_intro == 1) ? true : false; 
+          $scope.logIn();
+          $scope.CargaMenu();
+          if( $location.path() == '/app/pages/login' ){
+            $scope.goToUrl('/');
+          }
+          if( $scope.fArr.boolAutoStart ){ 
+            $timeout(function() { 
+              $scope.iniciarTour(); 
+            },5000); 
+          }
+        }else{
+          $scope.fSessionCI = {};
+          $scope.logOut();
+          $scope.goToUrl('/app/pages/login');
+        }
+      });
+    }
+    $scope.getValidateSession();
+    
+    // limpieza de pasos 
+    //$timeout(function(index,val) {
+      
+      //console.log(arrSteps,'arrSteps');
+      //console.log($scope.fArr.valores,'$scope.fArr.valores');
+    //},1000);
+    
+    
+    vm.introOptions = { 
+      overlayOpacity: 0.3,
+      showBullets: true,
+      showStepNumbers: false,
+      nextLabel: 'Siguiente <i class="fa fa-chevron-right"></i>',
+      prevLabel: '<i class="fa fa-chevron-left"></i> Atrás',
+      skipLabel: '<i class="fa fa-close"></i>',
+      doneLabel: '<i class="fa fa-close"></i>',
+      steps: $scope.fArr.arrSteps 
+    };
+    
     vm.changeLanguage = function (langKey) {
-      // console.log('langKey',langKey);langKey
       $translate.use(langKey);
       vm.currentLanguage = langKey;
     };
-    //vm.currentLanguage = $translate.proposedLanguage() || $translate.use();
+    vm.onChangeStep = function(obj,scope) { 
+      if($(obj).hasClass('contacto')){ 
+        // actualizar valor de intro 
+        UsuarioServices.sActualizarIntroNoMostrar();
+      }
+    } 
+    vm.onChangeExit = function() { 
+      // actualizar valor de intro 
+      UsuarioServices.sActualizarIntroNoMostrar();
+    }
     vm.changeLanguage('es');
 
     $scope.fSessionCI = {};
@@ -163,7 +316,6 @@
       $scope.isLoggedIn = false;
       $scope.captchaValido = false;
     }
-
     $scope.logIn = function() {
       $scope.isLoggedIn = true;
     };
@@ -175,6 +327,8 @@
         $scope.listaModulos = {};
         $scope.logOut();
         $scope.goToUrl('/app/pages/login');
+        // $scope.fArr.arrSteps = [];
+        // $scope.fArr.valores = [];
       });
     };
     $scope.btnChangePassword = function() {
@@ -220,50 +374,28 @@
         search: paciente
       }
       PacienteServices.sListarPacientePorNombre(paramDatos).then(function (rpta) { 
-      $scope.paciente = rpta.datos;
-      $state.go('pacienteficha');
+        if( rpta.flag == 1 ){
+          $scope.paciente = rpta.datos;
+          $state.go('pacienteficha'); 
+          if( !(angular.isUndefined($scope.metodos.btnVerFicha)) ){ 
+            $scope.metodos.btnVerFicha($scope.paciente);
+            $scope.fArr.fBusqueda = rpta.datos.paciente;
+          } 
+        }else{
+          pinesNotifications.notify({ title: 'Advertencia', text: 'No se encontró al paciente.', type: 'warning', delay: 3000 });          
+        }
+        
       });
     };
-
+    
     $scope.goToUrl = function ( path , searchParam) {
       $location.path( path );
       if(searchParam){ 
         $location.search({param: searchParam});
       }
     };
-
-    $scope.getValidateSession = function () {
-      rootServices.sGetSessionCI().then(function (response) {
-        //console.log(response);
-        if(response.flag == 1){
-          $scope.fSessionCI = response.datos;
-          console.log("datos login: ",response.datos);
-          $scope.logIn();
-          $scope.CargaMenu();
-          if( $location.path() == '/app/pages/login' ){
-            $scope.goToUrl('/');
-          }
-        }else{
-          $scope.fSessionCI = {};
-          $scope.logOut();
-          $scope.goToUrl('/app/pages/login');
-        }
-      });
-
-    }
-    $scope.getValidateSession();
-    $scope.CargaMenu = function() {
-      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opEstadisticas','opInformes'];
-      if($scope.fSessionCI.idgrupo == 1){
-        $scope.valores = [true,true,true,true,true,true,true,true];
-      }
-      if($scope.fSessionCI.idgrupo == 2){
-        $scope.valores = [true,false,true,true,true,true,true,true];
-      }
-      if($scope.fSessionCI.idgrupo == 3){
-        $scope.valores = [true,false,true,true,false,false,false,false];
-      }
-    }
+    
+    
     $scope.tipoDieta = null;
     $scope.idatencion = null;
     $scope.changeViewConsulta = function(value, pestania, idatencion, origen, tipoDieta){
@@ -314,6 +446,8 @@
       $scope.consulta = consulta;
     }
     $scope.changeViewSoloPlan(false);
+
+    console.log($scope.metodos,'$scope.metodos, index.controllerjs');
   }
   function rootServices($http, $q, handle) {
     return({

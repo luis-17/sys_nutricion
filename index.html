@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="bower_components/chosen/chosen.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" href="bower_components/ng-img-crop/compile/minified/ng-img-crop.css" />
-    <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
+    
     <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css" />
     <link rel="stylesheet" href="assets/plugins/angular-block/angular-block-ui.min.css"/>
 
@@ -46,9 +46,11 @@
     <!-- build:css({.tmp/serve,src}) styles/app.css -->
     <!-- inject:css -->
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/ui-grid.css">
     <link rel="stylesheet" href="assets/css/helpers.css">
     <link rel="stylesheet" href="assets/css/custom.css">
-    <link rel="stylesheet" href="assets/css/ui-grid.css">
+    <link rel="stylesheet" href="bower_components/intro.js/introjs.css" />
+    <link rel="stylesheet" href="bower_components/intro.js/themes/introjs-vitacloud.css" />
     <!-- endinject -->
     <!-- endbuild -->
   </head>
@@ -59,7 +61,6 @@
     <div id="page-loading" >
         <div class="page-loading-text"></div>
     </div>
-
     <div id="wrap">
 
       <minotaur-header ng-class="specialClass" ng-if="specialClass !== 'core'"></minotaur-header>
@@ -163,7 +164,10 @@
     <script src="bower_components/angular-footable/dist/angular-footable.js"></script>
     <script src="bower_components/mixitup2/dist/mixitup.min.js"></script>
     <script src="bower_components/intro.js/intro.js"></script>
+<!-- 
     <script src="bower_components/angular-intro.js/build/angular-intro.min.js"></script>
+     -->
+    <script src="bower_components/angular-intro.js/src/angular-intro.js"></script>
     <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
     <script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script src="bower_components/gauge.js/dist/gauge.min.js"></script>

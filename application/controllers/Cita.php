@@ -201,9 +201,10 @@ class Cita extends CI_Controller {
 			'fecha' => Date('Y-m-d',strtotime($allInputs['fecha'])),
 			'hora_desde' => Date('H:i:s',$horadesde),
 			'hora_hasta' => Date('H:i:s',$horahasta),
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],
 			'createdat' => date('Y-m-d H:i:s'),
 			'updatedat' => date('Y-m-d H:i:s')
-			);
+		);
 
 		if($this->model_cita->m_registrar($data)){
 			$idcita = GetLastId('idcita', 'cita');

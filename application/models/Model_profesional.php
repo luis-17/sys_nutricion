@@ -8,7 +8,7 @@ class Model_profesional extends CI_Model {
 	public function m_cargar_perfil($idusuario){ 
 		$this->db->select('pro.idprofesional, pro.idusuario, pro.idespecialidad, pro.nombre, pro.apellidos, pro.correo, 
 			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto, gr.idgrupo, gr.nombre_gr, gr.key_grupo, 
-			us.username, us.idusuario, us.mostrar_info_contacto, us.mostrar_info_cobro, cf.idconfiguracion, cf.directorio',FALSE);
+			us.username, us.idusuario, us.mostrar_info_contacto, us.mostrar_info_cobro, us.mostrar_intro, cf.idconfiguracion, cf.directorio, cf.logo_imagen',FALSE);
 		$this->db->select('esp.descripcion_es as especialidad',FALSE);
 		$this->db->from('profesional pro');
 		$this->db->join('especialidad esp', 'esp.idespecialidad = pro.idespecialidad');
@@ -25,8 +25,9 @@ class Model_profesional extends CI_Model {
 		$this->db->select('p.idprofesional, p.idusuario, u.username, u.idgrupo, e.descripcion_es AS especialidad, p.idespecialidad, p.nombre, p.apellidos, p.correo, p.fecha_nacimiento, p.num_colegiatura, p.nombre_foto, u.mostrar_info_contacto, u.mostrar_info_cobro');
 		$this->db->from('profesional p');
 		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left');
-		$this->db->join('usuario u', 'p.idusuario = u.idusuario AND u.estado_us = 1','left');				
+		$this->db->join('usuario u', 'p.idusuario = u.idusuario AND u.estado_us = 1','left');	
 		$this->db->where('p.estado_pf', 1);
+		$this->db->where('p.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
 				if(! empty($value)){
@@ -46,7 +47,8 @@ class Model_profesional extends CI_Model {
 	public function m_count_profesional($paramPaginate=FALSE){
 		$this->db->select('count(*) AS contador');
 		$this->db->from('profesional p');
-		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left');		
+		$this->db->join('especialidad e', 'p.idespecialidad = e.idespecialidad AND e.estado_es = 1','left'); 
+		$this->db->where('p.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where('p.estado_pf', 1);
 		if( isset($paramPaginate['search'] ) && $paramPaginate['search'] ){
 			foreach ($paramPaginate['searchColumn'] as $key => $value) {
@@ -58,10 +60,11 @@ class Model_profesional extends CI_Model {
 		$fData = $this->db->get()->row_array();
 		return $fData['contador'];
 	}	
-	public function m_cargar_profesional_cbo(){
-		$this->db->select("idprofesional, CONCAT(nombre, ' ', apellidos) As profesional",FALSE);
-		$this->db->from('profesional ');
-		$this->db->where('estado_pf', 1);
+	public function m_cargar_profesional_cbo(){ 
+		$this->db->select("p.idprofesional, CONCAT(p.nombre, ' ', p.apellidos) AS profesional",FALSE);
+		$this->db->from('profesional p');
+		$this->db->where('p.idconfiguracion', $this->sessionVP['idconfiguracion']);
+		$this->db->where('p.estado_pf', 1);
 		return $this->db->get()->result_array();
 	}
 	public function m_registrar($datos)
@@ -74,7 +77,8 @@ class Model_profesional extends CI_Model {
 			'correo' => empty($datos['correo'])? NULL : $datos['correo'],	
 			'fecha_nacimiento' => darFormatoYMD($datos['fecha_nacimiento']),	
 			'num_colegiatura' => empty($datos['num_colegiatura'])? NULL : $datos['num_colegiatura'],
-			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'],											
+			'nombre_foto' => empty($datos['nombre_foto'])? 'sin-imagen.png' : $datos['nombre_foto'], 
+			'idconfiguracion'=> $this->sessionVP['idconfiguracion'],										
 			'createdAt' => date('Y-m-d H:i:s'),
 			'updatedAt' => date('Y-m-d H:i:s')
 		);

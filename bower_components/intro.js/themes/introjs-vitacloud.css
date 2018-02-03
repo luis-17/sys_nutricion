@@ -1,0 +1,26 @@
+.introjs-helperLayer.introjs-fixedTooltip{ 
+	background-color: rgba(255,255,255,0.4);
+}
+.introjs-overlay{
+	/*display: none;*/
+}
+.introjs-skipbutton{
+	position: relative;
+	height: auto;
+    bottom: 0;
+}
+.introjs-tooltip .introjs-tooltiptext .header{
+	font-size: 19px;
+	color: #1199d3;
+}
+.introjs-tooltip .introjs-tooltiptext, .introjs-tooltip .introjs-tooltiptext p {
+	color: #1199d3; 
+	font-size: 14px;
+}
+.introjs-tooltip{
+	width: 300px;
+}
+.introjs-skipbutton:hover, .introjs-skipbutton:focus, .introjs-skipbutton:active {
+    border: 2px solid #e05d6f;
+    color: #e05d6f;
+}
