@@ -602,6 +602,9 @@ class Consulta extends CI_Controller {
 
 		$this->pdf->Ln(8);
 		$imc = (float)$consulta['peso'] / (((float)$paciente['estatura']/100) * ((float)$paciente['estatura']/100));
+		
+		$imc = round($imc,1);
+		// print_r($imc); exit(); 
 		if($imc < 18.5){
 			$posXFlechaIMC = ($anchoColor/2);
 		}else if($imc >= 18.5 && $imc <= 24.9){
