@@ -529,6 +529,15 @@
 		$dd = $fecha[0];
 		$mm = $fecha[1];
 		$yy = $fecha[2];
+		if( !(is_numeric($dd)) ){ 
+			return FALSE; 
+		}
+		if( !(is_numeric($mm)) ){ 
+			return FALSE; 
+		}
+		if( !(is_numeric($yy)) ){ 
+			return FALSE; 
+		}
 		// $Stamp = strtotime( $cadena );
 		// $Month = date( 'm', $Stamp );
 		// $Day   = date( 'd', $Stamp );

@@ -175,7 +175,6 @@ class Paciente extends CI_Controller {
 		    ->set_content_type('application/json')
 		    ->set_output(json_encode($arrData));
 	}
-
 	public function lista_pacientes_autocomplete(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true); // var_dump($allInputs); exit();
 		$lista = $this->model_paciente->m_cargar_pacientes_autocomplete($allInputs);
@@ -585,6 +584,13 @@ class Paciente extends CI_Controller {
 			    ->set_output(json_encode($arrData));
 			return;
     	}
+    	if( !(IsDate($fecha_nacimiento)) ){ 
+    		$arrData['message'] = 'Ingrese una fecha válida';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
 
     	$tipo_cliente = $this->model_tipoCliente->m_cargar_prefijo_tipo_cliente($idtipocliente);
     	$row = $this->model_paciente->m_cargar_ultimo_codigo_historia_clinica($tipo_cliente);
@@ -686,6 +692,13 @@ class Paciente extends CI_Controller {
     	}
     	if( !soloNumeros($allInputs['estatura']) ){
     		$arrData['message'] = 'Ingrese solo números';
+    		$this->output
+			    ->set_content_type('application/json')
+			    ->set_output(json_encode($arrData));
+			return;
+    	}
+    	if( !(IsDate($allInputs['fecha_nacimiento'])) ){ 
+    		$arrData['message'] = 'Ingrese una fecha válida';
     		$this->output
 			    ->set_content_type('application/json')
 			    ->set_output(json_encode($arrData));
