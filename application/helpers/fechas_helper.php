@@ -154,13 +154,23 @@
 		if(empty($fecha)){
 			return null;
 		}
-
+		if (strpos($fecha, '/') !== FALSE ) {
+		    $dateValidate = DateTime::createFromFormat('d/m/Y', $fecha);
+			if( $dateValidate === FALSE ){
+				return null;
+			}
+		}
+		if (strpos($fecha, '-') !== FALSE ) {
+		    $dateValidate = DateTime::createFromFormat('d-m-Y', $fecha);
+			if( $dateValidate === FALSE ){
+				return null;
+			}
+		}
 		$fechaUT = strtotime($fecha); // obtengo una fecha UNIX ( integer )
 		$d	= date('d', $fechaUT);
 		$m	= date('m', $fechaUT);
 		$y	= date('Y', $fechaUT);
 		$result = $d."-".$m."-".$y;
-		// var_dump("<pre>",$fecha,$result);
 		return $result;
 	}
 	function darFormatoYMD($fecha)
@@ -521,7 +531,10 @@
 	    }
 	    return "$years años, $months meses.";
 	}
-	function IsDate( $cadena ){ /* SI UNA VARIABLE ES UNA FECHA del tipo dd-mm-YYYY  RETORNA TRUE*/
+	function IsDate( $cadena ){ /* SI UNA VARIABLE ES UNA FECHA del tipo dd-mm-YYYY  RETORNA TRUE*/ 
+		if( empty($cadena) ){
+			return FALSE;
+		}
 		$fecha = explode('-', $cadena);
 		if( count($fecha) != 3 ){
 			return FALSE;

@@ -25,15 +25,14 @@
       <div class="form-group">
         <label for="fecha_nac" class="col-sm-3 control-label minotaur-label">Fecha de nacimiento : </label>
         <div class="col-sm-9">
-          <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="fecha_nac" ng-model="pac.ficha.fecha_nacimiento" 
+          <input type="text" class="form-control text-center ng-class:{'underline-input':!pac.modoEditar};" id="fecha_nac" ng-model="pac.ficha.fecha_nacimiento" 
             ng-readonly="!pac.modoEditar" input-mask mask-options="{alias: 'dd-mm-yyyy'}" placeholder="dd-mm-yyyy">
         </div>
       </div>
       <div class="form-group">
         <label for="edad" class="col-sm-3 control-label minotaur-label">Edad : </label>
         <div class="col-sm-9">
-          <p class="form-control underline-input text-center" >{{pac.ficha.edad}} años</p>
-          <!-- <input type="text" class="form-control  text-center ng-class:{'underline-input':!pac.modoEditar};" id="edad" placeholder="" ng-model="pac.ficha.edad" ng-readonly="!pac.modoEditar"> -->
+          <p class="form-control underline-input text-center" >{{pac.ficha.edad}} años</p> 
         </div>
       </div>
       <div class="form-group">

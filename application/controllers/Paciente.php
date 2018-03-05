@@ -681,6 +681,8 @@ class Paciente extends CI_Controller {
 	}
 	public function editar_paciente(){
 		$allInputs = json_decode(trim($this->input->raw_input_stream),true);
+		$allInputs['fecha_nacimiento'] = darFormatoDMY($allInputs['fecha_nacimiento']);
+		//var_dump($allInputs['fecha_nacimiento']); exit();
 		$arrData['message'] = 'Error al editar los datos, inténtelo nuevamente';
     	$arrData['flag'] = 0;
     	if( empty($allInputs['estatura']) ){
