@@ -155,22 +155,37 @@
 			return null;
 		}
 		if (strpos($fecha, '/') !== FALSE ) {
+			// echo 'entro1';
 		    $dateValidate = DateTime::createFromFormat('d/m/Y', $fecha);
+		    //var_dump($dateValidate === FALSE);
 			if( $dateValidate === FALSE ){
 				return null;
 			}
+			$fechaPart = explode('/', $fecha);
+			if( count($fechaPart) != 3 ){
+				return null;
+			}
+			$dd = $fechaPart[0];
+			$mm = $fechaPart[1];
+			$yy = $fechaPart[2]; 
+			$fecha = $dd.'-'.$mm.'-'.$yy; 
 		}
 		if (strpos($fecha, '-') !== FALSE ) {
+			//echo 'entro2';
 		    $dateValidate = DateTime::createFromFormat('d-m-Y', $fecha);
 			if( $dateValidate === FALSE ){
 				return null;
 			}
 		}
+
 		$fechaUT = strtotime($fecha); // obtengo una fecha UNIX ( integer )
+		// print_r(strtotime('27-04-1981'));
+		// echo $fechaUT; 
 		$d	= date('d', $fechaUT);
 		$m	= date('m', $fechaUT);
 		$y	= date('Y', $fechaUT);
 		$result = $d."-".$m."-".$y;
+		//exit();
 		return $result;
 	}
 	function darFormatoYMD($fecha)
