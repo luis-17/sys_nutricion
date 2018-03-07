@@ -16,6 +16,7 @@
 	</section>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-warning btn-ef btn-ef-4 btn-ef-4c" ng-click="detCancel();"><i class="fa fa-arrow-left"></i> Salir </button>
+  
   <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" ng-disabled="formEmail.$invalid" ng-click="envioCorreoExec();"><i class="fa fa-arrow-right"></i> Enviar </button>
+  <button class="btn btn-warning btn-ef btn-ef-4 btn-ef-4c" ng-click="detCancel();"><i class="fa fa-arrow-left"></i> Salir </button>
 </div>

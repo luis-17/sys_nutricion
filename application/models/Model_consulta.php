@@ -196,8 +196,10 @@ class Model_consulta extends CI_Model {
 			at.cm_muneca, at.cm_rodilla, at.cm_gemelos, at.cm_tobillo, at.cm_tricipital,
 			at.cm_bicipital,at.cm_subescapular, at.cm_axilar, at.cm_pectoral, at.cm_suprailiaco,
 			at.cm_supraespinal, at.cm_abdominal, at.cm_pierna,
-			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral');
+			at.si_embarazo, at.diagnostico_notas, at.estado_atencion, at.kg_masa_grasa, at.puntaje_grasa_visceral, 
+			cli.idcliente');
 		$this->db->from('atencion at');
+		$this->db->join('cliente cli','at.idcliente = cli.idcliente');
 		$this->db->where('at.estado_atencion', 1);
 		$this->db->where('at.idconfiguracion', $this->sessionVP['idconfiguracion']);
 		$this->db->where('at.idcliente', $idcliente);

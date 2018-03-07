@@ -174,12 +174,7 @@ class Consulta extends CI_Controller {
 		$lista = $this->model_consulta->m_cargar_atenciones_paciente($allInputs['idcliente'],TRUE);
 		$arrCabecera = array();
 		$arrListado = array();
-		foreach ($lista as $key => $row) {
-			// array_push($arrListado, array(
-			// 	'idatencion' => $row['idatencion'], 
-			// 	'fecha_atencion' => $row['fecha_atencion'], listaAguaCorporal
-			// 	)
-			// );
+		foreach ($lista as $key => $row) { 
 			$arrListado['peso'][] = array('id' =>$key ,'valor' => $row['peso']);
 			$arrListado['masa_grasa'][] = array('id' =>$key ,'valor' => $row['porc_masa_grasa']);
 			$arrListado['masa_libre'][] = array('id' =>$key ,'valor' => $row['porc_masa_libre']);
@@ -221,8 +216,10 @@ class Consulta extends CI_Controller {
 
 			$arrCabecera[] =array(
 				'idatencion' => $row['idatencion'],
+				'idcliente'=> $row['idcliente'],
 				'fecha'=> DarFormatoDMY($row['fecha_atencion'])
 			);
+			//var_dump($row['fecha_atencion']); exit();
 		}
 		// var_dump($arrListado); exit();
 		if(empty($lista)){

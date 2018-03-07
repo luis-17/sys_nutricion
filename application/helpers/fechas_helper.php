@@ -156,24 +156,32 @@
 		}
 		if (strpos($fecha, '/') !== FALSE ) {
 			// echo 'entro1';
-		    $dateValidate = DateTime::createFromFormat('d/m/Y', $fecha);
-		    //var_dump($dateValidate === FALSE);
-			if( $dateValidate === FALSE ){
+		    $dateValidateDMY = DateTime::createFromFormat('d/m/Y', $fecha);
+		    $dateValidateYMD = DateTime::createFromFormat('Y/m/d', $fecha);
+			if( $dateValidateDMY === FALSE && $dateValidateYMD === FALSE){
 				return null;
 			}
 			$fechaPart = explode('/', $fecha);
 			if( count($fechaPart) != 3 ){
 				return null;
 			}
-			$dd = $fechaPart[0];
-			$mm = $fechaPart[1];
-			$yy = $fechaPart[2]; 
+			if( $dateValidateDMY ){
+				$dd = $fechaPart[0];
+				$mm = $fechaPart[1];
+				$yy = $fechaPart[2]; 
+			}
+			if( $dateValidateYMD ){
+				$dd = $fechaPart[2]; 
+				$mm = $fechaPart[1]; 
+				$yy = $fechaPart[0]; 
+			}
 			$fecha = $dd.'-'.$mm.'-'.$yy; 
 		}
 		if (strpos($fecha, '-') !== FALSE ) {
 			//echo 'entro2';
-		    $dateValidate = DateTime::createFromFormat('d-m-Y', $fecha);
-			if( $dateValidate === FALSE ){
+		    $dateValidateDMY = DateTime::createFromFormat('d-m-Y', $fecha);
+		    $dateValidateYMD = DateTime::createFromFormat('Y-m-d', $fecha);
+			if( $dateValidateDMY === FALSE && $dateValidateYMD == FALSE ){ 
 				return null;
 			}
 		}
