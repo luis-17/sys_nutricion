@@ -402,7 +402,6 @@
               vm.fData.hora_hasta_str = vm.fData.hora_hasta.toLocaleTimeString();            
             }          
             CitasServices.sActualizarCita(vm.fData).then(function (rpta) {
-              // var openedToasts = [];
               if(rpta.flag == 1){ 
                 angular.element('.calendar').fullCalendar( 'refetchEvents' );
                 var pTitle = 'OK!';
@@ -442,8 +441,7 @@
         function (ev) {
         pageLoading.start('Actualizando calendario...');
         ev.preventDefault();        
-        CitasServices.sAnularCita(row).then(function (rpta) {              
-          // var openedToasts = [];
+        CitasServices.sAnularCita(row).then(function (rpta) { 
           if(rpta.flag == 1){ 
             angular.element('.calendar').fullCalendar( 'refetchEvents' );            
             var pTitle = 'OK!';

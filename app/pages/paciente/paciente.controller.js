@@ -7,7 +7,9 @@
 
   /** @ngInject */
 
-  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document,$state,$stateParams,$location,alertify,toastr,pageLoading,ModalReporteFactory,
+  function PacienteController($scope,$uibModal,$window,$timeout,$filter, uiGridConstants,$document,$state,$stateParams,$location,alertify,
+    pageLoading,pinesNotifications,
+    ModalReporteFactory,
     PacienteServices,TipoClienteServices,EmpresaServices,MotivoConsultaServices,
     AntecedenteServices, ConsultasServices
     )
@@ -22,8 +24,7 @@
     vm.ficha = {}
     vm.previo0 = true;
     vm.previo1 = false;
-    vm.previo2 = false;
-    var openedToasts = [];
+    vm.previo2 = false; 
     // LISTA DE TABS DE LA FICHA
     vm.templates = [
       { tab: 'Evolución', url: 'app/pages/paciente/ficha_evolucion.html'},
@@ -103,10 +104,6 @@
         if(vm.listaTiposClientes){
           vm.listaTiposClientes.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
         }
-        
-        // if(vm.fData.idtipocliente == null){
-        //   vm.fData.idtipocliente = vm.listaTiposClientes[0].id;
-        // }
       });
       // LISTA DE EMPRESAS
       vm.listarEmpresasCbo = function() {
@@ -119,10 +116,7 @@
       // LISTA MOTIVO CONSULTA
       MotivoConsultaServices.sListarMotivoConsultaCbo().then(function (rpta) {
         vm.listaMotivos = angular.copy(rpta.datos);
-        vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'});
-        // if(vm.fData.idmotivoconsulta == null){
-        //   vm.fData.idmotivoconsulta = vm.listaMotivos[0].id;
-        // }
+        vm.listaMotivos.splice(0,0,{ id : '', descripcion:'--Seleccione una opción--'}); 
       });
       vm.cambiaTipoCliente = function(){
         vm.fData.idempresa = vm.listaEmpresas[0].id;
@@ -201,8 +195,6 @@
             paginationOptions.sortName = sortColumns[0].name;
           }
           vm.getPaginationServerSide(true);
-          console.log(grid.appScope,'grid.appScopegrid.appScope');
-          console.log(grid,'gridgridgrid');
         });
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
           paginationOptions.pageNumber = newPage;
@@ -244,7 +236,6 @@
           
         });
       }
-      //vm.getPaginationServerSide(true);
       // MANTENIMIENTO
       vm.btnNuevo = function () {
         var modalInstance = $uibModal.open({
@@ -348,8 +339,6 @@
                   /* eslint-disable */
                   $scope.$apply(function(){
                     vm.fData.myImage=evt.target.result;
-                    console.log("foto", vm.fData.myImage);
-                    console.log("foto crop", vm.fData.myCroppedImage);
                   });
                   /* eslint-enable */
                 };
@@ -357,34 +346,24 @@
               };
               $timeout(function() { // lo pongo dentro de un timeout sino no funciona
                 angular.element($document[0].querySelector('#fileInput')).on('change',handleFileSelect);
-              }/* no delay here */);
+              });
             }
             // BOTONES
             vm.aceptar = function () {
-              console.log(vm.fData.fecha_nacimiento);
-              PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) {
-                var openedToasts = [];
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  // closeButton: true,
-                  // closeHtml : '<button>&times;</button>',
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
+              //console.log(vm.fData.fecha_nacimiento);
+              PacienteServices.sRegistrarPaciente(vm.fData).then(function (rpta) { 
                 if(rpta.flag == 1){
                   $uibModalInstance.close(vm.fData);
                   vm.getPaginationServerSide(true);
-                  var title = 'OK';
-                  var iconClass = 'success';
+                  var pTitle = 'OK!';
+                  var pType = 'success';
                 }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
               });
 
             };
@@ -400,11 +379,7 @@
             }
           }
         });
-      }
-
-      // console.log($scope,'$scope');
-      // console.log();
-      // console.log($scope.metodos,'$scope.metodos');
+      } 
       if( angular.isUndefined($scope.metodos) ){
         $scope.metodos = {};
       }
@@ -615,7 +590,7 @@
             $scope.$apply(function($scope){
               vm.image.originalImage=evt.target.result;
               // vm.image.fotoNueva=evt.target.result;
-              console.log("foto", vm.image);
+              //console.log("foto", vm.image);
             });
             /* eslint-enable */
           };
@@ -631,25 +606,21 @@
         vm.image.nombre = vm.ficha.nombre;
         PacienteServices.sSubirFoto(vm.image).then(function(rpta){
           if(rpta.flag == 1){
-            var title = 'OK';
-            var iconClass = 'success';
             vm.ficha.nombre_foto = rpta.datos;
             vm.fotoCrop = false;
             vm.image = {
                originalImage: '',
                croppedImage: '',
             };
-
+            var pTitle = 'OK!';
+            var pType = 'success';
           }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            // vm.toast.title = 'Advertencia';
-            var iconClass = 'warning';
-            // vm.options.iconClass = {name:'warning'}
+            var pTitle = 'Advertencia!';
+            var pType = 'warning';
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         });
       }
       vm.cancelarFoto = function(){
@@ -664,25 +635,21 @@
           ev.preventDefault();
           PacienteServices.sEliminarFoto(vm.ficha).then(function(rpta){
             if(rpta.flag == 1){
-              var title = 'OK';
-              var iconClass = 'success';
+              var pTitle = 'OK!';
+              var pType = 'success';
               vm.ficha.nombre_foto = rpta.datos;
               vm.fotoCrop = false;
               vm.image = {
                  originalImage: '',
                  croppedImage: '',
               };
-
             }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              // vm.toast.title = 'Advertencia';
-              var iconClass = 'warning';
-              // vm.options.iconClass = {name:'warning'}
+              var pTitle = 'Advertencia!';
+              var pType = 'warning'; 
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
           });
         });
 
@@ -805,84 +772,54 @@
           vm.options = {
             timeout: '3000',
             extendedTimeout: '1000',
-            // closeButton: true,
-            // closeHtml : '<button>&times;</button>',
             progressBar: true,
             preventDuplicates: false,
             preventOpenDuplicates: false
           };
           if(rpta.flag == 1){
             vm.modoEditar = false;
-            // vm.getPaginationServerSide();
-            // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-
-            //   vm.ficha = rpta.datos;
-            //   vm.mySelectionGrid = [rpta.datos];
-            // });
             vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-            var title = 'OK';
-            var iconClass = 'success';
+            var pTitle = 'OK!';
+            var pType = 'success';
           }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            // vm.toast.title = 'Advertencia';
-            var iconClass = 'warning';
-            // vm.options.iconClass = {name:'warning'}
+            var pTitle = 'Advertencia!';
+            var pType = 'warning'; 
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         });
       }
       vm.btnCancelarTab2 = function(){
         vm.modoEditar = false;
         vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-        // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-        // vm.cargarAntecedentes(vm.ficha);
-        // vm.cargarHabitosAlimentarios(vm.ficha);
-        // vm.cargarHabitos(vm.ficha);
       }
-      vm.btnAceptarTab3 = function(){// antecedentes
-        console.log('array',vm.listaAntPatologicos);
+      vm.btnAceptarTab3 = function(){ // antecedentes 
         PacienteServices.sRegistrarAntecedentePaciente(vm.ficha).then(function (rpta) {
           vm.options = {
             timeout: '3000',
             extendedTimeout: '1000',
-            // closeButton: true,
-            // closeHtml : '<button>&times;</button>',
             progressBar: true,
             preventDuplicates: false,
             preventOpenDuplicates: false
           };
           if(rpta.flag == 1){
             vm.modoEditar = false;
-            // vm.getPaginationServerSide();
-            // PacienteServices.sListarPacientePorId(datos).then(function (rpta) {
-            //   vm.ficha = rpta.datos;
-            //   vm.mySelectionGrid = [rpta.datos];
-            // });
             vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-            var title = 'OK';
-            var iconClass = 'success';
-          }else if( rpta.flag == 0 ){
-            var title = 'Advertencia';
-            // vm.toast.title = 'Advertencia';
-            var iconClass = 'warning';
-            // vm.options.iconClass = {name:'warning'}
+            var pTitle = 'OK!';
+            var pType = 'success';
+          }else if( rpta.flag == 0 ){ 
+            var pTitle = 'Advertencia!';
+            var pType = 'warning'; 
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         });
       }
       vm.btnCancelarTab3 = function(){
         vm.modoEditar = false;
         vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-        // vm.ficha = angular.copy(vm.mySelectionGrid[0]);
-        // vm.cargarAntecedentes(vm.ficha);
-        // vm.cargarHabitosAlimentarios(vm.ficha);
-        // vm.cargarHabitos(vm.ficha);
       }
       vm.btnAceptarTab4 = function(){
         vm.ficha.habitos.idcliente = vm.ficha.idcliente;
@@ -891,8 +828,6 @@
           vm.options = {
             timeout: '3000',
             extendedTimeout: '1000',
-            // closeButton: true,
-            // closeHtml : '<button>&times;</button>',
             progressBar: true,
             preventDuplicates: false,
             preventOpenDuplicates: false
@@ -900,19 +835,15 @@
           if(rpta.flag == 1){
             vm.modoEditar = false;
             vm.btnActualizarFicha(vm.mySelectionGrid[0]);
-            // vm.cargarHabitos(vm.ficha);
-            // vm.cargarHabitosAlimentarios(vm.ficha);
-            var title = 'OK',
-                iconClass = 'success';
+            var pTitle = 'OK!';
+            var pType = 'success';
           }else if( rpta.flag == 0 ){
-            var title = 'Advertencia',
-                iconClass = 'warning';
-            // vm.options.iconClass = {name:'warning'}
+            var pTitle = 'Advertencia!';
+            var pType = 'warning'; 
           }else{
             alert('Ocurrió un error');
           }
-          var toast = toastr[iconClass](rpta.message, title, vm.options);
-          openedToasts.push(toast);
+          pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
         });
       }
       vm.btnCancelarTab4 = function(){
@@ -961,38 +892,32 @@
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
-          PacienteServices.sAnularPaciente(row.entity).then(function (rpta) {
-            var openedToasts = [];
+          PacienteServices.sAnularPaciente(row.entity).then(function (rpta) { 
             vm.options = {
               timeout: '3000',
               extendedTimeout: '1000',
-              // closeButton: true,
-              // closeHtml : '<button>&times;</button>',
               preventDuplicates: false,
               preventOpenDuplicates: false
             };
             if(rpta.flag == 1){
               vm.getPaginationServerSide(true);
-              var title = 'OK';
-              var iconClass = 'success';
+              var pTitle = 'OK!';
+              var pType = 'success';
             }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
+              var pTitle = 'Advertencia!';
+              var pType = 'warning';  
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
           });
         }, function(ev) {
             ev.preventDefault();
         });
       }
-      vm.btnPdf = function(){
-        // alert('En proceso');
+      vm.btnPdf = function(){ 
         PacienteServices.sImprimirFicha(vm.ficha).then(function(rpta){
-          if(rpta.flag == 1){
-            console.log('pdf...');
+          if(rpta.flag == 1){ 
             $window.open(rpta.urlTempPDF, '_blank');
           }
         });
@@ -1062,7 +987,6 @@
             //'cliente' : vm.mySelectionGrid[0]
           }
           ConsultasServices.sAnularConsulta(vm.cita).then(function (rpta) {
-            var openedToasts = [];
             vm.options = {
               timeout: '3000',
               extendedTimeout: '1000',
@@ -1071,24 +995,21 @@
             };
             if(rpta.flag == 1){
               vm.cargarConsultas(vm.mySelectionGrid[0]);
-              var title = 'OK';
-              var iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
+              var pTitle = 'OK!';
+              var pType = 'success';
+            }else if( rpta.flag == 0 ){ 
+              var pTitle = 'Advertencia!';
+              var pType = 'warning'; 
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
           });
         });
-        // console.log('anulando...');
       }
       
       if(params.param == 'nuevo-paciente'){
         vm.btnNuevo();
-        //$location.search({param: searchParam});
       }
   }
 

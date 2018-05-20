@@ -7,7 +7,7 @@
     .service('EmpresaServices', EmpresaServices);
 
   /** @ngInject */
-  function EmpresaController($scope,$uibModal,$timeout,$location,filterFilter, uiGridConstants,$document, alertify,toastr,EmpresaServices) {
+  function EmpresaController($scope,$uibModal,$timeout,$location,filterFilter,uiGridConstants,$document,alertify,EmpresaServices,pinesNotifications) {
 
     var vm = this;
     var params = $location.search();
@@ -45,8 +45,6 @@
         useExternalPagination: true,
         useExternalSorting: true,
         useExternalFiltering : true,
-        // showGridFooter: true,
-        // showColumnFooter: true,
         enableRowSelection: true,
         enableRowHeaderSelection: false,
         enableFullRowSelection: true,
@@ -89,12 +87,10 @@
             'ruc' : grid.columns[4].filters[0].term,
             'celular' : grid.columns[5].filters[0].term,
             'personal_contacto' : grid.columns[6].filters[0].term,          
-          }
-          // console.log('columnas',paginationOptions.searchColumn);
+          };
           vm.getPaginationServerSide();
         });
       }
-
       paginationOptions.sortName = vm.gridOptions.columnDefs[0].name;
       vm.getPaginationServerSide = function() {
         vm.datosGrid = {
@@ -126,29 +122,20 @@
             vm.modalTitle = 'Registro de Empresas';
             // BOTONES
             vm.aceptar = function () {
-              EmpresaServices.sRegistrarEmpresa(vm.fData).then(function (rpta) {
-                var openedToasts = [];
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
+              EmpresaServices.sRegistrarEmpresa(vm.fData).then(function (rpta) { 
                 if(rpta.flag == 1){
                   $uibModalInstance.close(vm.fData);
-                  vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
-                }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  vm.getPaginationServerSide(); 
+                  var pTitle = 'OK!';
+                  var pType = 'success';
+                }else if( rpta.flag == 0 ){ 
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
-              });
-
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
+              }); 
             };
             vm.cancel = function () {
               $uibModalInstance.dismiss('cancel');
@@ -157,8 +144,7 @@
           resolve: {
             arrToModal: function() {
               return {
-                getPaginationServerSide : vm.getPaginationServerSide,
-
+                getPaginationServerSide : vm.getPaginationServerSide 
               }
             }
           }
@@ -175,42 +161,29 @@
           // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            var openedToasts = [];
             vm.fData = {};
             vm.fData = arrToModal.seleccion;
-            console.log("row",vm.fData);
+            // console.log("row",vm.fData);
             vm.modoEdicion = true;
             vm.getPaginationServerSide = arrToModal.getPaginationServerSide;
 
             vm.modalTitle = 'Edición de Empresas';
-            //vm.fData.sexo = vm.listaSexos[0].id;
             vm.aceptar = function () {
-              console.log('edicion...', vm.fData);
+              // console.log('edicion...', vm.fData);
               $uibModalInstance.close(vm.fData);
               EmpresaServices.sEditarEmpresa(vm.fData).then(function (rpta) {
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  progressBar: true,
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
                 if(rpta.flag == 1){
                   vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
-                }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  // vm.toast.title = 'Advertencia';
-                  var iconClass = 'warning';
-                  // vm.options.iconClass = {name:'warning'}
+                  var pTitle = 'OK!';
+                  var pType = 'success';
+                }else if( rpta.flag == 0 ){ 
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning'; 
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
               });
-
             };
             vm.cancel = function () {
               $uibModalInstance.dismiss('cancel');
@@ -226,30 +199,21 @@
           }
         });
       }
-
       vm.btnAnular = function(row){
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
-          EmpresaServices.sAnularEmpresa(row.entity).then(function (rpta) {
-            var openedToasts = [];
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
+          EmpresaServices.sAnularEmpresa(row.entity).then(function (rpta) { 
             if(rpta.flag == 1){
               vm.getPaginationServerSide();
-              var title = 'OK';
-              var iconClass = 'success';
-            }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
+              var pTitle = 'OK!';
+              var pType = 'success';
+            }else if( rpta.flag == 0 ){ 
+              var pTitle = 'Advertencia!';
+              var pType = 'warning'; 
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
           });
         }, function(ev) {
             ev.preventDefault();
@@ -257,7 +221,6 @@
       }      
       if(params.param == 'nueva-empresa'){
         vm.btnNuevo();
-        //$location.search({param: searchParam});
       }
   }
   function EmpresaServices($http, $q, handle) {

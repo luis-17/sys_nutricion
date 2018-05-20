@@ -6,7 +6,8 @@
     .service('PlanAlimentarioServices', PlanAlimentarioServices);
 
   /** @ngInject */
-  function PlanAlimentarioController ($scope,$uibModal,$timeout,alertify,toastr,PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices, PlanPlantillaServices, 
+  function PlanAlimentarioController ($scope,$uibModal,$timeout,alertify,
+      PlanAlimentarioServices,DiaServices,TurnoServices,AlimentoServices,PlanPlantillaServices, 
       ConsultasServices, pageLoading, ModalReporteFactory,pinesNotifications) { 
     var vm = this;
     vm.horas = [
@@ -67,12 +68,10 @@
           size: 'md',
           backdropClass: 'splash splash-ef-14',
           windowClass: 'splash splash-ef-14',
-          // controller: 'ModalInstanceController',
           controller: function($scope, $uibModalInstance, backParams){ 
             var vm = this;
             vm.modalTitle = 'Registro de Plantilla';
             vm.fPlantilla = {};
-            //console.log(backParams.consulta, 'backParams.consulta');
             vm.aceptar = function() {
               pageLoading.start('Registrando plan...');
               var datos = { 
@@ -121,17 +120,13 @@
     vm.mostrarDatosDesdePlantilla = function() { 
       pageLoading.start('Importando plantilla');
       vm.consulta.plantilla = vm.planPlantilla; 
-      //console.log(vm.formaPlan,'vm.formaPlan');
-      //console.log(vm.tipoPlan,'vm.tipoPlan');
       vm.consulta.formaPlan = vm.formaPlan;
-      //console.log(vm.tipoVista,'antes');
       if(vm.tipoVista == 'new'){
         vm.tipoVista = 'plantillaNew'; 
       }
       if(vm.tipoVista == 'edit'){
         vm.tipoVista = 'plantillaEdit';
-      }  
-      //console.log(vm.tipoVista,'despues');
+      } 
       PlanPlantillaServices.sListarPlanPlantilla(vm.consulta).then(function(rpta){ 
         if(rpta.flag == 1){ 
           vm.dia = angular.copy(rpta.datos[0]);
@@ -147,8 +142,7 @@
         }else{
           pageLoading.stop(); 
         }
-      });  
-      //vm.indicaciones = 'lolol';
+      }); 
     }
     vm.listarPlantillas = function(formaPlan) {
       var arrParams = {
@@ -417,7 +411,6 @@
 
     vm.btnGuardarPlan = function(){
       pageLoading.start('Registrando plan...');
-      //console.log('vm.dias',vm.dias);
       var datos = {
         consulta:vm.consulta,
         tipo:vm.tipoPlan,
@@ -426,10 +419,7 @@
         planGeneral:vm.dia,
         indicaciones:vm.indicaciones,
       };
-      //console.log(vm.consulta,'vm.consulta');
-      // return false;
       PlanAlimentarioServices.sRegistrarPlan(datos).then(function(rpta){
-        var openedToasts = [];
         vm.options = {
           timeout: '3000',
           extendedTimeout: '1000',
@@ -452,13 +442,10 @@
         } 
         pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 });
         pageLoading.stop();
-        // var toast = toastr[iconClass](rpta.message, title, vm.options);
-        // openedToasts.push(toast);
       });
     }
 
-    vm.btnActualizarPlan = function(){
-      //console.log('vm.dias',vm.dias);
+    vm.btnActualizarPlan = function(){ 
       pageLoading.start('Actualizando plan...');
       var datos = {
         consulta:vm.consulta,
@@ -476,9 +463,8 @@
           preventOpenDuplicates: false
         };       
         if(rpta.flag == 1){ 
-          vm.consulta.tipo_dieta = rpta.tipo_dieta;
+          vm.consulta.tipo_dieta = rpta.tipo_dieta; 
           $scope.tipoDieta = (rpta.tipo_dieta); 
-          // console.log($scope.tipoDieta,'$scope.tipoDieta');
           vm.consulta.indicaciones_dieta = rpta.indicaciones_dieta; 
           vm.callbackCitas();
           vm.tipoVista = 'edit';
@@ -560,35 +546,31 @@
             vm.dias[indexDia].turnos[indexTurno].seleccionado.idalimento == null ||
             vm.dias[indexDia].turnos[indexTurno].seleccionado.idalimento == ''
           ){
-          var openedToasts = [];
-          vm.options = {
-            timeout: '3000',
-            extendedTimeout: '1000',
-            preventDuplicates: false,
-            preventOpenDuplicates: false
-          };       
-          var title = 'Advertencia';
-          var iconClass = 'warning';        
-          var toast = toastr[iconClass]('Debe seleccionar alimento.', title, vm.options);
-          openedToasts.push(toast);
-          return;
+            vm.options = {
+              timeout: '3000',
+              extendedTimeout: '1000',
+              preventDuplicates: false,
+              preventOpenDuplicates: false
+            };
+            var pTitle = 'Advertencia!';
+            var pType = 'warning';
+            pinesNotifications.notify({ title: pTitle, text: 'Debe seleccionar alimento.', type: pType, delay: 3000 }); 
+            return;
         }
 
         if(vm.dias[indexDia].turnos[indexTurno].temporalCantidad == null ||
             vm.dias[indexDia].turnos[indexTurno].temporalCantidad == '' ||
             vm.dias[indexDia].turnos[indexTurno].temporalCantidad <= 0
           ){
-          var openedToasts = [];
           vm.options = {
             timeout: '3000',
             extendedTimeout: '1000',
             preventDuplicates: false,
             preventOpenDuplicates: false
-          };       
-          var title = 'Advertencia';
-          var iconClass = 'warning';        
-          var toast = toastr[iconClass]('Debe agregar cantidad.', title, vm.options);
-          openedToasts.push(toast);
+          }; 
+          var pTitle = 'Advertencia!';
+          var pType = 'warning';
+          pinesNotifications.notify({ title: pTitle, text: 'Debe agregar cantidad.', type: pType, delay: 3000 }); 
           return;
         }
 
@@ -601,36 +583,32 @@
         if(!(vm.dia.turnos[indexTurno].seleccionado) ||
             vm.dia.turnos[indexTurno].seleccionado.idalimento == null ||
             vm.dia.turnos[indexTurno].seleccionado.idalimento == ''
-          ){
-          var openedToasts = [];
-          vm.options = {
-            timeout: '3000',
-            extendedTimeout: '1000',
-            preventDuplicates: false,
-            preventOpenDuplicates: false
-          };       
-          var title = 'Advertencia';
-          var iconClass = 'warning';        
-          var toast = toastr[iconClass]('Debe seleccionar alimento.', title, vm.options);
-          openedToasts.push(toast);
-          return;
+          ){ 
+            vm.options = {
+              timeout: '3000',
+              extendedTimeout: '1000',
+              preventDuplicates: false,
+              preventOpenDuplicates: false
+            };
+            var pTitle = 'Advertencia!';
+            var pType = 'warning';  
+            pinesNotifications.notify({ title: pTitle, text: 'Debe seleccionar alimento.', type: pType, delay: 3000 }); 
+            return;
         }
 
         if(vm.dia.turnos[indexTurno].temporalCantidad == null ||
             vm.dia.turnos[indexTurno].temporalCantidad == '' ||
             vm.dia.turnos[indexTurno].temporalCantidad <= 0
-          ){
-          var openedToasts = [];
+          ){ 
           vm.options = {
             timeout: '3000',
             extendedTimeout: '1000',
             preventDuplicates: false,
             preventOpenDuplicates: false
-          };       
-          var title = 'Advertencia';
-          var iconClass = 'warning';        
-          var toast = toastr[iconClass]('Debe agregar cantidad.', title, vm.options);
-          openedToasts.push(toast);
+          }; 
+          var pTitle = 'Advertencia!';
+          var pType = 'warning'; 
+          pinesNotifications.notify({ title: pTitle, text: 'Debe agregar cantidad.', type: pType, delay: 3000 }); 
           return;
         }
 
@@ -850,11 +828,7 @@
         resolve: {
             arrToModal: function() {
               return {
-                fDataAlimento : vm.fDataAlimento,
-                // document: $document,
-                // listaSexos : $scope.listaSexos,
-                // gridComboOptions : $scope.gridComboOptions,
-                // mySelectionComboGrid : $scope.mySelectionComboGrid
+                fDataAlimento : vm.fDataAlimento 
               }
             }
           }        
@@ -884,7 +858,7 @@
       sRegistrarPlan:sRegistrarPlan,
       sCargarPlan:sCargarPlan,
       sActualizarPlan:sActualizarPlan,
-      sGenerarPdfPlan:sGenerarPdfPlan,
+      sGenerarPdfPlan:sGenerarPdfPlan
     });
     function sRegistrarPlan(datos) {
       var request = $http({

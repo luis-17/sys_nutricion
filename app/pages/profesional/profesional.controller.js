@@ -7,7 +7,7 @@
     .service('ProfesionalServices', ProfesionalServices);
 
   /** @ngInject */
-  function ProfesionalController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,toastr,ProfesionalServices,
+  function ProfesionalController($scope,$uibModal,$timeout,$filter,filterFilter, uiGridConstants,$document, alertify,ProfesionalServices,
       EspecialidadServices,GrupoServices,UsuarioServices, pinesNotifications) {
 
     var vm = this;
@@ -220,8 +220,7 @@
             vm.aceptar = function () {
               // vm.fData.fecha_nacimiento = $filter('date')(new Date(vm.fData.fecha_nacimiento), 'yyyy-MM-dd ');
               vm.fData.idespecialidad = vm.fData.especialidad.id;
-              ProfesionalServices.sRegistrarProfesional(vm.fData).then(function (rpta) {
-                // var openedToasts = [];
+              ProfesionalServices.sRegistrarProfesional(vm.fData).then(function (rpta) { 
                 if(rpta.flag == 1){ 
                   $uibModalInstance.close(vm.fData);
                   vm.getPaginationServerSide();        
@@ -258,11 +257,9 @@
           controllerAs: 'mp',
           size: 'lg',
           backdropClass: 'splash splash-2 splash-ef-14',
-          windowClass: 'splash splash-2 splash-ef-14',
-          // controller: 'ModalInstanceController',
+          windowClass: 'splash splash-2 splash-ef-14', 
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            // var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.fData.afterUsuario = vm.fData.usuario;
@@ -520,8 +517,7 @@
         }, function(ev) {
             ev.preventDefault();
         }); 
-      }      
-
+      } 
   }
   function ProfesionalServices($http, $q, handle) {
     return({
@@ -530,7 +526,7 @@
         sRegistrarProfesional: sRegistrarProfesional,
         sEditarProfesional: sEditarProfesional,
         sAnularProfesional: sAnularProfesional,
-        sSubirFoto: sSubirFoto,
+        sSubirFoto: sSubirFoto 
     });
     function sListarProfesional(pDatos) {
       var datos = pDatos || {};
@@ -553,17 +549,17 @@
     function sRegistrarProfesional(pDatos) {
       var datos = pDatos || {};      
       var request = $http({
-            method : "post",
-            url : angular.patchURLCI + "Profesional/registrar_profesional",
-            data : datos,
-            headers: {'Content-Type': undefined},
-            transformRequest: function (data) {
-                var formData = new FormData();
-                angular.forEach(data, function (value, key) {
-                    formData.append(key, value);
-                });
-                return formData;
-            }            
+        method : "post",
+        url : angular.patchURLCI + "Profesional/registrar_profesional",
+        data : datos,
+        headers: {'Content-Type': undefined},
+        transformRequest: function (data) {
+            var formData = new FormData();
+            angular.forEach(data, function (value, key) {
+                formData.append(key, value);
+            });
+            return formData;
+        }            
       });
       return (request.then(handle.success,handle.error));
     }      

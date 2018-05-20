@@ -220,8 +220,7 @@
         consulta:vm.fData
       };
 
-      ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){
-        // var openedToasts = [];
+      ConsultasServices.sRegistrarConsulta(datos).then(function(rpta){ 
         if(rpta.flag == 1){ 
           vm.fData.idatencion = rpta.idatencion;
           vm.callback();
@@ -244,8 +243,7 @@
         consulta:vm.fData
       };
 
-      ConsultasServices.sActualizarConsulta(datos).then(function(rpta){
-        // var openedToasts = [];
+      ConsultasServices.sActualizarConsulta(datos).then(function(rpta){ 
         if(rpta.flag == 1){ 
           if( vm.origen == 'citas' ){
             vm.callback();

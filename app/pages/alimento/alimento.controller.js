@@ -5,7 +5,7 @@
     .controller('AlimentoController', AlimentoController)
     .service('AlimentoServices', AlimentoServices);
   /** @ngInject */
-  function AlimentoController($scope,$uibModal,$location,uiGridConstants,alertify,toastr,AlimentoServices,GrupoAlimentoServices) {
+  function AlimentoController($scope,$uibModal,$location,uiGridConstants,alertify,pinesNotifications,AlimentoServices,GrupoAlimentoServices) {
 
     var vm = this;
     var params = $location.search();
@@ -122,30 +122,21 @@
                 vm.listaGrupo2.splice(0,0,{ id : 0, descripcion:'--Seleccione una opción--'});
                 vm.fData.idgrupo2 = vm.listaGrupo2[0];
               });              
-            }        
-
+            } 
             vm.aceptar = function () {
-              AlimentoServices.sRegistrarAlimento(vm.fData).then(function (rpta) {
-                var openedToasts = [];
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
+              AlimentoServices.sRegistrarAlimento(vm.fData).then(function (rpta) { 
                 if(rpta.flag == 1){
                   $uibModalInstance.close(vm.fData);                  
                   vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
+                  var pTitle = 'OK!';
+                  var pType = 'success';
                 }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
               });
 
             };
@@ -171,7 +162,6 @@
           windowClass: 'splash splash-2 splash-ef-14',
           controller: function($scope, $uibModalInstance, arrToModal ){
             var vm = this;
-            var openedToasts = [];
             vm.fData = {};
             vm.fData = angular.copy(arrToModal.seleccion);
             vm.modoEdicion = true;
@@ -211,27 +201,18 @@
             vm.aceptar = function () {
               $uibModalInstance.close(vm.fData);
               AlimentoServices.sEditarAlimento(vm.fData).then(function (rpta) {
-                vm.options = {
-                  timeout: '3000',
-                  extendedTimeout: '1000',
-                  progressBar: true,
-                  preventDuplicates: false,
-                  preventOpenDuplicates: false
-                };
-                if(rpta.flag == 1){
-                  //$uibModalInstance.close(vm.fData); 
+                if(rpta.flag == 1){ 
                   $uibModalInstance.dismiss('cancel');                  
                   vm.getPaginationServerSide();
-                  var title = 'OK';
-                  var iconClass = 'success';
-                }else if( rpta.flag == 0 ){
-                  var title = 'Advertencia';
-                  var iconClass = 'warning';
+                  var pTitle = 'OK!';
+                  var pType = 'success';
+                }else if( rpta.flag == 0 ){ 
+                  var pTitle = 'Advertencia!';
+                  var pType = 'warning';  
                 }else{
                   alert('Ocurrió un error');
                 }
-                var toast = toastr[iconClass](rpta.message, title, vm.options);
-                openedToasts.push(toast);
+                pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
               });
 
             };
@@ -253,25 +234,17 @@
         alertify.confirm("¿Realmente desea realizar la acción?", function (ev) {
           ev.preventDefault();
           AlimentoServices.sAnularAlimento(row.entity).then(function (rpta) {
-            var openedToasts = [];
-            vm.options = {
-              timeout: '3000',
-              extendedTimeout: '1000',
-              preventDuplicates: false,
-              preventOpenDuplicates: false
-            };
             if(rpta.flag == 1){
               vm.getPaginationServerSide();
-              var title = 'OK';
-              var iconClass = 'success';
+              var pTitle = 'OK!';
+              var pType = 'success';
             }else if( rpta.flag == 0 ){
-              var title = 'Advertencia';
-              var iconClass = 'warning';
+              var pTitle = 'Advertencia!';
+              var pType = 'warning';  
             }else{
               alert('Ocurrió un error');
             }
-            var toast = toastr[iconClass](rpta.message, title, vm.options);
-            openedToasts.push(toast);
+            pinesNotifications.notify({ title: pTitle, text: rpta.message, type: pType, delay: 3000 }); 
           });
         }, function(ev) {
             ev.preventDefault();
@@ -279,7 +252,6 @@
       }
       if(params.param == 'nuevo-alimento'){
         vm.btnNuevo();
-        //$location.search({param: searchParam});
       }
   }
 

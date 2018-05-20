@@ -274,14 +274,6 @@
     }
     $scope.getValidateSession();
     
-    // limpieza de pasos 
-    //$timeout(function(index,val) {
-      
-      //console.log(arrSteps,'arrSteps');
-      //console.log($scope.fArr.valores,'$scope.fArr.valores');
-    //},1000);
-    
-    
     vm.introOptions = { 
       overlayOpacity: 0.3,
       showBullets: true,

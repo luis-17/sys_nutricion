@@ -117,7 +117,7 @@ class Alimentos extends CI_Controller {
     	$arrData['flag'] = 0;
     	// var_dump($allInputs); exit();
 		if($this->model_alimentos->m_editar($allInputs)){
-			$arrData['message'] = 'Se editaron los datos correctamente ' . date('H:n:s');
+			$arrData['message'] = 'Se editaron los datos correctamente';
     		$arrData['flag'] = 1;
 		}
 		$this->output
