@@ -543,6 +543,7 @@ class Paciente extends CI_Controller {
 			array_push($arrListado, array(
 				'id' => $row['idatencion'],
 				'idatencion' => $row['idatencion'],
+				'idcliente' => $row['idcliente'],
 				'tipo_dieta' => $row['tipo_dieta'],
 				'fecha_atencion' => DarFormatoDMY($row['fecha_atencion']),
 				'indicaciones' => $row['indicaciones_dieta']
