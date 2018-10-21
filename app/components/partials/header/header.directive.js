@@ -38,40 +38,7 @@
 
     /** @ngInject */
     function HeaderController() {
-      var vm = this;
-
-      vm.notifications = [{
-        content: 'User Imrich cancelled account',
-        time: '6 minutes ago',
-        icon: 'fa fa-ban',
-        color: 'bg-danger'
-      },{
-        content: 'New user registered',
-        time: '12 minutes ago',
-        icon: 'fa fa-bolt',
-        color: 'bg-primary'
-      },{
-        content: 'User Robert locked account',
-        time: '18 minutes ago',
-        icon: 'fa fa-lock',
-        color: 'bg-greensea'
-      },{
-        content: 'User Jon cancelled account',
-        time: '36 minutes ago',
-        icon: 'fa fa-ban',
-        color: 'bg-danger'
-      },{
-        content: 'User Joffrey has been muted',
-        time: '42 minutes ago',
-        icon: 'fa fa-bullseye',
-        color: 'bg-warning'
-      },{
-        content: 'User Sam locked account',
-        time: '58 minutes ago',
-        icon: 'fa fa-lock',
-        color: 'bg-greensea'
-      }]
-
+      var vm = this; 
     }
   }
 

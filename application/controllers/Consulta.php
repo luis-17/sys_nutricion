@@ -385,7 +385,7 @@ class Consulta extends CI_Controller {
 
 		$mail = new PHPMailer();
 		$mail->IsSMTP(true);
-		//$mail->SMTPDebug = 1;
+		$mail->SMTPDebug = 1;
 		$mail->SMTPAuth = ($configuracion['smtp_auth'] == 1) ? TRUE : FALSE;
 		$mail->SMTPSecure = $configuracion['smtp_secure'];
 		$mail->Host = $configuracion['smtp_host'];

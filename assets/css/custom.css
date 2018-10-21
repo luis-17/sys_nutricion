@@ -486,3 +486,52 @@ highchart {
 .introjs-nextbutton:focus, .introjs-nextbutton:active, .introjs-prevbutton:focus, .introjs-prevbutton:active {
     color: #1199d3;
 }
+
+/* DISEÑO 2018 */
+minotaur-nav{
+    top: 0;
+    box-shadow: unset;
+}
+
+minotaur-nav .nav-logo{ 
+    height: 60px;
+    border-bottom: 1px solid #e8eef4;
+    text-align: center;
+}
+minotaur-nav .nav-logo img{ 
+    max-height: 56px;
+}
+body minotaur-header {
+    left: 280px;
+    /*background: linear-gradient(to right, #137aa9 0%, #23a9e6 100%);*/
+    background: linear-gradient(to right, #6db983 5%, #21a2a8 90%);
+}
+body.navigation-sm minotaur-header {
+    left: 45px;
+}
+body.navigation-hidden minotaur-header {
+    left: 0;
+}
+minotaur-header.shadow{ 
+   box-shadow: 0 2px 2px -1px rgba(0,0,0,0.5);
+}
+minotaur-header .navbar-header .navigation-toggle { 
+    margin-left: 0;
+}
+minotaur-nav .nav-sidebar > .active > a > i, 
+minotaur-nav .nav-sidebar > .active > a:hover > i, 
+minotaur-nav .nav-sidebar > .active > a:focus > i, 
+minotaur-nav .nav-sidebar > .dropdown.active.open > a > i, 
+minotaur-nav .nav-sidebar > .dropdown.active.open > a:hover > i, 
+minotaur-nav .nav-sidebar > .dropdown.active.open > a:focus > i { 
+    background: linear-gradient(to right, #6db983 0%, #21a2a8 100%);
+}
+minotaur-nav .nav-sidebar li > a:hover > i {
+    background: linear-gradient(to right, #6db983 0%, #21a2a8 100%); 
+}
+.tile .tile-header .heading {
+    color: #21a2a8;
+} 
+.appWrap.viewport-sm minotaur-nav {
+    top: 0px;
+}

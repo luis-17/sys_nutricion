@@ -22,22 +22,8 @@ class Acceso extends CI_Controller {
     			if($loggedUser['estado_us'] == 1){
 					$arrData['flag'] = 1;
 					$arrPerfilUsuario = array();
-					// $arrPerfilUsuario['idusuario'] = $loggedUser['idusuario'];
-					// $arrPerfilUsuario['idgrupo'] = $loggedUser['idgrupo'];
-					// $arrPerfilUsuario['username'] = strtoupper($loggedUser['username']);
 					$arrPerfilUsuario = $this->model_profesional->m_cargar_perfil($loggedUser['idusuario']);
-					$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];
-					// $arrPerfilUsuario['idprofesional'] = $perfil['idprofesional'];
-					// $arrPerfilUsuario['idusuario'] = $perfil['idusuario'];
-					// $arrPerfilUsuario['idespecialidad'] = $perfil['idespecialidad'];
-					// $arrPerfilUsuario['especialidad'] = $perfil['especialidad'];
-					// $arrPerfilUsuario['nombre'] = $perfil['nombre'];
-					// $arrPerfilUsuario['apellidos'] = $perfil['apellidos'];
-					// $arrPerfilUsuario['correo'] = $perfil['correo'];
-					// $arrPerfilUsuario['fecha_nacimiento'] = $perfil['fecha_nacimiento'];
-					// $arrPerfilUsuario['num_colegiatura'] = $perfil['num_colegiatura'];
-					
-				    					
+					$arrPerfilUsuario['nombre_foto'] = empty($arrPerfilUsuario['nombre_foto']) ? 'sin-imagen.png' : $arrPerfilUsuario['nombre_foto'];		
 					// GUARDAMOS EN EL LOG DE LOGEO LA SESION INICIADA. 
 					//$this->model_acceso->m_registrar_log_sesion($arrPerfilUsuario);
 					// ACTUALIZAMOS EL ULTIMO LOGEO DEL USUARIO. 
@@ -50,10 +36,7 @@ class Acceso extends CI_Controller {
 						$arrData['flag'] = 0;
 	    				$arrData['message'] = 'No se encontró los datos del usuario.';
 					}
-				}/*elseif($loggedUser['estado_us'] == 2){
-					$arrData['flag'] = 2;
-					$arrData['message'] = 'Su cuenta se encuentra deshabilitada. Debe verificarla mediante el email enviado.';
-				}*/ 				
+				}
 			}else{ 
     			$arrData['flag'] = 0;
     			$arrData['message'] = 'Usuario o contraseña invalida. Inténtelo nuevamente.';

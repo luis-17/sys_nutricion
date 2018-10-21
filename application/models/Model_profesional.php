@@ -8,7 +8,8 @@ class Model_profesional extends CI_Model {
 	public function m_cargar_perfil($idusuario){ 
 		$this->db->select('pro.idprofesional, pro.idusuario, pro.idespecialidad, pro.nombre, pro.apellidos, pro.correo, 
 			pro.fecha_nacimiento, pro.num_colegiatura , pro.nombre_foto, gr.idgrupo, gr.nombre_gr, gr.key_grupo, 
-			us.username, us.idusuario, us.mostrar_info_contacto, us.mostrar_info_cobro, us.mostrar_intro, cf.idconfiguracion, cf.directorio, cf.logo_imagen',FALSE);
+			us.username, us.idusuario, us.mostrar_info_contacto, us.mostrar_info_cobro, us.mostrar_intro, 
+			cf.idconfiguracion, cf.directorio, cf.logo_imagen, cf.empresa',FALSE);
 		$this->db->select('esp.descripcion_es as especialidad',FALSE);
 		$this->db->from('profesional pro');
 		$this->db->join('especialidad esp', 'esp.idespecialidad = pro.idespecialidad');

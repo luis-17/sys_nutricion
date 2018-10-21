@@ -36,6 +36,7 @@
                 $uibModalInstance.dismiss('cancel');
               }
               $scope.enviarCorreo = function() { 
+                console.log('$scope.enviarCorreo');
                 $uibModal.open({
                   templateUrl: 'app/pages/reportes/popup_envio_correo.php',
                   controllerAs: 'ec',
@@ -47,6 +48,7 @@
                     var arrParamsCliente = {
                       'idcliente': arrParams.datos.consulta.idcliente
                     };
+                    console.log(arrParams,'arrParams');
                     PacienteServices.sListarPacientePorId(arrParamsCliente).then(function(rpta) { 
                       if(rpta.flag == 1){ 
                         $scope.fEnvio.emails = rpta.datos.email;

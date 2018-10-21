@@ -922,7 +922,8 @@
           }
         });
       }
-      vm.btnImprimirConsulta = function(item){
+      vm.btnImprimirConsulta = function(item){ 
+        console.log(item, 'item btnImprimirConsulta');
         var arrParams = {
             titulo: 'CONSULTA',
             datos:{
@@ -937,7 +938,8 @@
           }
           ModalReporteFactory.getPopupReporte(arrParams);
       }
-      vm.btnImprimirPlan = function(item){
+      vm.btnImprimirPlan = function(item){ 
+        console.log(item, 'item btnImprimirPlan');
         var arrParams = {
             titulo: 'PLAN ALIMENTARIO',
             datos:{

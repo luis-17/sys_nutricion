@@ -1,7 +1,11 @@
+<div class="nav-logo">
+  <!-- <span class=""> -->
+  <img class="" src="{{fSessionCI.directorio}}{{fSessionCI.logo_imagen}}" alt="{{ fSessionCI.empresa }}" title="{{ fSessionCI.empresa }}" />
+  <!-- </span> -->
+</div>
 <div class="nav-heading">
   <h3 class="text-center">MENÚ PRINCIPAL</h3>
 </div>
-
 <div slimscroll="{
       height: '100%',
       size: '4px',
@@ -52,21 +56,26 @@
         <i class="fa fa-bar-chart-o"></i>
       </a>
     </li>
-  </ul>
-  <div class="tile contacto" ng-show="fSessionCI.mostrar_info_contacto == 1"> <!-- MOSTRAR INFO DE CONTACTO --> 
-    <div class="tile-body lined-paper b-t" style="font-size:12px;padding-top: 0 !important;">
-      <p class="mb-n text-info text-center" style="font-weight: bold;font-style: normal;font-size: 16px;"> Contáctanos... </p>
-      <!-- <p class="mb-n">Luis Ricardo Luna Soto</p> -->
+    <li ng-class="{'active':$state.includes('sys-configuracion')}" ng-if="fArr.valores[7]" class="sys-configuracion">
+      <a ng-click="$state.reload();" ui-sref="sys-configuracion">
+        <span class="nav-text">{{ 'Menu.CONFIGURACION' | translate }}</span>
+        <i class="fa fa-wrench"></i> 
+      </a>
+    </li>
+  </ul> 
+  <!-- MOSTRAR INFO DE CONTACTO --> 
+  <div class="tile contacto" ng-show="fSessionCI.mostrar_info_contacto == 1">
+    <div class="tile-body b-t" style="font-size:12px;text-align: center;">
+      <!-- <p class="mb-n text-info text-center" style="font-weight: bold;font-style: normal;font-size: 16px;"> Contáctanos... </p> -->
       <p class="mb-n">
-        <i style="font-size: 18px;margin-right: 8px;" class="fa fa-phone"></i> 992566985 </p> 
-      <p class="mb-n"><i style="font-size: 18px;margin-right: 8px;" class="fa fa-envelope"></i> contacto@vitacloud.pe</p>
+        <i class="fa fa-phone"></i> 992566985 </p> 
+      <p class="mb-n"><i class="fa fa-envelope"></i> contacto@vitacloud.pe</p>
       <p class="mb-n"><a target="_blank" href="http://vitacloud.pe">
-        <i style="font-size: 18px;margin-right: 8px;" class="fa fa-globe"></i>http://vitacloud.pe</p>
+        <i class="fa fa-globe"></i>http://vitacloud.pe</p>
       <p class="mb-n"> <a target="_blank" href="https://www.facebook.com/vitacloudperu/"> 
-        <i style="color:#4267b2;font-size: 18px;margin-right: 8px;" class="fa fa-facebook-square"></i> /vitacloudperu </a> </p>
+        <i style="color:#4267b2;" class="fa fa-facebook-square"></i> /vitacloudperu </a> </p>
       <p class="mb-n"> <a target="_blank" href="https://www.linkedin.com/showcase/centros-nutricionistas/"> 
-        <i style="color:#0077b5;font-size: 18px;margin-right: 8px;" class="fa fa-linkedin-square"></i> /vitacloudperu </a> </p>
-      
+        <i style="color:#0077b5;" class="fa fa-linkedin-square"></i> /vitacloudperu </a> </p> 
     </div>
-  </div>
+  </div><!--  -->
 </div>

@@ -215,19 +215,18 @@
         }
     ]; 
     $scope.CargaMenu = function() { 
-      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opInformes']; 
+      var opciones = ['opDashboard','opProfesionales','opPacientes','opCitas','opEmpresas','opAlimentos','opInformes','opConfiguracion']; 
       $scope.fArr.arrSteps = [];
       if($scope.fSessionCI.idgrupo == 1){
-        $scope.fArr.valores = [true,true,true,true,true,true,true];
+        $scope.fArr.valores = [true,true,true,true,true,true,true,true];
       }
       if($scope.fSessionCI.idgrupo == 2){
-        $scope.fArr.valores = [true,false,true,true,true,true,true];
+        $scope.fArr.valores = [true,false,true,true,true,true,true,false];
       }
       if($scope.fSessionCI.idgrupo == 3){
-        $scope.fArr.valores = [true,false,true,true,false,true,false];
+        $scope.fArr.valores = [true,false,true,true,false,true,false,false];
       }
       var cont = 0;
-      //console.log(arrSteps,'arrSteps');
       angular.forEach(arrSteps,function(val,index) { 
         if(val.cod_permiso){ 
           if( $scope.fArr.valores[cont] === true ){ 
@@ -244,10 +243,7 @@
           result.push(val);
         } 
       }); 
-      //$scope.fArr.arrSteps = result; 
       vm.introOptions.steps = result;
-      console.log($scope.fArr.arrSteps,'$scope.fArr.arrSteps');
-      console.log(vm.introOptions.steps,'vm.introOptions.steps');
     } 
     $scope.getValidateSession = function () {
       rootServices.sGetSessionCI().then(function (response) {
